@@ -6,23 +6,20 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
+/**
+ * Implementation of User and it's functionality.
+ */
 public class UserImpl implements User {
-
-
   Set<String> portfolios;
 
+  /**
+   * Constructor to initialize User Object with portfolios.
+   */
   public UserImpl() {
     this.portfolios = UserImpl.getCurrentFileNames();
   }
 
-  /**
-   * Adds a given Portfolio.
-   *
-   * @param name   name of portfolio
-   * @param stocks map of {tickerSym , qty}
-   * @return true if added , false otherwise
-   */
+
   @Override
   public boolean addPortfolio(String name, HashMap<String, Double> stocks) {
     try {
@@ -34,20 +31,13 @@ public class UserImpl implements User {
     }
   }
 
-  /**
-   * Fetch List of Portfolios
-   * @return list of portfolis
-   */
+
   @Override
-  public Set<String> retrieveListOfPortfolios() {
+  public Set<String> getPortfolios() {
     return this.portfolios;
   }
 
-  /**
-   * Fetches the portfolio summary for a given portfolio.
-   * @param name name of the portfolio
-   * @return {ticker_symbl , qty}
-   */
+
   @Override
   public HashMap<String, Double> getPortfolioSummary(String name) {
     PortfolioImpl portfolio = (PortfolioImpl) portfolios.

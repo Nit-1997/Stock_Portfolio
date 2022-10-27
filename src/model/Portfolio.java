@@ -1,15 +1,43 @@
 package model;
 
-import java.util.HashMap;
-
+/**
+ * Interface to specify Portfolio specs.
+ */
 public interface Portfolio {
+
+  /**
+   * Fetches the PnL at portfolio level.
+   *
+   * @return Portfolio PnL
+   */
   public Double getPortfolioPnL();
 
-  public void retrievePortfolioSummary(String name);
+  /**
+   * Fetches basic portfolio data for a given name from local file.
+   *
+   * @param name name of the portfolio
+   */
+  public void getPortfolioSummary(String name);
 
-  public void retrievePortfolioDetailed(String name);
 
+  /**
+   * Fetches complete portfolio data for a given name from local file.
+   *
+   * @param name name of the portfolio
+   */
+  public void getPortfolioDetailed(String name);
+
+  /**
+   * Gets the current Price of the entire Portfolio.
+   *
+   * @return currentPrice of Portfolio
+   */
   public Double getCurrentPrice();
 
+  /**
+   * Fetches the initial value of the Portfolio.
+   *
+   * @return total Initial Buy value.
+   */
   public Double getInitialValue();
 }
