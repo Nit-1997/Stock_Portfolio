@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import java.util.HashMap;
+import java.util.List;
+
 public interface User {
 
   boolean addPortfolio(String name, HashMap<String, Double> stocks) throws Exception;
@@ -15,9 +18,4 @@ public interface User {
   List<int[] > detailedViewOfPortfolio(String name);
 
   Double profitOrLossOnPortfolio(String name);
-
-
-
-
-
 }

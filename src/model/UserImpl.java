@@ -50,7 +50,7 @@ public class UserImpl implements User {
    */
   @Override
   public HashMap<String, Double> getPortfolioSummary(String name) {
-    PortfolioImpl portfolio = (PortfolioImpl) portfolios.
+//    PortfolioImpl portfolio = (PortfolioImpl) portfolios.
     return null;
   }
 
@@ -62,8 +62,9 @@ public class UserImpl implements User {
   @Override
   public Double profitOrLossOnPortfolio(String name) {
     //TODO fix this
-    Portfolio port = (PortfolioImpl) portfolios.get();
-    return port.getPortfolioPnL();
+    //Portfolio port = (PortfolioImpl) portfolios.get();
+    //return port.getPortfolioPnL();
+    return 0d;
   }
 
   /**
