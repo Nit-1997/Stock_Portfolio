@@ -10,7 +10,7 @@ import java.util.Map;
 import constants.Constants;
 
 public class ApiDataFetcher {
-  public static Map<String,String> fetchData(String ticker) {
+  public static String fetchData(String ticker) throws IOException{
     //the API key needed to use this web service.
     //Please get your own free API key here: https://www.alphavantage.co/
     //Please look at documentation here: https://www.alphavantage.co/documentation/
@@ -54,17 +54,12 @@ public class ApiDataFetcher {
       while ((b=in.read())!=-1) {
         output.append((char)b);
       }
-     // System.out.println(output.toString());
     }
     catch (IOException e) {
       throw new IllegalArgumentException("No price data found for "+stockSymbol);
     }
-    System.out.println("Return value: ");
     String[] out = output.toString().split("\n");
     String[] out2 = out[1].split(",");
-    Map<String , String> response = new HashMap<>();
-    response.put("date" , out2[0]);
-    response.put("price" , out2[4]);
-    return response;
+    return out2[4];
   }
 }

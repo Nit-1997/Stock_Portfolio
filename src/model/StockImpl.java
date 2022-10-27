@@ -17,17 +17,19 @@ final class StockImpl implements Stock {
    */
   public StockImpl(String ticker) {
     this.ticker = ticker;
-    this.buyPrice = getCurrentPrice();
+    this.buyPrice = this.getCurrentPrice();
   }
 
   //TODO : Handle Saturdays and Sundays
   @Override
   public Double getCurrentPrice() {
     //TODO use this.ticker to fetch data from api
-    Map<String,String> res = ApiDataFetcher.fetchData("Googl");
-    System.out.println(res.get("date"));
-    System.out.println(res.get("price"));
-    return -1.1;
+    try{
+      String res = ApiDataFetcher.fetchData(this.ticker);
+      return Double.parseDouble(res);
+    }catch (IOException e){
+      return -1.0;
+    }
   }
 
   @Override
