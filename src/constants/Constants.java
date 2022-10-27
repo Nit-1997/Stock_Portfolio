@@ -11,4 +11,10 @@ public class Constants {
           "  0. Exit \n" +
           "  Enter your choice: ";
 
+
+  public static String ApiKey = "9G8A1X5VH7W7QNPH";
+  public static String ApiURL = "https://www.alphavantage"
+          + ".co/query?function=TIME_SERIES_DAILY"
+          + "&outputsize=full";
+
 }
