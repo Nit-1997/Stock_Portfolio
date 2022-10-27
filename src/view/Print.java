@@ -2,18 +2,16 @@ package view;
 
 import java.io.IOException;
 
+import constants.Constants;
+
 public class Print {
 
   public void welcomeNote(){
-    System.out.println("-------------Welcome to stock portfolio app-------------");
+    System.out.println(Constants.WelcomeMessage);
   }
 
   public void printMenu(){
-    System.out.println("************************************************************");
-    System.out.println("  1. Add new portfolio");
-    System.out.println("  2. View all portfolios");
-    System.out.println("  0. Exit");
-    System.out.print("Enter your choice: ");
+    System.out.println(Constants.MenuMessage);
   }
   public void addPortfolio() {
     System.out.println();

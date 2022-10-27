@@ -2,6 +2,7 @@ package model;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -35,8 +36,24 @@ public interface User {
    */
   HashMap<String, Double> getPortfolioSummary(String name);
 
-  List<int[]> detailedViewOfPortfolio(String name);
+  /**
+   * Fetches detailed portfolio data.
+   * eg response : [
+   * "aapl" : [ 20 , 15 ,10 , 50],
+   * "googl" : [ 20 , 15 ,10 , 50]
+   * ]
+   *
+   * @param name name of the portfolio
+   * @return Detailed Portfolio.
+   */
+  Map<String, List<Double>> getPortfolioDetailed(String name);
 
-  Double profitOrLossOnPortfolio(String name);
+  /**
+   * Fetches total PnL of a portfolio.
+   *
+   * @param name name of the portfolio
+   * @return total PnL
+   */
+  Double getPortfolioPnL(String name);
 
 }

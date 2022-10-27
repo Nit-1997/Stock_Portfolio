@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -45,12 +46,12 @@ public class UserImpl implements User {
   }
 
   @Override
-  public List<int[]> detailedViewOfPortfolio(String name) {
+  public Map< String , List<Double>> getPortfolioDetailed(String name) {
     return null;
   }
 
   @Override
-  public Double profitOrLossOnPortfolio(String name) {
+  public Double getPortfolioPnL(String name) {
     //TODO fix this
     //Portfolio port = (PortfolioImpl) portfolios.get();
     //return port.getPortfolioPnL();
