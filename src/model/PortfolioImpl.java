@@ -1,6 +1,7 @@
 package model;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -66,13 +67,17 @@ final class PortfolioImpl implements Portfolio {
   }
 
   @Override
-  public Double getPortfolioPnL() {
-    Double val = 0.0;
-    //TODO fetch portfolio data from local file
-    for (int i = 0; i < stocks.length; i++) {
-      val += stocks[i].getPnL() * quantity[i];
+  public double getPortfolioPnL() throws IOException {
+    try{
+      double val = 0.0;
+      //TODO fetch portfolio data from local file
+      for (int i = 0; i < stocks.length; i++) {
+        val += stocks[i].getPnL() * quantity[i];
+      }
+      return val;
+    }catch(IOException e){
+      throw e;
     }
-    return val;
   }
 
   @Override

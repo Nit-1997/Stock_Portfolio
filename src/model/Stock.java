@@ -1,5 +1,7 @@
 package model;
 
+import java.io.IOException;
+
 /**
  * Interface to encapsulate Stock spec.
  */
@@ -18,7 +20,7 @@ public interface Stock {
    *
    * @return currPrice - initPrice
    */
-  public Double getPnL();
+  public Double getPnL() throws IOException;
 
   /**
    * Get the price on date of purchase

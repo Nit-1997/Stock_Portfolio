@@ -1,5 +1,7 @@
 package model;
 
+import java.io.IOException;
+
 /**
  * Interface to specify Portfolio specs.
  */
@@ -10,7 +12,7 @@ public interface Portfolio {
    *
    * @return Portfolio PnL
    */
-  public Double getPortfolioPnL();
+  public double getPortfolioPnL() throws IOException;
 
   /**
    * Fetches basic portfolio data for a given name from local file.

@@ -10,7 +10,7 @@ import java.util.Map;
 import constants.Constants;
 
 public class ApiDataFetcher {
-  public static String fetchData(String ticker) throws IOException{
+  public static String fetchData(String ticker) throws Exception{
     //the API key needed to use this web service.
     //Please get your own free API key here: https://www.alphavantage.co/
     //Please look at documentation here: https://www.alphavantage.co/documentation/

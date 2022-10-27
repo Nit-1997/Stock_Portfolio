@@ -20,25 +20,28 @@ final class StockImpl implements Stock {
     this.buyPrice = this.getCurrentPrice();
   }
 
-  //TODO : Handle Saturdays and Sundays
   @Override
   public Double getCurrentPrice() {
-    //TODO use this.ticker to fetch data from api
-    try{
+    try {
       String res = ApiDataFetcher.fetchData(this.ticker);
       return Double.parseDouble(res);
-    }catch (IOException e){
+    } catch (Exception e) {
       return -1.0;
     }
   }
 
   @Override
-  public Double getPnL() {
-    return null;
+  public Double getPnL() throws IOException {
+    double currPrice = this.getCurrentPrice();
+    if (currPrice == -1.0) {
+      throw new IOException("Could not fetch data for the ticker");
+    } else {
+      return currPrice - this.buyPrice;
+    }
   }
 
   @Override
   public Double getBuyPrice() {
-    return buyPrice;
+    return this.buyPrice;
   }
 }
