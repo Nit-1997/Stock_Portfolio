@@ -4,9 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+
 /**
  * Interface to encapsulate user spec.
  */
+
 public interface User {
 
   /**
@@ -36,6 +38,5 @@ public interface User {
   List<int[]> detailedViewOfPortfolio(String name);
 
   Double profitOrLossOnPortfolio(String name);
-
 
 }
