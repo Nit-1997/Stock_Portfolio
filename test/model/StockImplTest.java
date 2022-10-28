@@ -30,5 +30,11 @@ public class StockImplTest {
 
   //TODO handle incorrect ticker for creating stocks
 
+  @Test
+  public void testgetPriceOnDateForCorrectTicker(){
+    Stock s = new StockImpl("Googl");
+    double price = s.getPriceOnDate("2022-10-27");
+    assertEquals(92.2200 , price , 0);
+  }
 
 }

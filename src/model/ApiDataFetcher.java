@@ -4,62 +4,109 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import constants.Constants;
 
 public class ApiDataFetcher {
-  public static String fetchData(String ticker) throws Exception{
-    //the API key needed to use this web service.
-    //Please get your own free API key here: https://www.alphavantage.co/
-    //Please look at documentation here: https://www.alphavantage.co/documentation/
-    String apiKey = Constants.ApiKey;
-    String stockSymbol = ticker; //ticker symbol for Google
-    URL url = null;
-
-    try {
-      /*
-      create the URL. This is the query to the web service. The query string
-      includes the type of query (DAILY stock prices), stock symbol to be
-      looked up, the API key and the format of the returned
-      data (comma-separated values:csv). This service also supports JSON
-      which you are welcome to use.
-       */
-      url = new URL(Constants.ApiURL
-                    + "&symbol"
-                    + "=" + stockSymbol + "&apikey="+apiKey+"&datatype=csv");
-    }
-    catch (MalformedURLException e) {
-      throw new RuntimeException("the alphavantage API has either changed or "
-                                 + "no longer works");
-    }
-
+  /**
+   * Fetches data for a given API endpoint
+   *
+   * @param url api endpoint
+   * @return api response
+   */
+  public static StringBuilder fetchApiData(URL url) {
     InputStream in = null;
     StringBuilder output = new StringBuilder();
 
     try {
-      /*
-      Execute this query. This returns an InputStream object.
-      In the csv format, it returns several lines, each line being separated
-      by commas. Each line contains the date, price at opening time, highest
-      price for that date, lowest price for that date, price at closing time
-      and the volume of trade (no. of shares bought/sold) on that date.
-
-      This is printed below.
-       */
       in = url.openStream();
       int b;
 
-      while ((b=in.read())!=-1) {
-        output.append((char)b);
+      while ((b = in.read()) != -1) {
+        output.append((char) b);
       }
+      return output;
+    } catch (IOException e) {
+      throw new IllegalArgumentException("No price data found for this symbol.");
     }
-    catch (IOException e) {
-      throw new IllegalArgumentException("No price data found for "+stockSymbol);
+  }
+
+  /**
+   * Fetches historic time series data for a given ticker.
+   *
+   * @param ticker stock symbol
+   * @return parsed response
+   * @throws Exception when api url does not respond as expected.
+   */
+  public static Map<String , List<String>> fetchDataDailyHistoricByTicker(String ticker) throws Exception {
+    URL url = null;
+    try {
+      url = new URL(Constants.getDailyDataTimeSeriesApi
+              + "&symbol"
+              + "=" + ticker + "&apikey=" + Constants.ApiKey + "&outputsize=full" + "&datatype=csv");
+    } catch (MalformedURLException e) {
+      throw new RuntimeException("the alphavantage API has either changed or "
+              + "no longer works");
     }
+    InputStream in = null;
+    StringBuilder output = new StringBuilder();
+
+    try {
+      in = url.openStream();
+      int b;
+
+      int lineNo = 0;
+      Map<String , List<String>> parsedResponse = new HashMap<>();
+      while ((b = in.read()) != -1) {
+        if((char) b == '\n'){
+           lineNo++;
+           if(lineNo == 1){
+             output.setLength(0);
+             continue;
+           }else{
+             String[] out = output.toString().split(",");
+             String key = out[0];
+             List<String> val = new ArrayList<>();
+             val.add(ticker);
+             val.add(out[4]);
+             parsedResponse.put(key,val);
+             output.setLength(0);
+           }
+        }
+        output.append((char) b);
+      }
+      return parsedResponse;
+    } catch (IOException e) {
+      throw new IllegalArgumentException("No price data found for this symbol.");
+    }
+  }
+
+  /**
+   * Fetches current data for a given ticker.
+   *
+   * @param ticker stock symbol
+   * @return parsed response
+   * @throws Exception when api url does not respond as expected.
+   */
+  public static String fetchCurrentValueApi(String ticker) throws Exception {
+    URL url = null;
+    try {
+      url = new URL(Constants.getCurrentValueApi
+              + "&symbol"
+              + "=" + ticker + "&apikey=" + Constants.ApiKey + "&datatype=csv");
+    } catch (MalformedURLException e) {
+      throw new RuntimeException("the alphavantage API has either changed or "
+              + "no longer works");
+    }
+    StringBuilder output = fetchApiData(url);
     String[] out = output.toString().split("\n");
     String[] out2 = out[1].split(",");
-    return out2[4];
+    return out2[7];
   }
+
+
 }

@@ -1,6 +1,8 @@
 package model;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Interface to encapsulate Stock spec.
@@ -28,4 +30,12 @@ public interface Stock {
    * @return Init Stock price
    */
   public Double getBuyPrice();
+
+  /**
+   * Get stock price on a certain date.
+   *
+   * @param date date on which we need the price
+   * @return stock price on that day
+   */
+  public double getPriceOnDate(String date);
 }

@@ -15,10 +15,15 @@ public class Constants {
 
 
 
-  public static String ApiKey = "9G8A1X5VH7W7QNPH";
-  public static String ApiURL = "https://www.alphavantage"
+//  public static String ApiKey = "9G8A1X5VH7W7QNPH";
+
+  public static String getDailyDataTimeSeriesApi = "https://www.alphavantage"
           + ".co/query?function=TIME_SERIES_DAILY"
           + "&outputsize=full";
+
+  public static String ApiKey = "ZCVYQOK98OIWK0E6";
+  public static String getCurrentValueApi = "https://www.alphavantage"
+          + ".co/query?function=GLOBAL_QUOTE";
 
   public static String AddPortfolio="\n\n-------------Portfolio Creation-------------\n"+
       "  1. Add name of the portfolio : ";
