@@ -3,11 +3,18 @@ package controller;
 import static java.lang.System.exit;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.Set;
 import model.User;
 import view.AddPortfolioPrint;
+import view.LoadPortfolioPrint;
 import view.WelcomePrint;
 
 public class StockController {
@@ -30,9 +37,10 @@ public class StockController {
       try {
         switch (scan.next()) {
           case "1":
-            addStocksToPortfolioController(scan,user);
+            addStocksToPortfolioController(scan, user);
             break;
           case "2":
+            loadPortfoliosController(scan, user);
             break;
           case "0":
             exit(0);
@@ -48,59 +56,129 @@ public class StockController {
   private void addStocksToPortfolioController(Scanner scan, User user) throws Exception {
     AddPortfolioPrint.addPortfolio();
     String name = scan.next();
-    HashMap<String, Double> stocks = new HashMap<>();
+    HashMap<String, Double> stocksMap = new HashMap<>();
     String ticker;
     double stockQuantity;
     AddPortfolioPrint.addStocksInPortfolioWelcomeNote(name);
-    AddPortfolioPrint.askTickerSymbol();
-    ticker = scan.next().toUpperCase();
-    AddPortfolioPrint.askStockNumber();
-    stockQuantity = scan.nextDouble();
-    stocks.put(ticker, stockQuantity);
-    AddPortfolioPrint.addStocksInPortfolioConfirmation();
-    String confirmation = "";
-    confirmation = scan.next();
-    while (confirmation.equals("y") || confirmation.equals("Y")) {
-      AddPortfolioPrint.stocksInPortfolioAddOrRemoveMenu();
-      int option = scan.nextInt();
-      try {
-        switch (option) {
-          case 1:
-            AddPortfolioPrint.askTickerSymbol();
-            ticker = scan.next().toUpperCase();
-            AddPortfolioPrint.askStockNumber();
-            stockQuantity = scan.nextDouble();
-            stocks.put(ticker,stocks.getOrDefault(ticker,0.0)+stockQuantity);
-            AddPortfolioPrint.addStocksInPortfolioConfirmation();
-            confirmation = scan.next();
-            break;
-          case 2:
-            AddPortfolioPrint.askTickerSymbol();
-            ticker = scan.next().toUpperCase();
-            AddPortfolioPrint.askStockNumber();
-            stockQuantity = scan.nextDouble();
-            if (stocks.containsKey(ticker) && stockQuantity<=stocks.get(ticker)) {
-              if(stockQuantity<stocks.get(ticker)) stocks.put(ticker, stocks.get(ticker) - stockQuantity);
-              else stocks.remove(ticker);
-              AddPortfolioPrint.removeStocksInPortfolioSuccessfulConfirmation();
+    String confirmation = null;
+    int option = 1;
+    boolean comingFromDefault=false;
+    do {
+      switch (option) {
+        case 1:
+          AddPortfolioPrint.askTickerSymbol();
+          ticker = scan.next().toUpperCase();
+          AddPortfolioPrint.askStockNumber();
+          stockQuantity = scan.nextDouble();
+          stocksMap.put(ticker, stocksMap.getOrDefault(ticker, 0.0) + stockQuantity);
+          AddPortfolioPrint.addStocksInPortfolioConfirmation();
+          confirmation = scan.next();
+          break;
+        case 2:
+          AddPortfolioPrint.askTickerSymbol();
+          ticker = scan.next().toUpperCase();
+          AddPortfolioPrint.askStockNumber();
+          stockQuantity = scan.nextDouble();
+          if (stocksMap.containsKey(ticker) && stockQuantity <= stocksMap.get(ticker)) {
+            if (stockQuantity < stocksMap.get(ticker)) {
+              stocksMap.put(ticker, stocksMap.get(ticker) - stockQuantity);
             } else {
-              AddPortfolioPrint.removeStocksInPortfolioUnSuccessfulConfirmation();
+              stocksMap.remove(ticker);
             }
-            confirmation = scan.next();
-            break;
-          case 3:
-            confirmation="n";
-            break;
-        }
-      } catch (Exception e) {
-        AddPortfolioPrint.addStocksInPortfolioErrorNode();
-        scan.next();
+            AddPortfolioPrint.removeStocksInPortfolioSuccessfulConfirmation();
+          } else {
+            AddPortfolioPrint.removeStocksInPortfolioUnSuccessfulConfirmation();
+          }
+          confirmation = scan.next();
+          break;
+        case 3:
+          confirmation = "n";
+          break;
+        default:
+          AddPortfolioPrint.addStocksInPortfolioErrorNode();
+          option = scan.nextInt();
+          comingFromDefault=true;
       }
+
+      if (!comingFromDefault && (confirmation.equals("y") || confirmation.equals("Y"))){
+        AddPortfolioPrint.stocksInPortfolioAddOrRemoveMenu();
+        option = scan.nextInt();
+      }
+      comingFromDefault=false;
+    } while (confirmation.equals("y") || confirmation.equals("Y"));
+
+    System.out.println(stocksMap);
+    boolean val = user.addPortfolio(name, stocksMap);
+    if (true) {
+      AddPortfolioPrint.addStocksInPortfolioConfirmationLoading(name);
     }
-    //    System.out.println(stocks);
-    boolean val = user.addPortfolio(name,stocks);
-    if(val) AddPortfolioPrint.addStocksInPortfolioConfirmationLoading(name);
 
 
   }
+
+  private void loadPortfoliosController(Scanner scan, User user) {
+    Set<String> portfolioNames = user.getPortfolios();
+
+    LoadPortfolioPrint.printPortfolios(portfolioNames);
+    LoadPortfolioPrint.loadPortfolioMenu();
+
+    int option = scan.nextInt();
+
+    do {
+      switch (option) {
+        case 1:
+          loadSinglePortfolioDetailController(scan, user);
+          option = 2;
+          break;
+        case 2:
+          break;
+        default:
+          System.out.print("Please enter an integer value between 1 and 2 ");
+          option = scan.nextInt();
+      }
+    } while (option != 2);
+
+  }
+
+  private void loadSinglePortfolioDetailController(Scanner scan, User user) {
+    LoadPortfolioPrint.askNameOfPortfolio();
+    String name = scan.next();
+    LoadPortfolioPrint.portfolioDetailWelcomeNote(name);
+    LoadPortfolioPrint.loadPortfolioDetailMenu();
+    int option = scan.nextInt();
+    boolean comingFromDefault=false;
+    do {
+      switch (option) {
+        case 1:
+          HashMap<String, Double> stockMap = user.getPortfolioSummary(name);;
+          LoadPortfolioPrint.printPortfolioSummary(stockMap);
+          break;
+        case 2:
+          Map<String, List<Double>> detailedMap = user.getPortfolioDetailed(name);
+          LoadPortfolioPrint.printPortfolioDetail(detailedMap);
+          break;
+        case 3:
+          Double portfolioPnL = user.getPortfolioPnL(name);
+          LoadPortfolioPrint.printPortfolioPerformance(portfolioPnL);
+          break;
+        case 4:
+          loadPortfoliosController(scan, user);
+          return;
+        case 5:
+          return;
+        default:
+          System.out.print("Please enter an integer value between 1 and 2 ");
+          option = scan.nextInt();
+          comingFromDefault=true;
+      }
+      if (!comingFromDefault) {
+        LoadPortfolioPrint.loadPortfolioDetailMenu();
+        option = scan.nextInt();
+      }
+      comingFromDefault=false;
+    } while (option != 5);
+
+  }
+
+
 }

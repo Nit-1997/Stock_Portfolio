@@ -44,7 +44,7 @@ public class Constants {
       "Stocks can't be removed!!\n"+
       "Do you want to add more stocks or remove any stocks (y/n)? ";
 
-  public static String AddStocksInPortfolioErrorNote="Please enter an integer value between 1 and 3\n";
+  public static String AddStocksInPortfolioErrorNote="Please enter an integer value between 1 and 3: ";
 
 
 

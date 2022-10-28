@@ -24,7 +24,7 @@ public class UserImpl implements User {
   @Override
   public boolean addPortfolio(String name, HashMap<String, Double> stocks) {
     try {
-      portfolios.add(name);
+      this.portfolios.add(name);
       new PortfolioImpl(stocks, name);
       return true;
     } catch (Exception e) {
@@ -35,6 +35,7 @@ public class UserImpl implements User {
 
   @Override
   public Set<String> getPortfolios() {
+    //TODO fetch names of portfolio files in the local directory
     return this.portfolios;
   }
 

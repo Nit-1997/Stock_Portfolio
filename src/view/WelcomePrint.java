@@ -9,7 +9,7 @@ public class WelcomePrint {
   }
 
   public static void printMenu(){
-    System.out.println(Constants.MenuMessage);
+    System.out.print(Constants.MenuMessage);
   }
 
   public static void errorNote(){
