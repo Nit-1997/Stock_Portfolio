@@ -11,6 +11,9 @@ public class Constants {
           "  0. Exit \n" +
           "  Enter your choice: ";
 
+  public static String ErrorNote="Please enter an integer value between 0 and 2\n";
+
+
 
   public static String ApiKey = "9G8A1X5VH7W7QNPH";
   public static String ApiURL = "https://www.alphavantage"
@@ -40,6 +43,8 @@ public class Constants {
   public static String RemoveStocksInPortfolioUnSuccessfulConfirmation="\n"+
       "Stocks can't be removed!!\n"+
       "Do you want to add more stocks or remove any stocks (y/n)? ";
+
+  public static String AddStocksInPortfolioErrorNote="Please enter an integer value between 1 and 3\n";
 
 
 

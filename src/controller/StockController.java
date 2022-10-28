@@ -7,7 +7,8 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.Scanner;
 import model.User;
-import view.Print;
+import view.AddPortfolioPrint;
+import view.WelcomePrint;
 
 public class StockController {
 
@@ -21,20 +22,15 @@ public class StockController {
 
   public void go(User user) throws IOException {
     Objects.requireNonNull(user);
-    Print printer = new Print();
-    printer.welcomeNote();
+    WelcomePrint.welcomeNote();
     Scanner scan = new Scanner(this.in);
     int input = -1;
     while (input != 0) {
-      printer.printMenu();
+      WelcomePrint.printMenu();
       try {
         switch (scan.next()) {
           case "1":
-            printer.addPortfolio();
-            String name = scan.next();
-            HashMap<String, Double> stocks = addStocksToPortfolioController(scan, printer,name);
-            boolean val = user.addPortfolio(name,stocks);
-            if(val) printer.addStocksInPortfolioConfirmationLoading(name);
+            addStocksToPortfolioController(scan,user);
             break;
           case "2":
             break;
@@ -43,50 +39,52 @@ public class StockController {
             return;
         }
       } catch (Exception e) {
-        System.out.println("Please enter an integer value between 0 and 2");
+        WelcomePrint.errorNote();
         scan.next();
       }
     }
   }
 
-  private HashMap addStocksToPortfolioController(Scanner scan, Print printer, String name) {
+  private void addStocksToPortfolioController(Scanner scan, User user) throws Exception {
+    AddPortfolioPrint.addPortfolio();
+    String name = scan.next();
     HashMap<String, Double> stocks = new HashMap<>();
     String ticker;
     double stockQuantity;
-    printer.addStocksInPortfolioWelcomeNote(name);
-    printer.askTickerSymbol();
+    AddPortfolioPrint.addStocksInPortfolioWelcomeNote(name);
+    AddPortfolioPrint.askTickerSymbol();
     ticker = scan.next().toUpperCase();
-    printer.askStockNumber();
+    AddPortfolioPrint.askStockNumber();
     stockQuantity = scan.nextDouble();
     stocks.put(ticker, stockQuantity);
-    printer.addStocksInPortfolioConfirmation();
+    AddPortfolioPrint.addStocksInPortfolioConfirmation();
     String confirmation = "";
     confirmation = scan.next();
     while (confirmation.equals("y") || confirmation.equals("Y")) {
-      printer.stocksInPortfolioAddOrRemoveMenu();
+      AddPortfolioPrint.stocksInPortfolioAddOrRemoveMenu();
       int option = scan.nextInt();
       try {
         switch (option) {
           case 1:
-            printer.askTickerSymbol();
+            AddPortfolioPrint.askTickerSymbol();
             ticker = scan.next().toUpperCase();
-            printer.askStockNumber();
+            AddPortfolioPrint.askStockNumber();
             stockQuantity = scan.nextDouble();
             stocks.put(ticker,stocks.getOrDefault(ticker,0.0)+stockQuantity);
-            printer.addStocksInPortfolioConfirmation();
+            AddPortfolioPrint.addStocksInPortfolioConfirmation();
             confirmation = scan.next();
             break;
           case 2:
-            printer.askTickerSymbol();
+            AddPortfolioPrint.askTickerSymbol();
             ticker = scan.next().toUpperCase();
-            printer.askStockNumber();
+            AddPortfolioPrint.askStockNumber();
             stockQuantity = scan.nextDouble();
             if (stocks.containsKey(ticker) && stockQuantity<=stocks.get(ticker)) {
               if(stockQuantity<stocks.get(ticker)) stocks.put(ticker, stocks.get(ticker) - stockQuantity);
               else stocks.remove(ticker);
-              printer.removeStocksInPortfolioSuccessfulConfirmation();
+              AddPortfolioPrint.removeStocksInPortfolioSuccessfulConfirmation();
             } else {
-              printer.removeStocksInPortfolioUnSuccessfulConfirmation();
+              AddPortfolioPrint.removeStocksInPortfolioUnSuccessfulConfirmation();
             }
             confirmation = scan.next();
             break;
@@ -95,13 +93,14 @@ public class StockController {
             break;
         }
       } catch (Exception e) {
-        System.out.println("Please enter an integer value between 1 and 3");
+        AddPortfolioPrint.addStocksInPortfolioErrorNode();
         scan.next();
       }
-
     }
+    //    System.out.println(stocks);
+    boolean val = user.addPortfolio(name,stocks);
+    if(val) AddPortfolioPrint.addStocksInPortfolioConfirmationLoading(name);
 
-//    System.out.println(stocks);
-    return stocks;
+
   }
 }
