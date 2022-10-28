@@ -27,14 +27,15 @@ public class StockController {
     this.out = out;
   }
 
-  public void go(User user) throws IOException {
+  public void go(User user) throws Exception {
     Objects.requireNonNull(user);
     WelcomePrint.welcomeNote();
     Scanner scan = new Scanner(this.in);
     int input = -1;
+    boolean comingFromDefault=false;
     while (input != 0) {
-      WelcomePrint.printMenu();
-      try {
+      if(!comingFromDefault)WelcomePrint.printMenu();
+      comingFromDefault=false;
         switch (scan.next()) {
           case "1":
             addStocksToPortfolioController(scan, user);
@@ -45,11 +46,10 @@ public class StockController {
           case "0":
             exit(0);
             return;
+          default:
+            WelcomePrint.errorNote();
+            comingFromDefault=true;
         }
-      } catch (Exception e) {
-        WelcomePrint.errorNote();
-        scan.next();
-      }
     }
   }
 
@@ -133,7 +133,7 @@ public class StockController {
         case 2:
           break;
         default:
-          System.out.print("Please enter an integer value between 1 and 2 ");
+          LoadPortfolioPrint.loadPortfolioErrorNote();
           option = scan.nextInt();
       }
     } while (option != 2);
@@ -167,7 +167,7 @@ public class StockController {
         case 5:
           return;
         default:
-          System.out.print("Please enter an integer value between 1 and 2 ");
+          LoadPortfolioPrint.loadPortfolioErrorNote();
           option = scan.nextInt();
           comingFromDefault=true;
       }

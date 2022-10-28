@@ -11,7 +11,7 @@ public class Constants {
           "  0. Exit \n" +
           "  Enter your choice: ";
 
-  public static String ErrorNote="Please enter an integer value between 0 and 2\n";
+  public static String ErrorNote="Please enter an integer value between 0 and 2 ";
 
 
 

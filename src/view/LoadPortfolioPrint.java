@@ -89,5 +89,9 @@ public class LoadPortfolioPrint{
     }
   }
 
+  public static void loadPortfolioErrorNote(){
+    System.out.print("Please enter an integer value from above options: ");
+  }
+
 
 }

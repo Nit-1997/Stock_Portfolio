@@ -5,7 +5,7 @@ import model.UserImpl;
 
 public class Main {
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws Exception {
     try {
       new StockController(new InputStreamReader(System.in), System.out).go(new UserImpl());
     } catch (IOException e) {
