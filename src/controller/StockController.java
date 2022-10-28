@@ -30,7 +30,11 @@ public class StockController {
       try {
         switch (scan.next()) {
           case "1":
-            HashMap<String, Double> stocks = addStocksToPortfolioController(scan, printer);
+            printer.addPortfolio();
+            String name = scan.next();
+            HashMap<String, Double> stocks = addStocksToPortfolioController(scan, printer,name);
+            boolean val = user.addPortfolio(name,stocks);
+            if(val) printer.addStocksInPortfolioConfirmationLoading(name);
             break;
           case "2":
             break;
@@ -45,9 +49,7 @@ public class StockController {
     }
   }
 
-  private HashMap addStocksToPortfolioController(Scanner scan, Print printer) {
-    printer.addPortfolio();
-    String name = scan.next();
+  private HashMap addStocksToPortfolioController(Scanner scan, Print printer, String name) {
     HashMap<String, Double> stocks = new HashMap<>();
     String ticker;
     double stockQuantity;
@@ -98,8 +100,8 @@ public class StockController {
       }
 
     }
-    printer.addStocksInPortfolioConfirmationLoading(name);
-    System.out.println(stocks);
+
+//    System.out.println(stocks);
     return stocks;
   }
 }

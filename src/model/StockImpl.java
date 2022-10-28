@@ -22,6 +22,7 @@ final class StockImpl implements Stock {
 
   @Override
   public Double getCurrentPrice() {
+    // TODO need to keep a check, if data once fetched, dont fetch again
     try {
       String res = ApiDataFetcher.fetchData(this.ticker);
       return Double.parseDouble(res);
