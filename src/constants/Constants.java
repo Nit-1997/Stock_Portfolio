@@ -17,4 +17,31 @@ public class Constants {
           + ".co/query?function=TIME_SERIES_DAILY"
           + "&outputsize=full";
 
+  public static String AddPortfolio="\n\n-------------Portfolio Creation-------------\n"+
+      "  1. Add name of the portfolio : ";
+
+  public static String AddStocksInPortfolioAskTickerSymbol="\nTicker symbol of the company: ";
+
+  public static String AddStocksInPortfolioAskStockNumber="Number of stocks for the company: ";
+
+  public static String AddStocksInPortfolioConfirmation="\n"+
+      "Stock added successfully to the portfolio!!\n"+
+      "Do you want to add more stocks or remove any stocks (y/n)? ";
+
+  public static String StocksInPortfolioAddOrRemoveMenu="1. Add more stocks\n"+
+      "2. Remove any stocks.\n"+
+      "3. Save the portfolio. \n"+
+      "Enter your choice: ";
+
+  public static String RemoveStocksInPortfolioSuccessfulConfirmation="\n"+
+      "Stock removed successfully to the portfolio!!\n"+
+      "Do you want to add more stocks or remove any stocks (y/n)? ";
+
+  public static String RemoveStocksInPortfolioUnSuccessfulConfirmation="\n"+
+      "Stocks can't be removed!!\n"+
+      "Do you want to add more stocks or remove any stocks (y/n)? ";
+
+
+
+
 }

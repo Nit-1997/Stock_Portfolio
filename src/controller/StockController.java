@@ -54,9 +54,9 @@ public class StockController {
     String ticker;
     double stockQuantity;
     printer.addStocksInPortfolioWelcomeNote(name);
-    printer.addStocksInPortfolioAskTickerSymbol();
+    printer.askTickerSymbol();
     ticker = scan.next().toUpperCase();
-    printer.addStocksInPortfolioAskStockNumber();
+    printer.askStockNumber();
     stockQuantity = scan.nextDouble();
     stocks.put(ticker, stockQuantity);
     printer.addStocksInPortfolioConfirmation();
@@ -68,18 +68,18 @@ public class StockController {
       try {
         switch (option) {
           case 1:
-            printer.addStocksInPortfolioAskTickerSymbol();
+            printer.askTickerSymbol();
             ticker = scan.next().toUpperCase();
-            printer.addStocksInPortfolioAskStockNumber();
+            printer.askStockNumber();
             stockQuantity = scan.nextDouble();
             stocks.put(ticker,stocks.getOrDefault(ticker,0.0)+stockQuantity);
             printer.addStocksInPortfolioConfirmation();
             confirmation = scan.next();
             break;
           case 2:
-            printer.removeStocksInPortfolioAskTickerSymbol();
+            printer.askTickerSymbol();
             ticker = scan.next().toUpperCase();
-            printer.removeStocksInPortfolioAskStockNumber();
+            printer.askStockNumber();
             stockQuantity = scan.nextDouble();
             if (stocks.containsKey(ticker) && stockQuantity<=stocks.get(ticker)) {
               if(stockQuantity<stocks.get(ticker)) stocks.put(ticker, stocks.get(ticker) - stockQuantity);
