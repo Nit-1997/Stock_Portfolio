@@ -41,18 +41,18 @@ public class UserImpl implements User {
 
 
   @Override
-  public HashMap<String, Double> getPortfolioSummary(String name) {
+  public HashMap<String, Double> getPortfolioSummary(String name, String date) {
 //    PortfolioImpl portfolio = (PortfolioImpl) portfolios.
     return null;
   }
 
   @Override
-  public Map< String , List<Double>> getPortfolioDetailed(String name) {
+  public Map< String , List<Double>> getPortfolioDetailed(String name, String date) {
     return null;
   }
 
   @Override
-  public Double getPortfolioPnL(String name) {
+  public Double getPortfolioPnL(String name, String date) {
     //TODO fix this
     //Portfolio port = (PortfolioImpl) portfolios.get();
     //return port.getPortfolioPnL();

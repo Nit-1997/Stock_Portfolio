@@ -38,12 +38,19 @@ public class LoadPortfolioPrint{
 
   public static void loadPortfolioDetailMenu(){
     System.out.println();
-    System.out.println("1. Summary of the portfolio");
-    System.out.println("2. Detailed view of the portfolio");
-    System.out.println("3. Performance of the portfolio");
-    System.out.println("4. Return to the lists of portfolio");
-    System.out.println("5. Return to the main menu");
+    System.out.println("1. Current Summary of the portfolio");
+    System.out.println("2. Current Detailed view of the portfolio");
+    System.out.println("3. Current Performance of the portfolio");
+    System.out.println("4. Historical Summary of the portfolio");
+    System.out.println("5. Historical Detailed view of the portfolio");
+    System.out.println("6. Historical Performance of the portfolio");
+    System.out.println("7. Return to the lists of portfolio");
+    System.out.println("8. Return to the main menu");
     System.out.print("Enter your choice: ");
+  }
+
+  public static void askDate(){
+    System.out.print("Please enter date (MM/DD/YYYY): ");
   }
 
   public static void printPortfolioSummary(HashMap<String, Double> stockMap){

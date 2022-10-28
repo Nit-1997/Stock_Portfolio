@@ -3,8 +3,11 @@ package controller;
 import static java.lang.System.exit;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -150,21 +153,42 @@ public class StockController {
     do {
       switch (option) {
         case 1:
-          HashMap<String, Double> stockMap = user.getPortfolioSummary(name);;
+          String date = DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now());
+          HashMap<String, Double> stockMap = user.getPortfolioSummary(name,date);
           LoadPortfolioPrint.printPortfolioSummary(stockMap);
           break;
         case 2:
-          Map<String, List<Double>> detailedMap = user.getPortfolioDetailed(name);
+          date = DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now());
+          Map<String, List<Double>> detailedMap = user.getPortfolioDetailed(name,date);
           LoadPortfolioPrint.printPortfolioDetail(detailedMap);
           break;
         case 3:
-          Double portfolioPnL = user.getPortfolioPnL(name);
+          date = DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now());
+          Double portfolioPnL = user.getPortfolioPnL(name,date);
           LoadPortfolioPrint.printPortfolioPerformance(portfolioPnL);
           break;
         case 4:
+          LoadPortfolioPrint.askDate();
+          date = scan.next();
+          stockMap = user.getPortfolioSummary(name,date);
+          LoadPortfolioPrint.printPortfolioSummary(stockMap);
+          break;
+        case 5:
+          LoadPortfolioPrint.askDate();
+          date = scan.next();
+          detailedMap = user.getPortfolioDetailed(name,date);
+          LoadPortfolioPrint.printPortfolioDetail(detailedMap);
+          break;
+        case 6:
+          LoadPortfolioPrint.askDate();
+          date = scan.next();
+          portfolioPnL = user.getPortfolioPnL(name,date);
+          LoadPortfolioPrint.printPortfolioPerformance(portfolioPnL);
+          break;
+        case 7:
           loadPortfoliosController(scan, user);
           return;
-        case 5:
+        case 8:
           return;
         default:
           LoadPortfolioPrint.loadPortfolioErrorNote();
