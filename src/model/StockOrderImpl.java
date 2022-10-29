@@ -19,6 +19,10 @@ public class StockOrderImpl {
     return this.stock.getBuyPrice() * this.quantity;
   }
 
+  public double getOrderValueOnDate(String date){
+    return this.stock.getPriceOnDate(date)*this.quantity;
+  }
+
   public double getOrderPnL() throws IOException {
      return this.stock.getPnL() * this.quantity;
   }

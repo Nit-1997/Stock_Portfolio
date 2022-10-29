@@ -48,6 +48,7 @@ final class StockImpl implements Stock {
     }
   }
 
+
   @Override
   public Double getBuyPrice() {
     return this.buyPrice;

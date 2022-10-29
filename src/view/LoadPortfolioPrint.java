@@ -39,7 +39,7 @@ public class LoadPortfolioPrint{
 
   public static void loadPortfolioDetailMenu(PrintStream out){
     out.println();
-    out.println("1. Current Summary of the portfolio");
+    out.println("1. Summary of the portfolio");
     out.println("2. Current Detailed view of the portfolio");
     out.println("3. Current Performance of the portfolio");
     out.println("4. Historical Detailed view of the portfolio");
@@ -68,7 +68,7 @@ public class LoadPortfolioPrint{
     out.println();
   }
 
-  public static void printPortfolioDetail(Map<String, List<Double>> mapDetail, PrintStream out){
+  public static void printPortfolioDetail(Map<String, List<Double>> mapDetail, double portfolioValue, PrintStream out){
     out.printf("%60s","Table for portfolio details");
     out.println();
     out.println("------------------------------------------------------------------------------------------");
@@ -81,6 +81,8 @@ public class LoadPortfolioPrint{
       out.println();
     }
     out.println("------------------------------------------------------------------------------------------");
+    out.printf("%60s","Value of the portfolio: ");
+    out.println(portfolioValue);
     out.println();
   }
 

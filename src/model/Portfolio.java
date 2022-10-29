@@ -1,6 +1,8 @@
 package model;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Interface to specify Portfolio specs.
@@ -12,29 +14,40 @@ public interface Portfolio {
    *
    * @return Portfolio PnL
    */
-  public double getPortfolioPnL() throws IOException;
+  double getPortfolioPnL() throws IOException;
 
   /**
-   * Fetches basic portfolio data for a given name from local file.
+   * Fetches from local file and provides summary of the portfolio {ticker name, quantity} .
    *
-   * @param name name of the portfolio
+   * @return List of stocks and their quantities in a portfolio.
    */
-  public void getPortfolioSummary(String name);
+  List<StockOrderImpl> getPortfolioSummary();
 
 
   /**
-   * Fetches complete portfolio data for a given name from local file.
+   * Fetches from local file and provides current detailed portfolio data
+   * {(ticker_symbol, quantity) vs (buying price, currentPrice)} .
    *
-   * @param name name of the portfolio
+   * @return list of maps containing ticker symbol, quantity vs buying price
    */
-  public void getPortfolioDetailed(String name);
+  Map<StockOrderImpl,List<Double>> getCurrentPortfolioDetailed();
+
+  /**
+   * Fetches from local file and provides detailed portfolio data for a particular date
+   * {(ticker_symbol, quantity) vs (buying price, price on that day)} .
+   *
+   * @param date for which details need to be fetched.
+   *
+   * @return list of maps containing ticker symbol, quantity vs buying price
+   */
+  Map<StockOrderImpl,List<Double>> getPortfolioDetailedOnDate(String date);
 
   /**
    * Gets the current Price of the entire Portfolio.
    *
    * @return currentPrice of Portfolio
    */
-  public double getCurrentPrice();
+  public double getCurrentValue();
 
   /**
    * Fetches the initial value of the Portfolio.
@@ -42,4 +55,14 @@ public interface Portfolio {
    * @return total Initial Buy value.
    */
   public double getInitialValue();
+
+
+  /**
+   * Fetches the value of the Portfolio for a particular date.
+   *
+   * @param date for which portfolio value needs to be fetched.
+   *
+   * @return total Initial Buy value.
+   */
+  double getValueOnDate(String date);
 }

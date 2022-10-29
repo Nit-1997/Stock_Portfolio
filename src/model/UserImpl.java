@@ -2,18 +2,20 @@ package model;
 
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.Arrays;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 
 /**
  * Implementation of User and it's functionality.
  */
 public class UserImpl implements User {
-  Set<String> portfolios;
+  Map<String, Portfolio> portfolioMap;
 
   /**
    * Constructor to initialize User Object with portfolios.
@@ -21,18 +23,18 @@ public class UserImpl implements User {
   public UserImpl() {
     String portfolioDirectory = Paths.get("portfolios").toAbsolutePath().toString();
     File f = new File(portfolioDirectory);
-    String[] files = f.list((f1, name) -> name.endsWith(".xml"));
+    String[] files = f.list((f1, name) -> name.endsWith(".csv"));
     for(int i=0;i<files.length;i++){
       files[i]=files[i].substring(0,files[i].indexOf('.'));
     }
-    this.portfolios = new HashSet<>(Arrays.asList(files));
+    for(String file : files) portfolioMap.put(file,null);
   }
 
 
   @Override
   public boolean addPortfolio(String name, Map<String, Double> stocks) {
     try {
-      this.portfolios.add(name);
+      this.portfolioMap.put(name,null);
       new PortfolioImpl(stocks, name);
       return true;
     } catch (Exception e) {
@@ -45,19 +47,50 @@ public class UserImpl implements User {
 
   @Override
   public Set<String> getPortfolios() {
-    return this.portfolios;
+    return this.portfolioMap.keySet();
   }
 
 
   @Override
-  public HashMap<String, Double> getPortfolioSummary(String name, String date) {
-//    PortfolioImpl portfolio = (PortfolioImpl) portfolios.
-    return null;
+  public Map<String, Double> getPortfolioSummary(String name) {
+    portfolioMap.put(name,new PortfolioImpl(name));
+    List<StockOrderImpl> list = portfolioMap.get(name).getPortfolioSummary();
+    Map<String, Double> resMap = new HashMap<>();
+    for(StockOrderImpl soi : list ) resMap.put(soi.getStock().getStockTickerName(),soi.getQuantity());
+    return resMap;
   }
 
   @Override
   public Map< String , List<Double>> getPortfolioDetailed(String name, String date) {
-    return null;
+    Map<String, List<Double>> resMap = new HashMap<>();
+    String currentDate = DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now());
+    Map<StockOrderImpl, List<Double>> map = new HashMap<>();
+    if (date.equals(currentDate) && portfolioMap.keySet().contains(name)) {
+      map = portfolioMap.get(name).getCurrentPortfolioDetailed();
+    } else if (!date.equals(currentDate) && portfolioMap.keySet().contains(name)) {
+      map = portfolioMap.get(name).getPortfolioDetailedOnDate(date);
+      }
+    portfolioMap.put(name, new PortfolioImpl(name));
+    for (StockOrderImpl soi : map.keySet()) {
+      String ticker_symbol = soi.getStock().getStockTickerName();
+      List<Double> listVals = new ArrayList<>();
+      listVals.add(soi.getQuantity());
+      listVals.addAll(map.get(soi));
+      resMap.put(ticker_symbol, listVals);
+    }
+    return resMap;
+  }
+
+  @Override
+  public double getPortfolioValue(String name, String date){
+    double portfolioValue = 0;
+    String currentDate = DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now());
+    if (date.equals(currentDate) && portfolioMap.keySet().contains(name)) {
+      portfolioValue=portfolioMap.get(name).getCurrentValue();
+    } else if (!date.equals(currentDate) && portfolioMap.keySet().contains(name)) {
+      portfolioValue=portfolioMap.get(name).getValueOnDate(date);
+    }
+    return portfolioValue;
   }
 
   @Override
@@ -68,15 +101,9 @@ public class UserImpl implements User {
     return 0d;
   }
 
-  /**
-   * Fetches the current names of the portfolio files
-   *
-   * @return list of portfolio names
-   */
-
   @Override
   public boolean isUniqueName(String name){
-      return !this.portfolios.contains(name);
+      return !this.portfolioMap.keySet().contains(name);
   }
 
   @Override
