@@ -1,6 +1,8 @@
 package model;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,7 +17,7 @@ import java.util.Set;
 final class PortfolioImpl implements Portfolio {
 
   private final String name;
-  private final StockImpl[] stocks;
+  private final Stock[] stocks;
   private final Double[] quantity;
 
 
@@ -50,6 +52,42 @@ final class PortfolioImpl implements Portfolio {
    */
   private boolean saveToFile() {
     return false;
+  }
+
+
+  private boolean writePortfolioToFile(){
+    /*
+          File_name : this.name
+         { stock_name , buy_price ,qty , buy_date }
+     */
+    try {
+      FileWriter myWriter = new FileWriter(this.name+".txt");
+      for(int i=0 ; i<this.stocks.length;i++){
+        myWriter.write(""+stocks[i].getStockTickerName()+","+stocks[i].getBuyPrice()+","+);
+      }
+      myWriter.close();
+      System.out.println("Successfully wrote to the file.");
+    } catch (IOException e) {
+      System.out.println("An error occurred.");
+      e.printStackTrace();
+    }
+    return false;
+  }
+
+  private boolean createFileIfNotExists() {
+    try {
+      File portfolioFile = new File(this.name+".txt");
+      if (portfolioFile.createNewFile()) {
+        System.out.println("Portfolio created to file : " + portfolioFile.getName());
+
+      } else {
+        System.out.println("Portfolio already exists reading from it ...");
+      }
+      return true;
+    } catch (IOException e) {
+      System.out.println("An error occurred.");
+      return false;
+    }
   }
 
   /**

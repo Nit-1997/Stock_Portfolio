@@ -38,4 +38,10 @@ public interface Stock {
    * @return stock price on that day
    */
   public double getPriceOnDate(String date);
+
+  /**
+   * Fetches the ticker name
+   * @return ticker name
+   */
+  public String getStockTickerName();
 }

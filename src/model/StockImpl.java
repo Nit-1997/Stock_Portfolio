@@ -34,6 +34,11 @@ final class StockImpl implements Stock {
   }
 
   @Override
+  public String getStockTickerName() {
+    return this.ticker;
+  }
+
+  @Override
   public Double getPnL() throws IOException {
     double currPrice = this.getCurrentPrice();
     if (currPrice == -1.0) {
