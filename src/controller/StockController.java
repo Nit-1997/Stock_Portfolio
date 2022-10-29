@@ -164,7 +164,7 @@ public class StockController {
       switch (option) {
         case 1:
           String date = DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now());
-          HashMap<String, Double> stockMap = user.getPortfolioSummary(name,date);
+          Map<String, Double> stockMap = user.getPortfolioSummary(name,date);
           LoadPortfolioPrint.printPortfolioSummary(stockMap, this.out);
           break;
         case 2:

@@ -40,7 +40,8 @@ final class PortfolioImpl implements Portfolio {
    *
    */
   private void saveToFile() throws IOException {
-
+      this.createFileIfNotExists();
+      this.writePortfolioToFile();
   }
 
 

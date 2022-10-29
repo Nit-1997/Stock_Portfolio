@@ -53,7 +53,7 @@ public class LoadPortfolioPrint{
     out.print("Please enter date (MM/DD/YYYY): ");
   }
 
-  public static void printPortfolioSummary(HashMap<String, Double> stockMap, PrintStream out){
+  public static void printPortfolioSummary(Map<String, Double> stockMap, PrintStream out){
     out.printf("%40s","Table for portfolio summary");
     out.println();
     out.println("----------------------------------------------------------");
