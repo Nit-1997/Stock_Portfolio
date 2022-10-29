@@ -50,7 +50,7 @@ final class PortfolioImpl implements Portfolio {
           File_name : this.name
          { stock_name , buy_price ,qty , buy_date }
      */
-    FileWriter myWriter = new FileWriter(this.name + ".txt");
+    FileWriter myWriter = new FileWriter(this.name + ".csv");
     for (StockOrderImpl order : this.stockOrder) {
       myWriter.write("" + order.getStock().getStockTickerName()
               + "," + order.getStock().getBuyPrice()
@@ -63,7 +63,7 @@ final class PortfolioImpl implements Portfolio {
   }
 
   private void createFileIfNotExists() throws IOException {
-    File portfolioFile = new File(this.name + ".txt");
+    File portfolioFile = new File(this.name + ".csv");
     if (portfolioFile.createNewFile()) {
       System.out.println("Portfolio created to file : " + portfolioFile.getName());
 
