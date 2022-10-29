@@ -146,6 +146,7 @@ final class PortfolioImpl implements Portfolio {
 
   @Override
   public Map<StockOrderImpl,List<Double>> getCurrentPortfolioDetailed() {
+
     //TODO : fetch local file data
     //TODO : parse data send back
     //TODO : make a PortfolioDetails pojo class

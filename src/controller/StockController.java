@@ -163,14 +163,14 @@ public class StockController {
     do {
       switch (option) {
         case 1:
-
           Map<String, Double> stockMap = user.getPortfolioSummary(name);
           LoadPortfolioPrint.printPortfolioSummary(stockMap, this.out);
           break;
         case 2:
           String date = DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now());
           Map<String, List<Double>> detailedMap = user.getPortfolioDetailed(name,date);
-          LoadPortfolioPrint.printPortfolioDetail(detailedMap, this.out);
+          double portfolioValue = user.getPortfolioValue(name,date);
+          LoadPortfolioPrint.printPortfolioDetail(detailedMap,portfolioValue, this.out);
           break;
         case 3:
           date = DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now());
@@ -181,7 +181,8 @@ public class StockController {
           LoadPortfolioPrint.askDate(this.out);
           date = scan.next();
           detailedMap = user.getPortfolioDetailed(name,date);
-          LoadPortfolioPrint.printPortfolioDetail(detailedMap, this.out);
+          portfolioValue = user.getPortfolioValue(name,date);
+          LoadPortfolioPrint.printPortfolioDetail(detailedMap,portfolioValue, this.out);
           break;
         case 5:
           LoadPortfolioPrint.askDate(this.out);

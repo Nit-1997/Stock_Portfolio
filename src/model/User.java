@@ -49,9 +49,18 @@ public interface User {
   Map<String, List<Double>> getPortfolioDetailed(String name, String date);
 
   /**
+   * Fetches value of a portfolio.
+   *
+   * @param name name of the portfolio
+   * @param date date for which portfolio value is required
+   * @return total value of portfolio
+   */
+  double getPortfolioValue(String name, String date);
+  /**
    * Fetches total PnL of a portfolio.
    *
    * @param name name of the portfolio
+   * @param date date for which PnL is required.
    * @return total PnL
    */
   double getPortfolioPnL(String name, String date);

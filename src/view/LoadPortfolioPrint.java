@@ -68,7 +68,7 @@ public class LoadPortfolioPrint{
     out.println();
   }
 
-  public static void printPortfolioDetail(Map<String, List<Double>> mapDetail, PrintStream out){
+  public static void printPortfolioDetail(Map<String, List<Double>> mapDetail, double portfolioValue, PrintStream out){
     out.printf("%60s","Table for portfolio details");
     out.println();
     out.println("------------------------------------------------------------------------------------------");
@@ -81,6 +81,8 @@ public class LoadPortfolioPrint{
       out.println();
     }
     out.println("------------------------------------------------------------------------------------------");
+    out.printf("%60s","Value of the portfolio: ");
+    out.println(portfolioValue);
     out.println();
   }
 

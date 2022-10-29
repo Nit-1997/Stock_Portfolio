@@ -5,12 +5,11 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 
 /**
  * Implementation of User and it's functionality.
@@ -65,29 +64,33 @@ public class UserImpl implements User {
   public Map< String , List<Double>> getPortfolioDetailed(String name, String date) {
     Map<String, List<Double>> resMap = new HashMap<>();
     String currentDate = DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now());
+    Map<StockOrderImpl, List<Double>> map = new HashMap<>();
     if (date.equals(currentDate) && portfolioMap.keySet().contains(name)) {
-      portfolioMap.put(name, new PortfolioImpl(name));
-      Map<StockOrderImpl, List<Double>> map = portfolioMap.get(name).getCurrentPortfolioDetailed();
-      for (StockOrderImpl soi : map.keySet()) {
-        String ticker_symbol = soi.getStock().getStockTickerName();
-        List<Double> listVals = new ArrayList<>();
-        listVals.add(soi.getQuantity());
-        listVals.addAll(map.get(soi));
-        resMap.put(ticker_symbol, listVals);
-      }
+      map = portfolioMap.get(name).getCurrentPortfolioDetailed();
     } else if (!date.equals(currentDate) && portfolioMap.keySet().contains(name)) {
-      portfolioMap.put(name, new PortfolioImpl(name));
-      Map<StockOrderImpl, List<Double>> map = portfolioMap.get(name)
-          .getPortfolioDetailedOnDate(date);
-      for (StockOrderImpl soi : map.keySet()) {
-        String ticker_symbol = soi.getStock().getStockTickerName();
-        List<Double> listVals = new ArrayList<>();
-        listVals.add(soi.getQuantity());
-        listVals.addAll(map.get(soi));
-        resMap.put(ticker_symbol, listVals);
+      map = portfolioMap.get(name).getPortfolioDetailedOnDate(date);
       }
+    portfolioMap.put(name, new PortfolioImpl(name));
+    for (StockOrderImpl soi : map.keySet()) {
+      String ticker_symbol = soi.getStock().getStockTickerName();
+      List<Double> listVals = new ArrayList<>();
+      listVals.add(soi.getQuantity());
+      listVals.addAll(map.get(soi));
+      resMap.put(ticker_symbol, listVals);
     }
     return resMap;
+  }
+
+  @Override
+  public double getPortfolioValue(String name, String date){
+    double portfolioValue = 0;
+    String currentDate = DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now());
+    if (date.equals(currentDate) && portfolioMap.keySet().contains(name)) {
+      portfolioValue=portfolioMap.get(name).getCurrentValue();
+    } else if (!date.equals(currentDate) && portfolioMap.keySet().contains(name)) {
+      portfolioValue=portfolioMap.get(name).getValueOnDate(date);
+    }
+    return portfolioValue;
   }
 
   @Override
