@@ -18,6 +18,11 @@ final class PortfolioImpl implements Portfolio {
   private final List<StockOrderImpl> stockOrder;
 
 
+  public PortfolioImpl(String name){
+    this.name=name;
+    this.stockOrder=null;
+  }
+
   /**
    * Creates a new portfolio.
    *
@@ -84,7 +89,7 @@ final class PortfolioImpl implements Portfolio {
 
 
   @Override
-  public double getCurrentPrice() {
+  public double getCurrentValue() {
     double val = 0.0;
     //TODO fetch portfolio data from API data
     this.fetchPortfolioData();
@@ -106,6 +111,19 @@ final class PortfolioImpl implements Portfolio {
   }
 
   @Override
+  public double getValueOnDate(String date) {
+    double val = 0.0;
+    //TODO fetch portfolio data from API data
+    this.fetchPortfolioData();
+    for(StockOrderImpl order : this.stockOrder){
+      val += order.getOrderValueOnDate(date);
+    }
+    return val;
+  }
+
+
+
+  @Override
   public double getPortfolioPnL() throws IOException {
     double val = 0.0;
     //TODO fetch portfolio data from local file
@@ -117,22 +135,29 @@ final class PortfolioImpl implements Portfolio {
   }
 
   @Override
-  public void getPortfolioSummary(String name) {
+  public List<StockOrderImpl> getPortfolioSummary() {
     //TODO : fetch local file data
     //TODO : parse data send back
     /**
      *  { ticker_symbl , qty}
      */
+    return this.stockOrder;
   }
 
   @Override
-  public void getPortfolioDetailed(String name) {
+  public Map<StockOrderImpl,List<Double>> getCurrentPortfolioDetailed() {
     //TODO : fetch local file data
     //TODO : parse data send back
     //TODO : make a PortfolioDetails pojo class
     /**
      * Pair{[{ticker_name , buy_price , curr_price , qty , PnL},...] , totalPnL}
      */
+    return null;
+  }
+
+  @Override
+  public Map<StockOrderImpl,List<Double>> getPortfolioDetailedOnDate(String date){
+    return null;
   }
 
 

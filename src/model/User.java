@@ -34,7 +34,7 @@ public interface User {
    * @param name name of the portfolio
    * @return {ticker_symbl , qty}
    */
-  Map<String, Double> getPortfolioSummary(String name, String date);
+  Map<String, Double> getPortfolioSummary(String name);
 
   /**
    * Fetches detailed portfolio data.

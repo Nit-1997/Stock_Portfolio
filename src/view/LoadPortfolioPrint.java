@@ -39,7 +39,7 @@ public class LoadPortfolioPrint{
 
   public static void loadPortfolioDetailMenu(PrintStream out){
     out.println();
-    out.println("1. Current Summary of the portfolio");
+    out.println("1. Summary of the portfolio");
     out.println("2. Current Detailed view of the portfolio");
     out.println("3. Current Performance of the portfolio");
     out.println("4. Historical Detailed view of the portfolio");
