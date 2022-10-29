@@ -61,7 +61,7 @@ public class UserImpl implements User {
   }
 
   @Override
-  public Double getPortfolioPnL(String name, String date) {
+  public double getPortfolioPnL(String name, String date) {
     //TODO fix this
     //Portfolio port = (PortfolioImpl) portfolios.get();
     //return port.getPortfolioPnL();

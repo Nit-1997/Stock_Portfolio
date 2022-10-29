@@ -34,12 +34,12 @@ public interface Portfolio {
    *
    * @return currentPrice of Portfolio
    */
-  public Double getCurrentPrice();
+  public double getCurrentPrice();
 
   /**
    * Fetches the initial value of the Portfolio.
    *
    * @return total Initial Buy value.
    */
-  public Double getInitialValue();
+  public double getInitialValue();
 }

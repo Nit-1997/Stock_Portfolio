@@ -34,7 +34,7 @@ public interface User {
    * @param name name of the portfolio
    * @return {ticker_symbl , qty}
    */
-  HashMap<String, Double> getPortfolioSummary(String name, String date);
+  Map<String, Double> getPortfolioSummary(String name, String date);
 
   /**
    * Fetches detailed portfolio data.
@@ -54,7 +54,7 @@ public interface User {
    * @param name name of the portfolio
    * @return total PnL
    */
-  Double getPortfolioPnL(String name, String date);
+  double getPortfolioPnL(String name, String date);
 
   /**
    * Checks whether the name of portfolio already exists in the names of portfolios.

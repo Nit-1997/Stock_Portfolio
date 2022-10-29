@@ -4,11 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * This class creates the Portfolio.
@@ -17,8 +15,7 @@ import java.util.Set;
 final class PortfolioImpl implements Portfolio {
 
   private final String name;
-  private final Stock[] stocks;
-  private final Double[] quantity;
+  private final List<StockOrderImpl> stockOrder;
 
 
   /**
@@ -27,19 +24,12 @@ final class PortfolioImpl implements Portfolio {
    * @param stocksMap map of {ticker , qty}
    */
   public PortfolioImpl(Map<String, Double> stocksMap, String name) throws Exception {
-    int n = stocksMap.size();
-    this.stocks = new StockImpl[n];
-    this.quantity = new Double[n];
-    this.name=name;
-    int i = 0;
+    this.stockOrder = new ArrayList<>();
+    this.name = name;
     for (String key : stocksMap.keySet()) {
-      stocks[i] = new StockImpl(key);
-      quantity[i] = stocksMap.get(key);
-      i++;
+      this.stockOrder.add(new StockOrderImpl(key, stocksMap.get(key)));
     }
-    if (!this.saveToFile()) {
-      throw new FileNotFoundException("Not found");
-    }
+    this.saveToFile();
   }
 
 
@@ -48,93 +38,81 @@ final class PortfolioImpl implements Portfolio {
   /**
    * saves the current portfolio to the file.
    *
-   * @return true / false based on operation
    */
-  private boolean saveToFile() {
-    return false;
+  private void saveToFile() throws IOException {
+
   }
 
 
-  private boolean writePortfolioToFile(){
+  private void writePortfolioToFile() throws IOException {
     /*
           File_name : this.name
          { stock_name , buy_price ,qty , buy_date }
      */
-    try {
-      FileWriter myWriter = new FileWriter(this.name+".txt");
-      for(int i=0 ; i<this.stocks.length;i++){
-        myWriter.write(""+stocks[i].getStockTickerName()+","+stocks[i].getBuyPrice()+","+);
-      }
-      myWriter.close();
-      System.out.println("Successfully wrote to the file.");
-    } catch (IOException e) {
-      System.out.println("An error occurred.");
-      e.printStackTrace();
+    FileWriter myWriter = new FileWriter(this.name + ".txt");
+    for (StockOrderImpl order : this.stockOrder) {
+      myWriter.write("" + order.getStock().getStockTickerName()
+              + "," + order.getStock().getBuyPrice()
+              + "," + order.getQuantity()
+              + "," + order.getStock().getBuyPrice() + "\n"
+      );
     }
-    return false;
+    myWriter.close();
+    System.out.println("Successfully wrote to the file.");
   }
 
-  private boolean createFileIfNotExists() {
-    try {
-      File portfolioFile = new File(this.name+".txt");
-      if (portfolioFile.createNewFile()) {
-        System.out.println("Portfolio created to file : " + portfolioFile.getName());
+  private void createFileIfNotExists() throws IOException {
+    File portfolioFile = new File(this.name + ".txt");
+    if (portfolioFile.createNewFile()) {
+      System.out.println("Portfolio created to file : " + portfolioFile.getName());
 
-      } else {
-        System.out.println("Portfolio already exists reading from it ...");
-      }
-      return true;
-    } catch (IOException e) {
-      System.out.println("An error occurred.");
-      return false;
+    } else {
+      System.out.println("Portfolio already exists reading from it ...");
     }
   }
 
   /**
    * Fetches data for the portfolio from local directory
+   *
    * @return HashMap of Ticker Symbol vs {buy price, quantity}
    */
-  private void fetchPortfolioData(){
+  private void fetchPortfolioData() {
     // TODO if reference variables are null, then fetch data from local directory and fill the variables
     // else just return
   }
 
 
   @Override
-  public Double getCurrentPrice() {
-    Double val = 0.0;
+  public double getCurrentPrice() {
+    double val = 0.0;
     //TODO fetch portfolio data from API data
     this.fetchPortfolioData();
-    for (int i = 0; i < this.stocks.length; i++) {
-      val += this.stocks[i].getCurrentPrice() * this.quantity[i];
+    for(StockOrderImpl order : this.stockOrder){
+      val += order.getCurrentOrderValue();
     }
     return val;
   }
 
   @Override
-  public Double getInitialValue() {
-    Double val = 0.0;
+  public double getInitialValue() {
+    double val = 0.0;
     //TODO fetch portfolio data from local file
     this.fetchPortfolioData();
-    for (int i = 0; i < this.stocks.length; i++) {
-      val += this.stocks[i].getBuyPrice() * this.quantity[i];
+    for(StockOrderImpl order : this.stockOrder){
+      val += order.getInitialOrderValue();
     }
     return val;
   }
 
   @Override
   public double getPortfolioPnL() throws IOException {
-    try{
-      double val = 0.0;
-      //TODO fetch portfolio data from local file
-      this.fetchPortfolioData();
-      for (int i = 0; i < this.stocks.length; i++) {
-        val += this.stocks[i].getPnL() * this.quantity[i];
-      }
-      return val;
-    }catch(IOException e){
-      throw e;
+    double val = 0.0;
+    //TODO fetch portfolio data from local file
+    this.fetchPortfolioData();
+    for(StockOrderImpl order : this.stockOrder){
+      val += order.getOrderPnL();
     }
+    return val;
   }
 
   @Override
