@@ -24,7 +24,7 @@ final class PortfolioImpl implements Portfolio {
    *
    * @param stocksMap map of {ticker , qty}
    */
-  public PortfolioImpl(HashMap<String, Double> stocksMap, String name) throws Exception {
+  public PortfolioImpl(Map<String, Double> stocksMap, String name) throws Exception {
     int n = stocksMap.size();
     this.stocks = new StockImpl[n];
     this.quantity = new Double[n];

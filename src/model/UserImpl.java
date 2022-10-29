@@ -1,6 +1,8 @@
 package model;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -17,12 +19,18 @@ public class UserImpl implements User {
    * Constructor to initialize User Object with portfolios.
    */
   public UserImpl() {
-    this.portfolios = UserImpl.getCurrentFileNames();
+    String portfolioDirectory = Paths.get("portfolios").toAbsolutePath().toString();
+    File f = new File(portfolioDirectory);
+    String[] files = f.list((f1, name) -> name.endsWith(".xml"));
+    for(int i=0;i<files.length;i++){
+      files[i]=files[i].substring(0,files[i].indexOf('.'));
+    }
+    this.portfolios = new HashSet<>(Arrays.asList(files));
   }
 
 
   @Override
-  public boolean addPortfolio(String name, HashMap<String, Double> stocks) {
+  public boolean addPortfolio(String name, Map<String, Double> stocks) {
     try {
       this.portfolios.add(name);
       new PortfolioImpl(stocks, name);
@@ -33,9 +41,10 @@ public class UserImpl implements User {
   }
 
 
+
+
   @Override
   public Set<String> getPortfolios() {
-    //TODO fetch names of portfolio files in the local directory
     return this.portfolios;
   }
 
@@ -64,7 +73,24 @@ public class UserImpl implements User {
    *
    * @return list of portfolio names
    */
-  private static Set<String> getCurrentFileNames() {
-    return new HashSet<>();
+
+  @Override
+  public boolean isUniqueName(String name){
+      return !this.portfolios.contains(name);
+  }
+
+  @Override
+  public boolean ctrlCPressedChecker(String name){
+    final boolean[] checker = {false};
+    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+      killPortfolio(name);
+      checker[0] =true;
+    }));
+
+    return checker[0];
+  }
+
+  private void killPortfolio(String name){
+
   }
 }
