@@ -3,6 +3,8 @@ package controller;
 import static java.lang.System.exit;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -22,22 +24,22 @@ import view.WelcomePrint;
 
 public class StockController {
 
-  final Readable in;
-  final Appendable out;
+  final InputStream in;
+  final PrintStream out;
 
-  public StockController(Readable in, Appendable out) {
+  public StockController(InputStream in, PrintStream out) {
     this.in = in;
     this.out = out;
   }
 
   public void go(User user) throws Exception {
     Objects.requireNonNull(user);
-    WelcomePrint.welcomeNote();
+    WelcomePrint.welcomeNote(this.out);
     Scanner scan = new Scanner(this.in);
     int input = -1;
     boolean comingFromDefault=false;
     while (input != 0) {
-      if(!comingFromDefault)WelcomePrint.printMenu();
+      if(!comingFromDefault)WelcomePrint.printMenu(this.out);
       comingFromDefault=false;
         switch (scan.next()) {
           case "1":
@@ -50,37 +52,41 @@ public class StockController {
             exit(0);
             return;
           default:
-            WelcomePrint.errorNote();
+            WelcomePrint.errorNote(this.out);
             comingFromDefault=true;
         }
     }
   }
 
   private void addStocksToPortfolioController(Scanner scan, User user) throws Exception {
-    AddPortfolioPrint.addPortfolio();
+    AddPortfolioPrint.addPortfolio(this.out);
     String name = scan.next();
+    while(!user.isUniqueName(name)){
+      AddPortfolioPrint.askPortfolioNameAgain(this.out);
+      name = scan.next();
+    }
     HashMap<String, Double> stocksMap = new HashMap<>();
     String ticker;
     double stockQuantity;
-    AddPortfolioPrint.addStocksInPortfolioWelcomeNote(name);
+    AddPortfolioPrint.addStocksInPortfolioWelcomeNote(name,this.out);
     String confirmation = null;
     int option = 1;
     boolean comingFromDefault=false;
     do {
       switch (option) {
         case 1:
-          AddPortfolioPrint.askTickerSymbol();
+          AddPortfolioPrint.askTickerSymbol(this.out);
           ticker = scan.next().toUpperCase();
-          AddPortfolioPrint.askStockNumber();
+          AddPortfolioPrint.askStockNumber(this.out);
           stockQuantity = scan.nextDouble();
           stocksMap.put(ticker, stocksMap.getOrDefault(ticker, 0.0) + stockQuantity);
-          AddPortfolioPrint.addStocksInPortfolioConfirmation();
+          AddPortfolioPrint.addStocksInPortfolioConfirmation(this.out);
           confirmation = scan.next();
           break;
         case 2:
-          AddPortfolioPrint.askTickerSymbol();
+          AddPortfolioPrint.askTickerSymbol(this.out);
           ticker = scan.next().toUpperCase();
-          AddPortfolioPrint.askStockNumber();
+          AddPortfolioPrint.askStockNumber(this.out);
           stockQuantity = scan.nextDouble();
           if (stocksMap.containsKey(ticker) && stockQuantity <= stocksMap.get(ticker)) {
             if (stockQuantity < stocksMap.get(ticker)) {
@@ -88,9 +94,9 @@ public class StockController {
             } else {
               stocksMap.remove(ticker);
             }
-            AddPortfolioPrint.removeStocksInPortfolioSuccessfulConfirmation();
+            AddPortfolioPrint.removeStocksInPortfolioSuccessfulConfirmation(this.out);
           } else {
-            AddPortfolioPrint.removeStocksInPortfolioUnSuccessfulConfirmation();
+            AddPortfolioPrint.removeStocksInPortfolioUnSuccessfulConfirmation(this.out);
           }
           confirmation = scan.next();
           break;
@@ -98,22 +104,26 @@ public class StockController {
           confirmation = "n";
           break;
         default:
-          AddPortfolioPrint.addStocksInPortfolioErrorNode();
+          AddPortfolioPrint.addStocksInPortfolioErrorNode(this.out);
           option = scan.nextInt();
           comingFromDefault=true;
       }
 
       if (!comingFromDefault && (confirmation.equals("y") || confirmation.equals("Y"))){
-        AddPortfolioPrint.stocksInPortfolioAddOrRemoveMenu();
+        AddPortfolioPrint.stocksInPortfolioAddOrRemoveMenu(this.out);
         option = scan.nextInt();
       }
       comingFromDefault=false;
     } while (confirmation.equals("y") || confirmation.equals("Y"));
 
     System.out.println(stocksMap);
+    AddPortfolioPrint.waitMessage(this.out);
+    if(user.ctrlCPressedChecker(name)){
+      AddPortfolioPrint.ctrlCPressedMessage(this.out);
+    }
     boolean val = user.addPortfolio(name, stocksMap);
-    if (true) {
-      AddPortfolioPrint.addStocksInPortfolioConfirmationLoading(name);
+    if (val) {
+      AddPortfolioPrint.addStocksInPortfolioConfirmationLoading(name, this.out);
     }
 
 
@@ -122,8 +132,8 @@ public class StockController {
   private void loadPortfoliosController(Scanner scan, User user) {
     Set<String> portfolioNames = user.getPortfolios();
 
-    LoadPortfolioPrint.printPortfolios(portfolioNames);
-    LoadPortfolioPrint.loadPortfolioMenu();
+    LoadPortfolioPrint.printPortfolios(portfolioNames, this.out);
+    LoadPortfolioPrint.loadPortfolioMenu(this.out);
 
     int option = scan.nextInt();
 
@@ -136,7 +146,7 @@ public class StockController {
         case 2:
           break;
         default:
-          LoadPortfolioPrint.loadPortfolioErrorNote();
+          LoadPortfolioPrint.loadPortfolioErrorNote(this.out);
           option = scan.nextInt();
       }
     } while (option != 2);
@@ -144,10 +154,10 @@ public class StockController {
   }
 
   private void loadSinglePortfolioDetailController(Scanner scan, User user) {
-    LoadPortfolioPrint.askNameOfPortfolio();
+    LoadPortfolioPrint.askNameOfPortfolio(this.out);
     String name = scan.next();
-    LoadPortfolioPrint.portfolioDetailWelcomeNote(name);
-    LoadPortfolioPrint.loadPortfolioDetailMenu();
+    LoadPortfolioPrint.portfolioDetailWelcomeNote(name, this.out);
+    LoadPortfolioPrint.loadPortfolioDetailMenu(this.out);
     int option = scan.nextInt();
     boolean comingFromDefault=false;
     do {
@@ -155,52 +165,46 @@ public class StockController {
         case 1:
           String date = DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now());
           HashMap<String, Double> stockMap = user.getPortfolioSummary(name,date);
-          LoadPortfolioPrint.printPortfolioSummary(stockMap);
+          LoadPortfolioPrint.printPortfolioSummary(stockMap, this.out);
           break;
         case 2:
           date = DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now());
           Map<String, List<Double>> detailedMap = user.getPortfolioDetailed(name,date);
-          LoadPortfolioPrint.printPortfolioDetail(detailedMap);
+          LoadPortfolioPrint.printPortfolioDetail(detailedMap, this.out);
           break;
         case 3:
           date = DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now());
           Double portfolioPnL = user.getPortfolioPnL(name,date);
-          LoadPortfolioPrint.printPortfolioPerformance(portfolioPnL);
+          LoadPortfolioPrint.printPortfolioPerformance(portfolioPnL, this.out);
           break;
         case 4:
-          LoadPortfolioPrint.askDate();
-          date = scan.next();
-          stockMap = user.getPortfolioSummary(name,date);
-          LoadPortfolioPrint.printPortfolioSummary(stockMap);
-          break;
-        case 5:
-          LoadPortfolioPrint.askDate();
+          LoadPortfolioPrint.askDate(this.out);
           date = scan.next();
           detailedMap = user.getPortfolioDetailed(name,date);
-          LoadPortfolioPrint.printPortfolioDetail(detailedMap);
+          LoadPortfolioPrint.printPortfolioDetail(detailedMap, this.out);
           break;
-        case 6:
-          LoadPortfolioPrint.askDate();
+        case 5:
+          LoadPortfolioPrint.askDate(this.out);
           date = scan.next();
           portfolioPnL = user.getPortfolioPnL(name,date);
-          LoadPortfolioPrint.printPortfolioPerformance(portfolioPnL);
+          LoadPortfolioPrint.printPortfolioPerformance(portfolioPnL, this.out);
           break;
-        case 7:
+        case 6:
           loadPortfoliosController(scan, user);
           return;
-        case 8:
+        case 7:
           return;
         default:
-          LoadPortfolioPrint.loadPortfolioErrorNote();
+          LoadPortfolioPrint.loadPortfolioErrorNote(this.out);
           option = scan.nextInt();
           comingFromDefault=true;
       }
       if (!comingFromDefault) {
-        LoadPortfolioPrint.loadPortfolioDetailMenu();
+        LoadPortfolioPrint.loadPortfolioDetailMenu(this.out);
         option = scan.nextInt();
       }
       comingFromDefault=false;
-    } while (option != 5);
+    } while (option != 7);
 
   }
 

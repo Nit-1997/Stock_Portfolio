@@ -19,10 +19,10 @@ public interface User {
    * @param stocks map of {tickerSym , qty}
    * @return true if added , false otherwise
    */
-  boolean addPortfolio(String name, HashMap<String, Double> stocks) throws Exception;
+  boolean addPortfolio(String name, Map<String, Double> stocks) throws Exception;
 
   /**
-   * Fetch List of Portfolios
+   * Returns List of Portfolios
    *
    * @return list of portfolis
    */
@@ -55,5 +55,17 @@ public interface User {
    * @return total PnL
    */
   Double getPortfolioPnL(String name, String date);
+
+  /**
+   * Checks whether the name of portfolio already exists in the names of portfolios.
+   * @param name the name of portfolio that needs to be checked.
+   * @return true/false based on whether the name already exists or not.
+   */
+  boolean isUniqueName(String name);
+
+  /**
+   * Checks if the user has pressed control C to exit the program while waiting for add confirmation.
+   */
+  boolean ctrlCPressedChecker(String name);
 
 }
