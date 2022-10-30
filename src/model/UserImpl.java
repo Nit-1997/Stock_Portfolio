@@ -1,6 +1,7 @@
 package model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -53,32 +54,40 @@ public class UserImpl implements User {
 
   @Override
   public Map<String, Double> getPortfolioSummary(String name) {
-    portfolioMap.put(name,new PortfolioImpl(name));
-    List<StockOrderImpl> list = portfolioMap.get(name).getPortfolioSummary();
-    Map<String, Double> resMap = new HashMap<>();
-    for(StockOrderImpl soi : list ) resMap.put(soi.getStock().getStockTickerName(),soi.getQuantity());
-    return resMap;
+    try{
+      portfolioMap.put(name,new PortfolioImpl(name));
+      List<StockOrderImpl> list = portfolioMap.get(name).getPortfolioSummary();
+      Map<String, Double> resMap = new HashMap<>();
+      for(StockOrderImpl soi : list ) resMap.put(soi.getStock().getStockTickerName(),soi.getQuantity());
+      return resMap;
+    }catch(FileNotFoundException e){
+      return null;
+    }
   }
 
   @Override
   public Map< String , List<Double>> getPortfolioDetailed(String name, String date) {
-    Map<String, List<Double>> resMap = new HashMap<>();
-    String currentDate = DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now());
-    Map<StockOrderImpl, List<Double>> map = new HashMap<>();
-    if (date.equals(currentDate) && portfolioMap.keySet().contains(name)) {
-      map = portfolioMap.get(name).getCurrentPortfolioDetailed();
-    } else if (!date.equals(currentDate) && portfolioMap.keySet().contains(name)) {
-      map = portfolioMap.get(name).getPortfolioDetailedOnDate(date);
+    try{
+      Map<String, List<Double>> resMap = new HashMap<>();
+      String currentDate = DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now());
+      Map<StockOrderImpl, List<Double>> map = new HashMap<>();
+      if (date.equals(currentDate) && portfolioMap.keySet().contains(name)) {
+        map = portfolioMap.get(name).getCurrentPortfolioDetailed();
+      } else if (!date.equals(currentDate) && portfolioMap.keySet().contains(name)) {
+        map = portfolioMap.get(name).getPortfolioDetailedOnDate(date);
       }
-    portfolioMap.put(name, new PortfolioImpl(name));
-    for (StockOrderImpl soi : map.keySet()) {
-      String ticker_symbol = soi.getStock().getStockTickerName();
-      List<Double> listVals = new ArrayList<>();
-      listVals.add(soi.getQuantity());
-      listVals.addAll(map.get(soi));
-      resMap.put(ticker_symbol, listVals);
+      portfolioMap.put(name, new PortfolioImpl(name));
+      for (StockOrderImpl soi : map.keySet()) {
+        String ticker_symbol = soi.getStock().getStockTickerName();
+        List<Double> listVals = new ArrayList<>();
+        listVals.add(soi.getQuantity());
+        listVals.addAll(map.get(soi));
+        resMap.put(ticker_symbol, listVals);
+      }
+      return resMap;
+    }catch(FileNotFoundException e){
+      return null;
     }
-    return resMap;
   }
 
   @Override

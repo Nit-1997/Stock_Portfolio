@@ -8,8 +8,14 @@ import java.util.Map;
 
 final class StockImpl implements Stock {
   private final String ticker;
-  private final Double buyPrice;
+  private final double buyPrice;
   private final String buyDate;
+
+  public StockImpl(String ticker , double buyPrice, String date){
+    this.ticker = ticker;
+    this.buyPrice = buyPrice;
+    this.buyDate =  date;
+  }
 
   /**
    * Constructor that creates a Stock object.
@@ -63,5 +69,10 @@ final class StockImpl implements Stock {
     } catch (Exception e) {
       return -1.0;
     }
+  }
+
+  @Override
+  public String getBuyDate() {
+    return this.buyDate;
   }
 }

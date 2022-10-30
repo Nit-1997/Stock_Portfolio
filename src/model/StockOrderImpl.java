@@ -11,6 +11,12 @@ public class StockOrderImpl {
     this.quantity = qty;
   }
 
+  public StockOrderImpl(String ticker, double buyPrice, String date, double qty) {
+    this.stock = new StockImpl(ticker, buyPrice, date);
+    this.quantity = qty;
+  }
+
+
   public double getCurrentOrderValue() {
     return this.stock.getCurrentPrice() * this.quantity;
   }
@@ -19,12 +25,16 @@ public class StockOrderImpl {
     return this.stock.getBuyPrice() * this.quantity;
   }
 
-  public double getOrderValueOnDate(String date){
-    return this.stock.getPriceOnDate(date)*this.quantity;
+  public double getOrderValueOnDate(String date) {
+    return this.stock.getPriceOnDate(date) * this.quantity;
   }
 
   public double getOrderPnL() throws IOException {
-     return this.stock.getPnL() * this.quantity;
+    return this.stock.getPnL() * this.quantity;
+  }
+
+  public double getOrderValueByDate(String date) {
+    return this.stock.getPriceOnDate(date) * this.quantity;
   }
 
 

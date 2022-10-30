@@ -44,4 +44,6 @@ public interface Stock {
    * @return ticker name
    */
   public String getStockTickerName();
+
+  String getBuyDate();
 }

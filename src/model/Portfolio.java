@@ -64,5 +64,5 @@ public interface Portfolio {
    *
    * @return total Initial Buy value.
    */
-  double getValueOnDate(String date);
+  public double getValueOnDate(String date);
 }
