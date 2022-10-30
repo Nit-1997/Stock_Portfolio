@@ -21,7 +21,7 @@ public interface Portfolio {
    *
    * @return List of stocks and their quantities in a portfolio.
    */
-  List<StockOrderImpl> getPortfolioSummary();
+  List<StockOrder> getPortfolioSummary();
 
 
   /**
@@ -30,7 +30,7 @@ public interface Portfolio {
    *
    * @return list of maps containing ticker symbol, quantity vs buying price
    */
-  Map<StockOrderImpl,List<Double>> getCurrentPortfolioDetailed();
+  Map<StockOrder,List<Double>> getCurrentPortfolioDetailed();
 
   /**
    * Fetches from local file and provides detailed portfolio data for a particular date
@@ -40,7 +40,7 @@ public interface Portfolio {
    *
    * @return list of maps containing ticker symbol, quantity vs buying price
    */
-  Map<StockOrderImpl,List<Double>> getPortfolioDetailedOnDate(String date);
+  Map<StockOrder,List<Double>> getPortfolioDetailedOnDate(String date);
 
   /**
    * Gets the current Price of the entire Portfolio.

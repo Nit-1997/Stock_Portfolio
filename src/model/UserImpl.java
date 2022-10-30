@@ -25,25 +25,23 @@ public class UserImpl implements User {
     String portfolioDirectory = Paths.get("portfolios").toAbsolutePath().toString();
     File f = new File(portfolioDirectory);
     String[] files = f.list((f1, name) -> name.endsWith(".csv"));
-    for(int i=0;i<files.length;i++){
-      files[i]=files[i].substring(0,files[i].indexOf('.'));
+    for (int i = 0; i < files.length; i++) {
+      files[i] = files[i].substring(0, files[i].indexOf('.'));
     }
-    for(String file : files) portfolioMap.put(file,null);
+    for (String file : files) portfolioMap.put(file, null);
   }
 
 
   @Override
   public boolean addPortfolio(String name, Map<String, Double> stocks) {
     try {
-      this.portfolioMap.put(name,null);
+      this.portfolioMap.put(name, null);
       new PortfolioImpl(stocks, name);
       return true;
     } catch (Exception e) {
       return false;
     }
   }
-
-
 
 
   @Override
@@ -54,30 +52,33 @@ public class UserImpl implements User {
 
   @Override
   public Map<String, Double> getPortfolioSummary(String name) {
-    try{
-      portfolioMap.put(name,new PortfolioImpl(name));
-      List<StockOrderImpl> list = portfolioMap.get(name).getPortfolioSummary();
+    try {
+      portfolioMap.put(name, new PortfolioImpl(name));
+      List<StockOrder> list = portfolioMap.get(name).getPortfolioSummary();
       Map<String, Double> resMap = new HashMap<>();
-      for(StockOrderImpl soi : list ) resMap.put(soi.getStock().getStockTickerName(),soi.getQuantity());
+      for (StockOrder soi : list)
+        resMap.put(soi.getStock().getStockTickerName(), soi.getQuantity());
       return resMap;
-    }catch(FileNotFoundException e){
+    } catch (FileNotFoundException e) {
+      return null;
+    } catch (Exception e) {
       return null;
     }
   }
 
   @Override
-  public Map< String , List<Double>> getPortfolioDetailed(String name, String date) {
-    try{
+  public Map<String, List<Double>> getPortfolioDetailed(String name, String date) {
+    try {
       Map<String, List<Double>> resMap = new HashMap<>();
       String currentDate = DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now());
-      Map<StockOrderImpl, List<Double>> map = new HashMap<>();
+      Map<StockOrder, List<Double>> map = new HashMap<>();
       if (date.equals(currentDate) && portfolioMap.keySet().contains(name)) {
         map = portfolioMap.get(name).getCurrentPortfolioDetailed();
       } else if (!date.equals(currentDate) && portfolioMap.keySet().contains(name)) {
         map = portfolioMap.get(name).getPortfolioDetailedOnDate(date);
       }
       portfolioMap.put(name, new PortfolioImpl(name));
-      for (StockOrderImpl soi : map.keySet()) {
+      for (StockOrder soi : map.keySet()) {
         String ticker_symbol = soi.getStock().getStockTickerName();
         List<Double> listVals = new ArrayList<>();
         listVals.add(soi.getQuantity());
@@ -85,19 +86,21 @@ public class UserImpl implements User {
         resMap.put(ticker_symbol, listVals);
       }
       return resMap;
-    }catch(FileNotFoundException e){
+    } catch (FileNotFoundException e) {
+      return null;
+    } catch (Exception e) {
       return null;
     }
   }
 
   @Override
-  public double getPortfolioValue(String name, String date){
+  public double getPortfolioValue(String name, String date) {
     double portfolioValue = 0;
     String currentDate = DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now());
     if (date.equals(currentDate) && portfolioMap.keySet().contains(name)) {
-      portfolioValue=portfolioMap.get(name).getCurrentValue();
+      portfolioValue = portfolioMap.get(name).getCurrentValue();
     } else if (!date.equals(currentDate) && portfolioMap.keySet().contains(name)) {
-      portfolioValue=portfolioMap.get(name).getValueOnDate(date);
+      portfolioValue = portfolioMap.get(name).getValueOnDate(date);
     }
     return portfolioValue;
   }
@@ -111,22 +114,22 @@ public class UserImpl implements User {
   }
 
   @Override
-  public boolean isUniqueName(String name){
-      return !this.portfolioMap.keySet().contains(name);
+  public boolean isUniqueName(String name) {
+    return !this.portfolioMap.keySet().contains(name);
   }
 
   @Override
-  public boolean ctrlCPressedChecker(String name){
+  public boolean ctrlCPressedChecker(String name) {
     final boolean[] checker = {false};
     Runtime.getRuntime().addShutdownHook(new Thread(() -> {
       killPortfolio(name);
-      checker[0] =true;
+      checker[0] = true;
     }));
 
     return checker[0];
   }
 
-  private void killPortfolio(String name){
+  private void killPortfolio(String name) {
 
   }
 }
