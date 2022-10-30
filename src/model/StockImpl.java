@@ -29,7 +29,7 @@ final class StockImpl implements Stock {
   }
 
   @Override
-  public Double getCurrentPrice() {
+  public double getCurrentPrice() {
     // TODO need to keep a check, if data once fetched, dont fetch again
     try {
       String res = ApiDataFetcher.fetchCurrentValueApi(this.ticker);
@@ -45,7 +45,7 @@ final class StockImpl implements Stock {
   }
 
   @Override
-  public Double getPnL() throws IOException {
+  public double getPnL() throws IOException {
     double currPrice = this.getCurrentPrice();
     if (currPrice == -1.0) {
       throw new IOException("Could not fetch data for the ticker");
@@ -54,9 +54,19 @@ final class StockImpl implements Stock {
     }
   }
 
+  @Override
+  public double getPnLByDate(String date) throws IOException {
+    double priceOnGivenDate = this.getPriceOnDate(date);
+    if (priceOnGivenDate == -1.0) {
+      throw new IOException("Could not fetch data for the ticker");
+    } else {
+      return priceOnGivenDate - this.buyPrice;
+    }
+  }
+
 
   @Override
-  public Double getBuyPrice() {
+  public double getBuyPrice() {
     return this.buyPrice;
   }
 

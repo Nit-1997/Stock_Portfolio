@@ -53,9 +53,6 @@ final public class PortfolioImpl implements Portfolio {
    * @return List of stock orders
    */
   private List<StockOrder> loadPortfolioData(String portfolioName) throws Exception {
-//    String path = Paths.get("portfolios")
-//            .toAbsolutePath() + "\\" + portfolioName + ".csv";
-//    File portfolioFile = new File(path);
     File portfolioFile = Utils.getPortfolioFileByName(portfolioName);
     Scanner myReader = new Scanner(portfolioFile);
 
@@ -115,29 +112,35 @@ final public class PortfolioImpl implements Portfolio {
 
   @Override
   public List<StockOrder> getPortfolioSummary() {
-    //TODO : fetch local file data
-    //TODO : parse data send back
-    /**
-     *  { ticker_symbl , qty}
-     */
     return this.stockOrder;
   }
 
   @Override
-  public Map<StockOrder, List<Double>> getCurrentPortfolioDetailed() {
-
-    //TODO : fetch local file data
-    //TODO : parse data send back
-    //TODO : make a PortfolioDetails pojo class
-    /**
-     * Pair{[{ticker_name , buy_price , curr_price , qty , PnL},...] , totalPnL}
-     */
-    return null;
+  public List<PortfolioDetailedPojo> getCurrentPortfolioDetailed() throws IOException {
+    List<PortfolioDetailedPojo> parsedResponse = new ArrayList<>();
+    for(StockOrder order : this.stockOrder){
+      String ticker = order.getStock().getStockTickerName();
+      double buyPrice = order.getStock().getBuyPrice();
+      double qty = order.getQuantity();
+      double currentPrice = order.getStock().getCurrentPrice();
+      double pnl = order.getStock().getPnL();
+      parsedResponse.add(new PortfolioDetailedPojo(ticker,buyPrice,qty,currentPrice,pnl));
+    }
+    return parsedResponse;
   }
 
   @Override
-  public Map<StockOrder, List<Double>> getPortfolioDetailedOnDate(String date) {
-    return null;
+  public List<PortfolioDetailedPojo> getPortfolioDetailedOnDate(String date) throws IOException {
+    List<PortfolioDetailedPojo> parsedResponse = new ArrayList<>();
+    for(StockOrder order : this.stockOrder){
+      String ticker = order.getStock().getStockTickerName();
+      double buyPrice = order.getStock().getBuyPrice();
+      double qty = order.getQuantity();
+      double priceOnDate = order.getStock().getPriceOnDate(date);
+      double pnlOnDate = order.getStock().getPnLByDate(date);
+      parsedResponse.add(new PortfolioDetailedPojo(ticker,buyPrice,qty,priceOnDate,pnlOnDate));
+    }
+    return parsedResponse;
   }
 
 

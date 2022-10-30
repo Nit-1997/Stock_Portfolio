@@ -30,7 +30,7 @@ public interface Portfolio {
    *
    * @return list of maps containing ticker symbol, quantity vs buying price
    */
-  Map<StockOrder,List<Double>> getCurrentPortfolioDetailed();
+  List<PortfolioDetailedPojo> getCurrentPortfolioDetailed() throws IOException;
 
   /**
    * Fetches from local file and provides detailed portfolio data for a particular date
@@ -40,7 +40,7 @@ public interface Portfolio {
    *
    * @return list of maps containing ticker symbol, quantity vs buying price
    */
-  Map<StockOrder,List<Double>> getPortfolioDetailedOnDate(String date);
+  List<PortfolioDetailedPojo> getPortfolioDetailedOnDate(String date) throws IOException;
 
   /**
    * Gets the current Price of the entire Portfolio.

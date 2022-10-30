@@ -71,18 +71,20 @@ public class UserImpl implements User {
     try {
       Map<String, List<Double>> resMap = new HashMap<>();
       String currentDate = DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now());
-      Map<StockOrder, List<Double>> map = new HashMap<>();
-      if (date.equals(currentDate) && portfolioMap.keySet().contains(name)) {
-        map = portfolioMap.get(name).getCurrentPortfolioDetailed();
-      } else if (!date.equals(currentDate) && portfolioMap.keySet().contains(name)) {
-        map = portfolioMap.get(name).getPortfolioDetailedOnDate(date);
+      List<PortfolioDetailedPojo> res = new ArrayList<>();
+      if (date.equals(currentDate) && portfolioMap.containsKey(name)) {
+        res = portfolioMap.get(name).getCurrentPortfolioDetailed();
+      } else if (!date.equals(currentDate) && portfolioMap.containsKey(name)) {
+        res = portfolioMap.get(name).getPortfolioDetailedOnDate(date);
       }
       portfolioMap.put(name, new PortfolioImpl(name));
-      for (StockOrder soi : map.keySet()) {
-        String ticker_symbol = soi.getStock().getStockTickerName();
+      for(PortfolioDetailedPojo pojo : res){
+        String ticker_symbol = pojo.getTicker();
         List<Double> listVals = new ArrayList<>();
-        listVals.add(soi.getQuantity());
-        listVals.addAll(map.get(soi));
+        listVals.add(pojo.getQty());
+        listVals.add(pojo.getBuyPrice());
+        listVals.add(pojo.getCurrentPrice());
+        listVals.add(pojo.getPnl());
         resMap.put(ticker_symbol, listVals);
       }
       return resMap;
