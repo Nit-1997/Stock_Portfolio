@@ -1,5 +1,7 @@
 package constants;
 
+import java.util.Set;
+
 public class Constants {
   public static String WelcomeMessage
           = "-------------Welcome to stock portfolio app-------------";
@@ -51,7 +53,7 @@ public class Constants {
 
   public static String AddStocksInPortfolioErrorNote="Please enter an integer value between 1 and 3: ";
 
-
+  public static Set<String> stockNames;
 
 
 }

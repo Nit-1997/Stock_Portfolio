@@ -4,10 +4,15 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Scanner;
+import java.util.Set;
 
 import model.StockOrder;
+import model.StockOrderImpl;
 
 public class Utils {
 
@@ -79,5 +84,47 @@ public class Utils {
     }
 
     return portfolioFile;
+  }
+
+  public static Set<String> loadStockNames() throws IOException {
+    String stockRepoName = "stocks";
+    String portfolioDirectory = Paths.get(stockRepoName).toAbsolutePath().toString();
+    File stockFile = Objects.requireNonNull(new File(portfolioDirectory).listFiles((f1, name) -> name.equals("stocks_list.csv")))[0];
+    Scanner myReader = new Scanner(stockFile);
+    Set<String> parsedStocks = new HashSet<>();
+    while (myReader.hasNextLine()) {
+      String input = myReader.nextLine().split(",")[0];
+      parsedStocks.add(input);
+    }
+    myReader.close();
+    return parsedStocks;
+  }
+
+  /**
+   * Fetches data for the portfolio from local directory
+   *
+   * @return List of stock orders
+   */
+  public static List<StockOrder> loadPortfolioData(String portfolioName) throws Exception {
+    File portfolioFile = Utils.getPortfolioFileByName(portfolioName);
+    Scanner myReader = new Scanner(portfolioFile);
+
+    List<StockOrder> parsedFileInput = new ArrayList<>();
+    while (myReader.hasNextLine()) {
+      String input = myReader.nextLine();
+      String[] splitInput = input.split(",");
+      String ticker = splitInput[0];
+      String date = splitInput[3];
+      double price = Double.parseDouble(splitInput[1]);
+      double qty = Double.parseDouble(splitInput[2]);
+      StockOrder currentStockOrder = new StockOrderImpl(ticker,price,date,qty);
+      parsedFileInput.add(currentStockOrder);
+    }
+    myReader.close();
+    return parsedFileInput;
+  }
+
+  public static void loadAndStoreStockData(){
+
   }
 }

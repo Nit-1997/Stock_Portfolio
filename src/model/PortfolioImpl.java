@@ -27,7 +27,7 @@ final public class PortfolioImpl implements Portfolio {
 
 
   public PortfolioImpl(String name) throws Exception {
-    this.stockOrder =  this.loadPortfolioData(name);
+    this.stockOrder =  Utils.loadPortfolioData(name);
     this.name = name;
   }
 
@@ -43,32 +43,6 @@ final public class PortfolioImpl implements Portfolio {
       this.stockOrder.add(new StockOrderImpl(key, stocksMap.get(key)));
     }
     Utils.saveToFile(this.name,this.stockOrder);
-  }
-
-
-
-  /**
-   * Fetches data for the portfolio from local directory
-   *
-   * @return List of stock orders
-   */
-  private List<StockOrder> loadPortfolioData(String portfolioName) throws Exception {
-    File portfolioFile = Utils.getPortfolioFileByName(portfolioName);
-    Scanner myReader = new Scanner(portfolioFile);
-
-    List<StockOrder> parsedFileInput = new ArrayList<>();
-    while (myReader.hasNextLine()) {
-      String input = myReader.nextLine();
-      String[] splitInput = input.split(",");
-      String ticker = splitInput[0];
-      String date = splitInput[3];
-      double price = Double.parseDouble(splitInput[1]);
-      double qty = Double.parseDouble(splitInput[2]);
-      StockOrder currentStockOrder = new StockOrderImpl(ticker,price,date,qty);
-      parsedFileInput.add(currentStockOrder);
-    }
-    myReader.close();
-    return parsedFileInput;
   }
 
 
