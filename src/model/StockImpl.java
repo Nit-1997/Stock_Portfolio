@@ -67,7 +67,8 @@ final class StockImpl implements Stock {
       //TODO : validate the date
       return Double.parseDouble(res.get(date).get(1));
     } catch (Exception e) {
-      return -1.0;
+      System.out.println(e);
+      return -1;
     }
   }
 

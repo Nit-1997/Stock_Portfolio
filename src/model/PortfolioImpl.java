@@ -53,15 +53,11 @@ final public class PortfolioImpl implements Portfolio {
    * @return List of stock orders
    */
   private List<StockOrder> loadPortfolioData(String portfolioName) throws Exception {
-//    String path = Paths.get("portfolios")
-//            .toAbsolutePath() + "\\" + portfolioName + ".csv";
-//    File portfolioFile = new File(path);
     File portfolioFile = Utils.getPortfolioFileByName(portfolioName);
     Scanner myReader = new Scanner(portfolioFile);
 
     List<StockOrder> parsedFileInput = new ArrayList<>();
     while (myReader.hasNextLine()) {
-      List<Double> currentList = new ArrayList<>();
       String input = myReader.nextLine();
       String[] splitInput = input.split(",");
       String ticker = splitInput[0];
@@ -138,6 +134,12 @@ final public class PortfolioImpl implements Portfolio {
   @Override
   public Map<StockOrder, List<Double>> getPortfolioDetailedOnDate(String date) {
     return null;
+  }
+
+
+  @Override
+  public void deletePortfolio(){
+
   }
 
 

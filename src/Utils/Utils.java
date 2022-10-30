@@ -39,13 +39,12 @@ public class Utils {
    * saves the current portfolio to the file.
    */
   public static void saveToFile(String name, List<StockOrder> orders) throws IOException {
-    createFileIfNotExists(name);
-    writePortfolioToFile(name, orders);
+    File portfolioFile = createFileIfNotExists(name);
+    writePortfolioToFile(portfolioFile, orders);
   }
 
 
-  private static void writePortfolioToFile(String name, List<StockOrder> orders) throws IOException {
-    File portfolioFile = Utils.getPortfolioFileByName(name);
+  private static void writePortfolioToFile(File portfolioFile, List<StockOrder> orders) throws IOException {
     FileWriter myWriter = new FileWriter(portfolioFile);
     for (StockOrder order : orders) {
       myWriter.write("" + order.getStock().getStockTickerName()
@@ -58,7 +57,7 @@ public class Utils {
     System.out.println("Successfully wrote to the file.");
   }
 
-  private static void createFileIfNotExists(String name) throws IOException {
+  private static File createFileIfNotExists(String name) throws IOException {
     String os = System.getProperty("os.name");
     String path = "";
     if (Objects.equals(os.split(" ")[0], "Windows")) {
@@ -68,12 +67,13 @@ public class Utils {
       path = Paths.get("portfolios")
               .toAbsolutePath() + "/" + name + ".csv";
     }
-//    File portfolioFile = Utils.getPortfolioFileByName(name);
     File portfolioFile = new File(path);
     if (portfolioFile.createNewFile()) {
       System.out.println("Portfolio created to file : " + portfolioFile.getName());
     } else {
       System.out.println("Portfolio already exists reading from it ...");
     }
+
+    return portfolioFile;
   }
 }
