@@ -65,4 +65,9 @@ public interface Portfolio {
    * @return total Initial Buy value.
    */
   public double getValueOnDate(String date);
+
+  /**
+   * This function deletes the portfolio if the user terminates the session before the portfolio gets saved.
+   */
+  void deletePortfolio();
 }

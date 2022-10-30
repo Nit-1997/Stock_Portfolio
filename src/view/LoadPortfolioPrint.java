@@ -33,6 +33,10 @@ public class LoadPortfolioPrint{
     out.print("Enter name of the portfolio ");
   }
 
+  public static void askPortfolioNameAgainUnique(PrintStream out){
+    out.print(" No Portfolio with this name , kindly enter another name: ");
+  }
+
   public static void portfolioDetailWelcomeNote(String name, PrintStream out){
     out.println("For the portfolio: "+name);
   }
@@ -41,16 +45,20 @@ public class LoadPortfolioPrint{
     out.println();
     out.println("1. Summary of the portfolio");
     out.println("2. Current Detailed view of the portfolio");
-    out.println("3. Current Performance of the portfolio");
+    out.println("3. Current Value of the portfolio");
     out.println("4. Historical Detailed view of the portfolio");
-    out.println("5. Historical Performance of the portfolio");
+    out.println("5. Historical Value of the portfolio");
     out.println("6. Return to the lists of portfolio");
     out.println("7. Return to the main menu");
     out.print("Enter your choice: ");
   }
 
   public static void askDate(PrintStream out){
-    out.print("Please enter date (MM/DD/YYYY): ");
+    out.print("Please enter date (MM/dd/yyyy): ");
+  }
+
+  public static void askDateAgain(PrintStream out){
+    out.print("Please enter date in the correct format (MM/dd/yyyy): ");
   }
 
   public static void printPortfolioSummary(Map<String, Double> stockMap, PrintStream out){
@@ -83,7 +91,7 @@ public class LoadPortfolioPrint{
     out.println("------------------------------------------------------------------------------------------");
     out.printf("%60s","Value of the portfolio: ");
     out.println(portfolioValue);
-    out.println();
+
   }
 
   public static void printPortfolioPerformance(Double portfolioPnL, PrintStream out){
@@ -96,6 +104,10 @@ public class LoadPortfolioPrint{
     else{
       out.println("Your portfolio has the same value as that of buying day");
     }
+  }
+
+  public static void printPortfolioValue(Double portfolioValue, PrintStream out){
+    out.println("Value of the portfolio: "+portfolioValue);
   }
 
   public static void loadPortfolioErrorNote(PrintStream out){

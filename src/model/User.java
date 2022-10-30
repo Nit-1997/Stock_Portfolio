@@ -1,5 +1,6 @@
 package model;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +56,7 @@ public interface User {
    * @param date date for which portfolio value is required
    * @return total value of portfolio
    */
-  double getPortfolioValue(String name, String date);
+  double getPortfolioValue(String name, String date) throws Exception;
   /**
    * Fetches total PnL of a portfolio.
    *
@@ -63,7 +64,7 @@ public interface User {
    * @param date date for which PnL is required.
    * @return total PnL
    */
-  double getPortfolioPnL(String name, String date);
+  double getPortfolioPnL(String name, String date) throws IOException;
 
   /**
    * Checks whether the name of portfolio already exists in the names of portfolios.
@@ -76,5 +77,12 @@ public interface User {
    * Checks if the user has pressed control C to exit the program while waiting for add confirmation.
    */
   boolean ctrlCPressedChecker(String name);
+
+  /**
+   * Checks whether the date entered by user is in correct format.
+   * @param dateStr the string entered by user
+   * @return check on the string
+   */
+  boolean dateChecker(String dateStr);
 
 }

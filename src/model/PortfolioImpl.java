@@ -58,7 +58,6 @@ final public class PortfolioImpl implements Portfolio {
 
     List<StockOrder> parsedFileInput = new ArrayList<>();
     while (myReader.hasNextLine()) {
-      List<Double> currentList = new ArrayList<>();
       String input = myReader.nextLine();
       String[] splitInput = input.split(",");
       String ticker = splitInput[0];
@@ -141,6 +140,12 @@ final public class PortfolioImpl implements Portfolio {
       parsedResponse.add(new PortfolioDetailedPojo(ticker,buyPrice,qty,priceOnDate,pnlOnDate));
     }
     return parsedResponse;
+  }
+
+
+  @Override
+  public void deletePortfolio(){
+
   }
 
 
