@@ -57,7 +57,7 @@ public class Utils {
     System.out.println("Successfully wrote to the file.");
   }
 
-  private static File createFileIfNotExists(String name) throws IOException {
+  private static  String getFilePath(String name){
     String os = System.getProperty("os.name");
     String path = "";
     if (Objects.equals(os.split(" ")[0], "Windows")) {
@@ -67,6 +67,10 @@ public class Utils {
       path = Paths.get("portfolios")
               .toAbsolutePath() + "/" + name + ".csv";
     }
+    return path;
+  }
+  private static File createFileIfNotExists(String name) throws IOException {
+    String path = getFilePath(name);
     File portfolioFile = new File(path);
     if (portfolioFile.createNewFile()) {
       System.out.println("Portfolio created to file : " + portfolioFile.getName());
