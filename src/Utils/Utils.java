@@ -74,7 +74,6 @@ public class Utils {
       );
     }
     myWriter.close();
-//    System.out.println("Successfully wrote to the file.");
   }
 
   private static String getFilePath(String name, String dirName) {
@@ -93,11 +92,6 @@ public class Utils {
   private static File createFileIfNotExists(String name, String dirName) throws IOException {
     String path = getFilePath(name, dirName);
     File createdFile = new File(path);
-//    if (createdFile.createNewFile()) {
-//      System.out.println(dirName+" created to file : " + createdFile.getName());
-//    } else {
-//      System.out.println(dirName+" already exists reading from it ...");
-//    }
 
     return createdFile;
   }
@@ -181,7 +175,6 @@ public class Utils {
     FileWriter myWriter = new FileWriter(stockFile);
     myWriter.write(data);
     myWriter.close();
-//    System.out.println("Successfully wrote to the file.");
   }
 
   public static void loadStockData(String ticker, String apiKey) throws Exception {
@@ -239,7 +232,7 @@ public class Utils {
     sdf.setLenient(false);
     try {
       Date date = sdf.parse(dateStr);
-      Date firstDate = sdf.parse("1999-11-01");
+      Date firstDate = sdf.parse("2010-01-01");
       Date currentDate = sdf.parse(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now()));
       if(date.before(firstDate) || date.after(currentDate)) return false;
     } catch (ParseException e) {

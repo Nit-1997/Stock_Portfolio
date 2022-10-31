@@ -1,8 +1,9 @@
 package view;
 
+import constants.ViewConstants;
 import java.io.PrintStream;
 import java.text.DecimalFormat;
-import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -20,10 +21,7 @@ public class LoadPortfolioPrint{
   }
 
   public static void loadPortfolioMenu(PrintStream out){
-    out.println();
-    out.println("1. Details of any portfolio");
-    out.println("2. Return to main menu ");
-    out.print("Enter your choice: ");
+    out.print(ViewConstants.LoadPortfolioMenu);
   }
 
   public static void askChoice(PrintStream out){
@@ -31,11 +29,11 @@ public class LoadPortfolioPrint{
   }
 
   public static void askNameOfPortfolio(PrintStream out){
-    out.print("Enter name of the portfolio ");
+    out.print(ViewConstants.AskNameOfPortfolio);
   }
 
   public static void askPortfolioNameAgainUnique(PrintStream out){
-    out.print(" No Portfolio with this name , kindly enter another name (0 to return to list view): ");
+    out.print(ViewConstants.AskPortfolioNameAgainUnique);
   }
 
   public static void portfolioDetailWelcomeNote(String name, PrintStream out){
@@ -43,31 +41,23 @@ public class LoadPortfolioPrint{
   }
 
   public static void loadPortfolioDetailMenu(PrintStream out){
-    out.println();
-    out.println("1. Summary of the portfolio");
-    out.println("2. Current Detailed view of the portfolio");
-    out.println("3. Current Value of the portfolio");
-    out.println("4. Historical Detailed view of the portfolio");
-    out.println("5. Historical Value of the portfolio");
-    out.println("6. Return to the lists of portfolio");
-    out.println("7. Return to the main menu");
-    out.print("Enter your choice: ");
+    out.print(ViewConstants.loadPortfolioDetailMenu);
   }
 
   public static void waitMessage(PrintStream out){
-    out.println("Please wait while we are loading data...");
+    out.print(ViewConstants.WaitLoadMessage);
   }
 
   public static void askDate(PrintStream out){
-    out.print("Please enter date (yyyy-MM-dd): ");
+    out.print(ViewConstants.AskDate);
   }
 
   public static void askDateAgain(PrintStream out){
-    out.print("Please enter date in the correct format (yyyy-MM-dd) in the given range (0 to return to list view): ");
+    out.print(ViewConstants.AskDateAgain);
   }
 
   public static void printInCompatiblePortfolio(PrintStream out){
-    out.println("Manually entered portfolio is of incompatible type. ");
+    out.print(ViewConstants.PrintInCompatiblePortfolio);
   }
 
   public static void printPortfolioSummary(Map<String, Double> stockMap, PrintStream out){
@@ -123,8 +113,9 @@ public class LoadPortfolioPrint{
   }
 
   public static void loadPortfolioErrorNote(PrintStream out){
-    out.print("Please enter an integer value from above options: ");
+    out.print(ViewConstants.LoadPortfolioErrorNote);
   }
+
 
 
 }

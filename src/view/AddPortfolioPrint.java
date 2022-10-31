@@ -1,6 +1,7 @@
 package view;
 
 import constants.Constants;
+import constants.ViewConstants;
 import java.io.PrintStream;
 import java.util.Set;
 
@@ -8,11 +9,11 @@ public class AddPortfolioPrint{
 
 
   public static void addPortfolio(PrintStream out) {
-    out.print(Constants.AddPortfolio);
+    out.print(ViewConstants.AddPortfolio);
   }
 
   public static void askPortfolioNameAgain(PrintStream out){
-    out.print("Portfolio with this name already exists, kindly enter another name (0 to return to the main menu): ");
+    out.print(ViewConstants.AskPortfolioNameAgain);
   }
 
   public static void addStocksInPortfolioWelcomeNote(String portfolioName, PrintStream out){
@@ -33,39 +34,40 @@ public class AddPortfolioPrint{
   }
 
   public static void askTickerSymbol(PrintStream out){
-    out.print(Constants.AddStocksInPortfolioAskTickerSymbol);
+    out.print(ViewConstants.AddStocksInPortfolioAskTickerSymbol);
   }
 
   public static void askStockNumber(PrintStream out){
-    out.print(Constants.AddStocksInPortfolioAskStockNumber);
+    out.print(ViewConstants.AddStocksInPortfolioAskStockNumber);
+  }
+
+  public static void askStockNumberAgain(PrintStream out){
+    System.out.println();
+    System.out.print("Number entered is not in correct format, please enter again (0 to return to main menu): ");
   }
 
   public static void addStocksInPortfolioConfirmation(PrintStream out){
-    out.print(Constants.AddStocksInPortfolioConfirmation);
+    out.print(ViewConstants.AddStocksInPortfolioConfirmation);
   }
 
   public static void stocksInPortfolioAddOrRemoveMenu(PrintStream out){
-    out.print(Constants.StocksInPortfolioAddOrRemoveMenu);
+    out.print(ViewConstants.StocksInPortfolioAddOrRemoveMenu);
   }
 
   public static void removeStocksInPortfolioSuccessfulConfirmation(PrintStream out){
-    out.print(Constants.RemoveStocksInPortfolioSuccessfulConfirmation);
+    out.print(ViewConstants.RemoveStocksInPortfolioSuccessfulConfirmation);
   }
 
   public static void removeStocksInPortfolioUnSuccessfulConfirmation(PrintStream out){
-    out.print(Constants.RemoveStocksInPortfolioUnSuccessfulConfirmation);
+    out.print(ViewConstants.RemoveStocksInPortfolioUnSuccessfulConfirmation);
   }
 
   public static void askconfirmation(PrintStream out){
-    out.print("Do you want to add more stocks or remove any stocks (y/n)? ");
+    out.print(ViewConstants.AskConfirmation);
   }
 
   public static void waitMessage(PrintStream out){
-    out.println("Saving your portfolio, please wait...");
-  }
-
-  public static void ctrlCPressedMessage(PrintStream out){
-    out.println("Exited the program before portfolio got stored, Portfolio not saved.");
+    out.println(ViewConstants.WaitMessage);
   }
 
   public static void addStocksInPortfolioConfirmationLoading(String name, PrintStream out){
@@ -73,7 +75,7 @@ public class AddPortfolioPrint{
   }
 
   public static void addStocksInPortfolioErrorNode(PrintStream out){
-    out.print(Constants.AddStocksInPortfolioErrorNote);
+    out.print(ViewConstants.AddStocksInPortfolioErrorNote);
   }
 
 

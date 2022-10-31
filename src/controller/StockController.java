@@ -88,17 +88,17 @@ public class StockController {
           AddPortfolioPrint.askStockNumber(this.out);
           stockQuantity = scan.next().trim();
           double stockQuanDouble;
-          while(true){
+          do{
             try{
               stockQuanDouble=Double.parseDouble(stockQuantity);
-              if(stockQuanDouble<=0) throw new NumberFormatException();
+              if(stockQuanDouble<=0 || stockQuanDouble!=(int)stockQuanDouble) throw new NumberFormatException();
                 break;
             } catch(NumberFormatException e){
-              System.out.println();
-              System.out.print("Number entered is not in correct format, please enter again: ");
+              AddPortfolioPrint.askStockNumberAgain(this.out);
               stockQuantity = scan.next().trim();
+              if(stockQuantity.equals("0")) return;
             }
-          }
+          }while(true);
           stocksMap.put(ticker, stocksMap.getOrDefault(ticker, 0.0) + stockQuanDouble);
           AddPortfolioPrint.addStocksInPortfolioConfirmation(this.out);
           confirmation = scan.next();
@@ -120,11 +120,10 @@ public class StockController {
           while(true){
             try{
               stockQuanDouble=Double.parseDouble(stockQuantity);
-              if(stockQuanDouble<=0) throw new NumberFormatException();
+              if(stockQuanDouble<=0 || stockQuanDouble!=(int)stockQuanDouble) throw new NumberFormatException();
               break;
             } catch(NumberFormatException e){
-              System.out.println();
-              System.out.print("Number entered is not in correct format, please enter again: ");
+              AddPortfolioPrint.askStockNumberAgain(this.out);
               stockQuantity = scan.nextLine();
             }
           }

@@ -143,10 +143,6 @@ final public class PortfolioImpl implements Portfolio {
   }
 
 
-  @Override
-  public void deletePortfolio(){
-
-  }
 
 
 }

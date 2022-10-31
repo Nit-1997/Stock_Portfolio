@@ -1,19 +1,20 @@
 package view;
 
 import constants.Constants;
+import constants.ViewConstants;
 import java.io.PrintStream;
 
 public class WelcomePrint {
 
   public static void welcomeNote(PrintStream out){
-    out.println(Constants.WelcomeMessage);
+    out.println(ViewConstants.WelcomeMessage);
   }
 
   public static void printMenu(PrintStream out){
-    out.print(Constants.MenuMessage);
+    out.print(ViewConstants.MenuMessage);
   }
 
   public static void errorNote(PrintStream out){
-    out.print(Constants.ErrorNote);
+    out.print(ViewConstants.ErrorNote);
   }
 }

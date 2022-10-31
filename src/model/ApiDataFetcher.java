@@ -21,7 +21,7 @@ public class ApiDataFetcher {
               + "&symbol"
               + "=" + ticker + "&apikey=" + apiKey + "&outputsize=full" + "&datatype=csv");
     } catch (MalformedURLException e) {
-      throw new RuntimeException("the alphavantage API has either changed or "
+      throw new RuntimeException("the alphaVantage API has either changed or "
               + "no longer works");
     }
     InputStream in = null;
@@ -39,6 +39,7 @@ public class ApiDataFetcher {
       throw new IllegalArgumentException("No price data found for this symbol.");
     }
   }
+
 
 
 }
