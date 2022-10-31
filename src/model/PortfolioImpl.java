@@ -45,6 +45,9 @@ final public class PortfolioImpl implements Portfolio {
 
     for (String key : stocksMap.keySet()) {
       if(!Utils.dataExists(key)){
+          if(count%5 == 0){
+            Thread.sleep(1000);
+          }
           Utils.loadStockData(key , Constants.apiKeys.get(count/5));
           count++;
       }
