@@ -177,8 +177,9 @@ public class Utils {
     myWriter.close();
   }
 
-  public static void loadStockData(String ticker, String apiKey) throws Exception {
-    String output = ApiDataFetcher.fetchStockDataBySymbol(ticker, apiKey);
+  public static void loadStockData(String ticker) throws Exception {
+    //String output = ApiDataFetcher.fetchStockDataBySymbol(ticker, apiKey);
+    String output = ApiDataFetcher.fetchStockDataBySymbolYahoo(ticker);
     File stockFile = createFileIfNotExists(ticker, "stock_data");
     writeStockDataDumpToFile(stockFile, output);
   }
@@ -269,5 +270,22 @@ public class Utils {
     String portfolioDirectory = Paths.get("stock_data").toAbsolutePath().toString();
     File directory = new File(portfolioDirectory);
     for(File file : directory.listFiles()) file.delete();
+  }
+
+  public static String[] yahooApiDateFetcher() throws ParseException {
+    DateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    simpleDateFormat.setLenient(false);
+    Date initalDate = simpleDateFormat.parse("2010-01-01");
+    Date currentDate = simpleDateFormat
+            .parse(DateTimeFormatter
+                    .ofPattern("yyyy-MM-dd")
+                    .format(LocalDateTime.now()));
+    long timestamp2 = currentDate.getTime() / 1000;
+    long timestamp1 = initalDate.getTime() / 1000;
+
+    String[] periods = new String [2];
+    periods[0] = timestamp1 + "";
+    periods[1] = timestamp2 + "";
+    return periods;
   }
 }
