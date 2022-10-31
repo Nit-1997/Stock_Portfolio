@@ -41,7 +41,7 @@ public class StockController {
     while (true) {
       if(!comingFromDefault)WelcomePrint.printMenu(this.out);
       comingFromDefault=false;
-      option = scan.nextLine();
+      option = scan.next().trim();
         switch (option) {
           case "1":
             addStocksToPortfolioController(scan, user);
@@ -65,11 +65,13 @@ public class StockController {
     while(!user.isUniqueName(name)){
       AddPortfolioPrint.askPortfolioNameAgain(this.out);
       name = scan.next();
+      if(name.equals("0")) return;
     }
     HashMap<String, Double> stocksMap = new HashMap<>();
     String ticker;
     String stockQuantity;
     AddPortfolioPrint.addStocksInPortfolioWelcomeNote(name,this.out);
+    AddPortfolioPrint.printAvailableStocks(user.getStockList());
     String confirmation = null;
     String option = "1";
     boolean comingFromDefault=false;
@@ -77,13 +79,18 @@ public class StockController {
       switch (option) {
         case "1":
           AddPortfolioPrint.askTickerSymbol(this.out);
-          ticker = scan.next().toUpperCase();
+          do{
+            ticker = scan.next().toUpperCase();
+            if(ticker.equals("0")) return;
+            if(!user.isValidStock(ticker))System.out.print("Not a valid stock name, kindly enter correct stock name from above list (0 to return to main menu): ");
+          }while(!user.isValidStock(ticker));
           AddPortfolioPrint.askStockNumber(this.out);
           stockQuantity = scan.next().trim();
           double stockQuanDouble;
           while(true){
             try{
               stockQuanDouble=Double.parseDouble(stockQuantity);
+              if(stockQuanDouble<=0) throw new NumberFormatException();
                 break;
             } catch(NumberFormatException e){
               System.out.println();
@@ -94,19 +101,29 @@ public class StockController {
           stocksMap.put(ticker, stocksMap.getOrDefault(ticker, 0.0) + stockQuanDouble);
           AddPortfolioPrint.addStocksInPortfolioConfirmation(this.out);
           confirmation = scan.next();
+          while(!confirmation.equals("y") && !confirmation.equals("Y") && !confirmation.equals("n") && !confirmation.equals("N")){
+            AddPortfolioPrint.askconfirmation(this.out);
+            confirmation = scan.next();
+          }
           break;
         case "2":
           AddPortfolioPrint.askTickerSymbol(this.out);
-          ticker = scan.next().toUpperCase();
+          do{
+            ticker = scan.next().toUpperCase();
+            if(ticker.equals("0")) return;
+            if(!stocksMap.containsKey(ticker))System.out.print("Portfolio doesn't contain this stock, enter again:  (0 to return to main menu): ");
+          }while(!stocksMap.containsKey(ticker));
           AddPortfolioPrint.askStockNumber(this.out);
-          stockQuantity = scan.nextLine();
+          stockQuantity = scan.next().trim();
 
           while(true){
             try{
               stockQuanDouble=Double.parseDouble(stockQuantity);
+              if(stockQuanDouble<=0) throw new NumberFormatException();
               break;
             } catch(NumberFormatException e){
-              System.out.println("Number entered is not in correct format, please enter again: ");
+              System.out.println();
+              System.out.print("Number entered is not in correct format, please enter again: ");
               stockQuantity = scan.nextLine();
             }
           }
@@ -121,6 +138,10 @@ public class StockController {
             AddPortfolioPrint.removeStocksInPortfolioUnSuccessfulConfirmation(this.out);
           }
           confirmation = scan.next();
+          while(!confirmation.equals("y") && !confirmation.equals("Y") && !confirmation.equals("n") && !confirmation.equals("N")){
+            AddPortfolioPrint.askconfirmation(this.out);
+            confirmation = scan.next();
+          }
           break;
         case "3":
           confirmation = "n";

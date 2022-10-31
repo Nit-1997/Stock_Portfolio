@@ -85,4 +85,18 @@ public interface User {
    */
   boolean dateChecker(String dateStr);
 
+
+  /**
+   * Returns a list of stocks that ara available for user to create portfolio.
+   * @return A list of stock names.
+   */
+  Set<String> getStockList();
+
+  /**
+   * Returns whether the stock name entered by user is a valid stock name or not.
+   * @param name stock name entered by user.
+   * @return if the stock name is valid or not.
+   */
+  boolean isValidStock(String name);
+
 }

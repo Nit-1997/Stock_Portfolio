@@ -58,7 +58,7 @@ public class LoadPortfolioPrint{
   }
 
   public static void askDateAgain(PrintStream out){
-    out.print("Please enter date in the correct format (MM/dd/yyyy): ");
+    out.print("Please enter date in the correct format (MM/dd/yyyy) in the given range : ");
   }
 
   public static void printPortfolioSummary(Map<String, Double> stockMap, PrintStream out){
