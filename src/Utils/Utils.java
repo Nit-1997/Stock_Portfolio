@@ -168,9 +168,10 @@ public class Utils {
         break;
       }
       lineNo++;
-      myReader.nextLine();
     }
     myReader.close();
+    System.out.println("out");
+    System.out.println(out);
     return out;
   }
 

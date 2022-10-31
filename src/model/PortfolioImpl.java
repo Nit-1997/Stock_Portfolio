@@ -11,6 +11,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -31,6 +32,18 @@ final public class PortfolioImpl implements Portfolio {
   public PortfolioImpl(String name) throws Exception {
     this.stockOrder =  Utils.loadPortfolioData(name);
     this.name = name;
+    int count = 0;
+    for(StockOrder s : this.stockOrder){
+      System.out.println(s.getStock().getStockTickerName());
+      System.out.println(s.getStock().getBuyPrice());
+      if(!Utils.dataExists(s.getStock().getStockTickerName().toUpperCase())){
+        if(count%5 == 0 && count!=0){
+          Thread.sleep(1000);
+        }
+        Utils.loadStockData(s.getStock().getStockTickerName().toUpperCase() , Constants.apiKeys.get(count/5));
+        count++;
+      }
+    }
   }
 
   /**
