@@ -159,17 +159,7 @@ public class UserImpl implements User {
 
   @Override
   public boolean dateChecker(String dateStr){
-    DateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-    sdf.setLenient(false);
-    try {
-      Date date = sdf.parse(dateStr);
-      Date firstDate = sdf.parse("11/01/1999");
-      Date currentDate = sdf.parse(DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now()));
-      if(date.before(firstDate) || date.after(currentDate)) return false;
-    } catch (ParseException e) {
-      return false;
-    }
-    return true;
+    return Utils.dateChecker(dateStr);
   }
 
 
