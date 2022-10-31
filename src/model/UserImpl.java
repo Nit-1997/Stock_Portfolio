@@ -103,8 +103,10 @@ public class UserImpl implements User {
       }
       return resMap;
     } catch (FileNotFoundException e) {
+      System.out.println("in file not found exception");
       return null;
     } catch (Exception e) {
+      System.out.println("in exception");
       return null;
     }
   }

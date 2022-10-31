@@ -1,6 +1,7 @@
 package view;
 
 import java.io.PrintStream;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,12 +81,13 @@ public class LoadPortfolioPrint{
     out.printf("%60s","Table for portfolio details");
     out.println();
     out.println("------------------------------------------------------------------------------------------");
-    out.printf("%15s %15s %17s %15s %15s", "Ticker Symbol", "Buy price"," Current Price","Quantity","Performance");
+    out.printf("%15s %15s %17s %12s %15s", "Ticker Symbol", "Quantity","Buy price"," Price on asked Date","Performance");
     out.println();
     out.println("------------------------------------------------------------------------------------------");
     for(String key: mapDetail.keySet()){
       out.format("%12s", key);
-      for(Double val : mapDetail.get(key)) out.format("%17s", val);
+      final DecimalFormat df = new DecimalFormat("0.00");
+      for(Double val : mapDetail.get(key)) out.format("%17s", df.format(val));
       out.println();
     }
     out.println("------------------------------------------------------------------------------------------");

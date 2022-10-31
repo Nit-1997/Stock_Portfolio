@@ -168,6 +168,7 @@ public class Utils {
         break;
       }
       lineNo++;
+      myReader.nextLine();
     }
     myReader.close();
     return out;
@@ -211,17 +212,20 @@ public class Utils {
     DateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
     sdf.setLenient(false);
 
+    DateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+
     try {
       Date date = sdf.parse(dateStr);
       Calendar cal = Calendar.getInstance();
       cal.setTime(date);
       int day = cal.get(Calendar.DAY_OF_WEEK);
       if(day==7){
-        return sdf.format(new Date(date.getTime()-MILLIS_IN_A_DAY));
+        return sdf2.format(new Date(date.getTime()-MILLIS_IN_A_DAY));
       }
       else if(day==1){
-        return sdf.format(new Date(date.getTime()-2*MILLIS_IN_A_DAY));
+        return sdf2.format(new Date(date.getTime()-2*MILLIS_IN_A_DAY));
       }
+      else return sdf2.format(date);
     } catch (ParseException e) {
       System.out.println("wrong format");
     }
