@@ -50,6 +50,7 @@ public class StockController {
             loadPortfoliosController(scan, user);
             break;
           case "0":
+            user.cleanStockDirectory();
             exit(0);
             return;
           default:
@@ -161,9 +162,6 @@ public class StockController {
 
     System.out.println(stocksMap);
     AddPortfolioPrint.waitMessage(this.out);
-    if(user.ctrlCPressedChecker(name)){
-      AddPortfolioPrint.ctrlCPressedMessage(this.out);
-    }
     boolean val = user.addPortfolio(name, stocksMap);
     if (val) {
       AddPortfolioPrint.addStocksInPortfolioConfirmationLoading(name, this.out);
@@ -215,13 +213,20 @@ public class StockController {
       switch (option) {
         case "1":
           Map<String, Double> stockMap = user.getPortfolioSummary(name);
+          if(stockMap==null){
+            LoadPortfolioPrint.printInCompatiblePortfolio(this.out);
+            break;
+          }
           LoadPortfolioPrint.printPortfolioSummary(stockMap, this.out);
           break;
         case "2":
           String date = DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now());
-          System.out.println(date);
           Map<String, List<Double>> detailedMap = user.getPortfolioDetailed(name,date);
-          double portfolioValue = user.getPortfolioValue(name,date);
+          if(detailedMap==null){
+            LoadPortfolioPrint.printInCompatiblePortfolio(this.out);
+            break;
+          }
+          Double portfolioValue = user.getPortfolioValue(name,date);
           double portfolioPerformance = user.getPortfolioPnL(name, date);
           LoadPortfolioPrint.printPortfolioDetail(detailedMap,portfolioValue, this.out);
           LoadPortfolioPrint.printPortfolioPerformance(portfolioPerformance, this.out);
@@ -229,6 +234,10 @@ public class StockController {
         case "3":
           date = DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now());
           portfolioValue = user.getPortfolioValue(name,date);
+          if(portfolioValue==null){
+            LoadPortfolioPrint.printInCompatiblePortfolio(this.out);
+            break;
+          }
           LoadPortfolioPrint.printPortfolioValue(portfolioValue, this.out);
           break;
         case "4":
@@ -243,6 +252,10 @@ public class StockController {
             }
           }
           detailedMap = user.getPortfolioDetailed(name,date);
+          if(detailedMap==null){
+            LoadPortfolioPrint.printInCompatiblePortfolio(this.out);
+            break;
+          }
           portfolioValue = user.getPortfolioValue(name,date);
           portfolioPerformance = user.getPortfolioPnL(name, date);
           LoadPortfolioPrint.printPortfolioDetail(detailedMap,portfolioValue, this.out);
@@ -260,6 +273,10 @@ public class StockController {
             }
           }
           portfolioValue = user.getPortfolioValue(name,date);
+          if(portfolioValue==null){
+            LoadPortfolioPrint.printInCompatiblePortfolio(this.out);
+            break;
+          }
           LoadPortfolioPrint.printPortfolioValue(portfolioValue, this.out);
           break;
         case "6":

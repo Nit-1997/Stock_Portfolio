@@ -62,6 +62,10 @@ public class LoadPortfolioPrint{
     out.print("Please enter date in the correct format (MM/dd/yyyy) in the given range (0 to return to list view): ");
   }
 
+  public static void printInCompatiblePortfolio(PrintStream out){
+    out.print("Manually entered portfolio is of incompatible type. ");
+  }
+
   public static void printPortfolioSummary(Map<String, Double> stockMap, PrintStream out){
     out.printf("%40s","Table for portfolio summary");
     out.println();
@@ -91,17 +95,17 @@ public class LoadPortfolioPrint{
       out.println();
     }
     out.println("------------------------------------------------------------------------------------------");
-    out.printf("%60s","Value of the portfolio: ");
+    out.printf("%60s","Value of the portfolio on that day: ");
     out.println(portfolioValue);
 
   }
 
   public static void printPortfolioPerformance(Double portfolioPnL, PrintStream out){
     if(portfolioPnL>0){
-      out.println("Your portfolio has earned a profit of "+portfolioPnL+" till today.");
+      out.println("Your portfolio has earned a profit of "+portfolioPnL+" on that day.");
     }
     else if(portfolioPnL<0){
-      out.println("Your portfolio has been in loss of "+portfolioPnL+" till today.");
+      out.println("Your portfolio has been in loss of "+portfolioPnL+" on that day.");
     }
     else{
       out.println("Your portfolio has the same value as that of buying day");
@@ -109,7 +113,7 @@ public class LoadPortfolioPrint{
   }
 
   public static void printPortfolioValue(Double portfolioValue, PrintStream out){
-    out.println("Value of the portfolio: "+portfolioValue);
+    out.println("Value of the portfolio on that day: "+portfolioValue);
   }
 
   public static void loadPortfolioErrorNote(PrintStream out){

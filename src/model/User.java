@@ -56,7 +56,7 @@ public interface User {
    * @param date date for which portfolio value is required
    * @return total value of portfolio
    */
-  double getPortfolioValue(String name, String date) throws Exception;
+  Double getPortfolioValue(String name, String date) throws Exception;
   /**
    * Fetches total PnL of a portfolio.
    *
@@ -73,10 +73,6 @@ public interface User {
    */
   boolean isUniqueName(String name);
 
-  /**
-   * Checks if the user has pressed control C to exit the program while waiting for add confirmation.
-   */
-  boolean ctrlCPressedChecker(String name);
 
   /**
    * Checks whether the date entered by user is in correct format.
@@ -98,5 +94,10 @@ public interface User {
    * @return if the stock name is valid or not.
    */
   boolean isValidStock(String name);
+
+  /**
+   * cleans stock directory on program termination.
+   */
+  void cleanStockDirectory();
 
 }

@@ -34,11 +34,9 @@ final public class PortfolioImpl implements Portfolio {
     this.name = name;
     int count = 0;
     for(StockOrder s : this.stockOrder){
-      System.out.println(s.getStock().getStockTickerName());
-      System.out.println(s.getStock().getBuyPrice());
       if(!Utils.dataExists(s.getStock().getStockTickerName().toUpperCase())){
         if(count%5 == 0 && count!=0){
-          Thread.sleep(1000);
+          Thread.sleep(60000);
         }
         Utils.loadStockData(s.getStock().getStockTickerName().toUpperCase() , Constants.apiKeys.get(count/5));
         count++;
@@ -59,7 +57,7 @@ final public class PortfolioImpl implements Portfolio {
     for (String key : stocksMap.keySet()) {
       if(!Utils.dataExists(key)){
           if(count%5 == 0 && count!=0){
-            Thread.sleep(1000);
+            Thread.sleep(60000);
           }
           Utils.loadStockData(key , Constants.apiKeys.get(count/5));
           count++;
@@ -71,8 +69,9 @@ final public class PortfolioImpl implements Portfolio {
 
 
   @Override
-  public double getCurrentValue() {
-    double val = 0.0;
+  public Double getCurrentValue() {
+    if(this.stockOrder==null) return null;
+    Double val = 0.0;
     for (StockOrder order : this.stockOrder) {
       val += order.getCurrentOrderValue();
     }
@@ -89,8 +88,9 @@ final public class PortfolioImpl implements Portfolio {
   }
 
   @Override
-  public double getValueOnDate(String date) {
-    double val = 0.0;
+  public Double getValueOnDate(String date) {
+    if(this.stockOrder==null) return null;
+    Double val = 0.0;
     for (StockOrder order : this.stockOrder) {
       val += order.getOrderValueOnDate(date);
     }
@@ -114,6 +114,7 @@ final public class PortfolioImpl implements Portfolio {
 
   @Override
   public List<PortfolioDetailedPojo> getCurrentPortfolioDetailed() throws IOException {
+    if(this.stockOrder==null) return null;
     List<PortfolioDetailedPojo> parsedResponse = new ArrayList<>();
     for(StockOrder order : this.stockOrder){
       String ticker = order.getStock().getStockTickerName();
@@ -128,6 +129,7 @@ final public class PortfolioImpl implements Portfolio {
 
   @Override
   public List<PortfolioDetailedPojo> getPortfolioDetailedOnDate(String date) throws IOException {
+    if(this.stockOrder==null) return null;
     List<PortfolioDetailedPojo> parsedResponse = new ArrayList<>();
     for(StockOrder order : this.stockOrder){
       String ticker = order.getStock().getStockTickerName();

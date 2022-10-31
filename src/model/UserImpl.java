@@ -18,6 +18,7 @@ import java.util.Set;
 
 import Utils.Utils;
 import constants.Constants;
+import view.AddPortfolioPrint;
 
 
 /**
@@ -65,6 +66,7 @@ public class UserImpl implements User {
     try {
       if (portfolioMap.get(name) == null) portfolioMap.put(name, new PortfolioImpl(name));
       List<StockOrder> list = portfolioMap.get(name).getPortfolioSummary();
+      if(list==null) return null;
       Map<String, Double> resMap = new HashMap<>();
       for (StockOrder soi : list)
         resMap.put(soi.getStock().getStockTickerName(), soi.getQuantity());
@@ -82,14 +84,14 @@ public class UserImpl implements User {
     try {
       if (portfolioMap.get(name) == null) portfolioMap.put(name, new PortfolioImpl(name));
       Map<String, List<Double>> resMap = new HashMap<>();
-      String currentDate = DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now());
+      String currentDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
       List<PortfolioDetailedPojo> res = new ArrayList<>();
-      if (date.equals(currentDate) && portfolioMap.containsKey(name)) {
+      if (date.equals(currentDate)) {
         res = portfolioMap.get(name).getCurrentPortfolioDetailed();
       } else if (!date.equals(currentDate) && portfolioMap.containsKey(name)) {
         res = portfolioMap.get(name).getPortfolioDetailedOnDate(date);
       }
-//      portfolioMap.put(name, new PortfolioImpl(name));
+      if(res==null) return null;
       for (PortfolioDetailedPojo pojo : res) {
         String ticker_symbol = pojo.getTicker();
         List<Double> listVals = new ArrayList<>();
@@ -101,21 +103,19 @@ public class UserImpl implements User {
       }
       return resMap;
     } catch (FileNotFoundException e) {
-      System.out.println("in file not found exception");
       return null;
     } catch (Exception e) {
-      System.out.println("in exception");
       return null;
     }
   }
 
   @Override
-  public double getPortfolioValue(String name, String date) throws Exception {
+  public Double getPortfolioValue(String name, String date) throws Exception {
     date = Utils.dateSaturdaySundayChecker(date);
     try {
       if (portfolioMap.get(name) == null) portfolioMap.put(name, new PortfolioImpl(name));
-      double portfolioValue = 0;
-      String currentDate = DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now());
+      Double portfolioValue = 0.0;
+      String currentDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
       if (date.equals(currentDate)) {
         portfolioValue = portfolioMap.get(name).getCurrentValue();
       } else {
@@ -131,7 +131,7 @@ public class UserImpl implements User {
   public double getPortfolioPnL(String name, String date) throws IOException {
     date = Utils.dateSaturdaySundayChecker(date);
     double portfolioPnL = 0;
-    String currentDate = DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now());
+    String currentDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
     if (date.equals(currentDate)) {
       portfolioPnL = portfolioMap.get(name).getPortfolioPnL();
     } else {
@@ -145,16 +145,12 @@ public class UserImpl implements User {
     return !this.portfolioMap.keySet().contains(name);
   }
 
-  @Override
-  public boolean ctrlCPressedChecker(String name) {
-    final boolean[] checker = {false};
-    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-      portfolioMap.get(name).deletePortfolio();
-      portfolioMap.remove(name);
-      checker[0] = true;
-    }));
 
-    return checker[0];
+
+  @Override
+  public void cleanStockDirectory(){
+    Utils.clearStockDirectory();
+    System.out.println("directory cleaned");
   }
 
   @Override

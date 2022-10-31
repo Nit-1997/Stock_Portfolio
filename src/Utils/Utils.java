@@ -42,6 +42,9 @@ public class Utils {
     String fileDirectory = Paths.get(dirName).toAbsolutePath().toString();
 
     File[] files = new File(fileDirectory).listFiles((f1, name) -> name.equals(fileName + ".csv"));
+    if(files.length==0){
+      return null;
+    }
     if (files == null) {
       createFileIfNotExists(fileName, dirName);
       files = new File(fileDirectory).listFiles((f1, name) -> name.equals(fileName + ".csv"));
@@ -70,7 +73,7 @@ public class Utils {
       );
     }
     myWriter.close();
-    System.out.println("Successfully wrote to the file.");
+//    System.out.println("Successfully wrote to the file.");
   }
 
   private static String getFilePath(String name, String dirName) {
@@ -89,11 +92,11 @@ public class Utils {
   private static File createFileIfNotExists(String name, String dirName) throws IOException {
     String path = getFilePath(name, dirName);
     File createdFile = new File(path);
-    if (createdFile.createNewFile()) {
-      System.out.println(dirName+" created to file : " + createdFile.getName());
-    } else {
-      System.out.println(dirName+" already exists reading from it ...");
-    }
+//    if (createdFile.createNewFile()) {
+//      System.out.println(dirName+" created to file : " + createdFile.getName());
+//    } else {
+//      System.out.println(dirName+" already exists reading from it ...");
+//    }
 
     return createdFile;
   }
@@ -112,6 +115,23 @@ public class Utils {
     return parsedStocks;
   }
 
+  private static boolean loadPortfolioValidator(String ticker, String date, String price, String qty){
+    try{
+      if(!Constants.stockNames.contains(ticker)) return false;
+      else if(!dateChecker(date)) return false;
+      else{
+        Double parsedPrice = Double.parseDouble(price);
+        if(parsedPrice<=0) return false;
+        Double parsedQty = Double.parseDouble(qty);
+        if(parsedQty<=0) return false;
+      }
+    } catch(NumberFormatException e){
+      return false;
+    }
+    return  true;
+
+  }
+
   /**
    * Fetches data for the portfolio from local directory
    *
@@ -119,14 +139,18 @@ public class Utils {
    */
   public static List<StockOrder> loadPortfolioData(String portfolioName) throws Exception {
     File portfolioFile = Utils.getFileByName(portfolioName,"portfolios");
+    if(portfolioFile==null) return null;
+
     Scanner myReader = new Scanner(portfolioFile);
 
     List<StockOrder> parsedFileInput = new ArrayList<>();
     while (myReader.hasNextLine()) {
       String input = myReader.nextLine();
       String[] splitInput = input.split(",");
+      if(splitInput.length!=4) return null;
       String ticker = splitInput[0];
       String date = splitInput[3];
+      if(!loadPortfolioValidator(ticker,date,splitInput[1],splitInput[2])) return null;
       double price = Double.parseDouble(splitInput[1]);
       double qty = Double.parseDouble(splitInput[2]);
       StockOrder currentStockOrder = new StockOrderImpl(ticker, price, date, qty);
@@ -140,7 +164,7 @@ public class Utils {
     FileWriter myWriter = new FileWriter(stockFile);
     myWriter.write(data);
     myWriter.close();
-    System.out.println("Successfully wrote to the file.");
+//    System.out.println("Successfully wrote to the file.");
   }
 
   public static void loadStockData(String ticker, String apiKey) throws Exception {
@@ -170,8 +194,6 @@ public class Utils {
       lineNo++;
     }
     myReader.close();
-    System.out.println("out");
-    System.out.println(out);
     return out;
   }
 
@@ -231,5 +253,11 @@ public class Utils {
       System.out.println("wrong format");
     }
     return dateStr;
+  }
+
+  public static void clearStockDirectory(){
+    String portfolioDirectory = Paths.get("stock_data").toAbsolutePath().toString();
+    File directory = new File(portfolioDirectory);
+    for(File file : directory.listFiles()) file.delete();
   }
 }

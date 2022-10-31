@@ -47,7 +47,7 @@ public interface Portfolio {
    *
    * @return currentPrice of Portfolio
    */
-  public double getCurrentValue();
+  public Double getCurrentValue();
 
   /**
    * Fetches the initial value of the Portfolio.
@@ -64,7 +64,7 @@ public interface Portfolio {
    *
    * @return total Initial Buy value.
    */
-  public double getValueOnDate(String date);
+  public Double getValueOnDate(String date);
 
   /**
    * This function deletes the portfolio if the user terminates the session before the portfolio gets saved.

@@ -34,7 +34,6 @@ final class StockImpl implements Stock {
   public double getCurrentPrice() {
     try {
       String res = Utils.fetchCurrentStockValue(this.ticker);
-      System.out.println(res);
       return Double.parseDouble(res);
     } catch (Exception e) {
       System.out.println(e);
