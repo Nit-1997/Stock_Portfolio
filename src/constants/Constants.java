@@ -27,13 +27,15 @@ public class Constants {
           + "&outputsize=full";
 
   public static String ApiKey = "ZCVYQOK98OIWK0E6";
+
+
   public static String getCurrentValueApi = "https://www.alphavantage"
           + ".co/query?function=GLOBAL_QUOTE";
 
   public static String AddPortfolio="\n\n-------------Portfolio Creation-------------\n"+
       "  1. Add name of the portfolio : ";
 
-  public static String AddStocksInPortfolioAskTickerSymbol="\nTicker symbol of the company: ";
+  public static String AddStocksInPortfolioAskTickerSymbol="\nTicker symbol of the company (0 to return to the main menu): ";
 
   public static String AddStocksInPortfolioAskStockNumber="Number of stocks for the company: ";
 
@@ -47,7 +49,7 @@ public class Constants {
       "Enter your choice: ";
 
   public static String RemoveStocksInPortfolioSuccessfulConfirmation="\n"+
-      "Stock removed successfully to the portfolio!!\n"+
+      "Stock removed successfully from the portfolio!!\n"+
       "Do you want to add more stocks or remove any stocks (y/n)? ";
 
   public static String RemoveStocksInPortfolioUnSuccessfulConfirmation="\n"+

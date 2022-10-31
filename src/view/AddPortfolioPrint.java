@@ -2,6 +2,7 @@ package view;
 
 import constants.Constants;
 import java.io.PrintStream;
+import java.util.Set;
 
 public class AddPortfolioPrint{
 
@@ -11,11 +12,24 @@ public class AddPortfolioPrint{
   }
 
   public static void askPortfolioNameAgain(PrintStream out){
-    out.print("Portfolio with this name already exists, kindly enter another name: ");
+    out.print("Portfolio with this name already exists, kindly enter another name (0 to return to the main menu): ");
   }
 
   public static void addStocksInPortfolioWelcomeNote(String portfolioName, PrintStream out){
     out.println("-------------For the Portfolio "+portfolioName+": Add stocks------------");
+  }
+
+  public static void printAvailableStocks(Set<String> stockList){
+    System.out.println("List of available stocks");
+    int i=0;
+    for(String stockName : stockList){
+      System.out.print(stockName+"\t\t\t");
+      i++;
+      if (i == 10) {
+        System.out.println();
+      }
+    }
+    System.out.println();
   }
 
   public static void askTickerSymbol(PrintStream out){
@@ -40,6 +54,10 @@ public class AddPortfolioPrint{
 
   public static void removeStocksInPortfolioUnSuccessfulConfirmation(PrintStream out){
     out.print(Constants.RemoveStocksInPortfolioUnSuccessfulConfirmation);
+  }
+
+  public static void askconfirmation(PrintStream out){
+    out.print("Do you want to add more stocks or remove any stocks (y/n)? ");
   }
 
   public static void waitMessage(PrintStream out){

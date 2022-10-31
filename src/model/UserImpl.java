@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -158,12 +159,24 @@ public class UserImpl implements User {
     DateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
     sdf.setLenient(false);
     try {
-      sdf.parse(dateStr);
+      Date date = sdf.parse(dateStr);
+      Date firstDate = sdf.parse("01/01/2012");
+      Date currentDate = sdf.parse(DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now()));
+      if(date.before(firstDate) || date.after(currentDate)) return false;
     } catch (ParseException e) {
       return false;
     }
     return true;
   }
 
+  @Override
+  public Set<String> getStockList(){
+    return Constants.stockNames;
+  }
+
+  @Override
+  public boolean isValidStock(String name){
+    return Constants.stockNames.contains(name);
+  }
 
 }
