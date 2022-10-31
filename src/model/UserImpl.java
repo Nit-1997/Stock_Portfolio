@@ -91,7 +91,7 @@ public class UserImpl implements User {
       } else if (!date.equals(currentDate) && portfolioMap.containsKey(name)) {
         res = portfolioMap.get(name).getPortfolioDetailedOnDate(date);
       }
-      portfolioMap.put(name, new PortfolioImpl(name));
+//      portfolioMap.put(name, new PortfolioImpl(name));
       for(PortfolioDetailedPojo pojo : res){
         String ticker_symbol = pojo.getTicker();
         List<Double> listVals = new ArrayList<>();
@@ -159,17 +159,7 @@ public class UserImpl implements User {
 
   @Override
   public boolean dateChecker(String dateStr){
-    DateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-    sdf.setLenient(false);
-    try {
-      Date date = sdf.parse(dateStr);
-      Date firstDate = sdf.parse("11/01/1999");
-      Date currentDate = sdf.parse(DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now()));
-      if(date.before(firstDate) || date.after(currentDate)) return false;
-    } catch (ParseException e) {
-      return false;
-    }
-    return true;
+    return Utils.dateChecker(dateStr);
   }
 
 

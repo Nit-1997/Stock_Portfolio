@@ -34,7 +34,7 @@ public class LoadPortfolioPrint{
   }
 
   public static void askPortfolioNameAgainUnique(PrintStream out){
-    out.print(" No Portfolio with this name , kindly enter another name: ");
+    out.print(" No Portfolio with this name , kindly enter another name (0 to return to list view): ");
   }
 
   public static void portfolioDetailWelcomeNote(String name, PrintStream out){
@@ -58,7 +58,7 @@ public class LoadPortfolioPrint{
   }
 
   public static void askDateAgain(PrintStream out){
-    out.print("Please enter date in the correct format (MM/dd/yyyy) in the given range : ");
+    out.print("Please enter date in the correct format (MM/dd/yyyy) in the given range (0 to return to list view): ");
   }
 
   public static void printPortfolioSummary(Map<String, Double> stockMap, PrintStream out){

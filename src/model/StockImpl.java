@@ -37,6 +37,7 @@ final class StockImpl implements Stock {
       System.out.println(res);
       return Double.parseDouble(res);
     } catch (Exception e) {
+      System.out.println(e);
       return -1.0;
     }
   }

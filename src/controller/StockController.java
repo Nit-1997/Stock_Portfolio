@@ -178,7 +178,7 @@ public class StockController {
     LoadPortfolioPrint.printPortfolios(portfolioNames, this.out);
     LoadPortfolioPrint.loadPortfolioMenu(this.out);
 
-    String option = scan.nextLine();
+    String option = scan.next().trim();
 
     do {
       switch (option) {
@@ -190,7 +190,7 @@ public class StockController {
           return;
         default:
           LoadPortfolioPrint.loadPortfolioErrorNote(this.out);
-          option = scan.nextLine();
+          option = scan.next().trim();
       }
     } while (option != "2");
 
@@ -202,6 +202,10 @@ public class StockController {
     while(user.isUniqueName(name)){
       LoadPortfolioPrint.askPortfolioNameAgainUnique(this.out);
       name = scan.next();
+      if(name.equals("0")){
+        loadPortfoliosController(scan, user);
+        return;
+      }
     }
     LoadPortfolioPrint.portfolioDetailWelcomeNote(name, this.out);
     LoadPortfolioPrint.loadPortfolioDetailMenu(this.out);
@@ -233,6 +237,10 @@ public class StockController {
           while(!user.dateChecker(date)){
             LoadPortfolioPrint.askDateAgain(this.out);
             date = scan.next();
+            if(date.equals("0")){
+              loadPortfoliosController(scan, user);
+              return;
+            }
           }
           detailedMap = user.getPortfolioDetailed(name,date);
           portfolioValue = user.getPortfolioValue(name,date);
@@ -246,6 +254,10 @@ public class StockController {
           while(!user.dateChecker(date)){
             LoadPortfolioPrint.askDateAgain(this.out);
             date = scan.next();
+            if(date.equals("0")){
+              loadPortfoliosController(scan, user);
+              return;
+            }
           }
           portfolioValue = user.getPortfolioValue(name,date);
           LoadPortfolioPrint.printPortfolioValue(portfolioValue, this.out);
