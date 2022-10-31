@@ -8,6 +8,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -196,12 +197,16 @@ public class Utils {
     final long MILLIS_IN_A_DAY = 1000 * 60 * 60 * 24;
     DateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
     sdf.setLenient(false);
+
     try {
       Date date = sdf.parse(dateStr);
-      if(date.getDay()==6){
+      Calendar cal = Calendar.getInstance();
+      cal.setTime(date);
+      int day = cal.get(Calendar.DAY_OF_WEEK);
+      if(day==7){
         return sdf.format(new Date(date.getTime()-MILLIS_IN_A_DAY));
       }
-      else if(date.getDay()==0){
+      else if(day==1){
         return sdf.format(new Date(date.getTime()-2*MILLIS_IN_A_DAY));
       }
     } catch (ParseException e) {
