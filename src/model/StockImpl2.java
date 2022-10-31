@@ -6,14 +6,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-import Utils.Utils;
-
-final class StockImpl implements Stock {
+final class StockImpl2 implements Stock {
   private final String ticker;
   private final double buyPrice;
   private final String buyDate;
 
-  public StockImpl(String ticker , double buyPrice, String date){
+  public StockImpl2(String ticker , double buyPrice, String date){
     this.ticker = ticker;
     this.buyPrice = buyPrice;
     this.buyDate =  date;
@@ -24,7 +22,7 @@ final class StockImpl implements Stock {
    *
    * @param ticker ticker name
    */
-  public StockImpl(String ticker) {
+  public StockImpl2(String ticker) {
     this.ticker = ticker;
     this.buyPrice = this.getCurrentPrice();
     this.buyDate =  DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
@@ -32,8 +30,9 @@ final class StockImpl implements Stock {
 
   @Override
   public double getCurrentPrice() {
+    // TODO need to keep a check, if data once fetched, dont fetch again
     try {
-      String res = Utils.fetchCurrentStockValue(this.ticker);
+      String res = ApiDataFetcher.fetchCurrentValueApi(this.ticker);
       return Double.parseDouble(res);
     } catch (Exception e) {
       return -1.0;
@@ -74,10 +73,11 @@ final class StockImpl implements Stock {
   @Override
   public double getPriceOnDate(String date) {
     try {
-      Map<String , List<String>> res = Utils.fetchStockValueByDate(this.ticker);
+      Map<String , List<String>> res = ApiDataFetcher.fetchDataDailyHistoricByTicker(this.ticker);
+      //TODO : validate the date
       return Double.parseDouble(res.get(date).get(1));
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+      System.out.println(e);
       return -1;
     }
   }

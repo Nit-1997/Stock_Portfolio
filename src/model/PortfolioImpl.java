@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Console;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -14,6 +15,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import Utils.Utils;
+import constants.Constants;
 
 
 /**
@@ -39,7 +41,13 @@ final public class PortfolioImpl implements Portfolio {
   public PortfolioImpl(Map<String, Double> stocksMap, String name) throws Exception {
     this.stockOrder = new ArrayList<>();
     this.name = name;
+    int count = 0;
+
     for (String key : stocksMap.keySet()) {
+      if(!Utils.dataExists(key)){
+          Utils.loadStockData(key , Constants.apiKeys.get(count/5));
+          count++;
+      }
       this.stockOrder.add(new StockOrderImpl(key, stocksMap.get(key)));
     }
     Utils.saveToFile(this.name,this.stockOrder);

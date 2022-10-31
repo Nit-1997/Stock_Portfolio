@@ -1,5 +1,8 @@
 package constants;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 public class Constants {
@@ -55,5 +58,11 @@ public class Constants {
 
   public static Set<String> stockNames;
 
-
+  public static final String[] keys = {
+          "ZCVYQOK98OIWK0E6",
+          "9G8A1X5VH7W7QNPH",
+          "ZCVYQOK98OIWK0E6",
+          "ZCVYQOK98OIWK0E6"
+  };
+  public static final List<String> apiKeys = new ArrayList<>(Arrays.asList(keys));
 }

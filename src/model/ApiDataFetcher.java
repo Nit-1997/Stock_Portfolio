@@ -108,12 +108,12 @@ public class ApiDataFetcher {
     return out2[7];
   }
 
-  public static String fetchStockDataBySymbol(String ticker) throws Exception {
+  public static String fetchStockDataBySymbol(String ticker , String apiKey) throws Exception {
     URL url = null;
     try {
       url = new URL(Constants.getDailyDataTimeSeriesApi
               + "&symbol"
-              + "=" + ticker + "&apikey=" + Constants.ApiKey + "&outputsize=full" + "&datatype=csv");
+              + "=" + ticker + "&apikey=" + apiKey + "&outputsize=full" + "&datatype=csv");
     } catch (MalformedURLException e) {
       throw new RuntimeException("the alphavantage API has either changed or "
               + "no longer works");

@@ -28,9 +28,8 @@ public class UserImpl implements User {
   /**
    * Constructor to initialize User Object with portfolios.
    */
-  public UserImpl() throws IOException {
+  public UserImpl() throws Exception {
     Constants.stockNames = Utils.loadStockNames();
-
     String portfolioDirectory = Paths.get("portfolios").toAbsolutePath().toString();
     File f = new File(portfolioDirectory);
     String[] files = f.list((f1, name) -> name.endsWith(".csv"));

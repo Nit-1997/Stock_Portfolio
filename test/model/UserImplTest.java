@@ -12,7 +12,7 @@ public class UserImplTest {
   public void testUserConstructor() {
     try{
       User usr = new UserImpl();
-    }catch(IOException e){
+    }catch(Exception e){
       System.out.println(e.getMessage());
     }
   }

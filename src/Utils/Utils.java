@@ -5,12 +5,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
 
+import constants.Constants;
+import model.ApiDataFetcher;
 import model.StockOrder;
 import model.StockOrderImpl;
 
@@ -27,16 +31,16 @@ public class Utils {
     return null;
   }
 
-  public static File getPortfolioFileByName(String portfolioName) throws IOException {
-    String portfolioDirectory = Paths.get("portfolios").toAbsolutePath().toString();
+  public static File getFileByName(String fileName , String dirName) throws IOException {
+    String fileDirectory = Paths.get(dirName).toAbsolutePath().toString();
 
-    File[] portfolioFiles = new File(portfolioDirectory).listFiles((f1, name) -> name.equals(portfolioName + ".csv"));
-    if (portfolioFiles == null) {
-      createFileIfNotExists(portfolioName);
-      portfolioFiles = new File(portfolioDirectory).listFiles((f1, name) -> name.equals(portfolioName + ".csv"));
-      assert portfolioFiles != null;
+    File[] files = new File(fileDirectory).listFiles((f1, name) -> name.equals(fileName + ".csv"));
+    if (files == null) {
+      createFileIfNotExists(fileName, dirName);
+      files = new File(fileDirectory).listFiles((f1, name) -> name.equals(fileName + ".csv"));
+      assert files != null;
     }
-    return portfolioFiles[0];
+    return files[0];
   }
 
 
@@ -44,7 +48,7 @@ public class Utils {
    * saves the current portfolio to the file.
    */
   public static void saveToFile(String name, List<StockOrder> orders) throws IOException {
-    File portfolioFile = createFileIfNotExists(name);
+    File portfolioFile = createFileIfNotExists(name, "portfolios");
     writePortfolioToFile(portfolioFile, orders);
   }
 
@@ -62,28 +66,29 @@ public class Utils {
     System.out.println("Successfully wrote to the file.");
   }
 
-  private static  String getFilePath(String name){
+  private static String getFilePath(String name, String dirName) {
     String os = System.getProperty("os.name");
     String path = "";
     if (Objects.equals(os.split(" ")[0], "Windows")) {
-      path = Paths.get("portfolios")
+      path = Paths.get(dirName)
               .toAbsolutePath() + "\\" + name + ".csv";
     } else {
-      path = Paths.get("portfolios")
+      path = Paths.get(dirName)
               .toAbsolutePath() + "/" + name + ".csv";
     }
     return path;
   }
-  private static File createFileIfNotExists(String name) throws IOException {
-    String path = getFilePath(name);
-    File portfolioFile = new File(path);
-    if (portfolioFile.createNewFile()) {
-      System.out.println("Portfolio created to file : " + portfolioFile.getName());
+
+  private static File createFileIfNotExists(String name, String dirName) throws IOException {
+    String path = getFilePath(name, dirName);
+    File createdFile = new File(path);
+    if (createdFile.createNewFile()) {
+      System.out.println(dirName+" created to file : " + createdFile.getName());
     } else {
-      System.out.println("Portfolio already exists reading from it ...");
+      System.out.println(dirName+" already exists reading from it ...");
     }
 
-    return portfolioFile;
+    return createdFile;
   }
 
   public static Set<String> loadStockNames() throws IOException {
@@ -106,7 +111,7 @@ public class Utils {
    * @return List of stock orders
    */
   public static List<StockOrder> loadPortfolioData(String portfolioName) throws Exception {
-    File portfolioFile = Utils.getPortfolioFileByName(portfolioName);
+    File portfolioFile = Utils.getFileByName(portfolioName,"portfolios");
     Scanner myReader = new Scanner(portfolioFile);
 
     List<StockOrder> parsedFileInput = new ArrayList<>();
@@ -117,14 +122,68 @@ public class Utils {
       String date = splitInput[3];
       double price = Double.parseDouble(splitInput[1]);
       double qty = Double.parseDouble(splitInput[2]);
-      StockOrder currentStockOrder = new StockOrderImpl(ticker,price,date,qty);
+      StockOrder currentStockOrder = new StockOrderImpl(ticker, price, date, qty);
       parsedFileInput.add(currentStockOrder);
     }
     myReader.close();
     return parsedFileInput;
   }
 
-  public static void loadAndStoreStockData(){
+  public static void writeStockDataDumpToFile(File stockFile, String data) throws IOException {
+    FileWriter myWriter = new FileWriter(stockFile);
+    myWriter.write(data);
+    myWriter.close();
+    System.out.println("Successfully wrote to the file.");
+  }
 
+  public static void loadStockData(String ticker, String apiKey) throws Exception {
+    String output = ApiDataFetcher.fetchStockDataBySymbol(ticker, apiKey);
+    File stockFile = createFileIfNotExists(ticker, "stock_data");
+    writeStockDataDumpToFile(stockFile, output);
+  }
+
+  public static boolean dataExists(String ticker) {
+    String stockDir = Paths.get("stock_data").toAbsolutePath().toString();
+    File f = new File(stockDir);
+    String[] files = f.list((f1, name) -> name.equals(ticker + ".csv"));
+    return files != null && files.length != 0;
+  }
+
+  public static String fetchCurrentStockValue(String ticker) throws IOException {
+    File stockFile = Utils.getFileByName(ticker,"stock_data");
+    Scanner myReader = new Scanner(stockFile);
+    int lineNo = 0;
+    String out = "";
+    while (myReader.hasNextLine()) {
+      if(lineNo == 1){
+        String input = myReader.nextLine();
+        out = input.split(",")[4];
+        break;
+      }
+      lineNo++;
+    }
+    myReader.close();
+    return out;
+  }
+
+  public static Map<String , List<String>> fetchStockValueByDate(String ticker) throws IOException {
+    File stockFile = Utils.getFileByName(ticker,"stock_data");
+    Scanner myReader = new Scanner(stockFile);
+    int lineNo = 0;
+    Map<String , List<String>> res = new HashMap<>();
+    while (myReader.hasNextLine()) {
+      if(lineNo != 0){
+        String input = myReader.nextLine();
+        String[] out = input.toString().split(",");
+        String key = out[0];
+        List<String> val = new ArrayList<>();
+        val.add(ticker);
+        val.add(out[4]);
+        res.put(key,val);
+      }
+      lineNo++;
+    }
+    myReader.close();
+    return res;
   }
 }
