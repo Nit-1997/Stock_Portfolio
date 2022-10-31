@@ -160,8 +160,8 @@ public class Utils {
     int lineNo = 0;
     String out = "";
     while (myReader.hasNextLine()) {
+      String input = myReader.nextLine();
       if(lineNo == 1){
-        String input = myReader.nextLine();
         out = input.split(",")[4];
         break;
       }
@@ -171,21 +171,18 @@ public class Utils {
     return out;
   }
 
-  public static Map<String , List<String>> fetchStockValueByDate(String ticker, String date) throws IOException {
+  public static String fetchStockValueByDate(String ticker, String date) throws IOException {
     File stockFile = Utils.getFileByName(ticker,"stock_data");
     Scanner myReader = new Scanner(stockFile);
     int lineNo = 0;
-    Map<String , List<String>> res = new HashMap<>();
+    String res = "-1";
     while (myReader.hasNextLine()) {
+      String input = myReader.nextLine();
       if(lineNo != 0){
-        String input = myReader.nextLine();
         String[] out = input.split(",");
-        String key = out[0];
-//        if(key.equals(date)) return out[4];
-        List<String> val = new ArrayList<>();
-        val.add(ticker);
-        val.add(out[4]);
-        res.put(key,val);
+        if(Objects.equals(out[0], date)){
+            res = out[4];
+        }
       }
       lineNo++;
     }

@@ -34,6 +34,7 @@ final class StockImpl implements Stock {
   public double getCurrentPrice() {
     try {
       String res = Utils.fetchCurrentStockValue(this.ticker);
+      System.out.println(res);
       return Double.parseDouble(res);
     } catch (Exception e) {
       return -1.0;
@@ -74,10 +75,9 @@ final class StockImpl implements Stock {
   @Override
   public double getPriceOnDate(String date) {
     try {
-      Map<String , List<String>> res = Utils.fetchStockValueByDate(this.ticker, date);
-      return Double.parseDouble(res.get(date).get(1));
+      String res = Utils.fetchStockValueByDate(this.ticker, date);
+      return Double.parseDouble(res);
     } catch (Exception e) {
-      System.out.println(e.getMessage());
       return -1;
     }
   }
