@@ -4,7 +4,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -166,7 +170,7 @@ public class Utils {
     return out;
   }
 
-  public static Map<String , List<String>> fetchStockValueByDate(String ticker) throws IOException {
+  public static Map<String , List<String>> fetchStockValueByDate(String ticker, String date) throws IOException {
     File stockFile = Utils.getFileByName(ticker,"stock_data");
     Scanner myReader = new Scanner(stockFile);
     int lineNo = 0;
@@ -174,8 +178,9 @@ public class Utils {
     while (myReader.hasNextLine()) {
       if(lineNo != 0){
         String input = myReader.nextLine();
-        String[] out = input.toString().split(",");
+        String[] out = input.split(",");
         String key = out[0];
+//        if(key.equals(date)) return out[4];
         List<String> val = new ArrayList<>();
         val.add(ticker);
         val.add(out[4]);
@@ -185,5 +190,23 @@ public class Utils {
     }
     myReader.close();
     return res;
+  }
+
+  public static String dateSaturdaySundayChecker(String dateStr){
+    final long MILLIS_IN_A_DAY = 1000 * 60 * 60 * 24;
+    DateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+    sdf.setLenient(false);
+    try {
+      Date date = sdf.parse(dateStr);
+      if(date.getDay()==6){
+        return sdf.format(new Date(date.getTime()-MILLIS_IN_A_DAY));
+      }
+      else if(date.getDay()==0){
+        return sdf.format(new Date(date.getTime()-2*MILLIS_IN_A_DAY));
+      }
+    } catch (ParseException e) {
+      System.out.println("wrong format");
+    }
+    return dateStr;
   }
 }

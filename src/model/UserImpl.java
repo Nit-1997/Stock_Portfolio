@@ -80,6 +80,7 @@ public class UserImpl implements User {
 
   @Override
   public Map< String , List<Double>> getPortfolioDetailed(String name, String date) {
+    date = Utils.dateSaturdaySundayChecker(date);
     try{
       if(portfolioMap.get(name)==null)portfolioMap.put(name,new PortfolioImpl(name));
       Map<String, List<Double>> resMap = new HashMap<>();
@@ -110,6 +111,7 @@ public class UserImpl implements User {
 
   @Override
   public double getPortfolioValue(String name, String date) throws Exception{
+    date = Utils.dateSaturdaySundayChecker(date);
     try{
       if(portfolioMap.get(name)==null)portfolioMap.put(name,new PortfolioImpl(name));
       double portfolioValue = 0;
@@ -127,6 +129,7 @@ public class UserImpl implements User {
 
   @Override
   public double getPortfolioPnL(String name, String date) throws IOException {
+    date = Utils.dateSaturdaySundayChecker(date);
     double portfolioPnL = 0;
     String currentDate = DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now());
     if (date.equals(currentDate) ) {
@@ -160,7 +163,7 @@ public class UserImpl implements User {
     sdf.setLenient(false);
     try {
       Date date = sdf.parse(dateStr);
-      Date firstDate = sdf.parse("01/01/2012");
+      Date firstDate = sdf.parse("11/01/1999");
       Date currentDate = sdf.parse(DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now()));
       if(date.before(firstDate) || date.after(currentDate)) return false;
     } catch (ParseException e) {
@@ -168,6 +171,8 @@ public class UserImpl implements User {
     }
     return true;
   }
+
+
 
   @Override
   public Set<String> getStockList(){
