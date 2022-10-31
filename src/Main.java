@@ -8,12 +8,12 @@ public class Main {
 
   public static void main(String[] args) throws Exception {
 
-    System.out.println(Utils.getFileByName("abcd","portfolios"));
 
-//    try {
-//      new StockController(System.in, System.out).go(new UserImpl());
-//    } catch (IOException e) {
-//      e.printStackTrace();
-//    }
+
+    try {
+      new StockController(System.in, System.out).go(new UserImpl());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 }

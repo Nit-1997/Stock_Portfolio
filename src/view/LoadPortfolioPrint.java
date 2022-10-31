@@ -54,16 +54,20 @@ public class LoadPortfolioPrint{
     out.print("Enter your choice: ");
   }
 
+  public static void waitMessage(PrintStream out){
+    out.println("Please wait while we are loading data...");
+  }
+
   public static void askDate(PrintStream out){
-    out.print("Please enter date (MM/dd/yyyy): ");
+    out.print("Please enter date (yyyy-MM-dd): ");
   }
 
   public static void askDateAgain(PrintStream out){
-    out.print("Please enter date in the correct format (MM/dd/yyyy) in the given range (0 to return to list view): ");
+    out.print("Please enter date in the correct format (yyyy-MM-dd) in the given range (0 to return to list view): ");
   }
 
   public static void printInCompatiblePortfolio(PrintStream out){
-    out.print("Manually entered portfolio is of incompatible type. ");
+    out.println("Manually entered portfolio is of incompatible type. ");
   }
 
   public static void printPortfolioSummary(Map<String, Double> stockMap, PrintStream out){
@@ -82,6 +86,7 @@ public class LoadPortfolioPrint{
   }
 
   public static void printPortfolioDetail(Map<String, List<Double>> mapDetail, double portfolioValue, PrintStream out){
+    final DecimalFormat df = new DecimalFormat("0.00");
     out.printf("%60s","Table for portfolio details");
     out.println();
     out.println("------------------------------------------------------------------------------------------");
@@ -90,22 +95,22 @@ public class LoadPortfolioPrint{
     out.println("------------------------------------------------------------------------------------------");
     for(String key: mapDetail.keySet()){
       out.format("%12s", key);
-      final DecimalFormat df = new DecimalFormat("0.00");
       for(Double val : mapDetail.get(key)) out.format("%17s", df.format(val));
       out.println();
     }
     out.println("------------------------------------------------------------------------------------------");
     out.printf("%60s","Value of the portfolio on that day: ");
-    out.println(portfolioValue);
+    out.println(df.format(portfolioValue));
 
   }
 
   public static void printPortfolioPerformance(Double portfolioPnL, PrintStream out){
+    final DecimalFormat df = new DecimalFormat("0.00");
     if(portfolioPnL>0){
-      out.println("Your portfolio has earned a profit of "+portfolioPnL+" on that day.");
+      out.println("Your portfolio has earned a profit of "+df.format(portfolioPnL)+" on that day.");
     }
     else if(portfolioPnL<0){
-      out.println("Your portfolio has been in loss of "+portfolioPnL+" on that day.");
+      out.println("Your portfolio has been in loss of "+df.format(portfolioPnL)+" on that day.");
     }
     else{
       out.println("Your portfolio has the same value as that of buying day");
@@ -113,7 +118,8 @@ public class LoadPortfolioPrint{
   }
 
   public static void printPortfolioValue(Double portfolioValue, PrintStream out){
-    out.println("Value of the portfolio on that day: "+portfolioValue);
+
+    out.println("Value of the portfolio on that day: "+new DecimalFormat("0.00").format(portfolioValue));
   }
 
   public static void loadPortfolioErrorNote(PrintStream out){

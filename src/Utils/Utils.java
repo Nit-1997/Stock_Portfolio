@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -117,15 +118,28 @@ public class Utils {
 
   private static boolean loadPortfolioValidator(String ticker, String date, String price, String qty){
     try{
-      if(!Constants.stockNames.contains(ticker)) return false;
-      else if(!dateChecker(date)) return false;
+      if(!Constants.stockNames.contains(ticker.toUpperCase())){
+        System.out.println("ticker wrong");
+        return false;
+      }
+      else if(!dateChecker(date)){
+        System.out.println("date wrong");
+        return false;
+      }
       else{
         Double parsedPrice = Double.parseDouble(price);
-        if(parsedPrice<=0) return false;
+        if(parsedPrice<=0) {
+          System.out.println("parsed price wrong");
+          return false;
+        }
         Double parsedQty = Double.parseDouble(qty);
-        if(parsedQty<=0) return false;
+        if(parsedQty<=0){
+          System.out.println("parsed qty wrong");
+          return false;
+        }
       }
     } catch(NumberFormatException e){
+      System.out.println("number format wrong");
       return false;
     }
     return  true;
@@ -150,10 +164,13 @@ public class Utils {
       if(splitInput.length!=4) return null;
       String ticker = splitInput[0];
       String date = splitInput[3];
-      if(!loadPortfolioValidator(ticker,date,splitInput[1],splitInput[2])) return null;
+      if(!loadPortfolioValidator(ticker,date,splitInput[1],splitInput[2])){
+        System.out.println(ticker+" "+date+" "+splitInput[1]+" "+splitInput[2]);
+        return null;
+      }
       double price = Double.parseDouble(splitInput[1]);
       double qty = Double.parseDouble(splitInput[2]);
-      StockOrder currentStockOrder = new StockOrderImpl(ticker, price, date, qty);
+      StockOrder currentStockOrder = new StockOrderImpl(ticker.toUpperCase(), price, date, qty);
       parsedFileInput.add(currentStockOrder);
     }
     myReader.close();
@@ -198,6 +215,7 @@ public class Utils {
   }
 
   public static String fetchStockValueByDate(String ticker, String date) throws IOException {
+
     File stockFile = Utils.getFileByName(ticker,"stock_data");
     Scanner myReader = new Scanner(stockFile);
     int lineNo = 0;
@@ -217,12 +235,12 @@ public class Utils {
   }
 
   public static boolean dateChecker(String dateStr){
-    DateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+    DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     sdf.setLenient(false);
     try {
       Date date = sdf.parse(dateStr);
-      Date firstDate = sdf.parse("11/01/1999");
-      Date currentDate = sdf.parse(DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now()));
+      Date firstDate = sdf.parse("1999-11-01");
+      Date currentDate = sdf.parse(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now()));
       if(date.before(firstDate) || date.after(currentDate)) return false;
     } catch (ParseException e) {
       return false;
@@ -232,10 +250,8 @@ public class Utils {
 
   public static String dateSaturdaySundayChecker(String dateStr){
     final long MILLIS_IN_A_DAY = 1000 * 60 * 60 * 24;
-    DateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+    DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     sdf.setLenient(false);
-
-    DateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
 
     try {
       Date date = sdf.parse(dateStr);
@@ -243,13 +259,14 @@ public class Utils {
       cal.setTime(date);
       int day = cal.get(Calendar.DAY_OF_WEEK);
       if(day==7){
-        return sdf2.format(new Date(date.getTime()-MILLIS_IN_A_DAY));
+        return sdf.format(new Date(date.getTime()-MILLIS_IN_A_DAY));
       }
       else if(day==1){
-        return sdf2.format(new Date(date.getTime()-2*MILLIS_IN_A_DAY));
+        return sdf.format(new Date(date.getTime()-2*MILLIS_IN_A_DAY));
       }
-      else return sdf2.format(date);
+      else return sdf.format(date);
     } catch (ParseException e) {
+      System.out.println(dateStr);
       System.out.println("wrong format");
     }
     return dateStr;

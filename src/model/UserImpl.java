@@ -150,7 +150,6 @@ public class UserImpl implements User {
   @Override
   public void cleanStockDirectory(){
     Utils.clearStockDirectory();
-    System.out.println("directory cleaned");
   }
 
   @Override

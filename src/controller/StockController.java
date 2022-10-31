@@ -207,24 +207,26 @@ public class StockController {
     }
     LoadPortfolioPrint.portfolioDetailWelcomeNote(name, this.out);
     LoadPortfolioPrint.loadPortfolioDetailMenu(this.out);
-    String option = scan.nextLine().trim();
+    String option = scan.next().trim();
     boolean comingFromDefault=false;
     do {
       switch (option) {
         case "1":
+          LoadPortfolioPrint.waitMessage(this.out);
           Map<String, Double> stockMap = user.getPortfolioSummary(name);
           if(stockMap==null){
             LoadPortfolioPrint.printInCompatiblePortfolio(this.out);
-            break;
+            return;
           }
           LoadPortfolioPrint.printPortfolioSummary(stockMap, this.out);
           break;
         case "2":
-          String date = DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now());
+          String date = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
+          LoadPortfolioPrint.waitMessage(this.out);
           Map<String, List<Double>> detailedMap = user.getPortfolioDetailed(name,date);
           if(detailedMap==null){
             LoadPortfolioPrint.printInCompatiblePortfolio(this.out);
-            break;
+            return;
           }
           Double portfolioValue = user.getPortfolioValue(name,date);
           double portfolioPerformance = user.getPortfolioPnL(name, date);
@@ -232,11 +234,12 @@ public class StockController {
           LoadPortfolioPrint.printPortfolioPerformance(portfolioPerformance, this.out);
           break;
         case "3":
-          date = DateTimeFormatter.ofPattern("MM/dd/yyyy").format(LocalDateTime.now());
+          date = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
+          LoadPortfolioPrint.waitMessage(this.out);
           portfolioValue = user.getPortfolioValue(name,date);
           if(portfolioValue==null){
             LoadPortfolioPrint.printInCompatiblePortfolio(this.out);
-            break;
+            return;
           }
           LoadPortfolioPrint.printPortfolioValue(portfolioValue, this.out);
           break;
@@ -251,10 +254,11 @@ public class StockController {
               return;
             }
           }
+          LoadPortfolioPrint.waitMessage(this.out);
           detailedMap = user.getPortfolioDetailed(name,date);
           if(detailedMap==null){
             LoadPortfolioPrint.printInCompatiblePortfolio(this.out);
-            break;
+            return;
           }
           portfolioValue = user.getPortfolioValue(name,date);
           portfolioPerformance = user.getPortfolioPnL(name, date);
@@ -272,10 +276,11 @@ public class StockController {
               return;
             }
           }
+          LoadPortfolioPrint.waitMessage(this.out);
           portfolioValue = user.getPortfolioValue(name,date);
           if(portfolioValue==null){
             LoadPortfolioPrint.printInCompatiblePortfolio(this.out);
-            break;
+            return;
           }
           LoadPortfolioPrint.printPortfolioValue(portfolioValue, this.out);
           break;
@@ -286,12 +291,12 @@ public class StockController {
           return;
         default:
           LoadPortfolioPrint.loadPortfolioErrorNote(this.out);
-          option = scan.nextLine();
+          option = scan.next();
           comingFromDefault=true;
       }
       if (!comingFromDefault) {
         LoadPortfolioPrint.loadPortfolioDetailMenu(this.out);
-        option = scan.nextLine();
+        option = scan.next().trim();
       }
       comingFromDefault=false;
     } while (option != "7");
