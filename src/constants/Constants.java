@@ -26,7 +26,7 @@ public class Constants {
           + ".co/query?function=TIME_SERIES_DAILY"
           + "&outputsize=full";
 
-  public static String ApiKey = "ZCVYQOK98OIWK0E6";
+//  public static String ApiKey = "ZCVYQOK98OIWK0E6";
 
 
   public static String getCurrentValueApi = "https://www.alphavantage"
@@ -61,9 +61,9 @@ public class Constants {
   public static Set<String> stockNames;
 
   public static final String[] keys = {
-          "ZCVYQOK98OIWK0E6",
+          "RSNOZCM1AIHGILQZ",
           "9G8A1X5VH7W7QNPH",
-          "ZCVYQOK98OIWK0E6",
+          "K9V4Z34GR9UPOPZ5",
           "ZCVYQOK98OIWK0E6"
   };
   public static final List<String> apiKeys = new ArrayList<>(Arrays.asList(keys));

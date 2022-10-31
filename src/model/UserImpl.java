@@ -91,7 +91,7 @@ public class UserImpl implements User {
       } else if (!date.equals(currentDate) && portfolioMap.containsKey(name)) {
         res = portfolioMap.get(name).getPortfolioDetailedOnDate(date);
       }
-      portfolioMap.put(name, new PortfolioImpl(name));
+//      portfolioMap.put(name, new PortfolioImpl(name));
       for(PortfolioDetailedPojo pojo : res){
         String ticker_symbol = pojo.getTicker();
         List<Double> listVals = new ArrayList<>();

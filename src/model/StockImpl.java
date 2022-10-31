@@ -36,6 +36,7 @@ final class StockImpl implements Stock {
       String res = Utils.fetchCurrentStockValue(this.ticker);
       return Double.parseDouble(res);
     } catch (Exception e) {
+      System.out.println(e);
       return -1.0;
     }
   }
