@@ -16,6 +16,10 @@ public class ViewConstants {
 
   public static final String ErrorNote="Please enter an integer value between 0 and 2 ";
 
+  public static final String ExitNote="\n"+
+      "Thank you for using our Stock Application";
+
+
   public static final String AddPortfolio="\n\n-------------Portfolio Creation-------------\n"+
       "  1. Add name of the portfolio : ";
 
@@ -23,8 +27,11 @@ public class ViewConstants {
 
   public static final String AddStocksInPortfolioAskTickerSymbol="\nTicker symbol of the company (0 to return to the main menu): ";
 
+  public static final String AskTickerSymbolAgain="\nPortfolio doesn't contain this stock, enter again:  (0 to return to main menu): ";
+
   public static final String AddStocksInPortfolioAskStockNumber="Number of stocks for the company: ";
 
+  public static final String AskStockNumberAgain="Number entered is not in correct format, please enter again (0 to return to main menu): ";
   public static final String AddStocksInPortfolioConfirmation="\n"+
       "Stock added successfully to the portfolio!!\n"+
       "Do you want to add more stocks or remove any stocks (y/n)? ";

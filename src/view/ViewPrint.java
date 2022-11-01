@@ -3,14 +3,106 @@ package view;
 import constants.ViewConstants;
 import java.io.PrintStream;
 import java.text.DecimalFormat;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+public class ViewPrint {
+
+  public static final void welcomeNote(PrintStream out){
+    out.println(ViewConstants.WelcomeMessage);
+  }
+
+  public static final void printMenu(PrintStream out){
+    out.print(ViewConstants.MenuMessage);
+  }
+
+  public static final void errorNote(PrintStream out){
+    out.print(ViewConstants.ErrorNote);
+  }
+
+  public static final void exitNote(PrintStream out){
+    out.print(ViewConstants.ExitNote);
+  }
 
 
-public class LoadPortfolioPrint{
+
+
+  public static void addPortfolio(PrintStream out) {
+    out.print(ViewConstants.AddPortfolio);
+  }
+
+  public static void askPortfolioNameAgain(PrintStream out){
+    out.print(ViewConstants.AskPortfolioNameAgain);
+  }
+
+  public static void addStocksInPortfolioWelcomeNote(String portfolioName, PrintStream out){
+    out.println("-------------For the Portfolio "+portfolioName+": Add stocks------------");
+  }
+
+  public static void printAvailableStocks(Set<String> stockList){
+    System.out.println("List of available stocks");
+    int i=0;
+    for(String stockName : stockList){
+      System.out.print(stockName+"\t\t\t");
+      i++;
+      if (i == 10) {
+        System.out.println();
+      }
+    }
+    System.out.println();
+  }
+
+  public static void askTickerSymbol(PrintStream out){
+    out.print(ViewConstants.AddStocksInPortfolioAskTickerSymbol);
+  }
+
+  public static void askTickerSymbolAgain(PrintStream out){
+    out.print(ViewConstants.AskTickerSymbolAgain);
+  }
+
+  public static void askStockNumber(PrintStream out){
+    out.print(ViewConstants.AddStocksInPortfolioAskStockNumber);
+  }
+
+  public static void askStockNumberAgain(PrintStream out){
+    out.print(ViewConstants.AskStockNumberAgain);
+  }
+
+  public static void addStocksInPortfolioConfirmation(PrintStream out){
+    out.print(ViewConstants.AddStocksInPortfolioConfirmation);
+  }
+
+  public static void stocksInPortfolioAddOrRemoveMenu(PrintStream out){
+    out.print(ViewConstants.StocksInPortfolioAddOrRemoveMenu);
+  }
+
+  public static void removeStocksInPortfolioSuccessfulConfirmation(PrintStream out){
+    out.print(ViewConstants.RemoveStocksInPortfolioSuccessfulConfirmation);
+  }
+
+  public static void removeStocksInPortfolioUnSuccessfulConfirmation(PrintStream out){
+    out.print(ViewConstants.RemoveStocksInPortfolioUnSuccessfulConfirmation);
+  }
+
+  public static void askconfirmation(PrintStream out){
+    out.print(ViewConstants.AskConfirmation);
+  }
+
+  public static void waitMessage(PrintStream out){
+    out.println(ViewConstants.WaitMessage);
+  }
+
+  public static void addStocksInPortfolioConfirmationLoading(String name, PrintStream out){
+    out.println("\n"+name+" Portfolio has been added to your list of portfolios");
+  }
+
+  public static void addStocksInPortfolioErrorNode(PrintStream out){
+    out.print(ViewConstants.AddStocksInPortfolioErrorNote);
+  }
+
+
+
 
   public static void printPortfolios(Set<String> portfolioNames, PrintStream out){
     out.println();
@@ -44,7 +136,7 @@ public class LoadPortfolioPrint{
     out.print(ViewConstants.loadPortfolioDetailMenu);
   }
 
-  public static void waitMessage(PrintStream out){
+  public static void waitLoadMessage(PrintStream out){
     out.print(ViewConstants.WaitLoadMessage);
   }
 
@@ -115,7 +207,5 @@ public class LoadPortfolioPrint{
   public static void loadPortfolioErrorNote(PrintStream out){
     out.print(ViewConstants.LoadPortfolioErrorNote);
   }
-
-
 
 }
