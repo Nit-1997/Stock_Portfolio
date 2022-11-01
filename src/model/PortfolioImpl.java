@@ -30,12 +30,12 @@ final public class PortfolioImpl implements Portfolio {
 
 
   public PortfolioImpl(String name) throws Exception {
-    this.stockOrder = Utils.loadPortfolioData(name);
+    this.stockOrder = Utils.loadPortfolioData(name , "portfolios");
     this.name = name;
     if(this.stockOrder==null) return;
     for (StockOrder s : this.stockOrder) {
-      if (!Utils.dataExists(s.getStock().getStockTickerName().toUpperCase())) {
-        Utils.loadStockData(s.getStock().getStockTickerName().toUpperCase());
+      if (!Utils.dataExists(s.getStock().getStockTickerName().toUpperCase(),"stock_data")) {
+        Utils.loadStockData(s.getStock().getStockTickerName().toUpperCase(),"stock_data");
       }
     }
   }
@@ -49,8 +49,8 @@ final public class PortfolioImpl implements Portfolio {
     this.stockOrder = new ArrayList<>();
     this.name = name;
     for (String key : stocksMap.keySet()) {
-      if (!Utils.dataExists(key)) {
-        Utils.loadStockData(key);
+      if (!Utils.dataExists(key,"stock_data")) {
+        Utils.loadStockData(key , "stock_data");
       }
       this.stockOrder.add(new StockOrderImpl(key, stocksMap.get(key)));
     }

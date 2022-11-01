@@ -76,7 +76,7 @@ final class StockImpl implements Stock {
   @Override
   public double getPriceOnDate(String date) {
     try {
-      String res = Utils.fetchStockValueByDate(this.ticker, date);
+      String res = Utils.fetchStockValueByDate(this.ticker, date, "stock_data");
       return Double.parseDouble(res);
     } catch (Exception e) {
       return -1;

@@ -45,16 +45,8 @@ public class Utils {
         return files[0];
       }
     }
-    //    if(files.length==0){
-//      return null;
-//    }
-//    if (files == null) {
-//      createFileIfNotExists(fileName, dirName);
-//      files = new File(fileDirectory).listFiles((f1, name) -> name.equals(fileName + ".csv"));
-//      assert files != null;
-//    }
-//    return files[0];
   }
+
 
 
   /**
@@ -84,7 +76,10 @@ public class Utils {
     myWriter.close();
   }
 
-  private static String getFilePath(String name, String dirName) {
+  private static String getFilePath(String name, String dirName) throws IOException {
+    if(name == null || dirName == null){
+      throw new IOException("passed null args");
+    }
     String os = System.getProperty("os.name");
     String path = "";
     if (Objects.equals(os.split(" ")[0], "Windows")) {
@@ -99,9 +94,7 @@ public class Utils {
 
   private static File createFileIfNotExists(String name, String dirName) throws IOException {
     String path = getFilePath(name, dirName);
-    File createdFile = new File(path);
-
-    return createdFile;
+    return new File(path);
   }
 
   public static Set<String> loadStockNames(String stockRepoName , String stockFileName) throws IOException {
@@ -130,27 +123,22 @@ public class Utils {
   private static boolean loadPortfolioValidator(String ticker, String date, String price, String qty){
     try{
       if(!Constants.stockNames.contains(ticker.toUpperCase())){
-        System.out.println("ticker wrong");
         return false;
       }
       else if(!dateChecker(date)){
-        System.out.println("date wrong");
         return false;
       }
       else{
-        Double parsedPrice = Double.parseDouble(price);
+        double parsedPrice = Double.parseDouble(price);
         if(parsedPrice<=0) {
-          System.out.println("parsed price wrong");
           return false;
         }
-        Double parsedQty = Double.parseDouble(qty);
+        double parsedQty = Double.parseDouble(qty);
         if(parsedQty<=0){
-          System.out.println("parsed qty wrong");
           return false;
         }
       }
     } catch(NumberFormatException e){
-      System.out.println("number format wrong");
       return false;
     }
     return  true;
@@ -162,9 +150,11 @@ public class Utils {
    *
    * @return List of stock orders
    */
-  public static List<StockOrder> loadPortfolioData(String portfolioName) throws Exception {
-    File portfolioFile = Utils.getFileByName(portfolioName,"portfolios");
-    if(portfolioFile==null) return null;
+  public static List<StockOrder> loadPortfolioData(String portfolioName , String dirName) throws Exception {
+    File portfolioFile = Utils.getFileByName(portfolioName,dirName);
+    if(portfolioFile==null){
+      return null;
+    }
 
     Scanner myReader = new Scanner(portfolioFile);
 
@@ -172,7 +162,9 @@ public class Utils {
     while (myReader.hasNextLine()) {
       String input = myReader.nextLine();
       String[] splitInput = input.split(",");
-      if(splitInput.length!=4) return null;
+      if(splitInput.length!=4){
+        return null;
+      }
       String ticker = splitInput[0];
       String date = splitInput[3];
       if(!loadPortfolioValidator(ticker,date,splitInput[1],splitInput[2])){
@@ -193,15 +185,15 @@ public class Utils {
     myWriter.close();
   }
 
-  public static void loadStockData(String ticker) throws Exception {
+  public static void loadStockData(String ticker , String stockDataDir) throws Exception {
     //String output = ApiDataFetcher.fetchStockDataBySymbol(ticker, apiKey);
     String output = ApiDataFetcher.fetchStockDataBySymbolYahoo(ticker);
-    File stockFile = createFileIfNotExists(ticker, "stock_data");
+    File stockFile = createFileIfNotExists(ticker, stockDataDir);
     writeStockDataDumpToFile(stockFile, output);
   }
 
-  public static boolean dataExists(String ticker) {
-    String stockDir = Paths.get("stock_data").toAbsolutePath().toString();
+  public static boolean dataExists(String ticker , String dirName) {
+    String stockDir = Paths.get(dirName).toAbsolutePath().toString();
     File f = new File(stockDir);
     String[] files = f.list((f1, name) -> name.equals(ticker + ".csv"));
     return files != null && files.length != 0;
@@ -224,9 +216,11 @@ public class Utils {
     return out;
   }
 
-  public static String fetchStockValueByDate(String ticker, String date) throws IOException {
-
-    File stockFile = Utils.getFileByName(ticker,"stock_data");
+  public static String fetchStockValueByDate(String ticker, String date , String dirName) throws IOException {
+    if(ticker == null || date == null){
+      throw new IOException("passed null args");
+    }
+    File stockFile = Utils.getFileByName(ticker,dirName);
     Scanner myReader = new Scanner(stockFile);
     int lineNo = 0;
     String res = "-1";
