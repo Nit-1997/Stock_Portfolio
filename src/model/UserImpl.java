@@ -4,13 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +27,12 @@ public class UserImpl implements User {
    */
   public UserImpl() throws Exception {
     Utils.clearStockDirectory();
-    Constants.stockNames = Utils.loadStockNames("stocks","stocks_list.csv");
+    try{
+      Constants.stockNames = Utils.loadStockNames("stocks","stocks_list.csv");
+    }catch(IOException e){
+      System.out.println(e.getMessage());
+    }
+
     String portfolioDirectory = Paths.get("portfolios").toAbsolutePath().toString();
     File f = new File(portfolioDirectory);
     String[] files = f.list((f1, name) -> name.endsWith(".csv"));
