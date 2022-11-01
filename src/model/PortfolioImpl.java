@@ -1,34 +1,32 @@
 package model;
 
-import java.io.Console;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
+
 import java.io.IOException;
-import java.nio.file.Paths;
-import java.nio.file.attribute.BasicFileAttributeView;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Scanner;
 
 import Utils.Utils;
-import constants.Constants;
 
 
 /**
- * This class creates the Portfolio. Portfolio consists of stocks and it's quantity.
+ * This class implements the Portfolio.
+ * Portfolio consists of name, list of stock orders,
+ * i.e {stock, quantity}
  */
 final public class PortfolioImpl implements Portfolio {
 
   private final String name;
   private final List<StockOrder> stockOrder;
 
-
-  public PortfolioImpl(String name) throws IOException {
+  /**
+   * Constructor to create Portfolio object.
+   * This is used when fetching already created portfolio
+   *
+   * @param name name of the portfolio
+   * @throws Exception can occur while reading/loading data dump
+   */
+  public PortfolioImpl(String name) throws Exception {
     this.stockOrder = Utils.loadPortfolioData(name, "portfolios");
     this.name = name;
     if (this.stockOrder == null) {
@@ -42,9 +40,12 @@ final public class PortfolioImpl implements Portfolio {
   }
 
   /**
-   * Creates a new portfolio.
+   * Constructor to create Portfolio object.
+   * This is used when creating a new Portfolio
    *
    * @param stocksMap map of {ticker , qty}
+   * @param name      name name of the portfolio
+   * @throws Exception can occur while reading/loading data dump
    */
   public PortfolioImpl(Map<String, Double> stocksMap, String name) throws Exception {
     this.stockOrder = new ArrayList<>();

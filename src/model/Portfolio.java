@@ -2,10 +2,11 @@ package model;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Interface to specify Portfolio specs.
+ * spec includes the name ,{stock , qty} map while creating the portfolio,
+ * or just name while fetching already created portfolio
  */
 public interface Portfolio {
 
@@ -37,7 +38,6 @@ public interface Portfolio {
    * {(ticker_symbol, quantity) vs (buying price, price on that day)} .
    *
    * @param date for which details need to be fetched.
-   *
    * @return list of maps containing ticker symbol, quantity vs buying price
    */
   List<PortfolioDetailedPojo> getPortfolioDetailedOnDate(String date) throws IOException;
@@ -61,7 +61,6 @@ public interface Portfolio {
    * Fetches the value of the Portfolio for a particular date.
    *
    * @param date for which portfolio value needs to be fetched.
-   *
    * @return total Initial Buy value.
    */
   public Double getValueOnDate(String date) throws IOException;

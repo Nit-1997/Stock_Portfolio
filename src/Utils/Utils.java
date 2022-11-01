@@ -185,7 +185,7 @@ public class Utils {
     myWriter.close();
   }
 
-  public static void loadStockData(String ticker , String stockDataDir) throws IOException {
+  public static void loadStockData(String ticker , String stockDataDir) throws Exception {
     //String output = ApiDataFetcher.fetchStockDataBySymbol(ticker, apiKey);
     String output = ApiDataFetcher.fetchStockDataBySymbolYahoo(ticker , Constants.yahooApiBaseUrl);
     File stockFile = createFileIfNotExists(ticker, stockDataDir);
@@ -200,7 +200,7 @@ public class Utils {
   }
 
   public static String fetchCurrentStockValue(String ticker) throws IOException {
-    File stockFile = Utils.getFileByName(ticker,"x");
+    File stockFile = Utils.getFileByName(ticker,"stock_data");
     Scanner myReader = new Scanner(stockFile);
     int lineNo = 0;
     String out = null;

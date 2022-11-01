@@ -2,16 +2,37 @@ package model;
 
 import java.io.IOException;
 
+/**
+ * Implementation for the stock orders.
+ * This implementation uses Stock interface,
+ * to implement stock objects.
+ */
 public class StockOrderImpl implements StockOrder {
 
   private final Stock stock;
   private final double quantity;
 
+  /**
+   * Creates a StockOrderImpl object using ticker & qty.
+   *
+   * @param ticker ticker symbol of the stock
+   * @param qty    quantity of the stock
+   * @throws IOException can occur while loading/ reading data dump
+   */
   public StockOrderImpl(String ticker, double qty) throws IOException {
     this.stock = new StockImpl(ticker);
     this.quantity = qty;
   }
 
+  /**
+   * Creates a StockOrderImpl object using ticker,buyPrice,date & qty.
+   * This is used when we are fetching already existing portfolios
+   *
+   * @param ticker   ticker symbol of the stock
+   * @param buyPrice price at date of purchase
+   * @param date     date of creation.
+   * @param qty      quantity of the stock
+   */
   public StockOrderImpl(String ticker, double buyPrice, String date, double qty) {
     this.stock = new StockImpl(ticker, buyPrice, date);
     this.quantity = qty;

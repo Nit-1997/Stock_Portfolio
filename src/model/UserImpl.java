@@ -110,6 +110,9 @@ public class UserImpl implements User {
     } catch (IOException e) {
       System.out.println("IO exception "+e.getMessage());
       return null;
+    } catch (Exception e) {
+      e.printStackTrace();
+      return null;
     }
   }
 

@@ -9,12 +9,24 @@ import java.util.Map;
 
 import Utils.Utils;
 
+/**
+ * Implementation of the Stock interface.
+ * Used to store the data for each stock
+ */
 final class StockImpl implements Stock {
 
   private final String ticker;
   private final double buyPrice;
   private final String buyDate;
 
+  /**
+   * Constructor to create object of stock.
+   * This is used while fetching the data for already created stock
+   *
+   * @param ticker   ticker symbol of the stock
+   * @param buyPrice buy price of the stock
+   * @param date     date of purchase
+   */
   public StockImpl(String ticker, double buyPrice, String date) {
     this.ticker = ticker;
     this.buyPrice = buyPrice;
@@ -22,9 +34,11 @@ final class StockImpl implements Stock {
   }
 
   /**
-   * Constructor that creates a Stock object.
+   * Constructor to create object of stock.
+   * This is used when creating the portfolio for the first time
    *
-   * @param ticker ticker name
+   * @param ticker ticker symbol for the given stock
+   * @throws IOException can occur while reading/loading data dump
    */
   public StockImpl(String ticker) throws IOException {
     this.ticker = ticker;
@@ -72,6 +86,9 @@ final class StockImpl implements Stock {
 
   @Override
   public Double getPriceOnDate(String date) throws IOException {
+    if (date == null) {
+      throw new IllegalArgumentException("passed null args");
+    }
     String res = Utils.fetchStockValueByDate(this.ticker, date, "stock_data");
     if (res == null) {
       return null;

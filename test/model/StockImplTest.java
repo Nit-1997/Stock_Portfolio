@@ -3,41 +3,60 @@ package model;
 import java.io.IOException;
 import org.junit.Test;
 
+import Utils.Utils;
+
 import static org.junit.Assert.*;
 
 public class StockImplTest {
 
-
-  @Test
-  public void testGetCurrentPriceForIncorrectTicker() throws IOException {
-    Stock s = new StockImpl("xyz");
+  @Test(expected = Exception.class)
+  public void testGetCurrentPriceForIncorrectTicker() throws Exception {
+    String ticker = "xyz";
+    Utils.clearStockDirectory();
+    Utils.loadStockData(ticker,"stock_data");
+    Stock s = new StockImpl(ticker);
     double price = s.getCurrentPrice();
-    assertEquals(-1.0,price,0);
   }
 
   @Test
-  public void testGetCurrentPriceForCorrectTicker() throws IOException {
-    Stock s = new StockImpl("CSCO");
-    double price = s.getCurrentPrice();
-    assertNotEquals(-1.0,price,0);
+  public void testGetCurrentPriceForCorrectTicker() throws Exception {
+    String ticker = "CSCO";
+    Utils.clearStockDirectory();
+    Utils.loadStockData(ticker,"stock_data");
+    Stock s = new StockImpl(ticker);
+    Double price = s.getCurrentPrice();
+    assertNotNull(price);
   }
 
   @Test
-  public void testGetBuyPrice() throws IOException {
-    Stock s = new StockImpl("CSCO");
-    double price = s.getBuyPrice();
-    System.out.println(price);
-    assertNotEquals(-1.0,price,0);
+  public void testGetBuyPrice() throws Exception {
+    String ticker = "CSCO";
+    Utils.clearStockDirectory();
+    Utils.loadStockData(ticker,"stock_data");
+    Stock s = new StockImpl(ticker);
+    Double price = s.getBuyPrice();
+    assertNotNull(price);
   }
 
-  //TODO handle incorrect ticker for creating stocks
-
   @Test
-  public void testgetPriceOnDateForCorrectTicker() throws IOException {
-    Stock s = new StockImpl("CSCO");
-    double price = s.getPriceOnDate("2022-10-27");
-    System.out.println(price);
+  public void testGetPriceOnDateForCorrectTicker() throws Exception {
+    String ticker = "CSCO";
+    Utils.clearStockDirectory();
+    Utils.loadStockData(ticker,"stock_data");
+    String date = "2022-10-27";
+    Stock s = new StockImpl(ticker);
+    Double price = s.getPriceOnDate(date);
+    assertNotNull(price);
     assertEquals(44.419998 , price , 0);
+  }
+
+  @Test(expected = Exception.class)
+  public void testGetPriceOnDateForNullDate() throws Exception {
+    String ticker = "CSCO";
+    Utils.clearStockDirectory();
+    Utils.loadStockData(ticker,"stock_data");
+    Stock s = new StockImpl(ticker);
+    Double price = s.getPriceOnDate(null);
   }
 
 }

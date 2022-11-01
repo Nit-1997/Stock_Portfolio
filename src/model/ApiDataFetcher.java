@@ -5,13 +5,28 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedList;
+
 import Utils.Utils;
 import constants.Constants;
 
+/**
+ * This class is used to fetch historic stock data.
+ * The source can either be alpha vantage / yahoo.
+ * As part of this implementation we are using yahoo's finance api.
+ * as yahoo api does not rate limit users after 5 requests
+ */
 public class ApiDataFetcher {
 
-  public static String fetchStockDataBySymbolYahoo(String ticker , String baseUrl) throws RuntimeException {
-    if(ticker == null || baseUrl==null){
+  /**
+   * Fetches the historic stock data using symbol.
+   *
+   * @param ticker  ticker symbol
+   * @param baseUrl base url of the api
+   * @return historic timeseries data in string format
+   * @throws RuntimeException can occur due to incorrect url/params
+   */
+  public static String fetchStockDataBySymbolYahoo(String ticker, String baseUrl) throws RuntimeException {
+    if (ticker == null || baseUrl == null) {
       throw new IllegalArgumentException("passed null args");
     }
     URL url;

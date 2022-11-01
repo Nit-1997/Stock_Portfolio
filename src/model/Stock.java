@@ -48,9 +48,15 @@ public interface Stock {
 
   /**
    * Fetches the ticker name
+   *
    * @return ticker name
    */
   public String getStockTickerName();
 
+  /**
+   * Gets the buy date for this stock.
+   *
+   * @return price at the date of purchase
+   */
   String getBuyDate();
 }
