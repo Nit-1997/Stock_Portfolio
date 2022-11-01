@@ -187,7 +187,7 @@ public class Utils {
 
   public static void loadStockData(String ticker , String stockDataDir) throws Exception {
     //String output = ApiDataFetcher.fetchStockDataBySymbol(ticker, apiKey);
-    String output = ApiDataFetcher.fetchStockDataBySymbolYahoo(ticker);
+    String output = ApiDataFetcher.fetchStockDataBySymbolYahoo(ticker , Constants.yahooApiBaseUrl);
     File stockFile = createFileIfNotExists(ticker, stockDataDir);
     writeStockDataDumpToFile(stockFile, output);
   }

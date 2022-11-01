@@ -10,11 +10,14 @@ import constants.Constants;
 
 public class ApiDataFetcher {
 
-  public static String fetchStockDataBySymbolYahoo(String ticker) throws Exception {
+  public static String fetchStockDataBySymbolYahoo(String ticker , String baseUrl) throws Exception {
+    if(ticker == null || baseUrl==null){
+      throw new IllegalArgumentException("passed null args");
+    }
     URL url;
     try {
       String[] periods = Utils.yahooApiDateFetcher();
-      String apiUrl = Constants.yahooApiBaseUrl
+      String apiUrl = baseUrl
               + ticker
               + "?metrics=high?&interval=1d&period1="
               + periods[0] + "&period2="
