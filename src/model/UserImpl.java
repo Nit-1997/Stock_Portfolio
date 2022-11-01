@@ -32,7 +32,7 @@ public class UserImpl implements User {
    */
   public UserImpl() throws Exception {
     Utils.clearStockDirectory();
-    Constants.stockNames = Utils.loadStockNames();
+    Constants.stockNames = Utils.loadStockNames("stocks","stocks_list.csv");
     String portfolioDirectory = Paths.get("portfolios").toAbsolutePath().toString();
     File f = new File(portfolioDirectory);
     String[] files = f.list((f1, name) -> name.endsWith(".csv"));

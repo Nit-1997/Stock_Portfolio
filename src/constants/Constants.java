@@ -21,6 +21,8 @@ public class Constants {
 
   public static final String yahooApiBaseUrl = "https://query1.finance.yahoo.com/v7/finance/download/";
 
+  public static final int totalHandledStocks = 20;
+
 //  public static final String[] keys = {
 //          "RSNOZCM1AIHGILQZ",
 //          "9G8A1X5VH7W7QNPH",

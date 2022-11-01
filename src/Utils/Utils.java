@@ -28,38 +28,43 @@ import model.StockOrderImpl;
 
 public class Utils {
 
-  /**
-   * takes csv data as input and returns the closing price as per current that date.
-   *
-   * @param data csv time series data
-   * @param date date to be fetched
-   * @return closing value
-   */
-  public static String parseAndFetchPriceByDate(StringBuilder data, String date) {
-    return null;
-  }
 
   public static File getFileByName(String fileName , String dirName) throws IOException {
+    if(fileName == null || dirName == null){
+      throw new IOException("arguments passed are null");
+    }
     String fileDirectory = Paths.get(dirName).toAbsolutePath().toString();
 
     File[] files = new File(fileDirectory).listFiles((f1, name) -> name.equals(fileName + ".csv"));
-    if(files.length==0){
-      return null;
+    if(files == null){
+      throw new IOException("Cannot find the directory");
+    }else{
+      if(files.length == 0){
+        throw new IOException("File does not exist");
+      }else{
+        return files[0];
+      }
     }
-    if (files == null) {
-      createFileIfNotExists(fileName, dirName);
-      files = new File(fileDirectory).listFiles((f1, name) -> name.equals(fileName + ".csv"));
-      assert files != null;
-    }
-    return files[0];
+    //    if(files.length==0){
+//      return null;
+//    }
+//    if (files == null) {
+//      createFileIfNotExists(fileName, dirName);
+//      files = new File(fileDirectory).listFiles((f1, name) -> name.equals(fileName + ".csv"));
+//      assert files != null;
+//    }
+//    return files[0];
   }
 
 
   /**
    * saves the current portfolio to the file.
    */
-  public static void saveToFile(String name, List<StockOrder> orders) throws IOException {
-    File portfolioFile = createFileIfNotExists(name, "portfolios");
+  public static void saveToFile(String name, List<StockOrder> orders , String dirName) throws IOException {
+    if(name == null || orders == null){
+      throw new IOException("passed null args");
+    }
+    File portfolioFile = createFileIfNotExists(name, dirName);
     writePortfolioToFile(portfolioFile, orders);
   }
 
@@ -96,10 +101,16 @@ public class Utils {
     return createdFile;
   }
 
-  public static Set<String> loadStockNames() throws IOException {
-    String stockRepoName = "stocks";
+  public static Set<String> loadStockNames(String stockRepoName , String stockFileName) throws IOException {
     String portfolioDirectory = Paths.get(stockRepoName).toAbsolutePath().toString();
-    File stockFile = Objects.requireNonNull(new File(portfolioDirectory).listFiles((f1, name) -> name.equals("stocks_list.csv")))[0];
+    File[] stockFiles = new File(portfolioDirectory).listFiles((f1, name) -> name.equals(stockFileName));
+    if(stockFiles == null){
+      throw new IOException("Could not find the directory");
+    }
+    if(stockFiles.length == 0 ){
+      throw new IOException("File not found");
+    }
+    File stockFile = stockFiles[0];
     Scanner myReader = new Scanner(stockFile);
     Set<String> parsedStocks = new HashSet<>();
     while (myReader.hasNextLine()) {
@@ -107,6 +118,9 @@ public class Utils {
       parsedStocks.add(input);
     }
     myReader.close();
+    if(parsedStocks.size() != Constants.totalHandledStocks ){
+      throw new IOException("Stock Name file corrupted");
+    }
     return parsedStocks;
   }
 
@@ -170,7 +184,7 @@ public class Utils {
     return parsedFileInput;
   }
 
-  public static void writeStockDataDumpToFile(File stockFile, String data) throws IOException {
+  private static void writeStockDataDumpToFile(File stockFile, String data) throws IOException {
     FileWriter myWriter = new FileWriter(stockFile);
     myWriter.write(data);
     myWriter.close();

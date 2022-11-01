@@ -53,7 +53,7 @@ final public class PortfolioImpl implements Portfolio {
       }
       this.stockOrder.add(new StockOrderImpl(key, stocksMap.get(key)));
     }
-    Utils.saveToFile(this.name, this.stockOrder);
+    Utils.saveToFile(this.name, this.stockOrder , "portfolios");
   }
 
 
