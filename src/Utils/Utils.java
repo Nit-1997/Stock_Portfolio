@@ -253,6 +253,9 @@ public class Utils {
   }
 
   public static String dateSaturdaySundayChecker(String dateStr){
+    if(!Utils.dateChecker(dateStr)){
+      return "";
+    }
     final long MILLIS_IN_A_DAY = 1000 * 60 * 60 * 24;
     DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     sdf.setLenient(false);

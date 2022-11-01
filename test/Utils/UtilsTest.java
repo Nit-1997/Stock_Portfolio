@@ -1,5 +1,7 @@
 package Utils;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.junit.Test;
 
 import java.io.File;
@@ -177,5 +179,80 @@ public class UtilsTest {
     String v = Utils.fetchStockValueByDate("CSCO", "202cx-10-28", "stock_data");
     assertEquals("-1", v);
   }
+
+  @Test
+  public void testDateCheckerPositive(){
+    assertTrue(Utils.dateChecker("2022-01-01"));
+  }
+
+  @Test
+  public void testDateCheckerBeforeStartingDate(){
+    assertFalse(Utils.dateChecker("2009-01-01"));
+  }
+
+  @Test
+  public void testDateCheckerBeforeAfterDate(){
+    assertFalse(Utils.dateChecker("2009-11-04"));
+  }
+
+  @Test
+  public void testDateCheckerBeforeWrongFormat(){
+    assertFalse(Utils.dateChecker("02-26-2022"));
+  }
+
+  @Test
+  public void testDateCheckerBeforeWrongFormat2(){
+    assertFalse(Utils.dateChecker("02/26/2022"));
+  }
+
+  @Test
+  public void testDateSaturdaySundayCheckerWrongFormat(){
+    assertEquals("",Utils.dateSaturdaySundayChecker("02/26/2022"));
+  }
+
+  @Test
+  public void testDateSaturdaySundayCheckerSaturday(){
+    assertEquals("2021-04-30",Utils.dateSaturdaySundayChecker("2021-05-01"));
+  }
+
+  @Test
+  public void testDateSaturdaySundayCheckerSunday(){
+    assertEquals("2021-05-21",Utils.dateSaturdaySundayChecker("2021-05-23"));
+  }
+
+  @Test
+  public void testDateSaturdaySundayCheckerWeekday(){
+    assertEquals("2021-05-19",Utils.dateSaturdaySundayChecker("2021-05-19"));
+  }
+
+  @Test
+  public void testClearStockDirectoryNotEmptyDirectory() throws IOException {
+    Path portfolioDirectory = Paths.get("stock_data").toAbsolutePath();
+    new File(portfolioDirectory+File.separator+"a.txt").createNewFile();
+    new File(portfolioDirectory+File.separator+"b.txt").createNewFile();
+    Utils.clearStockDirectory();
+    File[] list = new File(portfolioDirectory.toString()).listFiles();
+    assertEquals(0,list.length);
+  }
+
+  @Test
+  public void testClearStockDirectoryEmptyDirectory() {
+    Path portfolioDirectory = Paths.get("stock_data").toAbsolutePath();
+    Utils.clearStockDirectory();
+    File[] list = new File(portfolioDirectory.toString()).listFiles();
+    assertEquals(0,list.length);
+  }
+
+  @Test
+  public void testClearStockDirectoryNoDirectory() {
+    Path portfolioDirectory = Paths.get("stock_data").toAbsolutePath();
+    File directory = new File(portfolioDirectory.toString());
+    directory.delete();
+    assertFalse(directory.exists());
+    Utils.clearStockDirectory();
+    assertTrue(directory.exists());
+  }
+
+
 
 }
