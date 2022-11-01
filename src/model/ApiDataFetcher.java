@@ -4,29 +4,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
-
-import javax.swing.plaf.ColorUIResource;
-
 import Utils.Utils;
 import constants.Constants;
 
 public class ApiDataFetcher {
 
   public static String fetchStockDataBySymbolYahoo(String ticker) throws Exception {
-    URL url = null;
+    URL url;
     try {
       String[] periods = Utils.yahooApiDateFetcher();
       String apiUrl = Constants.yahooApiBaseUrl
@@ -39,7 +24,7 @@ public class ApiDataFetcher {
       throw new RuntimeException("the yahoo API has either changed or "
               + "no longer works");
     }
-    InputStream in = null;
+    InputStream in;
     StringBuilder output = new StringBuilder();
 
     try {

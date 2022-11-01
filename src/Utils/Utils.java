@@ -70,6 +70,9 @@ public class Utils {
 
 
   private static void writePortfolioToFile(File portfolioFile, List<StockOrder> orders) throws IOException {
+    if(portfolioFile == null || orders == null){
+      throw new IOException("passed null args");
+    }
     FileWriter myWriter = new FileWriter(portfolioFile);
     for (StockOrder order : orders) {
       myWriter.write("" + order.getStock().getStockTickerName()

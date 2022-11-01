@@ -32,6 +32,7 @@ final public class PortfolioImpl implements Portfolio {
   public PortfolioImpl(String name) throws Exception {
     this.stockOrder = Utils.loadPortfolioData(name);
     this.name = name;
+    if(this.stockOrder==null) return;
     for (StockOrder s : this.stockOrder) {
       if (!Utils.dataExists(s.getStock().getStockTickerName().toUpperCase())) {
         Utils.loadStockData(s.getStock().getStockTickerName().toUpperCase());
