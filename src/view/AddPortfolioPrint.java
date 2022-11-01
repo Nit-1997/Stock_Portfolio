@@ -37,12 +37,15 @@ public class AddPortfolioPrint{
     out.print(ViewConstants.AddStocksInPortfolioAskTickerSymbol);
   }
 
+  public static void askTickerSymbolAgain(PrintStream out){
+    out.print("Portfolio doesn't contain this stock, enter again:  (0 to return to main menu): ");
+  }
+
   public static void askStockNumber(PrintStream out){
     out.print(ViewConstants.AddStocksInPortfolioAskStockNumber);
   }
 
   public static void askStockNumberAgain(PrintStream out){
-    System.out.println();
     System.out.print("Number entered is not in correct format, please enter again (0 to return to main menu): ");
   }
 

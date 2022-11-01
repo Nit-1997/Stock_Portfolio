@@ -159,7 +159,6 @@ public class Utils {
       String ticker = splitInput[0];
       String date = splitInput[3];
       if(!loadPortfolioValidator(ticker,date,splitInput[1],splitInput[2])){
-        System.out.println(ticker+" "+date+" "+splitInput[1]+" "+splitInput[2]);
         return null;
       }
       double price = Double.parseDouble(splitInput[1]);
@@ -269,6 +268,13 @@ public class Utils {
   public static void clearStockDirectory(){
     String portfolioDirectory = Paths.get("stock_data").toAbsolutePath().toString();
     File directory = new File(portfolioDirectory);
+    if(directory.listFiles()==null){
+      directory.mkdirs();
+      return;
+    }
+    if(directory.listFiles().length==0){
+      return;
+    }
     for(File file : directory.listFiles()) file.delete();
   }
 
