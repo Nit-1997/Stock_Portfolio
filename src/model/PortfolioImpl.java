@@ -20,8 +20,7 @@ import constants.Constants;
 
 
 /**
- * This class creates the Portfolio.
- * Portfolio consists of stocks and it's quantity.
+ * This class creates the Portfolio. Portfolio consists of stocks and it's quantity.
  */
 final public class PortfolioImpl implements Portfolio {
 
@@ -29,13 +28,15 @@ final public class PortfolioImpl implements Portfolio {
   private final List<StockOrder> stockOrder;
 
 
-  public PortfolioImpl(String name) throws Exception {
-    this.stockOrder = Utils.loadPortfolioData(name , "portfolios");
+  public PortfolioImpl(String name) throws IOException {
+    this.stockOrder = Utils.loadPortfolioData(name, "portfolios");
     this.name = name;
-    if(this.stockOrder==null) return;
+    if (this.stockOrder == null) {
+      return;
+    }
     for (StockOrder s : this.stockOrder) {
-      if (!Utils.dataExists(s.getStock().getStockTickerName().toUpperCase(),"stock_data")) {
-        Utils.loadStockData(s.getStock().getStockTickerName().toUpperCase(),"stock_data");
+      if (!Utils.dataExists(s.getStock().getStockTickerName().toUpperCase(), "stock_data")) {
+        Utils.loadStockData(s.getStock().getStockTickerName().toUpperCase(), "stock_data");
       }
     }
   }
@@ -49,20 +50,25 @@ final public class PortfolioImpl implements Portfolio {
     this.stockOrder = new ArrayList<>();
     this.name = name;
     for (String key : stocksMap.keySet()) {
-      if (!Utils.dataExists(key,"stock_data")) {
-        Utils.loadStockData(key , "stock_data");
+      if (!Utils.dataExists(key, "stock_data")) {
+        Utils.loadStockData(key, "stock_data");
       }
       this.stockOrder.add(new StockOrderImpl(key, stocksMap.get(key)));
     }
-    Utils.saveToFile(this.name, this.stockOrder , "portfolios");
+    Utils.saveToFile(this.name, this.stockOrder, "portfolios");
   }
 
 
   @Override
-  public Double getCurrentValue() {
-    if (this.stockOrder == null) return null;
+  public Double getCurrentValue() throws IOException {
+    if (this.stockOrder == null) {
+      return null;
+    }
     Double val = 0.0;
     for (StockOrder order : this.stockOrder) {
+      if (order.getCurrentOrderValue() == null) {
+        return null;
+      }
       val += order.getCurrentOrderValue();
     }
     return val;
@@ -78,10 +84,15 @@ final public class PortfolioImpl implements Portfolio {
   }
 
   @Override
-  public Double getValueOnDate(String date) {
-    if (this.stockOrder == null) return null;
+  public Double getValueOnDate(String date) throws IOException {
+    if (this.stockOrder == null) {
+      return null;
+    }
     Double val = 0.0;
     for (StockOrder order : this.stockOrder) {
+      if (order.getOrderValueOnDate(date) == null) {
+        return null;
+      }
       val += order.getOrderValueOnDate(date);
     }
     return val;
@@ -89,9 +100,12 @@ final public class PortfolioImpl implements Portfolio {
 
 
   @Override
-  public double getPortfolioPnL() throws IOException {
+  public Double getPortfolioPnL() throws IOException {
     double val = 0.0;
     for (StockOrder order : this.stockOrder) {
+      if (order.getOrderPnL() == null) {
+        return null;
+      }
       val += order.getOrderPnL();
     }
     return val;
@@ -104,14 +118,22 @@ final public class PortfolioImpl implements Portfolio {
 
   @Override
   public List<PortfolioDetailedPojo> getCurrentPortfolioDetailed() throws IOException {
-    if (this.stockOrder == null) return null;
+    if (this.stockOrder == null) {
+      return null;
+    }
     List<PortfolioDetailedPojo> parsedResponse = new ArrayList<>();
     for (StockOrder order : this.stockOrder) {
       String ticker = order.getStock().getStockTickerName();
       double buyPrice = order.getStock().getBuyPrice();
       double qty = order.getQuantity();
-      double currentPrice = order.getStock().getCurrentPrice();
-      double pnl = order.getStock().getPnL();
+      Double currentPrice = order.getStock().getCurrentPrice();
+      if (currentPrice == null) {
+        return null;
+      }
+      Double pnl = order.getStock().getPnL();
+      if (pnl == null) {
+        return null;
+      }
       parsedResponse.add(new PortfolioDetailedPojo(ticker, buyPrice, qty, currentPrice, pnl));
     }
     return parsedResponse;
@@ -119,14 +141,23 @@ final public class PortfolioImpl implements Portfolio {
 
   @Override
   public List<PortfolioDetailedPojo> getPortfolioDetailedOnDate(String date) throws IOException {
-    if (this.stockOrder == null) return null;
+    if (this.stockOrder == null) {
+      System.out.println("stock order is null");
+      return null;
+    }
     List<PortfolioDetailedPojo> parsedResponse = new ArrayList<>();
     for (StockOrder order : this.stockOrder) {
       String ticker = order.getStock().getStockTickerName();
       double buyPrice = order.getStock().getBuyPrice();
       double qty = order.getQuantity();
-      double priceOnDate = order.getStock().getPriceOnDate(date);
-      double pnlOnDate = order.getStock().getPnLByDate(date);
+      Double priceOnDate = order.getStock().getPriceOnDate(date);
+      if (priceOnDate == null) {
+        return null;
+      }
+      Double pnlOnDate = order.getStock().getPnLByDate(date);
+      if (pnlOnDate == null) {
+        return null;
+      }
       parsedResponse.add(new PortfolioDetailedPojo(ticker, buyPrice, qty, priceOnDate, pnlOnDate));
     }
     return parsedResponse;

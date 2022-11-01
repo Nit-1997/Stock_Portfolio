@@ -4,15 +4,14 @@ import java.io.IOException;
 
 public interface StockOrder {
 
-  public double getCurrentOrderValue();
+  public Double getCurrentOrderValue() throws IOException;
 
-  public double getInitialOrderValue();
+  public Double getInitialOrderValue();
 
-  public double getOrderValueOnDate(String date);
+  public Double getOrderValueOnDate(String date) throws IOException;
 
-  public double getOrderPnL() throws IOException;
+  public Double getOrderPnL() throws IOException;
 
-  public double getOrderValueByDate(String date);
 
   public Stock getStock();
 

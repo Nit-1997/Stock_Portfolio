@@ -14,7 +14,7 @@ public interface Portfolio {
    *
    * @return Portfolio PnL
    */
-  double getPortfolioPnL() throws IOException;
+  Double getPortfolioPnL() throws IOException;
 
   /**
    * Fetches from local file and provides summary of the portfolio {ticker name, quantity} .
@@ -47,7 +47,7 @@ public interface Portfolio {
    *
    * @return currentPrice of Portfolio
    */
-  public Double getCurrentValue();
+  public Double getCurrentValue() throws IOException;
 
   /**
    * Fetches the initial value of the Portfolio.
@@ -64,6 +64,6 @@ public interface Portfolio {
    *
    * @return total Initial Buy value.
    */
-  public Double getValueOnDate(String date);
+  public Double getValueOnDate(String date) throws IOException;
 
 }

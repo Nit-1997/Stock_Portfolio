@@ -10,7 +10,7 @@ import constants.Constants;
 
 public class ApiDataFetcher {
 
-  public static String fetchStockDataBySymbolYahoo(String ticker , String baseUrl) throws Exception {
+  public static String fetchStockDataBySymbolYahoo(String ticker , String baseUrl) throws RuntimeException {
     if(ticker == null || baseUrl==null){
       throw new IllegalArgumentException("passed null args");
     }

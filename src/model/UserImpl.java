@@ -25,7 +25,7 @@ public class UserImpl implements User {
   /**
    * Constructor to initialize User Object with portfolios.
    */
-  public UserImpl() throws Exception {
+  public UserImpl() {
     Utils.clearStockDirectory();
     try{
       Constants.stockNames = Utils.loadStockNames("stocks","stocks_list.csv");
@@ -81,7 +81,7 @@ public class UserImpl implements User {
 
   @Override
   public Map<String, List<Double>> getPortfolioDetailed(String name, String date) {
-    date = Utils.dateSaturdaySundayChecker(date);
+//    date = Utils.dateSaturdaySundayChecker(date);
     try {
       if (portfolioMap.get(name) == null) portfolioMap.put(name, new PortfolioImpl(name));
       Map<String, List<Double>> resMap = new HashMap<>();
@@ -90,6 +90,7 @@ public class UserImpl implements User {
       if (date.equals(currentDate)) {
         res = portfolioMap.get(name).getCurrentPortfolioDetailed();
       } else if (!date.equals(currentDate) && portfolioMap.containsKey(name)) {
+        System.out.println("in not current date");
         res = portfolioMap.get(name).getPortfolioDetailedOnDate(date);
       }
       if(res==null) return null;
@@ -104,15 +105,17 @@ public class UserImpl implements User {
       }
       return resMap;
     } catch (FileNotFoundException e) {
+      System.out.println("FileNotFoundException exception");
       return null;
-    } catch (Exception e) {
+    } catch (IOException e) {
+      System.out.println("IO exception "+e.getMessage());
       return null;
     }
   }
 
   @Override
   public Double getPortfolioValue(String name, String date) throws Exception {
-    date = Utils.dateSaturdaySundayChecker(date);
+//    date = Utils.dateSaturdaySundayChecker(date);
     try {
       if (portfolioMap.get(name) == null) portfolioMap.put(name, new PortfolioImpl(name));
       Double portfolioValue = 0.0;
@@ -130,7 +133,7 @@ public class UserImpl implements User {
 
   @Override
   public double getPortfolioPnL(String name, String date) throws IOException {
-    date = Utils.dateSaturdaySundayChecker(date);
+//    date = Utils.dateSaturdaySundayChecker(date);
     double portfolioPnL = 0;
     String currentDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
     if (date.equals(currentDate)) {

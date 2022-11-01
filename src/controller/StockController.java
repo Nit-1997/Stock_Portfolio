@@ -163,6 +163,8 @@ public class StockController {
     boolean val = user.addPortfolio(name, stocksMap);
     if (val) {
       ViewPrint.addStocksInPortfolioConfirmationLoading(name, this.out);
+    } else {
+      System.out.println("portfolio cant be added");
     }
   }
 

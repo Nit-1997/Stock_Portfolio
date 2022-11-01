@@ -177,7 +177,7 @@ public class UtilsTest {
   public void testStockValueByDateInvalidDate() throws Exception {
     Utils.loadStockData("CSCO", "stock_data");
     String v = Utils.fetchStockValueByDate("CSCO", "202cx-10-28", "stock_data");
-    assertEquals("-1", v);
+    assertNull(v);
   }
 
   @Test

@@ -150,7 +150,7 @@ public class Utils {
    *
    * @return List of stock orders
    */
-  public static List<StockOrder> loadPortfolioData(String portfolioName , String dirName) throws Exception {
+  public static List<StockOrder> loadPortfolioData(String portfolioName , String dirName) throws IOException{
     File portfolioFile = Utils.getFileByName(portfolioName,dirName);
     if(portfolioFile==null){
       return null;
@@ -185,7 +185,7 @@ public class Utils {
     myWriter.close();
   }
 
-  public static void loadStockData(String ticker , String stockDataDir) throws Exception {
+  public static void loadStockData(String ticker , String stockDataDir) throws IOException {
     //String output = ApiDataFetcher.fetchStockDataBySymbol(ticker, apiKey);
     String output = ApiDataFetcher.fetchStockDataBySymbolYahoo(ticker , Constants.yahooApiBaseUrl);
     File stockFile = createFileIfNotExists(ticker, stockDataDir);
@@ -200,10 +200,10 @@ public class Utils {
   }
 
   public static String fetchCurrentStockValue(String ticker) throws IOException {
-    File stockFile = Utils.getFileByName(ticker,"stock_data");
+    File stockFile = Utils.getFileByName(ticker,"x");
     Scanner myReader = new Scanner(stockFile);
     int lineNo = 0;
-    String out = "";
+    String out = null;
     while (myReader.hasNextLine()) {
       String input = myReader.nextLine();
       if(lineNo == 1){
@@ -220,21 +220,32 @@ public class Utils {
     if(ticker == null || date == null){
       throw new IOException("passed null args");
     }
+    DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     File stockFile = Utils.getFileByName(ticker,dirName);
+
     Scanner myReader = new Scanner(stockFile);
     int lineNo = 0;
-    String res = "-1";
+    String res = null;
     while (myReader.hasNextLine()) {
       String input = myReader.nextLine();
       if(lineNo != 0){
         String[] out = input.split(",");
-        if(Objects.equals(out[0], date)){
-            res = out[4];
+//        if(Objects.equals(out[0], date)){
+//            res = out[4];
+//        }
+        try{
+          if(sdf.parse(date).compareTo(sdf.parse(out[0]))>=0) {
+            res=out[4];
+            break;
+          }
+        }catch(ParseException e){
+          System.out.println("wrong date");
         }
       }
       lineNo++;
     }
     myReader.close();
+
     return res;
   }
 
@@ -243,7 +254,7 @@ public class Utils {
     sdf.setLenient(false);
     try {
       Date date = sdf.parse(dateStr);
-      Date firstDate = sdf.parse("2010-01-01");
+      Date firstDate = sdf.parse("2010-01-04");
       Date currentDate = sdf.parse(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now()));
       if(date.before(firstDate) || date.after(currentDate)) return false;
     } catch (ParseException e) {
@@ -292,16 +303,22 @@ public class Utils {
     for(File file : directory.listFiles()) file.delete();
   }
 
-  public static String[] yahooApiDateFetcher() throws ParseException {
+  public static String[] yahooApiDateFetcher()  {
     DateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     simpleDateFormat.setLenient(false);
-    Date initalDate = simpleDateFormat.parse("2010-01-01");
-    Date currentDate = simpleDateFormat
-            .parse(DateTimeFormatter
-                    .ofPattern("yyyy-MM-dd")
-                    .format(LocalDateTime.now()));
+    Date initialDate = null,currentDate = null;
+    try{
+      initialDate = simpleDateFormat.parse("2010-01-01");
+      currentDate = simpleDateFormat
+          .parse(DateTimeFormatter
+              .ofPattern("yyyy-MM-dd")
+              .format(LocalDateTime.now()));  
+    }catch(ParseException e){
+      System.out.println("wrong date");
+    }
+    
     long timestamp2 = currentDate.getTime() / 1000;
-    long timestamp1 = initalDate.getTime() / 1000;
+    long timestamp1 = initialDate.getTime() / 1000;
 
     String[] periods = new String [2];
     periods[0] = timestamp1 + "";

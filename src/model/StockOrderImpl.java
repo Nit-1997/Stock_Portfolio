@@ -3,10 +3,11 @@ package model;
 import java.io.IOException;
 
 public class StockOrderImpl implements StockOrder {
+
   private final Stock stock;
   private final double quantity;
 
-  public StockOrderImpl(String ticker, double qty) {
+  public StockOrderImpl(String ticker, double qty) throws IOException {
     this.stock = new StockImpl(ticker);
     this.quantity = qty;
   }
@@ -18,29 +19,34 @@ public class StockOrderImpl implements StockOrder {
 
 
   @Override
-  public double getCurrentOrderValue() {
+  public Double getCurrentOrderValue() throws IOException {
+    if (this.stock.getCurrentPrice() == null) {
+      return null;
+    }
     return this.stock.getCurrentPrice() * this.quantity;
   }
 
   @Override
-  public double getInitialOrderValue() {
+  public Double getInitialOrderValue() {
     return this.stock.getBuyPrice() * this.quantity;
   }
 
   @Override
-  public double getOrderValueOnDate(String date) {
+  public Double getOrderValueOnDate(String date) throws IOException {
+    if (this.stock.getPriceOnDate(date) == null) {
+      return null;
+    }
     return this.stock.getPriceOnDate(date) * this.quantity;
   }
 
   @Override
-  public double getOrderPnL() throws IOException {
+  public Double getOrderPnL() throws IOException {
+    if (this.stock.getPnL() == null) {
+      return null;
+    }
     return this.stock.getPnL() * this.quantity;
   }
 
-  @Override
-  public double getOrderValueByDate(String date) {
-    return this.stock.getPriceOnDate(date) * this.quantity;
-  }
 
   @Override
   public Stock getStock() {

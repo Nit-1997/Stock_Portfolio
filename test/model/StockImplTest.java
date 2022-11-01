@@ -1,5 +1,6 @@
 package model;
 
+import java.io.IOException;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -8,21 +9,21 @@ public class StockImplTest {
 
 
   @Test
-  public void testGetCurrentPriceForIncorrectTicker(){
+  public void testGetCurrentPriceForIncorrectTicker() throws IOException {
     Stock s = new StockImpl("xyz");
     double price = s.getCurrentPrice();
     assertEquals(-1.0,price,0);
   }
 
   @Test
-  public void testGetCurrentPriceForCorrectTicker(){
+  public void testGetCurrentPriceForCorrectTicker() throws IOException {
     Stock s = new StockImpl("CSCO");
     double price = s.getCurrentPrice();
     assertNotEquals(-1.0,price,0);
   }
 
   @Test
-  public void testGetBuyPrice(){
+  public void testGetBuyPrice() throws IOException {
     Stock s = new StockImpl("CSCO");
     double price = s.getBuyPrice();
     System.out.println(price);
@@ -32,7 +33,7 @@ public class StockImplTest {
   //TODO handle incorrect ticker for creating stocks
 
   @Test
-  public void testgetPriceOnDateForCorrectTicker(){
+  public void testgetPriceOnDateForCorrectTicker() throws IOException {
     Stock s = new StockImpl("CSCO");
     double price = s.getPriceOnDate("2022-10-27");
     System.out.println(price);

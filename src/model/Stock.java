@@ -15,21 +15,21 @@ public interface Stock {
    * @return Stock Price
    * Use the close value from api response
    */
-  public double getCurrentPrice();
+  public Double getCurrentPrice() throws IOException;
 
   /**
    * Returns the PNL of this stock at currentDate
    *
    * @return currPrice - initPrice
    */
-  public double getPnL() throws IOException;
+  public Double getPnL() throws IOException;
 
   /**
    * Returns the PNL of this stock at given Date
    *
    * @return priceOnDate - initPrice
    */
-  public double getPnLByDate(String date) throws IOException;
+  public Double getPnLByDate(String date) throws IOException;
 
   /**
    * Get the price on date of purchase
@@ -44,7 +44,7 @@ public interface Stock {
    * @param date date on which we need the price
    * @return stock price on that day
    */
-  public double getPriceOnDate(String date);
+  public Double getPriceOnDate(String date) throws IOException;
 
   /**
    * Fetches the ticker name

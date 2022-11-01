@@ -10,14 +10,15 @@ import java.util.Map;
 import Utils.Utils;
 
 final class StockImpl implements Stock {
+
   private final String ticker;
   private final double buyPrice;
   private final String buyDate;
 
-  public StockImpl(String ticker , double buyPrice, String date){
+  public StockImpl(String ticker, double buyPrice, String date) {
     this.ticker = ticker;
     this.buyPrice = buyPrice;
-    this.buyDate =  date;
+    this.buyDate = date;
   }
 
   /**
@@ -25,21 +26,19 @@ final class StockImpl implements Stock {
    *
    * @param ticker ticker name
    */
-  public StockImpl(String ticker) {
+  public StockImpl(String ticker) throws IOException {
     this.ticker = ticker;
     this.buyPrice = this.getCurrentPrice();
-    this.buyDate =  DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
+    this.buyDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
   }
 
   @Override
-  public double getCurrentPrice() {
-    try {
-      String res = Utils.fetchCurrentStockValue(this.ticker);
-      return Double.parseDouble(res);
-    } catch (Exception e) {
-      System.out.println(e);
-      return -1.0;
+  public Double getCurrentPrice() throws IOException {
+    String res = Utils.fetchCurrentStockValue(this.ticker);
+    if (res == null) {
+      return null;
     }
+    return Double.parseDouble(res);
   }
 
   @Override
@@ -48,23 +47,21 @@ final class StockImpl implements Stock {
   }
 
   @Override
-  public double getPnL() throws IOException {
-    double currPrice = this.getCurrentPrice();
-    if (currPrice == -1.0) {
-      throw new IOException("Could not fetch data for the ticker");
-    } else {
-      return currPrice - this.buyPrice;
+  public Double getPnL() throws IOException {
+    Double currPrice = this.getCurrentPrice();
+    if (currPrice == null) {
+      return null;
     }
+    return currPrice - this.buyPrice;
   }
 
   @Override
-  public double getPnLByDate(String date) throws IOException {
-    double priceOnGivenDate = this.getPriceOnDate(date);
-    if (priceOnGivenDate == -1.0) {
-      throw new IOException("Could not fetch data for the ticker");
-    } else {
-      return priceOnGivenDate - this.buyPrice;
+  public Double getPnLByDate(String date) throws IOException {
+    Double priceOnGivenDate = this.getPriceOnDate(date);
+    if (priceOnGivenDate == null) {
+      return null;
     }
+    return priceOnGivenDate - this.buyPrice;
   }
 
 
@@ -74,13 +71,12 @@ final class StockImpl implements Stock {
   }
 
   @Override
-  public double getPriceOnDate(String date) {
-    try {
-      String res = Utils.fetchStockValueByDate(this.ticker, date, "stock_data");
-      return Double.parseDouble(res);
-    } catch (Exception e) {
-      return -1;
+  public Double getPriceOnDate(String date) throws IOException {
+    String res = Utils.fetchStockValueByDate(this.ticker, date, "stock_data");
+    if (res == null) {
+      return null;
     }
+    return Double.parseDouble(res);
   }
 
   @Override
