@@ -5,6 +5,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/**
+ * Junit class to test StockOrderImpl.
+ */
 public class StockOrderImplTest {
 
   @Test

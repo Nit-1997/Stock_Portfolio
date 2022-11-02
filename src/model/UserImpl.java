@@ -20,7 +20,7 @@ import utils.Utils;
  */
 public class UserImpl implements User {
 
-  Map<String, Portfolio> portfolioMap;
+  private final Map<String, Portfolio> portfolioMap;
 
   /**
    * Constructor to initialize User Object with portfolios.
@@ -84,10 +84,9 @@ public class UserImpl implements User {
       return resMap;
     } catch (FileNotFoundException e) {
       return null;
-    }catch (IOException e) {
+    } catch (IOException e) {
       return null;
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       return null;
     }
   }
@@ -95,6 +94,9 @@ public class UserImpl implements User {
   @Override
   public Map<String, List<Double>> getPortfolioDetailed(String name, String date) {
     try {
+      if (!Utils.dateChecker(date)) {
+        throw new Exception("wrong arguments");
+      }
       if (portfolioMap.get(name) == null) {
         portfolioMap.put(name, new PortfolioImpl(name));
       }
@@ -131,6 +133,9 @@ public class UserImpl implements User {
   @Override
   public Double getPortfolioValue(String name, String date) {
     try {
+      if (!Utils.dateChecker(date)) {
+        throw new Exception("wrong arguments");
+      }
       if (portfolioMap.get(name) == null) {
         portfolioMap.put(name, new PortfolioImpl(name));
       }
@@ -152,6 +157,12 @@ public class UserImpl implements User {
   @Override
   public Double getPortfolioPnL(String name, String date) {
     try {
+      if (!Utils.dateChecker(date)) {
+        throw new Exception("wrong arguments");
+      }
+      if (portfolioMap.get(name) == null) {
+        portfolioMap.put(name, new PortfolioImpl(name));
+      }
       double portfolioPnL = 0;
       String currentDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
       if (date.equals(currentDate)) {
@@ -162,6 +173,8 @@ public class UserImpl implements User {
       }
       return portfolioPnL;
     } catch (IOException e) {
+      return null;
+    } catch (Exception e){
       return null;
     }
 

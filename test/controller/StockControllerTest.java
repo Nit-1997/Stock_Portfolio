@@ -12,6 +12,9 @@ import model.MockModel;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Junit Class to test StockController.
+ */
 public class StockControllerTest {
   StockController controller;
   MockModel model;

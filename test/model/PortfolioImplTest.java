@@ -11,6 +11,9 @@ import constants.Constants;
 
 import static org.junit.Assert.*;
 
+/**
+ * Junit class to test PortfolioImpl.
+ */
 public class PortfolioImplTest {
 
   @Test

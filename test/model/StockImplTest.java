@@ -6,6 +6,9 @@ import utils.Utils;
 
 import static org.junit.Assert.*;
 
+/**
+ * Junit class to test StockImpl.
+ */
 public class StockImplTest {
 
   @Test(expected = Exception.class)

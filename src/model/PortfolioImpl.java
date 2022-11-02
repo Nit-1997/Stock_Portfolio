@@ -8,9 +8,8 @@ import utils.Utils;
 
 
 /**
- * This class implements the Portfolio.
- * Portfolio consists of name, list of stock orders,
- * i.e {stock, quantity}
+ * This class implements the Portfolio. Portfolio consists of name, list of stock orders, i.e
+ * {stock, quantity}
  */
 final class PortfolioImpl implements Portfolio {
 
@@ -18,8 +17,7 @@ final class PortfolioImpl implements Portfolio {
   private final List<StockOrder> stockOrder;
 
   /**
-   * Constructor to create Portfolio object.
-   * This is used when fetching already created portfolio
+   * Constructor to create Portfolio object. This is used when fetching already created portfolio
    *
    * @param name name of the portfolio
    * @throws Exception can occur while reading/loading data dump
@@ -38,14 +36,16 @@ final class PortfolioImpl implements Portfolio {
   }
 
   /**
-   * Constructor to create Portfolio object.
-   * This is used when creating a new Portfolio
+   * Constructor to create Portfolio object. This is used when creating a new Portfolio
    *
    * @param stocksMap map of {ticker , qty}
-   * @param name  name of the portfolio
+   * @param name      name of the portfolio
    * @throws Exception can occur while reading/loading data dump
    */
   public PortfolioImpl(Map<String, Double> stocksMap, String name) throws Exception {
+    if (stocksMap == null || name == null) {
+      throw new IllegalArgumentException("Null arguments to portfolio constructor");
+    }
     this.stockOrder = new ArrayList<>();
     this.name = name;
     for (String key : stocksMap.keySet()) {

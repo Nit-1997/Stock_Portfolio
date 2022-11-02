@@ -16,6 +16,9 @@ import model.StockOrderImpl;
 
 import static org.junit.Assert.*;
 
+/**
+ * Junit class to test Utils.
+ */
 public class UtilsTest {
 
   @Test(expected = IOException.class)
@@ -204,26 +207,6 @@ public class UtilsTest {
   public void testDateCheckerBeforeWrongFormat2(){
     assertFalse(Utils.dateChecker("02/26/2022"));
   }
-
-//  @Test
-//  public void testDateSaturdaySundayCheckerWrongFormat(){
-//    assertEquals("", Utils.dateSaturdaySundayChecker("02/26/2022"));
-//  }
-//
-//  @Test
-//  public void testDateSaturdaySundayCheckerSaturday(){
-//    assertEquals("2021-04-30", Utils.dateSaturdaySundayChecker("2021-05-01"));
-//  }
-//
-//  @Test
-//  public void testDateSaturdaySundayCheckerSunday(){
-//    assertEquals("2021-05-21", Utils.dateSaturdaySundayChecker("2021-05-23"));
-//  }
-//
-//  @Test
-//  public void testDateSaturdaySundayCheckerWeekday(){
-//    assertEquals("2021-05-19", Utils.dateSaturdaySundayChecker("2021-05-19"));
-//  }
 
   @Test
   public void testClearStockDirectoryNotEmptyDirectory() throws IOException {

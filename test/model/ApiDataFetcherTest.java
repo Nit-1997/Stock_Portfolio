@@ -6,10 +6,13 @@ import constants.Constants;
 
 import static org.junit.Assert.*;
 
+/**
+ * Junit class to test ApiDataFetcher
+ */
 public class ApiDataFetcherTest {
 
   @Test
-  public void testYahooApi() throws Exception {
+  public void testYahooApi() {
       String ans = (ApiDataFetcher.fetchStockDataBySymbolYahoo("AAPL", Constants.yahooApiBaseUrl));
       assertNotEquals(0,ans.length());
   }
