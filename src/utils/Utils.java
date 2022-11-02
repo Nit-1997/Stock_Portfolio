@@ -315,6 +315,33 @@ public class Utils {
     return true;
   }
 
+//  public static String dateSaturdaySundayChecker(String dateStr) {
+//    if (!Utils.dateChecker(dateStr)) {
+//      return "";
+//    }
+//    final long MILLIS_IN_A_DAY = 1000 * 60 * 60 * 24;
+//    DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//    sdf.setLenient(false);
+//
+//    try {
+//      Date date = sdf.parse(dateStr);
+//      Calendar cal = Calendar.getInstance();
+//      cal.setTime(date);
+//      int day = cal.get(Calendar.DAY_OF_WEEK);
+//      if (day == 7) {
+//        return sdf.format(new Date(date.getTime() - MILLIS_IN_A_DAY));
+//      } else if (day == 1) {
+//        return sdf.format(new Date(date.getTime() - 2 * MILLIS_IN_A_DAY));
+//      } else {
+//        return sdf.format(date);
+//      }
+//    } catch (ParseException e) {
+//      System.out.println(dateStr);
+//      System.out.println("wrong format");
+//    }
+//    return dateStr;
+//  }
+
   /**
    * Clears the folder containing all the stocks after program termination.
    */

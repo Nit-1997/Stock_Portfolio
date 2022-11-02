@@ -1,7 +1,11 @@
 package model;
 
+import org.junit.Before;
 import org.junit.Test;
 import utils.Utils;
+
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +22,12 @@ public class PortfolioImplTest {
 
   @Test
   public void testPortfolioCreateFirstTime() throws Exception {
+    String portfolioDirectory = Paths.get("portfolios").toAbsolutePath().toString();
+    File f = new File(portfolioDirectory);
+    if (!f.exists()) {
+      f.mkdirs();
+    }
+    Utils.clearStockDirectory();
     Map<String, Double> order = new HashMap<>();
     order.put("AAPL", 10.0);
     order.put("NVDA", 12.0);
