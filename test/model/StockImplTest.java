@@ -1,10 +1,12 @@
 package model;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Test;
 
 import utils.Utils;
 
-import static org.junit.Assert.*;
 
 /**
  * Junit class to test StockImpl.

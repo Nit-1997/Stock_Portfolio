@@ -12,7 +12,7 @@ final public class StockOrderImpl implements StockOrder {
   private final double quantity;
 
   /**
-   * Creates a StockOrderImpl object using ticker & qty.
+   * Creates a StockOrderImpl object using ticker and qty.
    *
    * @param ticker ticker symbol of the stock
    * @param qty    quantity of the stock
@@ -24,7 +24,7 @@ final public class StockOrderImpl implements StockOrder {
   }
 
   /**
-   * Creates a StockOrderImpl object using ticker,buyPrice,date & qty. This is used when we are
+   * Creates a StockOrderImpl object using ticker,buyPrice,date and qty. This is used when we are
    * fetching already existing portfolios
    *
    * @param ticker   ticker symbol of the stock

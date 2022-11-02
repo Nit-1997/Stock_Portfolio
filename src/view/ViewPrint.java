@@ -14,38 +14,42 @@ import java.util.Set;
 public class ViewPrint {
 
   public static final void welcomeNote(PrintStream out) {
-    out.println(ViewConstants.WelcomeMessage);
+    out.println(ViewConstants.WELCOME_MESSAGE);
   }
 
   public static final void printMenu(PrintStream out) {
-    out.print(ViewConstants.MenuMessage);
+    out.print(ViewConstants.MENU_MESSAGE);
   }
 
   public static final void errorNote(PrintStream out) {
-    out.print(ViewConstants.ErrorNote);
+    out.print(ViewConstants.ERROR_NOTE);
   }
 
   public static final void exitNote(PrintStream out) {
-    out.print(ViewConstants.ExitNote);
+    out.print(ViewConstants.EXIT_NOTE);
   }
 
 
   public static final void addPortfolio(PrintStream out) {
-    out.print(ViewConstants.AddPortfolio);
+    out.print(ViewConstants.ADD_PORTFOLIO);
   }
 
   public static final void askPortfolioNameAgain(PrintStream out) {
-    out.print(ViewConstants.AskPortfolioNameAgain);
+    out.print(ViewConstants.ASK_PORTFOLIO_NAME_AGAIN);
   }
 
   public static final void stockNotInPortfolio(PrintStream out) {
-    out.print(ViewConstants.StockNotInPortfolio);
+    out.print(ViewConstants.STOCK_NOT_IN_PORTFOLIO);
   }
 
   public static final void addStocksInPortfolioWelcomeNote(String portfolioName, PrintStream out) {
     out.println("-------------For the Portfolio " + portfolioName + ": Add stocks------------");
   }
 
+  /**
+   * print available stocks.
+   * @param stockList list of stocks.
+   */
   public static final void printAvailableStocks(Set<String> stockList) {
     System.out.println("List of available stocks");
     int i = 0;
@@ -60,43 +64,43 @@ public class ViewPrint {
   }
 
   public static final void askTickerSymbol(PrintStream out) {
-    out.print(ViewConstants.AddStocksInPortfolioAskTickerSymbol);
+    out.print(ViewConstants.ADD_STOCKS_IN_PORTFOLIO_ASK_TICKER_SYMBOL);
   }
 
   public static final void askTickerSymbolAgain(PrintStream out) {
-    out.print(ViewConstants.AskTickerSymbolAgain);
+    out.print(ViewConstants.ASK_TICKER_SYMBOL_AGAIN);
   }
 
   public static final void askStockNumber(PrintStream out) {
-    out.print(ViewConstants.AddStocksInPortfolioAskStockNumber);
+    out.print(ViewConstants.ADD_STOCKS_IN_PORTFOLIO_ASK_STOCK_NUMBER);
   }
 
   public static final void askStockNumberAgain(PrintStream out) {
-    out.print(ViewConstants.AskStockNumberAgain);
+    out.print(ViewConstants.ASK_STOCK_NUMBER_AGAIN);
   }
 
   public static final void addStocksInPortfolioConfirmation(PrintStream out) {
-    out.print(ViewConstants.AddStocksInPortfolioConfirmation);
+    out.print(ViewConstants.ADD_STOCKS_IN_PORTFOLIO_CONFIRMATION);
   }
 
   public static final void stocksInPortfolioAddOrRemoveMenu(PrintStream out) {
-    out.print(ViewConstants.StocksInPortfolioAddOrRemoveMenu);
+    out.print(ViewConstants.STOCKS_IN_PORTFOLIO_ADD_OR_REMOVE_MENU);
   }
 
   public static final void removeStocksInPortfolioSuccessfulConfirmation(PrintStream out) {
-    out.print(ViewConstants.RemoveStocksInPortfolioSuccessfulConfirmation);
+    out.print(ViewConstants.REMOVE_STOCKS_IN_PORTFOLIO_SUCCESSFUL_CONFIRMATION);
   }
 
   public static final void removeStocksInPortfolioUnSuccessfulConfirmation(PrintStream out) {
-    out.print(ViewConstants.RemoveStocksInPortfolioUnSuccessfulConfirmation);
+    out.print(ViewConstants.REMOVE_STOCKS_IN_PORTFOLIO_UNSUCCESSFUL_CONFIRMATION);
   }
 
   public static final void askconfirmation(PrintStream out) {
-    out.print(ViewConstants.AskConfirmation);
+    out.print(ViewConstants.ASK_CONFIRMATION);
   }
 
   public static final void waitMessage(PrintStream out) {
-    out.println(ViewConstants.WaitMessage);
+    out.println(ViewConstants.WAIT_MESSAGE);
   }
 
   public static final void addStocksInPortfolioConfirmationLoading(String name, PrintStream out) {
@@ -104,10 +108,15 @@ public class ViewPrint {
   }
 
   public static final void addStocksInPortfolioErrorNode(PrintStream out) {
-    out.print(ViewConstants.AddStocksInPortfolioErrorNote);
+    out.print(ViewConstants.ADD_STOCKS_IN_PORTFOLIO_ERROR_NOTE);
   }
 
 
+  /**
+   * print portfolios.
+   * @param portfolioNames portfolio names
+   * @param out out stream.
+   */
   public static final void printPortfolios(Set<String> portfolioNames, PrintStream out) {
     out.println();
     out.println("Your portfolio lists : ");
@@ -117,7 +126,7 @@ public class ViewPrint {
   }
 
   public static final void loadPortfolioMenu(PrintStream out) {
-    out.print(ViewConstants.LoadPortfolioMenu);
+    out.print(ViewConstants.LOAD_PORTFOLIO_MENU);
   }
 
   public static final void askChoice(PrintStream out) {
@@ -125,11 +134,11 @@ public class ViewPrint {
   }
 
   public static final void askNameOfPortfolio(PrintStream out) {
-    out.print(ViewConstants.AskNameOfPortfolio);
+    out.print(ViewConstants.ASK_NAME_OF_PORTFOLIO);
   }
 
   public static final void askPortfolioNameAgainUnique(PrintStream out) {
-    out.print(ViewConstants.AskPortfolioNameAgainUnique);
+    out.print(ViewConstants.ASK_PORTFOLIO_NAME_AGAIN_UNIQUE);
   }
 
   public static final void portfolioDetailWelcomeNote(String name, PrintStream out) {
@@ -137,25 +146,30 @@ public class ViewPrint {
   }
 
   public static final void loadPortfolioDetailMenu(PrintStream out) {
-    out.print(ViewConstants.loadPortfolioDetailMenu);
+    out.print(ViewConstants.LOAD_PORTFOLIO_DETAIL_MENU);
   }
 
   public static final void waitLoadMessage(PrintStream out) {
-    out.print(ViewConstants.WaitLoadMessage);
+    out.print(ViewConstants.WAIT_LOAD_MESSAGE);
   }
 
   public static final void askDate(PrintStream out) {
-    out.print(ViewConstants.AskDate);
+    out.print(ViewConstants.ASK_DATE);
   }
 
   public static final void askDateAgain(PrintStream out) {
-    out.print(ViewConstants.AskDateAgain);
+    out.print(ViewConstants.ASK_DATE_AGAIN);
   }
 
   public static final void printInCompatiblePortfolio(PrintStream out) {
-    out.print(ViewConstants.PrintInCompatiblePortfolio);
+    out.print(ViewConstants.PRINT_INCOMPATIBLE_PORTFOLIO);
   }
 
+  /**
+   * print portfolio summary.
+   * @param stockMap map of stocks
+   * @param out out stream.
+   */
   public static final void printPortfolioSummary(Map<String, Double> stockMap, PrintStream out) {
     out.printf("%40s", "Table for portfolio summary");
     out.println();
@@ -171,6 +185,12 @@ public class ViewPrint {
     out.println();
   }
 
+  /**
+   * print portfolio detail.
+   * @param mapDetail map detail.
+   * @param portfolioValue portfolio value
+   * @param out out stream.
+   */
   public static final void printPortfolioDetail(Map<String, List<Double>> mapDetail,
       double portfolioValue, PrintStream out) {
     final DecimalFormat df = new DecimalFormat("0.00");
@@ -200,6 +220,11 @@ public class ViewPrint {
 
   }
 
+  /**
+   * print portfolio performance.
+   * @param portfolioPnL pnl of portfolio.
+   * @param out out stream.
+   */
   public static final void printPortfolioPerformance(Double portfolioPnL, PrintStream out) {
     final DecimalFormat df = new DecimalFormat("0.00");
     portfolioPnL = Double.parseDouble(df.format(portfolioPnL));
@@ -214,6 +239,11 @@ public class ViewPrint {
     }
   }
 
+  /**
+   * print portfolio value.
+   * @param portfolioValue portfolio value.
+   * @param out out stream.
+   */
   public static final void printPortfolioValue(Double portfolioValue, PrintStream out) {
 
     out.println(
@@ -222,7 +252,7 @@ public class ViewPrint {
   }
 
   public static final void loadPortfolioErrorNote(PrintStream out) {
-    out.print(ViewConstants.LoadPortfolioErrorNote);
+    out.print(ViewConstants.LOAD_PORTFOLIO_ERROR_NOTE);
   }
 
 }

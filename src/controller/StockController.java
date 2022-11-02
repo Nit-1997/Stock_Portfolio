@@ -40,7 +40,7 @@ public class StockController {
    * @param user Object of the model
    * @throws Exception Exception is thrown for unwanted scenarios.
    */
-  public void go(User user) throws Exception {
+  public void start(User user) throws Exception {
     Objects.requireNonNull(user);
     ViewPrint.welcomeNote(this.out);
     Scanner scan = new Scanner(this.in);
@@ -89,7 +89,8 @@ public class StockController {
       if (!user.isValidStock(ticker)) {
         ViewPrint.askTickerSymbolAgain(this.out);
       }
-    } while (!user.isValidStock(ticker));
+    }
+    while (!user.isValidStock(ticker));
     return ticker;
   }
 
@@ -102,7 +103,7 @@ public class StockController {
   Double addStocksAskStockNumber(Scanner scan) {
     ViewPrint.askStockNumber(this.out);
     String stockQuantity = scan.nextLine();
-    double stockQuanDouble;
+    double stockQuanDouble = 0;
     do {
       try {
         stockQuanDouble = Double.parseDouble(stockQuantity);
@@ -117,7 +118,8 @@ public class StockController {
           return null;
         }
       }
-    } while (true);
+    }
+    while (stockQuanDouble <= 0 || stockQuanDouble != (int) stockQuanDouble);
 
     return stockQuanDouble;
   }
@@ -217,7 +219,8 @@ public class StockController {
         option = scan.nextLine().trim();
       }
       comingFromDefault = false;
-    } while (confirmation.equals("y") || confirmation.equals("Y"));
+    }
+    while (confirmation.equals("y") || confirmation.equals("Y"));
 
     ViewPrint.waitMessage(this.out);
     boolean val = user.addPortfolio(name, stocksMap);
@@ -257,7 +260,8 @@ public class StockController {
           ViewPrint.loadPortfolioErrorNote(this.out);
           option = scan.nextLine().trim();
       }
-    } while (option != "2");
+    }
+    while (!option.equals("2"));
 
   }
 
@@ -377,7 +381,8 @@ public class StockController {
         option = scan.nextLine().trim();
       }
       comingFromDefault = false;
-    } while (option != "7");
+    }
+    while (!option.equals("7"));
 
   }
 

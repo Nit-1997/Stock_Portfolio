@@ -11,11 +11,9 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
 import model.ApiDataFetcher;
@@ -127,7 +125,7 @@ public class Utils {
       parsedStocks.add(input);
     }
     myReader.close();
-    if (parsedStocks.size() != Constants.totalHandledStocks) {
+    if (parsedStocks.size() != Constants.TOTAL_HANDLED_STOCKS) {
       throw new IOException("Stock Name file corrupted");
     }
     return parsedStocks;
@@ -136,7 +134,7 @@ public class Utils {
   private static boolean loadPortfolioValidator(String ticker, String date, String price,
       String qty) {
     try {
-      if (!Constants.stockNames.contains(ticker.toUpperCase())) {
+      if (!Constants.STOCK_NAMES.contains(ticker.toUpperCase())) {
         return false;
       } else if (!dateChecker(date)) {
         return false;
@@ -163,6 +161,7 @@ public class Utils {
    * @param portfolioName name of the portfolio to be fetched and loaded.
    * @param dirName       folder in which portfolios are present.
    * @return List of stock orders
+   * @throws IOException if the portfolioName or the dirName are null.
    */
   public static List<StockOrder> loadPortfolioData(String portfolioName, String dirName)
       throws IOException {
@@ -208,7 +207,8 @@ public class Utils {
    * @throws Exception if directory not found or any issue in API.
    */
   public static void loadStockData(String ticker, String stockDataDir) throws Exception {
-    String output = ApiDataFetcher.fetchStockDataBySymbolYahoo(ticker, Constants.yahooApiBaseUrl);
+    String output = ApiDataFetcher.fetchStockDataBySymbolYahoo(ticker,
+        Constants.YAHOO_API_BASE_URL);
     File stockFile = createFileIfNotExists(ticker, stockDataDir);
     writeStockDataDumpToFile(stockFile, output);
   }
@@ -230,7 +230,7 @@ public class Utils {
   /**
    * Loads current stock price from the file in local folder.
    *
-   * @param ticker    name of the stock
+   * @param ticker   name of the stock
    * @param stockDir directory which contains the stocks.
    * @return current price of the stock.
    * @throws IOException if file or directory doesn't exist
@@ -255,8 +255,8 @@ public class Utils {
   /**
    * Loads stock price for a date from the file in local folder.
    *
-   * @param ticker name of the stock
-   * @param date  date for which stock price is required
+   * @param ticker  name of the stock
+   * @param date    date for which stock price is required
    * @param dirName directory which contains the stocks.
    * @return price of the stock on that date.
    * @throws IOException if file or directory doesn't exist
@@ -314,33 +314,6 @@ public class Utils {
     }
     return true;
   }
-
-//  public static String dateSaturdaySundayChecker(String dateStr) {
-//    if (!Utils.dateChecker(dateStr)) {
-//      return "";
-//    }
-//    final long MILLIS_IN_A_DAY = 1000 * 60 * 60 * 24;
-//    DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//    sdf.setLenient(false);
-//
-//    try {
-//      Date date = sdf.parse(dateStr);
-//      Calendar cal = Calendar.getInstance();
-//      cal.setTime(date);
-//      int day = cal.get(Calendar.DAY_OF_WEEK);
-//      if (day == 7) {
-//        return sdf.format(new Date(date.getTime() - MILLIS_IN_A_DAY));
-//      } else if (day == 1) {
-//        return sdf.format(new Date(date.getTime() - 2 * MILLIS_IN_A_DAY));
-//      } else {
-//        return sdf.format(date);
-//      }
-//    } catch (ParseException e) {
-//      System.out.println(dateStr);
-//      System.out.println("wrong format");
-//    }
-//    return dateStr;
-//  }
 
   /**
    * Clears the folder containing all the stocks after program termination.

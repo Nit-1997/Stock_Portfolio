@@ -49,7 +49,7 @@ public class UserImplTest {
 
   @Test
   public void testUserConstructor3() {
-    assertEquals(20, Constants.stockNames.size());
+    assertEquals(20, Constants.STOCK_NAMES.size());
   }
 
   @Test
@@ -216,8 +216,8 @@ public class UserImplTest {
 
   @Test
   public void testGetStockList() {
-    assertEquals(Constants.stockNames, user.getStockList());
-    assertEquals(Constants.stockNames.size(), user.getStockList().size());
+    assertEquals(Constants.STOCK_NAMES, user.getStockList());
+    assertEquals(Constants.STOCK_NAMES.size(), user.getStockList().size());
   }
 
   @Test

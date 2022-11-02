@@ -1,6 +1,8 @@
 package model;
 
-import org.junit.Before;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Test;
 import utils.Utils;
 
@@ -13,7 +15,6 @@ import java.util.Objects;
 
 import constants.Constants;
 
-import static org.junit.Assert.*;
 
 /**
  * Junit class to test PortfolioImpl.
@@ -47,7 +48,7 @@ public class PortfolioImplTest {
 
   @Test
   public void testPortfolioCreateForRetrieval() throws Exception {
-    Constants.stockNames = Utils
+    Constants.STOCK_NAMES = Utils
             .loadStockNames("stocks", "stocks_list.csv");
     Portfolio p = new PortfolioImpl("tech");
     for (StockOrder o : p.getPortfolioSummary()) {
@@ -64,7 +65,7 @@ public class PortfolioImplTest {
 
   @Test
   public void testGetPortfolioDetailed() throws Exception {
-    Constants.stockNames = Utils
+    Constants.STOCK_NAMES = Utils
             .loadStockNames("stocks", "stocks_list.csv");
     Portfolio p = new PortfolioImpl("tech");
     List<PortfolioDetailedPojo> pojos = p.getCurrentPortfolioDetailed();
@@ -81,7 +82,7 @@ public class PortfolioImplTest {
 
   @Test
   public void testGetPortfolioDetailedByDate() throws Exception {
-    Constants.stockNames = Utils
+    Constants.STOCK_NAMES = Utils
             .loadStockNames("stocks", "stocks_list.csv");
 
     Portfolio p = new PortfolioImpl("tech");
@@ -100,7 +101,7 @@ public class PortfolioImplTest {
 
   @Test(expected = Exception.class)
   public void testGetPortfolioDetailedByDateDateNull() throws Exception {
-    Constants.stockNames = Utils
+    Constants.STOCK_NAMES = Utils
             .loadStockNames("stocks", "stocks_list.csv");
 
     Portfolio p = new PortfolioImpl("tech");

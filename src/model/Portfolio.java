@@ -14,6 +14,7 @@ public interface Portfolio {
    * Fetches the PnL at portfolio level.
    *
    * @return Portfolio PnL
+   * @throws IOException if data not found.
    */
   Double getPortfolioPnL() throws IOException;
 
@@ -30,6 +31,7 @@ public interface Portfolio {
    * {(ticker_symbol, quantity) vs (buying price, currentPrice)} .
    *
    * @return list of maps containing ticker symbol, quantity vs buying price
+   * @throws IOException if data not found.
    */
   List<PortfolioDetailedPojo> getCurrentPortfolioDetailed() throws IOException;
 
@@ -39,6 +41,7 @@ public interface Portfolio {
    *
    * @param date for which details need to be fetched.
    * @return list of maps containing ticker symbol, quantity vs buying price
+   * @throws IOException if data for date not found or date is invalid.
    */
   List<PortfolioDetailedPojo> getPortfolioDetailedOnDate(String date) throws Exception;
 
@@ -46,6 +49,7 @@ public interface Portfolio {
    * Gets the current Price of the entire Portfolio.
    *
    * @return currentPrice of Portfolio
+   * @throws IOException if asked date is invalid or no data for this date.
    */
   public Double getCurrentValue() throws IOException;
 
@@ -62,6 +66,7 @@ public interface Portfolio {
    *
    * @param date for which portfolio value needs to be fetched.
    * @return total Initial Buy value.
+   * @throws IOException if there is no value on this date or date is invalid.
    */
   public Double getValueOnDate(String date) throws IOException;
 

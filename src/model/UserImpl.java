@@ -28,7 +28,7 @@ public class UserImpl implements User {
   public UserImpl() {
     Utils.clearStockDirectory();
     try {
-      Constants.stockNames = Utils.loadStockNames("stocks", "stocks_list.csv");
+      Constants.STOCK_NAMES = Utils.loadStockNames("stocks", "stocks_list.csv");
     } catch (IOException e) {
       System.out.println(e.getMessage());
     }
@@ -174,7 +174,7 @@ public class UserImpl implements User {
       return portfolioPnL;
     } catch (IOException e) {
       return null;
-    } catch (Exception e){
+    } catch (Exception e) {
       return null;
     }
 
@@ -199,12 +199,12 @@ public class UserImpl implements User {
 
   @Override
   public Set<String> getStockList() {
-    return Constants.stockNames;
+    return Constants.STOCK_NAMES;
   }
 
   @Override
   public boolean isValidStock(String name) {
-    return Constants.stockNames.contains(name);
+    return Constants.STOCK_NAMES.contains(name);
   }
 
 }

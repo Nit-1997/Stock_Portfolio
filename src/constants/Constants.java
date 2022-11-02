@@ -14,9 +14,9 @@ public class Constants {
   //  public static String getCurrentValueApi = "https://www.alphavantage"
   //          + ".co/query?function=GLOBAL_QUOTE";
 
-  public static final String yahooApiBaseUrl = "https://query1.finance.yahoo.com/v7/finance/download/";
-  public static final int totalHandledStocks = 20;
-  public static Set<String> stockNames;
+  public static final String YAHOO_API_BASE_URL = "https://query1.finance.yahoo.com/v7/finance/download/";
+  public static final int TOTAL_HANDLED_STOCKS = 20;
+  public static Set<String> STOCK_NAMES;
 
   //  public static final String[] keys = {
   //          "RSNOZCM1AIHGILQZ",

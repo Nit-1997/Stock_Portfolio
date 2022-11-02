@@ -1,20 +1,21 @@
 package model;
 
-import org.junit.Test;
+import static org.junit.Assert.assertNotEquals;
 
 import constants.Constants;
+import org.junit.Test;
 
-import static org.junit.Assert.*;
 
 /**
- * Junit class to test ApiDataFetcher
+ * Junit class to test ApiDataFetcher.
  */
 public class ApiDataFetcherTest {
 
   @Test
   public void testYahooApi() {
-      String ans = (ApiDataFetcher.fetchStockDataBySymbolYahoo("AAPL", Constants.yahooApiBaseUrl));
-      assertNotEquals(0,ans.length());
+    String ans = (ApiDataFetcher.fetchStockDataBySymbolYahoo("AAPL",
+        Constants.YAHOO_API_BASE_URL));
+    assertNotEquals(0, ans.length());
   }
 
 
@@ -25,12 +26,14 @@ public class ApiDataFetcherTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testYahooApiInvalidTicker() throws Exception {
-    String ans = (ApiDataFetcher.fetchStockDataBySymbolYahoo("someRandom", Constants.yahooApiBaseUrl));
+    String ans = (ApiDataFetcher.fetchStockDataBySymbolYahoo("someRandom",
+        Constants.YAHOO_API_BASE_URL));
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testYahooApiNullTicker() throws Exception {
-    String ans = (ApiDataFetcher.fetchStockDataBySymbolYahoo(null, Constants.yahooApiBaseUrl));
+    String ans = (ApiDataFetcher.fetchStockDataBySymbolYahoo(null,
+        Constants.YAHOO_API_BASE_URL));
   }
 
   @Test(expected = IllegalArgumentException.class)
