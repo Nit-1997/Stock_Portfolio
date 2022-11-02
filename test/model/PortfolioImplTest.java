@@ -5,68 +5,94 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
+import Utils.Utils;
+import constants.Constants;
 
 import static org.junit.Assert.*;
 
 public class PortfolioImplTest {
 
   @Test
-  public void testPortfolioCreate() {
-    try {
-      Map<String, Double> order = new HashMap<>();
-      order.put("Googl", 10.0);
-      order.put("ibm", 12.0);
-      Portfolio p = new PortfolioImpl(order, "tech");
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-    }
-  }
-
-
-  @Test
-  public void testPortfolioCreateForRetrieval() {
-    try {
-      Portfolio p = new PortfolioImpl("tech");
-      System.out.println(p.getCurrentValue());
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-    }
-  }
-
-  @Test
-  public void testGetPortfolioDetailed(){
-    try {
-      Portfolio p = new PortfolioImpl("tech");
-      List<PortfolioDetailedPojo> pojos = p.getCurrentPortfolioDetailed();
-      for( PortfolioDetailedPojo pojo : pojos){
-        System.out.println(pojo.getBuyPrice());
-        System.out.println(pojo.getCurrentPrice());
-        System.out.println(pojo.getPnl());
-        System.out.println(pojo.getQty());
-        System.out.println(pojo.getTicker());
+  public void testPortfolioCreateFirstTime() throws Exception {
+    Map<String, Double> order = new HashMap<>();
+    order.put("AAPL", 10.0);
+    order.put("NVDA", 12.0);
+    Portfolio p = new PortfolioImpl(order, "tech");
+    for (StockOrder o : p.getPortfolioSummary()) {
+      String ticker = o.getStock().getStockTickerName();
+      assertNotNull(ticker);
+      if (Objects.equals(ticker, "AAPL")) {
+        assertEquals(10, o.getQuantity(), 0);
       }
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
+      if (Objects.equals(ticker, "NVDA")) {
+        assertEquals(12, o.getQuantity(), 0);
+      }
     }
   }
 
 
   @Test
-  public void testGetPortfolioDetailedByDate(){
-    try {
-      Portfolio p = new PortfolioImpl("tech");
-      String date = "2022-10-28";
-      List<PortfolioDetailedPojo> pojos = p.getPortfolioDetailedOnDate(date);
-      for( PortfolioDetailedPojo pojo : pojos){
-        System.out.println(pojo.getBuyPrice());
-        System.out.println(pojo.getCurrentPrice());
-        System.out.println(pojo.getPnl());
-        System.out.println(pojo.getQty());
-        System.out.println(pojo.getTicker());
+  public void testPortfolioCreateForRetrieval() throws Exception {
+    Constants.stockNames = Utils
+            .loadStockNames("stocks", "stocks_list.csv");
+    Portfolio p = new PortfolioImpl("tech");
+    for (StockOrder o : p.getPortfolioSummary()) {
+      String ticker = o.getStock().getStockTickerName();
+      assertNotNull(ticker);
+      if (Objects.equals(ticker, "AAPL")) {
+        assertEquals(10, o.getQuantity(), 0);
       }
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
+      if (Objects.equals(ticker, "NVDA")) {
+        assertEquals(12, o.getQuantity(), 0);
+      }
     }
+  }
+
+  @Test
+  public void testGetPortfolioDetailed() throws Exception {
+    Constants.stockNames = Utils
+            .loadStockNames("stocks", "stocks_list.csv");
+    Portfolio p = new PortfolioImpl("tech");
+    List<PortfolioDetailedPojo> pojos = p.getCurrentPortfolioDetailed();
+    for (PortfolioDetailedPojo pojo : pojos) {
+      if (Objects.equals(pojo.getTicker(), "NVDA")) {
+        assertEquals(12.0, pojo.getQty(), 0);
+      }
+      if (Objects.equals(pojo.getTicker(), "AAPL")) {
+        assertEquals(10.0, pojo.getQty(), 0);
+      }
+    }
+  }
+
+
+  @Test
+  public void testGetPortfolioDetailedByDate() throws Exception {
+    Constants.stockNames = Utils
+            .loadStockNames("stocks", "stocks_list.csv");
+
+    Portfolio p = new PortfolioImpl("tech");
+    String date = "2022-10-28";
+    List<PortfolioDetailedPojo> pojos = p.getPortfolioDetailedOnDate(date);
+    assertNotNull(pojos);
+    for (PortfolioDetailedPojo pojo : pojos) {
+      if (Objects.equals(pojo.getTicker(), "NVDA")) {
+        assertEquals(12.0, pojo.getQty(), 0);
+      }
+      if (Objects.equals(pojo.getTicker(), "AAPL")) {
+        assertEquals(10.0, pojo.getQty(), 0);
+      }
+    }
+  }
+
+  @Test(expected = Exception.class)
+  public void testGetPortfolioDetailedByDateDateNull() throws Exception {
+    Constants.stockNames = Utils
+            .loadStockNames("stocks", "stocks_list.csv");
+
+    Portfolio p = new PortfolioImpl("tech");
+    List<PortfolioDetailedPojo> pojos = p.getPortfolioDetailedOnDate(null);
   }
 
 }

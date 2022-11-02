@@ -40,7 +40,7 @@ public interface Portfolio {
    * @param date for which details need to be fetched.
    * @return list of maps containing ticker symbol, quantity vs buying price
    */
-  List<PortfolioDetailedPojo> getPortfolioDetailedOnDate(String date) throws IOException;
+  List<PortfolioDetailedPojo> getPortfolioDetailedOnDate(String date) throws Exception;
 
   /**
    * Gets the current Price of the entire Portfolio.

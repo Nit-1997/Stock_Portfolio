@@ -141,9 +141,11 @@ final public class PortfolioImpl implements Portfolio {
   }
 
   @Override
-  public List<PortfolioDetailedPojo> getPortfolioDetailedOnDate(String date) throws IOException {
+  public List<PortfolioDetailedPojo> getPortfolioDetailedOnDate(String date) throws Exception {
+    if(date == null){
+      throw new IllegalArgumentException("Passed null args");
+    }
     if (this.stockOrder == null) {
-      System.out.println("stock order is null");
       return null;
     }
     List<PortfolioDetailedPojo> parsedResponse = new ArrayList<>();
