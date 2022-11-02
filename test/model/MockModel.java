@@ -17,7 +17,7 @@ public class MockModel implements User{
   }
 
   @Override
-  public boolean addPortfolio(String name, Map<String, Double> stocks) throws Exception {
+  public boolean addPortfolio(String name, Map<String, Double> stocks){
     log.append("\nInput "+name);
     log.append("\n stock map:");
     for(String ticker : stocks.keySet()){
@@ -57,13 +57,13 @@ public class MockModel implements User{
   }
 
   @Override
-  public Double getPortfolioValue(String name, String date) throws Exception {
+  public Double getPortfolioValue(String name, String date){
     log.append("\ngetting portfolio value for "+name+" for the date "+date);
     return 0.0;
   }
 
   @Override
-  public double getPortfolioPnL(String name, String date) throws IOException {
+  public Double getPortfolioPnL(String name, String date)  {
     log.append("\ngetting portfolio performance for "+name+" for the date "+date);
     return 0.0;
   }

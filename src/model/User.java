@@ -1,7 +1,5 @@
 package model;
 
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -20,10 +18,10 @@ public interface User {
    * @param stocks map of {tickerSym , qty}
    * @return true if added , false otherwise
    */
-  boolean addPortfolio(String name, Map<String, Double> stocks) throws Exception;
+  boolean addPortfolio(String name, Map<String, Double> stocks);
 
   /**
-   * Returns List of Portfolios
+   * Returns List of Portfolios.
    *
    * @return list of portfolis
    */
@@ -38,11 +36,8 @@ public interface User {
   Map<String, Double> getPortfolioSummary(String name);
 
   /**
-   * Fetches detailed portfolio data.
-   * eg response : [
-   * "aapl" : [ 20 , 15 ,10 , 50],
-   * "googl" : [ 20 , 15 ,10 , 50]
-   * ]
+   * Fetches detailed portfolio data. eg response : [ "aapl" : [ 20 , 15 ,10 , 50], "googl" : [ 20 ,
+   * 15 ,10 , 50] ]
    *
    * @param name name of the portfolio
    * @return Detailed Portfolio.
@@ -56,7 +51,8 @@ public interface User {
    * @param date date for which portfolio value is required
    * @return total value of portfolio
    */
-  Double getPortfolioValue(String name, String date) throws Exception;
+  Double getPortfolioValue(String name, String date);
+
   /**
    * Fetches total PnL of a portfolio.
    *
@@ -64,10 +60,11 @@ public interface User {
    * @param date date for which PnL is required.
    * @return total PnL
    */
-  double getPortfolioPnL(String name, String date) throws IOException;
+  Double getPortfolioPnL(String name, String date);
 
   /**
    * Checks whether the name of portfolio already exists in the names of portfolios.
+   *
    * @param name the name of portfolio that needs to be checked.
    * @return true/false based on whether the name already exists or not.
    */
@@ -76,6 +73,7 @@ public interface User {
 
   /**
    * Checks whether the date entered by user is in correct format.
+   *
    * @param dateStr the string entered by user
    * @return check on the string
    */
@@ -84,12 +82,14 @@ public interface User {
 
   /**
    * Returns a list of stocks that ara available for user to create portfolio.
+   *
    * @return A list of stock names.
    */
   Set<String> getStockList();
 
   /**
    * Returns whether the stock name entered by user is a valid stock name or not.
+   *
    * @param name stock name entered by user.
    * @return if the stock name is valid or not.
    */

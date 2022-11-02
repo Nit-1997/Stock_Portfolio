@@ -5,9 +5,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedList;
-
-import Utils.Utils;
-import constants.Constants;
+import utils.Utils;
 
 /**
  * This class is used to fetch historic stock data.
@@ -25,7 +23,8 @@ public class ApiDataFetcher {
    * @return historic timeseries data in string format
    * @throws RuntimeException can occur due to incorrect url/params
    */
-  public static String fetchStockDataBySymbolYahoo(String ticker, String baseUrl) throws RuntimeException {
+  public static String fetchStockDataBySymbolYahoo(String ticker, String baseUrl) throws
+      RuntimeException {
     if (ticker == null || baseUrl == null) {
       throw new IllegalArgumentException("passed null args");
     }
@@ -39,8 +38,7 @@ public class ApiDataFetcher {
               + periods[1];
       url = new URL(apiUrl);
     } catch (MalformedURLException e) {
-      throw new RuntimeException("the yahoo API has either changed or "
-              + "no longer works");
+      throw new RuntimeException("the yahoo API has either changed or " + "no longer works");
     }
     InputStream in;
     StringBuilder output = new StringBuilder();
@@ -74,29 +72,29 @@ public class ApiDataFetcher {
     }
   }
 
-////  public static String fetchStockDataBySymbol(String ticker, String apiKey) throws Exception {
-////    URL url = null;
-////    try {
-////      url = new URL(Constants.getDailyDataTimeSeriesApi
-////              + "&symbol"
-////              + "=" + ticker + "&apikey=" + apiKey + "&outputsize=full" + "&datatype=csv");
-////    } catch (MalformedURLException e) {
-////      throw new RuntimeException("the alphaVantage API has either changed or "
-////              + "no longer works");
-////    }
-////    InputStream in = null;
-////    StringBuilder output = new StringBuilder();
-////
-////    try {
-////      in = url.openStream();
-////      int b;
-////
-////      while ((b = in.read()) != -1) {
-////        output.append((char) b);
-////      }
-////      return output.toString();
-////    } catch (IOException e) {
-////      throw new IllegalArgumentException("No price data found for this symbol.");
-////    }
-//  }
+  ////  public static String fetchStockDataBySymbol(String ticker, String apiKey) throws Exception {
+  ////    URL url = null;
+  ////    try {
+  ////      url = new URL(Constants.getDailyDataTimeSeriesApi
+  ////              + "&symbol"
+  ////              + "=" + ticker + "&apikey=" + apiKey + "&outputsize=full" + "&datatype=csv");
+  ////    } catch (MalformedURLException e) {
+  ////      throw new RuntimeException("the alphaVantage API has either changed or "
+  ////              + "no longer works");
+  ////    }
+  ////    InputStream in = null;
+  ////    StringBuilder output = new StringBuilder();
+  ////
+  ////    try {
+  ////      in = url.openStream();
+  ////      int b;
+  ////
+  ////      while ((b = in.read()) != -1) {
+  ////        output.append((char) b);
+  ////      }
+  ////      return output.toString();
+  ////    } catch (IOException e) {
+  ////      throw new IllegalArgumentException("No price data found for this symbol.");
+  ////    }
+  //  }
 }

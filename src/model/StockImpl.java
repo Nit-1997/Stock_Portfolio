@@ -1,17 +1,12 @@
 package model;
 
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
-
-import Utils.Utils;
+import utils.Utils;
 
 /**
- * Implementation of the Stock interface.
- * Used to store the data for each stock
+ * Implementation of the Stock interface. Used to store the data for each stock
  */
 final class StockImpl implements Stock {
 
@@ -20,8 +15,8 @@ final class StockImpl implements Stock {
   private final String buyDate;
 
   /**
-   * Constructor to create object of stock.
-   * This is used while fetching the data for already created stock
+   * Constructor to create object of stock. This is used while fetching the data for already created
+   * stock
    *
    * @param ticker   ticker symbol of the stock
    * @param buyPrice buy price of the stock
@@ -34,8 +29,8 @@ final class StockImpl implements Stock {
   }
 
   /**
-   * Constructor to create object of stock.
-   * This is used when creating the portfolio for the first time
+   * Constructor to create object of stock. This is used when creating the portfolio for the first
+   * time
    *
    * @param ticker ticker symbol for the given stock
    * @throws IOException can occur while reading/loading data dump
@@ -48,7 +43,7 @@ final class StockImpl implements Stock {
 
   @Override
   public Double getCurrentPrice() throws IOException {
-    String res = Utils.fetchCurrentStockValue(this.ticker);
+    String res = Utils.fetchCurrentStockValue(this.ticker, "stock_data");
     if (res == null) {
       return null;
     }

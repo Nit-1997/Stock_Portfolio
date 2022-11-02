@@ -1,12 +1,10 @@
 package model;
 
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import Utils.Utils;
+import utils.Utils;
 
 
 /**
@@ -14,7 +12,7 @@ import Utils.Utils;
  * Portfolio consists of name, list of stock orders,
  * i.e {stock, quantity}
  */
-final public class PortfolioImpl implements Portfolio {
+final class PortfolioImpl implements Portfolio {
 
   private final String name;
   private final List<StockOrder> stockOrder;
@@ -44,7 +42,7 @@ final public class PortfolioImpl implements Portfolio {
    * This is used when creating a new Portfolio
    *
    * @param stocksMap map of {ticker , qty}
-   * @param name      name name of the portfolio
+   * @param name  name of the portfolio
    * @throws Exception can occur while reading/loading data dump
    */
   public PortfolioImpl(Map<String, Double> stocksMap, String name) throws Exception {
@@ -142,7 +140,7 @@ final public class PortfolioImpl implements Portfolio {
 
   @Override
   public List<PortfolioDetailedPojo> getPortfolioDetailedOnDate(String date) throws Exception {
-    if(date == null){
+    if (date == null) {
       throw new IllegalArgumentException("Passed null args");
     }
     if (this.stockOrder == null) {

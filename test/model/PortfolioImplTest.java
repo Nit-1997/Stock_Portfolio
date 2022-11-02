@@ -1,13 +1,12 @@
 package model;
 
 import org.junit.Test;
-
+import utils.Utils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import Utils.Utils;
 import constants.Constants;
 
 import static org.junit.Assert.*;

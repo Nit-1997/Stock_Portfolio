@@ -1,32 +1,24 @@
 import controller.StockController;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Scanner;
 import model.UserImpl;
 
+/**
+ * This is the starter class that needs to be run to start the application.
+ */
 public class Main {
 
-
+  /**
+   * Main function of the program, starter function of the application.
+   *
+   * @param args standard arguments
+   * @throws Exception scanner exception.
+   */
   public static void main(String[] args) throws Exception {
-    DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    String[] dates = {"2022-10-05","2022-10-04","2022-10-03","2022-09-30","2022-09-29","2022-09-28","2022-09-25"};
-    String askedDate = "2022-09-26";
-    for(String date : dates){
-      if(sdf.parse(askedDate).compareTo(sdf.parse(date))>=0){
-        System.out.println("required date "+date);
-        break;
-      }
-    }
 
-//    try {
-//      new StockController(System.in, System.out).go(new UserImpl());
-//    } catch (IOException e) {
-//      e.printStackTrace();
-//    }
+    try {
+      new StockController(System.in, System.out).go(new UserImpl());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 }

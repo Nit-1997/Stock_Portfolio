@@ -3,11 +3,10 @@ package model;
 import java.io.IOException;
 
 /**
- * Implementation for the stock orders.
- * This implementation uses Stock interface,
- * to implement stock objects.
+ * Implementation for the stock orders. This implementation uses Stock interface, to implement stock
+ * objects.
  */
-public class StockOrderImpl implements StockOrder {
+final public class StockOrderImpl implements StockOrder {
 
   private final Stock stock;
   private final double quantity;
@@ -25,8 +24,8 @@ public class StockOrderImpl implements StockOrder {
   }
 
   /**
-   * Creates a StockOrderImpl object using ticker,buyPrice,date & qty.
-   * This is used when we are fetching already existing portfolios
+   * Creates a StockOrderImpl object using ticker,buyPrice,date & qty. This is used when we are
+   * fetching already existing portfolios
    *
    * @param ticker   ticker symbol of the stock
    * @param buyPrice price at date of purchase

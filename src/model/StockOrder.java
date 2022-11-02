@@ -3,8 +3,7 @@ package model;
 import java.io.IOException;
 
 /**
- * Interface to abstract Stock Order functionality.
- * Stock Order contains {Stock , qty}
+ * Interface to abstract Stock Order functionality. Stock Order contains {Stock , qty}
  */
 public interface StockOrder {
 
@@ -14,14 +13,14 @@ public interface StockOrder {
    * @return current market price of the order
    * @throws IOException can occur while reading data dump
    */
-  public Double getCurrentOrderValue() throws IOException;
+  Double getCurrentOrderValue() throws IOException;
 
   /**
    * gets the buy value of this stock order.
    *
    * @return buy price of the order
    */
-  public Double getInitialOrderValue();
+  Double getInitialOrderValue();
 
   /**
    * gets the value of this stock order on a given date.
@@ -30,7 +29,7 @@ public interface StockOrder {
    * @return value of the order on  a given date
    * @throws IOException can occur while reading data dump
    */
-  public Double getOrderValueOnDate(String date) throws IOException;
+  Double getOrderValueOnDate(String date) throws IOException;
 
   /**
    * Gets the total PnL(profit/loss) of a given stock order.
@@ -38,7 +37,7 @@ public interface StockOrder {
    * @return profit / loss ( +ve means profit , -ve means loss)
    * @throws IOException can occur while reading data dump
    */
-  public Double getOrderPnL() throws IOException;
+  Double getOrderPnL() throws IOException;
 
 
   /**
@@ -46,12 +45,12 @@ public interface StockOrder {
    *
    * @return stock object inside the order
    */
-  public Stock getStock();
+  Stock getStock();
 
   /**
    * Used to fetch the quantity of each order.
    *
    * @return quantity inside the order
    */
-  public double getQuantity();
+  double getQuantity();
 }

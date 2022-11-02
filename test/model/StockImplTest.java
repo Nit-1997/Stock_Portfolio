@@ -1,9 +1,8 @@
 package model;
 
-import java.io.IOException;
 import org.junit.Test;
 
-import Utils.Utils;
+import utils.Utils;
 
 import static org.junit.Assert.*;
 
