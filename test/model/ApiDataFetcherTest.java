@@ -40,4 +40,21 @@ public class ApiDataFetcherTest {
   public void testYahooApiNullUrl() throws Exception {
     String ans = (ApiDataFetcher.fetchStockDataBySymbolYahoo("AAPL", null));
   }
+
+
+  @Test
+  public void testAlphaVantageApi() throws Exception {
+    String data = ApiDataFetcher.fetchStockDataBySymbolAlphaVantage("AAPL");
+    assertNotEquals(0,data.length());
+  }
+
+
+  @Test
+  public void testAlphaVantageApiHighFrequency() throws Exception {
+    String[] tickers = {"AAPL" , "CSCO" , "AAPL" , "CSCO" , "AAPL" , "CSCO","AAPL" , "CSCO" , "AAPL" , "CSCO" , "AAPL" , "CSCO"};
+    for(String ticker : tickers){
+      String data = ApiDataFetcher.fetchStockDataBySymbolAlphaVantage(ticker);
+      assertNotEquals(0 , data.length());
+    }
+  }
 }

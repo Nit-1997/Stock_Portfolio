@@ -207,8 +207,9 @@ public class Utils {
    * @throws Exception if directory not found or any issue in API.
    */
   public static void loadStockData(String ticker, String stockDataDir) throws Exception {
-    String output = ApiDataFetcher.fetchStockDataBySymbolYahoo(ticker,
-        Constants.YAHOO_API_BASE_URL);
+//    String output = ApiDataFetcher.fetchStockDataBySymbolYahoo(ticker,
+//        Constants.YAHOO_API_BASE_URL);
+    String output = ApiDataFetcher.fetchStockDataBySymbolAlphaVantage(ticker);
     File stockFile = createFileIfNotExists(ticker, stockDataDir);
     writeStockDataDumpToFile(stockFile, output);
   }
