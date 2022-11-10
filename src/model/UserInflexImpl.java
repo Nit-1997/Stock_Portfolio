@@ -18,14 +18,14 @@ import utils.Utils;
 /**
  * Implementation of User and it's functionality.
  */
-public class UserImpl implements User {
+public class UserInflexImpl implements UserInflex {
 
-  private final Map<String, Portfolio> portfolioMap;
+  private final Map<String, PortfolioInflex> portfolioMap;
 
   /**
    * Constructor to initialize User Object with portfolios.
    */
-  public UserImpl() {
+  public UserInflexImpl() {
     Utils.clearStockDirectory();
     try {
       Constants.STOCK_NAMES = Utils.loadStockNames("stocks", "stocks_list.csv");
@@ -53,7 +53,7 @@ public class UserImpl implements User {
   @Override
   public boolean addPortfolio(String name, Map<String, Double> stocks) {
     try {
-      this.portfolioMap.put(name, new PortfolioImpl(stocks, name));
+      this.portfolioMap.put(name, new PortfolioInflexImpl(stocks, name));
       return true;
     } catch (Exception e) {
       return false;
@@ -71,7 +71,7 @@ public class UserImpl implements User {
   public Map<String, Double> getPortfolioSummary(String name) {
     try {
       if (portfolioMap.get(name) == null) {
-        portfolioMap.put(name, new PortfolioImpl(name));
+        portfolioMap.put(name, new PortfolioInflexImpl(name));
       }
       List<StockOrder> list = portfolioMap.get(name).getPortfolioSummary();
       if (list == null) {
@@ -98,7 +98,7 @@ public class UserImpl implements User {
         throw new Exception("wrong arguments");
       }
       if (portfolioMap.get(name) == null) {
-        portfolioMap.put(name, new PortfolioImpl(name));
+        portfolioMap.put(name, new PortfolioInflexImpl(name));
       }
       Map<String, List<Double>> resMap = new HashMap<>();
       String currentDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
@@ -137,7 +137,7 @@ public class UserImpl implements User {
         throw new Exception("wrong arguments");
       }
       if (portfolioMap.get(name) == null) {
-        portfolioMap.put(name, new PortfolioImpl(name));
+        portfolioMap.put(name, new PortfolioInflexImpl(name));
       }
       Double portfolioValue;
       String currentDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
@@ -161,7 +161,7 @@ public class UserImpl implements User {
         throw new Exception("wrong arguments");
       }
       if (portfolioMap.get(name) == null) {
-        portfolioMap.put(name, new PortfolioImpl(name));
+        portfolioMap.put(name, new PortfolioInflexImpl(name));
       }
       double portfolioPnL = 0;
       String currentDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());

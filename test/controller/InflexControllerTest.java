@@ -18,9 +18,9 @@ import org.junit.Test;
 /**
  * Junit Class to test StockController.
  */
-public class StockControllerTest {
+public class InflexControllerTest {
 
-  StockController controller;
+  InflexController controller;
   MockModel model;
   StringBuilder log;
   ByteArrayOutputStream bytes;
@@ -38,7 +38,7 @@ public class StockControllerTest {
   @Test
   public void testGo() throws Exception {
     in = new ByteArrayInputStream("0".getBytes());
-    controller = new StockController(in, out);
+    controller = new InflexController(in, out);
     controller.start(model);
     assertEquals("clean stock directory", log.toString());
     assertEquals(
@@ -50,7 +50,7 @@ public class StockControllerTest {
   @Test
   public void testAddStocksAskTicker() {
     in = new ByteArrayInputStream("aapl\n".getBytes());
-    controller = new StockController(in, out);
+    controller = new InflexController(in, out);
     String ticker = controller.addStocksAskTicker(new Scanner(in), model);
     assertEquals("Name of ticker is AAPLName of ticker is AAPL", log.toString());
     assertEquals(ViewConstants.ADD_STOCKS_IN_PORTFOLIO_ASK_TICKER_SYMBOL,
@@ -60,7 +60,7 @@ public class StockControllerTest {
   @Test
   public void testAddStocksAskTicker2() {
     in = new ByteArrayInputStream("goog\naapl\n".getBytes());
-    controller = new StockController(in, out);
+    controller = new InflexController(in, out);
     String ticker = controller.addStocksAskTicker(new Scanner(in), model);
     assertEquals(
         "Name of ticker is GOOGName of ticker is GOOGName of ticker is AAPLName of ticker "
@@ -73,7 +73,7 @@ public class StockControllerTest {
   @Test
   public void testAddStocksAskStockNumber() {
     in = new ByteArrayInputStream("458.00\n".getBytes());
-    controller = new StockController(in, out);
+    controller = new InflexController(in, out);
     Double stockQuan = controller.addStocksAskStockNumber(new Scanner(in));
     assertEquals(ViewConstants.ADD_STOCKS_IN_PORTFOLIO_ASK_STOCK_NUMBER,
         bytes.toString());
@@ -82,7 +82,7 @@ public class StockControllerTest {
   @Test
   public void testAddStocksAskStockNumber2() {
     in = new ByteArrayInputStream("-458.28\n23\n".getBytes());
-    controller = new StockController(in, out);
+    controller = new InflexController(in, out);
     Double stockQuan = controller.addStocksAskStockNumber(new Scanner(in));
     assertEquals(ViewConstants.ADD_STOCKS_IN_PORTFOLIO_ASK_STOCK_NUMBER
         + ViewConstants.ASK_STOCK_NUMBER_AGAIN, bytes.toString());
@@ -91,7 +91,7 @@ public class StockControllerTest {
   @Test
   public void testAddStocksToPortfolioControllerOnce() throws Exception {
     in = new ByteArrayInputStream("test\naapl\n11.00\nn\n".getBytes());
-    controller = new StockController(in, out);
+    controller = new InflexController(in, out);
     controller.addStocksToPortfolioController(new Scanner(in), model);
     assertEquals(
         "unique name checker" + "\nget stock list" + "Name of ticker is AAPLName of ticker "
@@ -109,7 +109,7 @@ public class StockControllerTest {
   @Test
   public void testAddStocksToPortfolioControllerMultiple() throws Exception {
     in = new ByteArrayInputStream("test\naapl\n11.00\ny\n1\naapl\n4\nn\n".getBytes());
-    controller = new StockController(in, out);
+    controller = new InflexController(in, out);
     controller.addStocksToPortfolioController(new Scanner(in), model);
     assertEquals("unique name checker\n"
         + "get stock listName of ticker is AAPLName of ticker is AAPLName of ticker is AAPLName of "
@@ -131,7 +131,7 @@ public class StockControllerTest {
   @Test
   public void testAddStocksToPortfolioControllerAddRemove() throws Exception {
     in = new ByteArrayInputStream("test\naapl\n11.00\ny\n2\naapl\n4\nn\n".getBytes());
-    controller = new StockController(in, out);
+    controller = new InflexController(in, out);
     controller.addStocksToPortfolioController(new Scanner(in), model);
     assertEquals("unique name checker\n"
         + "get stock listName of ticker is AAPLName of ticker is AAPLName of ticker is AAPLName of "
@@ -154,7 +154,7 @@ public class StockControllerTest {
   @Test
   public void testLoadPortfoliosController() throws Exception {
     in = new ByteArrayInputStream("2\n".getBytes());
-    controller = new StockController(in, out);
+    controller = new InflexController(in, out);
     controller.loadPortfoliosController(new Scanner(in), model);
     assertEquals("get Portfolios list", log.toString());
     assertEquals("\nYour portfolio lists : \n" + "* tech\n" +
@@ -165,7 +165,7 @@ public class StockControllerTest {
   @Test
   public void testLoadSinglePortfolioDetailControllerSummary() throws Exception {
     in = new ByteArrayInputStream("techLoad\n1\n7\n".getBytes());
-    controller = new StockController(in, out);
+    controller = new InflexController(in, out);
     controller.loadSinglePortfolioDetailController(new Scanner(in), model);
     assertEquals("unique name checker\n" + "getting portfolio summary for techLoad",
         log.toString());
@@ -184,7 +184,7 @@ public class StockControllerTest {
   @Test
   public void testLoadSinglePortfolioDetailControllerCurrentDetail() throws Exception {
     in = new ByteArrayInputStream("techLoad\n2\n7\n".getBytes());
-    controller = new StockController(in, out);
+    controller = new InflexController(in, out);
     controller.loadSinglePortfolioDetailController(new Scanner(in), model);
     String date = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
     assertEquals(
@@ -212,7 +212,7 @@ public class StockControllerTest {
   @Test
   public void testLoadSinglePortfolioDetailControllerCurrentValue() throws Exception {
     in = new ByteArrayInputStream("techLoad\n3\n7\n".getBytes());
-    controller = new StockController(in, out);
+    controller = new InflexController(in, out);
     controller.loadSinglePortfolioDetailController(new Scanner(in), model);
     String date = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
     assertEquals(
@@ -229,7 +229,7 @@ public class StockControllerTest {
   @Test
   public void testLoadSinglePortfolioDetailControllerHostoricalDetail() throws Exception {
     in = new ByteArrayInputStream("techLoad\n4\n2022-02-26\n7\n".getBytes());
-    controller = new StockController(in, out);
+    controller = new InflexController(in, out);
     controller.loadSinglePortfolioDetailController(new Scanner(in), model);
 
     assertEquals("unique name checkerchecking the date 2022-02-26\n"
@@ -257,7 +257,7 @@ public class StockControllerTest {
   @Test
   public void testLoadSinglePortfolioDetailControllerHistoricalValue() throws Exception {
     in = new ByteArrayInputStream("techLoad\n5\n2022-02-26\n7\n".getBytes());
-    controller = new StockController(in, out);
+    controller = new InflexController(in, out);
     controller.loadSinglePortfolioDetailController(new Scanner(in), model);
     assertEquals("unique name checkerchecking the date 2022-02-26\n"
         + "getting portfolio value for techLoad for the date 2022-02-26", log.toString());
@@ -271,7 +271,7 @@ public class StockControllerTest {
   @Test
   public void testLoadSinglePortfolioDetailControllerReturnToList() throws Exception {
     in = new ByteArrayInputStream("techLoad\n6\n2\n".getBytes());
-    controller = new StockController(in, out);
+    controller = new InflexController(in, out);
     controller.loadSinglePortfolioDetailController(new Scanner(in), model);
     assertEquals("unique name checkerget Portfolios list", log.toString());
     assertEquals(ViewConstants.ASK_NAME_OF_PORTFOLIO + "For the portfolio: techLoad\n"
@@ -282,7 +282,7 @@ public class StockControllerTest {
   @Test
   public void testLoadSinglePortfolioDetailControllerReturnToMainMenu() throws Exception {
     in = new ByteArrayInputStream("techLoad\n7\n".getBytes());
-    controller = new StockController(in, out);
+    controller = new InflexController(in, out);
     controller.loadSinglePortfolioDetailController(new Scanner(in), model);
     assertEquals("unique name checker", log.toString());
     assertEquals(ViewConstants.ASK_NAME_OF_PORTFOLIO + "For the portfolio: techLoad\n"

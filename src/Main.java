@@ -1,6 +1,4 @@
-import controller.StockController;
-import java.io.IOException;
-import model.UserImpl;
+import controller.WelcomeController;
 
 /**
  * This is the starter class that needs to be run to start the application.
@@ -15,10 +13,8 @@ public class Main {
    */
   public static void main(String[] args) throws Exception {
 
-    try {
-      new StockController(System.in, System.out).start(new UserImpl());
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    new WelcomeController(System.in, System.out).start();
+
+
   }
 }

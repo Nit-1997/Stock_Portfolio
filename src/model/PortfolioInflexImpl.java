@@ -11,7 +11,7 @@ import utils.Utils;
  * This class implements the Portfolio. Portfolio consists of name, list of stock orders, i.e
  * {stock, quantity}
  */
-final class PortfolioImpl implements Portfolio {
+final class PortfolioInflexImpl implements PortfolioInflex {
 
   private final String name;
   private final List<StockOrder> stockOrder;
@@ -22,7 +22,7 @@ final class PortfolioImpl implements Portfolio {
    * @param name name of the portfolio
    * @throws Exception can occur while reading/loading data dump
    */
-  public PortfolioImpl(String name) throws Exception {
+  public PortfolioInflexImpl(String name) throws Exception {
     this.stockOrder = Utils.loadPortfolioData(name, "portfolios");
     this.name = name;
     if (this.stockOrder == null) {
@@ -42,7 +42,7 @@ final class PortfolioImpl implements Portfolio {
    * @param name      name of the portfolio
    * @throws Exception can occur while reading/loading data dump
    */
-  public PortfolioImpl(Map<String, Double> stocksMap, String name) throws Exception {
+  public PortfolioInflexImpl(Map<String, Double> stocksMap, String name) throws Exception {
     if (stocksMap == null || name == null) {
       throw new IllegalArgumentException("Null arguments to portfolio constructor");
     }

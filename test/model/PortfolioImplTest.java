@@ -8,7 +8,6 @@ import org.junit.Test;
 import utils.Utils;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -17,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Scanner;
 
 import constants.Constants;
@@ -115,7 +113,7 @@ public class PortfolioImplTest {
       qt++;
     }
 
-    Portfolio p = new PortfolioImpl(order, "tech");
+    PortfolioInflex p = new PortfolioInflexImpl(order, "tech");
     for (StockOrder o : p.getPortfolioSummary()) {
       String ticker = o.getStock().getStockTickerName();
       assertNotNull(ticker);
@@ -160,7 +158,7 @@ public class PortfolioImplTest {
   public void testPortfolioCreateForRetrieval() throws Exception {
     Constants.STOCK_NAMES = Utils
             .loadStockNames("stocks", "stocks_list.csv");
-    Portfolio p = new PortfolioImpl("tech");
+    PortfolioInflex p = new PortfolioInflexImpl("tech");
 
     for (StockOrder o : p.getPortfolioSummary()) {
       String ticker = o.getStock().getStockTickerName();
@@ -205,7 +203,7 @@ public class PortfolioImplTest {
   public void testGetPortfolioByDate() throws Exception {
     Constants.STOCK_NAMES = Utils
             .loadStockNames("stocks", "stocks_list.csv");
-    Portfolio p = new PortfolioImpl("tech");
+    Portfolio p = new PortfolioInflexImpl("tech");
     String date = "2022-10-28";
     double v = computeDummyPortfolioValDate(date);
     assertEquals( v, p.getValueOnDate(date) , 0 );
@@ -216,7 +214,7 @@ public class PortfolioImplTest {
   public void testGetPortfolioValue() throws Exception{
     Constants.STOCK_NAMES = Utils
             .loadStockNames("stocks", "stocks_list.csv");
-    Portfolio p = new PortfolioImpl("tech");
+    Portfolio p = new PortfolioInflexImpl("tech");
     assertEquals(computeDummyPortfolioVal() , p.getCurrentValue() , 0);
   }
 
@@ -224,7 +222,7 @@ public class PortfolioImplTest {
   public void testGetPortfolioDetailed() throws Exception {
     Constants.STOCK_NAMES = Utils
             .loadStockNames("stocks", "stocks_list.csv");
-    Portfolio p = new PortfolioImpl("tech");
+    PortfolioInflex p = new PortfolioInflexImpl("tech");
     List<PortfolioDetailedPojo> pojos = p.getCurrentPortfolioDetailed();
     for (PortfolioDetailedPojo pojo : pojos) {
       if (Objects.equals(pojo.getTicker(), "NVDA")) {
@@ -242,7 +240,7 @@ public class PortfolioImplTest {
     Constants.STOCK_NAMES = Utils
             .loadStockNames("stocks", "stocks_list.csv");
 
-    Portfolio p = new PortfolioImpl("tech");
+    PortfolioInflex p = new PortfolioInflexImpl("tech");
     String date = "2022-10-28";
     List<PortfolioDetailedPojo> pojos = p.getPortfolioDetailedOnDate(date);
     assertNotNull(pojos);
@@ -261,7 +259,7 @@ public class PortfolioImplTest {
     Constants.STOCK_NAMES = Utils
             .loadStockNames("stocks", "stocks_list.csv");
 
-    Portfolio p = new PortfolioImpl("tech");
+    PortfolioInflex p = new PortfolioInflexImpl("tech");
     List<PortfolioDetailedPojo> pojos = p.getPortfolioDetailedOnDate(null);
   }
 

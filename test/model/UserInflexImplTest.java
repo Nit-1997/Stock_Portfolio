@@ -22,13 +22,13 @@ import org.junit.Test;
 /**
  * JUnit class to test UserImpl Class.
  */
-public class UserImplTest {
+public class UserInflexImplTest {
 
-  User user;
+  UserInflex user;
 
   @Before
   public void init() {
-    user = new UserImpl();
+    user = new UserInflexImpl();
   }
 
   @Test

@@ -65,7 +65,7 @@ public class ViewConstants {
 
 
   public static final String LOAD_PORTFOLIO_MENU =
-      "\n" + "1. Details of any portfolio\n" + "2. Return to main menu \n" + "Enter your choice: ";
+      "\n" + "1. Select any portfolio\n" + "2. Return to main menu \n" + "Enter your choice: ";
 
   public static final String ASK_NAME_OF_PORTFOLIO = "Enter name of the portfolio ";
 

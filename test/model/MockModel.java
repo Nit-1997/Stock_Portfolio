@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * Mock of the actual model to test controller.
  */
-public class MockModel implements User {
+public class MockModel implements UserInflex {
 
   private final StringBuilder log;
 
