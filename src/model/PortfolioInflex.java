@@ -7,7 +7,7 @@ public interface PortfolioInflex extends Portfolio{
 
 
   /**
-   * Fetches the PnL at portfolio level.
+   * Fetches the PnL at Portfolio level.
    *
    * @return Portfolio PnL
    * @throws IOException if data not found.
