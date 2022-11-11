@@ -27,7 +27,7 @@ public class AskStockNumber {
       } catch (NumberFormatException e) {
         ViewPrint.askStockNumberAgain(out);
         stockQuantity = scan.nextLine();
-        if (stockQuantity.equals("0")) {
+        if (stockQuantity.equals("e")) {
           return null;
         }
       }

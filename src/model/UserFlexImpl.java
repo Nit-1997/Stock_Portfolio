@@ -15,7 +15,7 @@ import java.util.Set;
 
 import utils.Utils;
 
-public class UserFlexImpl implements UserFlex {
+public class UserFlexImpl extends AbstractUser implements UserFlex{
 
   private final Map<String, PortfolioFlex> portfolioMap;
 
@@ -78,25 +78,7 @@ public class UserFlexImpl implements UserFlex {
     return !this.portfolioMap.containsKey(name);
   }
 
-  @Override
-  public boolean dateChecker(String dateStr) {
-    return Utils.dateChecker(dateStr);
-  }
 
-  @Override
-  public Set<String> getStockList() {
-    return Constants.STOCK_NAMES;
-  }
-
-  @Override
-  public boolean isValidStock(String name) {
-    return Constants.STOCK_NAMES.contains(name);
-  }
-
-  @Override
-  public void cleanStockDirectory() {
-    Utils.clearStockDirectory();
-  }
 
   @Override
   public boolean addPortfolio(String name, Map<String, Map<String, Double>> stocksMap) {
@@ -126,13 +108,25 @@ public class UserFlexImpl implements UserFlex {
   }
 
   @Override
-  public String getPortfolioCreationDate(String name) {
-    return this.portfolioMap.get(name).getCreationDate();
+  public String getPortfolioCreationDate(String portfolioName) {
+    try{
+      if (portfolioMap.get(portfolioName) == null) {
+        portfolioMap.put(portfolioName, new PortfolioFlexImpl(portfolioName));
+      }
+      return this.portfolioMap.get(portfolioName).getCreationDate();
+    }catch(Exception e){
+      System.out.println(e.getMessage());
+      return null;
+    }
+
   }
 
   @Override
   public Map<String, SimpleEntry<String, Double>> getPortfolioState(String portfolioName) {
     try {
+      if (portfolioMap.get(portfolioName) == null) {
+        portfolioMap.put(portfolioName, new PortfolioFlexImpl(portfolioName));
+      }
       return portfolioMap.get(portfolioName).getLatestState();
     } catch (Exception e) {
       System.out.println(e.getMessage());
@@ -143,7 +137,7 @@ public class UserFlexImpl implements UserFlex {
   @Override
   public boolean isBeforeDate(String firstDate, String secondDate) {
     try {
-      return Utils.compareDates(firstDate,secondDate)>0;
+      return Utils.compareDates(firstDate,secondDate)<0;
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
@@ -153,6 +147,9 @@ public class UserFlexImpl implements UserFlex {
   public boolean buyStockForPortfolio(String portfolioName,
                                       SimpleEntry<String, SimpleEntry<String, Double>> newStock) {
     try {
+      if (portfolioMap.get(portfolioName) == null) {
+        portfolioMap.put(portfolioName, new PortfolioFlexImpl(portfolioName));
+      }
       portfolioMap.get(portfolioName).addStock(newStock);
       return true;
     } catch (Exception e) {
@@ -165,6 +162,9 @@ public class UserFlexImpl implements UserFlex {
   public boolean sellStockFromPortfolio(String portfolioName,
                                         SimpleEntry<String, SimpleEntry<String, Double>> newStock) {
     try {
+      if (portfolioMap.get(portfolioName) == null) {
+        portfolioMap.put(portfolioName, new PortfolioFlexImpl(portfolioName));
+      }
       portfolioMap.get(portfolioName).sellStock(newStock);
       return true;
     } catch (Exception e) {

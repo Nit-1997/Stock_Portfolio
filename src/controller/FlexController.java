@@ -35,6 +35,7 @@ public class FlexController {
     String option;
     while (true) {
       if (!comingFromDefault) {
+        System.out.println("-------------Flexible Portfolio Menu-------------");
         ViewPrint.printMenu(this.out);
       }
       comingFromDefault = false;
@@ -47,8 +48,7 @@ public class FlexController {
           LoadFlexPortfolio.loadPortfoliosController(scan, user, this.out);
           break;
         case "0":
-          user.cleanStockDirectory();
-          ViewPrint.exitNote(this.out);
+          System.out.println("\nthank you for using flexible portfolio wizard");
           return;
         default:
           ViewPrint.errorNote(this.out);

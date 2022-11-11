@@ -149,6 +149,18 @@ public class ViewPrint {
     out.print(ViewConstants.LOAD_PORTFOLIO_DETAIL_MENU);
   }
 
+  public static final void loadFlexPortfolioDetailMenu(PrintStream out){
+    System.out.println("1. Summary of the portfolio");
+    System.out.println("2. Current value of the portfolio");
+    System.out.println("3. Historical value of the portfolio");
+    System.out.println("4. Add stocks to the portfolio");
+    System.out.println("5. Sell stocks from the portfolio");
+    System.out.println("6. Cost basis of the portfolio");
+    System.out.println("7. Go back to list view menu");
+    System.out.println("8. Go to main menu");
+    System.out.print("Enter your choice: ");
+  }
+
   public static final void waitLoadMessage(PrintStream out) {
     out.print(ViewConstants.WAIT_LOAD_MESSAGE);
   }

@@ -62,6 +62,7 @@ public class InflexController{
           loadPortfoliosController(scan, user);
           break;
         case "0":
+          System.out.println("\nthank you for using inflexible portfolio wizard");
           return;
         default:
           ViewPrint.errorNote(this.out);
@@ -113,7 +114,7 @@ public class InflexController{
       } catch (NumberFormatException e) {
         ViewPrint.askStockNumberAgain(this.out);
         stockQuantity = scan.nextLine();
-        if (stockQuantity.equals("0")) {
+        if (stockQuantity.equals("e")) {
           return null;
         }
       }

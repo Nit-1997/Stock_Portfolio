@@ -12,9 +12,13 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -134,8 +138,8 @@ public class Utils {
     return parsedStocks;
   }
 
-  private static boolean loadPortfolioValidator(String ticker, String date, String price,
-                                                String qty) {
+  private static boolean  loadPortfolioValidator(String ticker, String date, String price,
+                                                String qty, String type) {
     try {
       if (!Constants.STOCK_NAMES.contains(ticker.toUpperCase())) {
         return false;
@@ -147,7 +151,7 @@ public class Utils {
           return false;
         }
         double parsedQty = Double.parseDouble(qty);
-        if (parsedQty <= 0) {
+        if (type.equals("inflex") && parsedQty <= 0) {
           return false;
         }
       }
@@ -166,7 +170,7 @@ public class Utils {
    * @return List of stock orders
    * @throws IOException if the portfolioName or the dirName are null.
    */
-  public static List<StockOrder> loadPortfolioData(String portfolioName, String dirName)
+  public static List<StockOrder> loadPortfolioData(String portfolioName, String dirName, String type)
           throws IOException {
     File portfolioFile = Utils.getFileByName(portfolioName, dirName);
     if (portfolioFile == null) {
@@ -184,7 +188,7 @@ public class Utils {
       }
       String ticker = splitInput[0];
       String date = splitInput[3];
-      if (!loadPortfolioValidator(ticker, date, splitInput[1], splitInput[2])) {
+      if (!loadPortfolioValidator(ticker, date, splitInput[1], splitInput[2],type)) {
         return null;
       }
       double price = Double.parseDouble(splitInput[1]);
@@ -381,5 +385,41 @@ public class Utils {
     Date d1 = sdformat.parse(date1);
     Date d2 = sdformat.parse(date2);
     return d1.compareTo(d2);
+  }
+
+  public static boolean FlexPortfolioValidator(List<StockOrder> stockOrders) {
+    Collections.sort(stockOrders,(s1,s2)->{
+      if(s1.getStock().getStockTickerName()!=s2.getStock().getStockTickerName())
+       return s1.getStock().getStockTickerName().compareTo(s2.getStock().getStockTickerName());
+       else {
+        try {
+          return compareDates(s1.getStock().getBuyDate(),s2.getStock().getBuyDate());
+        } catch (Exception e) {
+          throw new RuntimeException(e);
+        }
+      }
+    });
+
+    Map<String, Double> checkerMap = new HashMap<>();
+    for(StockOrder s : stockOrders){
+      if(checkerMap.containsKey(s.getStock().getStockTickerName())){
+        Double quantity = s.getQuantity();
+        if(quantity>0){
+          quantity=checkerMap.get(s.getStock().getStockTickerName())+quantity;
+          checkerMap.put(s.getStock().getStockTickerName(),quantity);
+        }
+        else{
+          quantity=Math.abs(quantity);
+          if(checkerMap.get(s.getStock().getStockTickerName())<quantity) return false;
+          else{
+            quantity=checkerMap.get(s.getStock().getStockTickerName())-quantity;
+            checkerMap.put(s.getStock().getStockTickerName(),quantity);
+          }
+        }
+      }else {
+        checkerMap.put(s.getStock().getStockTickerName(),s.getQuantity());
+      }
+    }
+    return true;
   }
 }

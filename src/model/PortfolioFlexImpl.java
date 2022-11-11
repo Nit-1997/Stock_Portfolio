@@ -64,7 +64,9 @@ public class PortfolioFlexImpl implements PortfolioFlex {
    * @throws Exception while reading/writing data dump
    */
   public PortfolioFlexImpl(String portfolioName) throws Exception {
-    this.stockOrders = Utils.loadPortfolioData(portfolioName, "portfolios" + File.separator + "flex");
+    List<StockOrder> tempStockOrders =  Utils.loadPortfolioData(portfolioName, "portfolios" + File.separator + "flex","flex");
+    if(!Utils.FlexPortfolioValidator(tempStockOrders)) this.stockOrders=null;
+    else this.stockOrders=tempStockOrders;
     this.name = portfolioName;
     if (this.stockOrders == null) {
       return;
