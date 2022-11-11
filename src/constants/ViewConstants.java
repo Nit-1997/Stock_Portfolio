@@ -30,7 +30,7 @@ public class ViewConstants {
           + " (0 to return to the main menu): ";
 
   public static final String ASK_TICKER_SYMBOL_AGAIN =
-      "\nPortfolio doesn't contain this stock, enter"
+      "\nStock List doesn't contain this stock, enter"
           + " again:  (0 to return to main menu): ";
 
   public static final String ADD_STOCKS_IN_PORTFOLIO_ASK_STOCK_NUMBER =
@@ -38,7 +38,7 @@ public class ViewConstants {
           + ": ";
 
   public static final String ASK_STOCK_NUMBER_AGAIN = "Number entered is not in correct format, "
-      + "please enter again (0 to return to main menu): ";
+      + "please enter again (e to return to main menu): ";
   public static final String ADD_STOCKS_IN_PORTFOLIO_CONFIRMATION =
       "\n" + "Stock added successfully to the portfolio!!\n"
           + "Do you want to add more stocks or remove any stocks (y/n)? ";

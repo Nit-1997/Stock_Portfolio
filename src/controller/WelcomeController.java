@@ -38,6 +38,9 @@ public class WelcomeController implements StockController{
     String option;
     while (true) {
       if (!comingFromDefault) {
+        System.out.println();
+        ViewPrint.welcomeNote(this.out);
+        System.out.println("************************************************************");
         System.out.println("1. flex portfolio");
         System.out.println("2. inflex portfolio");
         System.out.println("0. Exit");
@@ -53,7 +56,7 @@ public class WelcomeController implements StockController{
           new InflexController(System.in, System.out).start(new UserInflexImpl());
           break;
         case "0":
-
+          new UserInflexImpl().cleanStockDirectory();
           ViewPrint.exitNote(this.out);
           return;
         default:

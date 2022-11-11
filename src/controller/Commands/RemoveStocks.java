@@ -11,11 +11,7 @@ public class RemoveStocks {
   public static void addPortfolioRemoveStocks(String ticker, String date, Double stockQuan,
       Map<String, Map<String, Double>> stocksMap, PrintStream out) {
 
-    if (!stocksMap.containsKey(ticker)) {
-      ViewPrint.removeStocksInPortfolioUnSuccessfulConfirmation(out);
-    } else if (!stocksMap.get(ticker).containsKey(date)) {
-      ViewPrint.removeStocksInPortfolioUnSuccessfulConfirmation(out);
-    } else if (stocksMap.get(ticker).get(date) < stockQuan) {
+    if (!stocksMap.containsKey(ticker) || !stocksMap.get(ticker).containsKey(date) || stocksMap.get(ticker).get(date) < stockQuan) {
       ViewPrint.removeStocksInPortfolioUnSuccessfulConfirmation(out);
     } else if (stocksMap.get(ticker).get(date) == stockQuan) {
       stocksMap.get(ticker).remove(date);

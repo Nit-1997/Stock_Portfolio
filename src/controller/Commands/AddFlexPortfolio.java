@@ -80,7 +80,7 @@ public class AddFlexPortfolio {
           }
           date = AskDate.addStocksAskDate(scan, out, user);
           if (date == null) {
-            return;
+            break;
           }
 
           RemoveStocks.addPortfolioRemoveStocks(ticker, date, stockQuanDouble, stocksMap, out);
@@ -97,8 +97,7 @@ public class AddFlexPortfolio {
           break;
         default:
           ViewPrint.addStocksInPortfolioErrorNode(out);
-          option = scan.nextLine().trim();
-
+          option = scan.nextLine();
           comingFromDefault = true;
       }
 

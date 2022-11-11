@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 import model.UserFlex;
 import view.ViewPrint;
 
@@ -14,7 +15,17 @@ public class BuyStock {
     ViewPrint.waitLoadMessage(out);
     String portfolioCreationDate = user.getPortfolioCreationDate(portfolioName);
     Map<String, SimpleEntry<String, Double>> portfolioState = user.getPortfolioState(portfolioName);
-    // print portfolioState
+    System.out.println("\nPortfolio creation date "+portfolioCreationDate);
+    System.out.println("    Stock     Quantity      Last Transaction Date");
+    for(String ticker : portfolioState.keySet()){
+      System.out.println("    "+ticker+"       "+portfolioState.get(ticker).getValue()+"         "+portfolioState.get(ticker).getKey());
+    }
+
+    System.out.println("\n");
+    Set<String> stockList = user.getStockList();
+    if (stockList != null && stockList.size() != 0) {
+      ViewPrint.printAvailableStocks(stockList);
+    }
 
     String ticker = AskTicker.addStocksAskTicker(scan, user, out);
     if (ticker == null) {
@@ -26,38 +37,43 @@ public class BuyStock {
     }
     SimpleEntry<String,SimpleEntry<String,Double>> newStock=null;
     String date;
+
+
     do{
       ViewPrint.askDate(out);
       date = scan.nextLine();
-      if(portfolioState.containsKey(ticker) && user.dateChecker(date)){
-        if(user.isBeforeDate(portfolioState.get(ticker).getKey(),date)){
-          System.out.println("kindly enter date after latest transaction for this stock");
+      if (date.equals("0")) {
+        return ;
+      }
+      if(!user.dateChecker(date)){
+        System.out.println("Please enter in the correct format in the given range(0 to return to list view) : ");
+      } else if(portfolioState.containsKey(ticker)){
+        if(user.isBeforeDate(date, portfolioState.get(ticker).getKey())){
+          System.out.println("kindly enter date after latest transaction for this stock(0 to return to list view) : ");
         }
         else{
           newStock = new SimpleEntry<>(ticker, new SimpleEntry<>(date,stockQuanDouble));
+          break;
         }
       }
       else{
-        if(user.isBeforeDate(portfolioCreationDate,date)){
-          System.out.println("kindly enter date after portfolio creation");
+        if(user.isBeforeDate(date, portfolioCreationDate)){
+          System.out.println("kindly enter date after portfolio creation(0 to return to list view) : ");
         }
         else{
           newStock = new SimpleEntry<>(ticker, new SimpleEntry<>(date,stockQuanDouble));
+          break;
         }
       }
     }
-    while(newStock==null);
+    while(!user.dateChecker(date) || newStock==null);
 
-    user.buyStockForPortfolio(portfolioName,newStock);
-
-
-//    while (!user.dateChecker(date)) {
-//      ViewPrint.askDateAgain(out);
-//      date = scan.nextLine();
-//      if (date.equals("0")) {
-//        return;
-//      }
-//    }
+    boolean val = user.buyStockForPortfolio(portfolioName,newStock);
+    if (val) {
+      System.out.println("transaction successful for the portfolio");
+    } else {
+      System.out.println("transaction unsuccessful");
+    }
 
   }
 

@@ -18,7 +18,7 @@ import utils.Utils;
 /**
  * Implementation of User and it's functionality.
  */
-public class UserInflexImpl implements UserInflex {
+public class UserInflexImpl extends AbstractUser implements UserInflex {
 
   private final Map<String, PortfolioInflex> portfolioMap;
 
@@ -186,25 +186,6 @@ public class UserInflexImpl implements UserInflex {
   }
 
 
-  @Override
-  public void cleanStockDirectory() {
-    Utils.clearStockDirectory();
-  }
 
-  @Override
-  public boolean dateChecker(String dateStr) {
-    return Utils.dateChecker(dateStr);
-  }
-
-
-  @Override
-  public Set<String> getStockList() {
-    return Constants.STOCK_NAMES;
-  }
-
-  @Override
-  public boolean isValidStock(String name) {
-    return Constants.STOCK_NAMES.contains(name);
-  }
 
 }

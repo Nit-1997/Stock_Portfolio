@@ -8,7 +8,8 @@ import java.util.Map;
 public interface PortfolioFlex extends Portfolio{
 
   /**
-   * Returns a new list of stock order that contains stock symbol and the total quantity till the date.
+   * Returns a new list of stock order that contains stock symbol and the total quantity till the
+   * date.
    * @param date date for which summary is asked.
    * @return List of StockOrder.
    */
@@ -21,8 +22,8 @@ public interface PortfolioFlex extends Portfolio{
   String getCreationDate();
 
   /**
-   * Returns a new list of stock order that contains stock symbol, latest transaction date and the
-   * total quantity for each stock.
+   * Returns a new list of stock order that contains stock symbol, the latest transaction date and
+   * the total quantity for each stock.
    * @return List of StockOrder.
    */
   Map<String , SimpleEntry<String , Double>> getLatestState() throws Exception;
