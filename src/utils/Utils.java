@@ -66,6 +66,7 @@ public class Utils {
     if (name == null || orders == null) {
       throw new IOException("passed null args");
     }
+   // System.out.println(dirName);
     File portfolioFile = createFileIfNotExists(name, dirName);
     writePortfolioToFile(portfolioFile, orders);
   }

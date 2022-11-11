@@ -110,6 +110,7 @@ public class UserFlexImpl implements UserFlex {
 
   @Override
   public Map<String, Double> getPortfolioSummary(String name, String date) {
+    // ticker symbol vs quantity on that date
     try {
       if (portfolioMap.get(name) == null) {
         portfolioMap.put(name, new PortfolioFlexImpl(name));
