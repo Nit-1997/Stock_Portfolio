@@ -28,12 +28,14 @@ public class BuyStock {
     do{
       ViewPrint.askDate(out);
       date = scan.nextLine();
-      if(portfolioState.containsKey(ticker) && user.dateChecker(date)){
+      if(!user.dateChecker(date)) continue;
+      if(portfolioState.containsKey(ticker)){
         if(user.isBeforeDate(portfolioState.get(ticker).getKey(),date)){
           System.out.println("kindly enter date after latest transaction for this stock");
         }
         else{
           newStock = new SimpleEntry<>(ticker, new SimpleEntry<>(date,stockQuanDouble));
+          break;
         }
       }
       else{
@@ -42,21 +44,13 @@ public class BuyStock {
         }
         else{
           newStock = new SimpleEntry<>(ticker, new SimpleEntry<>(date,stockQuanDouble));
+          break;
         }
       }
     }
-    while(newStock==null);
+    while(!user.dateChecker(date));
 
     user.buyStockForPortfolio(portfolioName,newStock);
-
-
-//    while (!user.dateChecker(date)) {
-//      ViewPrint.askDateAgain(out);
-//      date = scan.nextLine();
-//      if (date.equals("0")) {
-//        return;
-//      }
-//    }
 
   }
 

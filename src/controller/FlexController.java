@@ -1,22 +1,12 @@
 package controller;
 
 import controller.Commands.AddFlexPortfolio;
-import controller.Commands.AskDate;
-import controller.Commands.AskStockNumber;
-import controller.Commands.AskTicker;
 import controller.Commands.LoadFlexPortfolio;
-import controller.Commands.RemoveStocks;
+
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.AbstractMap;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
-import java.util.Set;
 import model.UserFlex;
 import view.ViewPrint;
 

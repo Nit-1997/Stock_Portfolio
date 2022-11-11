@@ -64,7 +64,8 @@ public class LoadSingleFlexPortfolioDetail {
           if (date == null) {
             return;
           }
-          portfolioValue = user.getPortfolioValue(portfolioName, date);
+          if(user.isBeforeDate(date,user.getPortfolioCreationDate(portfolioName))) portfolioValue=0.0;
+          else portfolioValue = user.getPortfolioValue(portfolioName, date);
           if (portfolioValue == null) {
             ViewPrint.printInCompatiblePortfolio(out);
             return;
@@ -77,7 +78,7 @@ public class LoadSingleFlexPortfolioDetail {
           SellStock.sellStockFromPortfolio(portfolioName,scan,user,out);
           break;
         case "6" :
-          CostBasis.calculateCostBasis();
+          CostBasis.calculateCostBasis(scan, out, user, portfolioName);
           break;
         case "7" :
           LoadSingleFlexPortfolioDetail.loadSinglePortfolioDetailController(scan, user,out);

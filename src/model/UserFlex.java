@@ -62,4 +62,11 @@ public interface UserFlex extends User{
    */
   boolean sellStockFromPortfolio(String portfolioName, SimpleEntry<String,SimpleEntry<String,Double>> newStock);
 
+  /**
+   * Determine total money invested in portfolio (all purchases + total transactions*commission fee) till the given date.
+   * @param date date for which getBasis required.
+   * @return Total Money Invested.
+   */
+  Double getCostBasis(String portfolioName, String date);
+
 }

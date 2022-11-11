@@ -146,4 +146,10 @@ public class UserFlexImpl implements UserFlex{
     portfolioMap.get(portfolioName).sellStock(newStock);
     return false;
   }
+
+  @Override
+  public Double getCostBasis(String portfolioName, String date){
+//    return this.portfolioMap.get(portfolioName).getCostBasis(date);
+    return -0.0;
+  }
 }
