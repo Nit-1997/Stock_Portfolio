@@ -2,6 +2,8 @@ package model;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -99,13 +101,13 @@ public class PortfolioFlexImpl implements PortfolioFlex {
       String date = s.getStock().getBuyDate();
       double qty = s.getQuantity();
       if (stateMap.containsKey(tickerName)) {
-        String lastTrasactionDate = stateMap.get(tickerName).getKey();
+        String lastTransactionDate = stateMap.get(tickerName).getKey();
         double newQty = qty + stateMap.get(tickerName).getValue();
-        int comparison = Utils.compareDates(lastTrasactionDate, date);
+        int comparison = Utils.compareDates(lastTransactionDate, date);
         if (comparison < 0) {
-          lastTrasactionDate = date;
+          lastTransactionDate = date;
         }
-        SimpleEntry<String, Double> updatedEntry = new SimpleEntry<>(lastTrasactionDate, newQty);
+        SimpleEntry<String, Double> updatedEntry = new SimpleEntry<>(lastTransactionDate, newQty);
         stateMap.put(tickerName, updatedEntry);
       } else {
         stateMap.put(tickerName, new SimpleEntry<>(date, qty));
@@ -132,7 +134,7 @@ public class PortfolioFlexImpl implements PortfolioFlex {
 
   @Override
   public Double getCurrentValue() throws Exception {
-    String currentDate = String.valueOf(java.time.LocalDate.now());
+    String currentDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
     return getValueOnDate(currentDate);
   }
 
@@ -186,6 +188,6 @@ public class PortfolioFlexImpl implements PortfolioFlex {
       }
       totalTrans++;
     }
-    return buyTransVal + (totalTrans * Constants.commissionFee);
+    return buyTransVal + (totalTrans * Constants.COMMISSION_FEE);
   }
 }

@@ -15,6 +15,15 @@ public interface UserInflex extends User{
   public boolean addPortfolio(String name, Map<String, Double> stocks);
 
   /**
+   * Fetches total PnL of a portfolio.
+   *
+   * @param name name of the portfolio
+   * @param date date for which PnL is required.
+   * @return total PnL
+   */
+  public Double getPortfolioPnL(String name, String date);
+
+  /**
    * Fetches the portfolio summary for a given portfolio.
    *
    * @param name name of the portfolio

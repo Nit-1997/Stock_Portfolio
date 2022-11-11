@@ -31,14 +31,6 @@ public interface User {
    */
   public Double getPortfolioValue(String name, String date);
 
-  /**
-   * Fetches total PnL of a portfolio.
-   *
-   * @param name name of the portfolio
-   * @param date date for which PnL is required.
-   * @return total PnL
-   */
-  public Double getPortfolioPnL(String name, String date);
 
   /**
    * Checks whether the name of portfolio already exists in the names of portfolios.
