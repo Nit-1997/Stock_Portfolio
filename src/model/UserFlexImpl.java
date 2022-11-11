@@ -100,14 +100,14 @@ public class UserFlexImpl implements UserFlex {
       if (portfolioMap.get(name) == null) {
         portfolioMap.put(name, new PortfolioFlexImpl(name));
       }
-      List<StockOrder> list = portfolioMap.get(name).getPortfolioSummary(date);
+      Map<String , Double> list = portfolioMap.get(name).getPortfolioSummary(date);
       if (list == null) {
         return null;
       }
       Map<String, Double> resMap = new HashMap<>();
-      for (StockOrder soi : list) {
-        resMap.put(soi.getStock().getStockTickerName(), soi.getQuantity());
-      }
+//      for (StockOrder soi : list) {
+//        resMap.put(soi.getStock().getStockTickerName(), soi.getQuantity());
+//      }
       return resMap;
     } catch (FileNotFoundException e) {
       return null;
