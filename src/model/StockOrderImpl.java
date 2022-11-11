@@ -23,6 +23,12 @@ final public class StockOrderImpl implements StockOrder {
     this.quantity = qty;
   }
 
+
+  public StockOrderImpl(String ticker , double qty , String date) throws IOException {
+    this.stock = new StockImpl(ticker, date);
+    this.quantity = qty;
+  }
+
   /**
    * Creates a StockOrderImpl object using ticker,buyPrice,date and qty. This is used when we are
    * fetching already existing portfolios

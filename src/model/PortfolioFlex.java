@@ -1,7 +1,9 @@
 package model;
 
+import java.io.IOException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
+import java.util.Map;
 
 public interface PortfolioFlex extends Portfolio{
 
@@ -10,7 +12,7 @@ public interface PortfolioFlex extends Portfolio{
    * @param date date for which summary is asked.
    * @return List of StockOrder.
    */
-  List<StockOrder> getPortfolioSummary(String date);
+  Map<String , Double> getPortfolioSummary(String date) throws Exception;
 
   /**
    * Gets the creation date of the portfolio.
@@ -23,18 +25,18 @@ public interface PortfolioFlex extends Portfolio{
    * total quantity for each stock.
    * @return List of StockOrder.
    */
-  List<StockOrder> getLatestState();
+  Map<String , SimpleEntry<String , Double>> getLatestState() throws Exception;
 
   /**
    * Add a new stock addition to the portfolio.
    * @param newEntry Stock transaction {Ticker Symbol, Transaction Date, Quantity} to be added
    */
-  void addStock(SimpleEntry<String, SimpleEntry<String, Double>> newEntry);
+  void addStock(SimpleEntry<String, SimpleEntry<String, Double>> newEntry) throws Exception;
 
   /**
    * Add a new stock sell to the portfolio.
    * @param newEntry Stock transaction {Ticker Symbol, Transaction Date, Quantity} to be added
    */
-  void sellStock(SimpleEntry<String, SimpleEntry<String, Double>> newEntry);
+  void sellStock(SimpleEntry<String, SimpleEntry<String, Double>> newEntry) throws Exception;
 
 }

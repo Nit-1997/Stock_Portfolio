@@ -1,6 +1,7 @@
 package utils;
 
 import constants.Constants;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -16,6 +17,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
+
 import model.ApiDataFetcher;
 import model.StockOrder;
 import model.StockOrderImpl;
@@ -60,7 +62,7 @@ public class Utils {
    * @throws IOException if directory doesn't exist or any argument exception.
    */
   public static void saveToFile(String name, List<StockOrder> orders, String dirName)
-      throws IOException {
+          throws IOException {
     if (name == null || orders == null) {
       throw new IOException("passed null args");
     }
@@ -70,16 +72,16 @@ public class Utils {
 
 
   private static void writePortfolioToFile(File portfolioFile, List<StockOrder> orders)
-      throws IOException {
+          throws IOException {
     if (portfolioFile == null || orders == null) {
       throw new IOException("passed null args");
     }
     FileWriter myWriter = new FileWriter(portfolioFile);
     for (StockOrder order : orders) {
       myWriter.write("" + order.getStock().getStockTickerName()
-          + "," + order.getStock().getBuyPrice()
-          + "," + order.getQuantity()
-          + "," + order.getStock().getBuyDate() + "\n"
+              + "," + order.getStock().getBuyPrice()
+              + "," + order.getQuantity()
+              + "," + order.getStock().getBuyDate() + "\n"
       );
     }
     myWriter.close();
@@ -107,10 +109,10 @@ public class Utils {
    * @throws IOException if directory or file not present.
    */
   public static Set<String> loadStockNames(String stockRepoName, String stockFileName)
-      throws IOException {
+          throws IOException {
     String portfolioDirectory = Paths.get(stockRepoName).toAbsolutePath().toString();
     File[] stockFiles = new File(portfolioDirectory).listFiles(
-        (f1, name) -> name.equals(stockFileName));
+            (f1, name) -> name.equals(stockFileName));
     if (stockFiles == null) {
       throw new IOException("Could not find the directory");
     }
@@ -132,7 +134,7 @@ public class Utils {
   }
 
   private static boolean loadPortfolioValidator(String ticker, String date, String price,
-      String qty) {
+                                                String qty) {
     try {
       if (!Constants.STOCK_NAMES.contains(ticker.toUpperCase())) {
         return false;
@@ -164,7 +166,7 @@ public class Utils {
    * @throws IOException if the portfolioName or the dirName are null.
    */
   public static List<StockOrder> loadPortfolioData(String portfolioName, String dirName)
-      throws IOException {
+          throws IOException {
     File portfolioFile = Utils.getFileByName(portfolioName, dirName);
     if (portfolioFile == null) {
       return null;
@@ -263,7 +265,7 @@ public class Utils {
    * @throws IOException if file or directory doesn't exist
    */
   public static String fetchStockValueByDate(String ticker, String date, String dirName)
-      throws IOException {
+          throws IOException {
     if (ticker == null || date == null) {
       throw new IOException("passed null args");
     }
@@ -306,7 +308,7 @@ public class Utils {
       Date date = sdf.parse(dateStr);
       Date firstDate = sdf.parse("2010-01-04");
       Date currentDate = sdf.parse(
-          DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now()));
+              DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now()));
       if (date.before(firstDate) || date.after(currentDate)) {
         return false;
       }
@@ -347,9 +349,9 @@ public class Utils {
     try {
       initialDate = simpleDateFormat.parse("2010-01-01");
       currentDate = simpleDateFormat
-          .parse(DateTimeFormatter
-              .ofPattern("yyyy-MM-dd")
-              .format(LocalDateTime.now()));
+              .parse(DateTimeFormatter
+                      .ofPattern("yyyy-MM-dd")
+                      .format(LocalDateTime.now()));
     } catch (ParseException e) {
       System.out.println("wrong date");
     }
@@ -361,5 +363,22 @@ public class Utils {
     periods[0] = timestamp1 + "";
     periods[1] = timestamp2 + "";
     return periods;
+  }
+
+  /**
+   * Returns -1 if date1 < date2.
+   * 1 if date1 > date2
+   * 0 if date1 = date2
+   *
+   * @param date1 date1
+   * @param date2 date2
+   * @return {-1,0,1}
+   * @throws ParseException if invalid date
+   */
+  public static int compareDates(String date1, String date2) throws Exception {
+    SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
+    Date d1 = sdformat.parse(date1);
+    Date d2 = sdformat.parse(date2);
+    return d1.compareTo(d2);
   }
 }
