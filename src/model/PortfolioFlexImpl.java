@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import constants.Constants;
 import utils.Utils;
 
 public class PortfolioFlexImpl implements PortfolioFlex {
@@ -168,5 +169,23 @@ public class PortfolioFlexImpl implements PortfolioFlex {
     }
 
     return stateMap;
+  }
+
+  @Override
+  public double getCostBasis(String date) throws Exception {
+    double buyTransVal = 0;
+    double totalTrans = 0;
+    for (StockOrder s : this.stockOrders) {
+      String currentDate = s.getStock().getBuyDate();
+      int comparison = Utils.compareDates(currentDate, date);
+      if (comparison > 0) {
+        continue;
+      }
+      if (s.getQuantity() > 0) {
+        buyTransVal += s.getQuantity() * s.getStock().getBuyPrice();
+      }
+      totalTrans++;
+    }
+    return buyTransVal + (totalTrans * Constants.commissionFee);
   }
 }

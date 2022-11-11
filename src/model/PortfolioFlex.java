@@ -39,4 +39,11 @@ public interface PortfolioFlex extends Portfolio{
    */
   void sellStock(SimpleEntry<String, SimpleEntry<String, Double>> newEntry) throws Exception;
 
+  /**
+   * Fetches the cost basis till a given date.
+   * @param date date till which you want cost basis
+   * @return cost basis
+   */
+  double getCostBasis(String date) throws Exception;
+
 }
