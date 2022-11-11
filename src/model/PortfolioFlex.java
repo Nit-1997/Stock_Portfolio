@@ -47,4 +47,14 @@ public interface PortfolioFlex extends Portfolio{
    */
   double getCostBasis(String date) throws Exception;
 
+
+  /**
+   * Gives Portfolio value snapshots in range (date1,date2).
+   * @param date1 starting date
+   * @param date2 ending date
+   * @return List of portfolio values
+   * @throws Exception can occur while reading/writing data dump
+   */
+  List<Double> getPerfDataOverTime(String date1, String date2) throws Exception;
+
 }

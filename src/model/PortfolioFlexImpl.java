@@ -149,11 +149,9 @@ public class PortfolioFlexImpl implements PortfolioFlex {
   @Override
   public Double getValueOnDate(String date) throws Exception {
     double totalVal = 0;
-    for (StockOrder s : this.stockOrders) {
-      int comparison = Utils.compareDates(s.getStock().getBuyDate(), date);
-      if (comparison <= 0) {
-        totalVal += s.getQuantity() * s.getStock().getBuyPrice();
-      }
+    Map<String , Double > summary = this.getPortfolioSummary(date);
+    for(String ticker : summary.keySet()){
+      totalVal += Double.parseDouble(Utils.fetchStockValueByDate(ticker,date,"stock_data"))*summary.get(ticker);
     }
     return totalVal;
   }
@@ -197,5 +195,10 @@ public class PortfolioFlexImpl implements PortfolioFlex {
       totalTrans++;
     }
     return buyTransVal + (totalTrans * Constants.COMMISSION_FEE);
+  }
+
+  @Override
+  public List<Double> getPerfDataOverTime(String date1, String date2) throws Exception {
+    return null;
   }
 }
