@@ -18,6 +18,8 @@ public class Constants {
   public static final int TOTAL_HANDLED_STOCKS = 20;
   public static Set<String> STOCK_NAMES;
 
+  public static final int commissionFee = 2;
+
   //  public static final String[] keys = {
   //          "RSNOZCM1AIHGILQZ",
   //          "9G8A1X5VH7W7QNPH",

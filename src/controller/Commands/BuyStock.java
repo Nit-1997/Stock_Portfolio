@@ -1,5 +1,6 @@
 package controller.Commands;
 
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
@@ -9,7 +10,7 @@ import view.ViewPrint;
 
 public class BuyStock {
 
-  public static void buyStockToPortfolio(String portfolioName, Scanner scan, UserFlex user,PrintStream out){
+  public static void buyStockToPortfolio(String portfolioName, Scanner scan, UserFlex user,PrintStream out)  {
     ViewPrint.waitLoadMessage(out);
     String portfolioCreationDate = user.getPortfolioCreationDate(portfolioName);
     Map<String, SimpleEntry<String, Double>> portfolioState = user.getPortfolioState(portfolioName);

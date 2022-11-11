@@ -1,5 +1,6 @@
 package controller.Commands;
 
+import java.io.IOException;
 import java.io.PrintStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -10,7 +11,7 @@ import view.ViewPrint;
 
 public class LoadSingleFlexPortfolioDetail {
 
-  public static void loadSinglePortfolioDetailController(Scanner scan, UserFlex user, PrintStream out) {
+  public static void loadSinglePortfolioDetailController(Scanner scan, UserFlex user, PrintStream out)  {
     ViewPrint.askNameOfPortfolio(out);
     String portfolioName = scan.nextLine();
     while (user.isUniqueName(portfolioName)) {

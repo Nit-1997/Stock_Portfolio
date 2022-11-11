@@ -16,7 +16,7 @@ public interface Portfolio {
    * @return currentPrice of Portfolio
    * @throws IOException if asked date is invalid or no data for this date.
    */
-  public Double getCurrentValue() throws IOException;
+  public Double getCurrentValue() throws Exception;
 
 
   /**
@@ -26,6 +26,6 @@ public interface Portfolio {
    * @return total Initial Buy value.
    * @throws IOException if there is no value on this date or date is invalid.
    */
-  public Double getValueOnDate(String date) throws IOException;
+  public Double getValueOnDate(String date) throws Exception;
 
 }

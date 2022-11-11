@@ -4,105 +4,188 @@ import java.io.File;
 import java.io.IOException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import constants.Constants;
 import utils.Utils;
 
-public class PortfolioFlexImpl implements PortfolioFlex{
+public class PortfolioFlexImpl implements PortfolioFlex {
 
   private final String name;
   private final List<StockOrder> stockOrders;
   private String creationDate;
 
-  // TODO : create a new constructor in stockOrderImpl that takes ticker symbol ,date and quantity
-  // TODO : create a new constructor in stockImpl that takes ticker symbol and date, and compute price based on that date
-
-  public PortfolioFlexImpl(Map<String, Map<String, Double>> stocksMap, String name) throws Exception{
-    // creator constructor
+  /**
+   * Creator constructor.
+   *
+   * @param stocksMap { ticker : { date : qty} }
+   * @param name      name of the portfolio
+   * @throws Exception while reading/writing data dump
+   */
+  public PortfolioFlexImpl(Map<String, Map<String, Double>> stocksMap, String name) throws Exception {
     if (stocksMap == null || name == null) {
       throw new IllegalArgumentException("Null arguments to portfolio constructor");
     }
     this.stockOrders = new ArrayList<>();
     this.name = name;
+
+    String portfolioCreationDate = null;
+
     for (String key : stocksMap.keySet()) {
       if (!Utils.dataExists(key, "stock_data")) {
         Utils.loadStockData(key, "stock_data");
       }
-
-//      fill stockOrder List  using new constructor
-//      this.stockOrder.add(new StockOrderImpl(key, stocksMap.get(key)));
-      // TODO : while traversing, find the smallest date and fill the creation date parameter
+      for (String k : stocksMap.get(key).keySet()) {
+        if (portfolioCreationDate == null) {
+          portfolioCreationDate = k;
+        } else {
+          int comparison = Utils.compareDates(portfolioCreationDate, k);
+          if (comparison > 0) {
+            portfolioCreationDate = k;
+          }
+        }
+        this.stockOrders.add(new StockOrderImpl(key, stocksMap.get(key).get(k), k));
+      }
     }
-    this.creationDate = null;
+    this.creationDate = portfolioCreationDate;
 
-    Utils.saveToFile(this.name, this.stockOrders, "portfolios");
+    Utils.saveToFile(this.name, this.stockOrders, "portfolios" + File.separator + "flex");
 
   }
 
-
+  /**
+   * Retreiver Constructor.
+   *
+   * @param portfolioName name of the portfolio
+   * @throws Exception while reading/writing data dump
+   */
   public PortfolioFlexImpl(String portfolioName) throws Exception {
-    // retriever constructor
-    this.stockOrders = Utils.loadPortfolioData(portfolioName, "portfolios"+ File.separator+"flex");
+    this.stockOrders = Utils.loadPortfolioData(portfolioName, "portfolios" + File.separator + "flex");
     this.name = portfolioName;
     if (this.stockOrders == null) {
       return;
     }
+    String portfolioCreationDate = null;
     for (StockOrder s : this.stockOrders) {
       if (!Utils.dataExists(s.getStock().getStockTickerName().toUpperCase(), "stock_data")) {
         Utils.loadStockData(s.getStock().getStockTickerName().toUpperCase(), "stock_data");
       }
+      if (portfolioCreationDate == null) {
+        portfolioCreationDate = s.getStock().getBuyDate();
+      } else {
+        int comparison = Utils.compareDates(portfolioCreationDate, s.getStock().getBuyDate());
+        if (comparison > 0) {
+          portfolioCreationDate = s.getStock().getBuyDate();
+        }
+      }
     }
-    // TODO : while traversing, find the smallest date and fill the creation date parameter
-    this.creationDate = null;
+    this.creationDate = portfolioCreationDate;
   }
 
   @Override
-  public String getCreationDate(){
+  public String getCreationDate() {
     return this.creationDate;
   }
 
   @Override
-  public List<StockOrder> getLatestState() {
-    // TODO : find ticker symbol vs latest_transaction_date vs quantity
-    //TODO : create another stockOrderList and for each stock, add the quantities till the given date, find the max date for each stock
-    // TODO : add record for each stock
+  public Map<String, SimpleEntry<String, Double>> getLatestState() throws Exception {
 
-    return null;
+    Map<String, SimpleEntry<String, Double>> stateMap = new HashMap<>();
+
+    for (StockOrder s : this.stockOrders) {
+      String tickerName = s.getStock().getStockTickerName();
+      String date = s.getStock().getBuyDate();
+      double qty = s.getQuantity();
+      if (stateMap.containsKey(tickerName)) {
+        String lastTrasactionDate = stateMap.get(tickerName).getKey();
+        double newQty = qty + stateMap.get(tickerName).getValue();
+        int comparison = Utils.compareDates(lastTrasactionDate, date);
+        if (comparison < 0) {
+          lastTrasactionDate = date;
+        }
+        SimpleEntry<String, Double> updatedEntry = new SimpleEntry<>(lastTrasactionDate, newQty);
+        stateMap.put(tickerName, updatedEntry);
+      } else {
+        stateMap.put(tickerName, new SimpleEntry<>(date, qty));
+      }
+    }
+
+    return stateMap;
   }
 
   @Override
-  public void addStock(SimpleEntry<String, SimpleEntry<String, Double>> newEntry) {
-      // TODO : add this line in stock order list
-    // TODO : save this portfolio in local
+  public void addStock(SimpleEntry<String, SimpleEntry<String, Double>> newEntry) throws IOException {
+    StockOrder newOrder = new StockOrderImpl(newEntry.getKey(), newEntry.getValue().getValue(), newEntry.getValue().getKey());
+    this.stockOrders.add(newOrder);
+    Utils.saveToFile(this.name, this.stockOrders, "portfolios" + File.separator + "flex");
   }
 
   @Override
-  public void sellStock(SimpleEntry<String, SimpleEntry<String, Double>> newEntry) {
-    // TODO : add this line in stock order list
-    // TODO : save this portfolio in local
+  public void sellStock(SimpleEntry<String, SimpleEntry<String, Double>> newEntry) throws IOException {
+    StockOrder newOrder = new StockOrderImpl(newEntry.getKey(), newEntry.getValue().getValue(), newEntry.getValue().getKey());
+    this.stockOrders.add(newOrder);
+    Utils.saveToFile(this.name, this.stockOrders, "portfolios" + File.separator + "flex");
   }
 
 
   @Override
-  public Double getCurrentValue() throws IOException {
-    // TODO : 1. find today's date
-    // TODO : 2. call getValueOnDate for that
-    return null;
+  public Double getCurrentValue() throws Exception {
+    String currentDate = String.valueOf(java.time.LocalDate.now());
+    return getValueOnDate(currentDate);
   }
 
   @Override
-  public Double getValueOnDate(String date) throws IOException {
-    // TODO : 1. compute value (quantity*price) for each stock till the given date
-    // TODO : 2. add all the values
-    return null;
+  public Double getValueOnDate(String date) throws Exception {
+    double totalVal = 0;
+    for (StockOrder s : this.stockOrders) {
+      int comparison = Utils.compareDates(s.getStock().getBuyDate(), date);
+      if (comparison <= 0) {
+        totalVal += s.getQuantity() * s.getStock().getBuyPrice();
+      }
+    }
+    return totalVal;
   }
 
   @Override
-  public List<StockOrder> getPortfolioSummary(String date) {
-    // TODO : find ticker symbol vs quantity on that date
+  public Map<String, Double> getPortfolioSummary(String date) throws Exception {
+    Map<String, Double> stateMap = new HashMap<>();
 
-    //TODO : create another stockOrderList and for each stock, add the quantities till the given date
-    // TODO : add record for each stock
-    return null;
+    for (StockOrder s : this.stockOrders) {
+      String tickerName = s.getStock().getStockTickerName();
+      String currentDate = s.getStock().getBuyDate();
+      int comparison = Utils.compareDates(currentDate, date);
+      if (comparison > 0) {
+        continue;
+      }
+      double qty = s.getQuantity();
+      if (stateMap.containsKey(tickerName)) {
+        double newQty = qty + stateMap.get(tickerName);
+        stateMap.put(tickerName, newQty);
+      } else {
+        stateMap.put(tickerName, qty);
+      }
+    }
+
+    return stateMap;
+  }
+
+  @Override
+  public double getCostBasis(String date) throws Exception {
+    double buyTransVal = 0;
+    double totalTrans = 0;
+    for (StockOrder s : this.stockOrders) {
+      String currentDate = s.getStock().getBuyDate();
+      int comparison = Utils.compareDates(currentDate, date);
+      if (comparison > 0) {
+        continue;
+      }
+      if (s.getQuantity() > 0) {
+        buyTransVal += s.getQuantity() * s.getStock().getBuyPrice();
+      }
+      totalTrans++;
+    }
+    return buyTransVal + (totalTrans * Constants.commissionFee);
   }
 }

@@ -1,6 +1,7 @@
 package model;
 
 import constants.Constants;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -10,13 +11,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import utils.Utils;
 
-public class UserFlexImpl implements UserFlex{
+public class UserFlexImpl implements UserFlex {
 
   private final Map<String, PortfolioFlex> portfolioMap;
 
-  public UserFlexImpl(){
+  public UserFlexImpl() {
     Utils.clearStockDirectory();
     try {
       Constants.STOCK_NAMES = Utils.loadStockNames("stocks", "stocks_list.csv");
@@ -24,7 +26,7 @@ public class UserFlexImpl implements UserFlex{
       System.out.println(e.getMessage());
     }
 
-    String portfolioDirectory = Paths.get("portfolios"+File.separator+"flex").toAbsolutePath().toString();
+    String portfolioDirectory = Paths.get("portfolios" + File.separator + "flex").toAbsolutePath().toString();
     File f = new File(portfolioDirectory);
     if (!f.exists()) {
       f.mkdirs();
@@ -124,8 +126,13 @@ public class UserFlexImpl implements UserFlex{
   @Override
   public Map<String, SimpleEntry<String, Double>> getPortfolioState(String portfolioName) {
     // ticker symbol vs latest_transaction_date vs quantity
-    List<StockOrder> portfolioState = portfolioMap.get(portfolioName).getLatestState();
-    return null;
+    try {
+      Map<String, SimpleEntry<String, Double>> portfolioState = portfolioMap.get(portfolioName).getLatestState();
+      return null;
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return null;
+    }
   }
 
   @Override
@@ -135,16 +142,26 @@ public class UserFlexImpl implements UserFlex{
 
   @Override
   public boolean buyStockForPortfolio(String portfolioName,
-      SimpleEntry<String, SimpleEntry<String, Double>> newStock) {
-    portfolioMap.get(portfolioName).addStock(newStock);
-    return false;
+                                      SimpleEntry<String, SimpleEntry<String, Double>> newStock) {
+    try {
+      portfolioMap.get(portfolioName).addStock(newStock);
+      return false;
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return false;
+    }
   }
 
   @Override
   public boolean sellStockFromPortfolio(String portfolioName,
-      SimpleEntry<String, SimpleEntry<String, Double>> newStock) {
-    portfolioMap.get(portfolioName).sellStock(newStock);
-    return false;
+                                        SimpleEntry<String, SimpleEntry<String, Double>> newStock) {
+    try {
+      portfolioMap.get(portfolioName).sellStock(newStock);
+      return false;
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return false;
+    }
   }
 
   @Override
