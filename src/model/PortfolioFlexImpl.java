@@ -2,6 +2,8 @@ package model;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.AbstractMap.SimpleEntry;
@@ -149,11 +151,9 @@ public class PortfolioFlexImpl implements PortfolioFlex {
   @Override
   public Double getValueOnDate(String date) throws Exception {
     double totalVal = 0;
-    for (StockOrder s : this.stockOrders) {
-      int comparison = Utils.compareDates(s.getStock().getBuyDate(), date);
-      if (comparison <= 0) {
-        totalVal += s.getQuantity() * s.getStock().getBuyPrice();
-      }
+    Map<String , Double > summary = this.getPortfolioSummary(date);
+    for(String ticker : summary.keySet()){
+      totalVal += Double.parseDouble(Utils.fetchStockValueByDate(ticker,date,"stock_data"))*summary.get(ticker);
     }
     return totalVal;
   }
@@ -197,5 +197,36 @@ public class PortfolioFlexImpl implements PortfolioFlex {
       totalTrans++;
     }
     return buyTransVal + (totalTrans * Constants.COMMISSION_FEE);
+  }
+
+  @Override
+  public List<Double> getPerfDataOverTime(String date1, String date2) throws Exception {
+    //check date2 > date1
+    //map date1 / date2 based on portfolio creation date
+    // calculate total days difference
+    //write if else , call scaledData fun with correct separator
+    long dayDiff = Utils.computeDaysBetweenDates(date1 , date2);
+    int scaler = 0;
+    if(dayDiff <= 30 ) {
+      scaler = 1;
+    }else if(dayDiff > 30 && dayDiff < 210){
+      scaler = 7;
+    }else if(dayDiff >210 && dayDiff < 900){
+      scaler = 30;
+    }else{
+      scaler = 365;
+    }
+    return this.getScaledPerfData(date1 ,date2 , scaler);
+  }
+
+  public List<Double> getScaledPerfData(String date1, String date2 , int scaler) throws Exception {
+    List<Double> results = new ArrayList<>();
+    LocalDate start = LocalDate.parse(date1);
+    LocalDate end = LocalDate.parse(date2);
+    while (!start.isAfter(end)) {
+     results.add(this.getValueOnDate(start.toString()));
+              start = start.plusDays(scaler);
+    }
+    return results;
   }
 }
