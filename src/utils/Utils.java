@@ -437,6 +437,7 @@ public class Utils {
 
     Map<String, Double> checkerMap = new HashMap<>();
     for(StockOrder s : stockOrders){
+      if(s.getCommFee()<0) return false;
       if(checkerMap.containsKey(s.getStock().getStockTickerName())){
         Double quantity = s.getQuantity();
         if(quantity>0){

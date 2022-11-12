@@ -1,4 +1,8 @@
 import controller.WelcomeController;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import static java.time.temporal.TemporalAdjusters.lastDayOfYear;
+
 
 /**
  * This is the starter class that needs to be run to start the application.
@@ -14,5 +18,6 @@ public class Main {
   public static void main(String[] args) throws Exception {
 
     new WelcomeController(System.in, System.out).start();
+
   }
 }

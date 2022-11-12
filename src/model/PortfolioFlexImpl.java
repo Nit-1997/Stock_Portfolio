@@ -201,26 +201,45 @@ public class PortfolioFlexImpl implements PortfolioFlex {
   }
 
   @Override
-  public List<Double> getPerfDataOverTime(String date1, String date2) throws Exception {
+  public SimpleEntry<String,List<Double>> getPerfDataOverTime(String date1, String date2) throws Exception {
     //check date2 > date1
     //map date1 / date2 based on portfolio creation date
     // calculate total days difference
     //write if else , call scaledData fun with correct separator
     long dayDiff = Utils.computeDaysBetweenDates(date1 , date2);
+    String type="";
     int scaler = 0;
     if(dayDiff <= 30 ) {
       scaler = 1;
+      type="dailiy";
     }else if(dayDiff > 30 && dayDiff <= 210){
+      type="weekly";
+      // TODO : shift to the friday of that week
       scaler = 7;
     }else if(dayDiff >210 && dayDiff <= 900){
+      type="monthly";
+      // TODO : shift to the last day of the month for both dates
+      //    LocalDate convertedDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+      //    convertedDate = convertedDate.withDayOfMonth(convertedDate.getMonth().length(convertedDate.isLeapYear()));
       scaler = 30;
     } else if(dayDiff > 900 && dayDiff<1461){
+      type="6monthly";
+      // TODO : shift to last date of that 6th month range (June or December)
       scaler=180;
     }
     else{
+      type="yearly";
+      // TODO : shift to last date of the year
+      //convertedDate = convertedDate.with(lastDayOfYear());
       scaler = 365;
     }
-    return this.getScaledPerfData(date1 ,date2 , scaler);
+    return new SimpleEntry<>(type,this.getScaledPerfData(date1 ,date2 , scaler));
+  }
+
+  private String shiftToLast(String date){
+    LocalDate convertedDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    convertedDate = convertedDate.withDayOfMonth(convertedDate.getMonth().length(convertedDate.isLeapYear()));
+    return convertedDate.toString();
   }
 
   public List<Double> getScaledPerfData(String date1, String date2 , int scaler) throws Exception {
