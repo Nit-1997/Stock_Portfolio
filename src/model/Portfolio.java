@@ -29,3 +29,4 @@ public interface Portfolio {
   public Double getValueOnDate(String date) throws Exception;
 
 }
+
