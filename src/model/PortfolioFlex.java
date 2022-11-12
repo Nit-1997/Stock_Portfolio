@@ -57,4 +57,6 @@ public interface PortfolioFlex extends Portfolio{
    */
   List<Double> getPerfDataOverTime(String date1, String date2) throws Exception;
 
+
+  public List<Double> getScaledPerfData(String date1, String date2 , int scaler) throws Exception;
 }

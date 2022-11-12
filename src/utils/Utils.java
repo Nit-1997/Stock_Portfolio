@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -422,4 +423,15 @@ public class Utils {
     }
     return true;
   }
+
+  public static long computeDaysBetweenDates(String date1 , String date2) throws Exception{
+    SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
+    Date d1 = sdformat.parse(date1);
+    Date d2 = sdformat.parse(date2);
+    long differenceInTime = d2.getTime() - d1.getTime();
+    return (differenceInTime
+    / (1000 * 60 * 60 * 24))
+    % 365;
+  }
+
 }

@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.AbstractMap;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.sound.sampled.Port;
@@ -57,6 +58,17 @@ public class PortfolioFlexImplTest {
   @Test
   public void testPortfolioFlexImplRetreiverConst() throws Exception{
 
+  }
+
+
+  @Test
+  public void something() throws Exception {
+    PortfolioFlex p = new PortfolioFlexImpl(order , "flexTest");
+    List<Double> a = p.getScaledPerfData("2022-11-28" , "2022-12-20", 1);
+    for(double d : a){
+      System.out.println(d);
+    }
+    System.out.println(a.size());
   }
 
 
