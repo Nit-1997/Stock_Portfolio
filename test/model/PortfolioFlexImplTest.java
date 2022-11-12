@@ -11,6 +11,7 @@ import java.util.Map;
 
 import javax.sound.sampled.Port;
 
+import constants.Constants;
 import utils.Utils;
 
 import static org.junit.Assert.*;
@@ -21,6 +22,7 @@ public class PortfolioFlexImplTest {
 
   @Before
   public void beforeSuit() throws Exception {
+    Constants.STOCK_NAMES =  Utils.loadStockNames("stocks", "stocks_list.csv");
     Utils.clearStockDirectory();
     order = new HashMap<>();
     Map<String , SimpleEntry<Double,Double>> ciscoTuple = new HashMap<>();
@@ -58,7 +60,7 @@ public class PortfolioFlexImplTest {
 
   @Test
   public void testPortfolioFlexImplRetreiverConst() throws Exception{
-
+    PortfolioFlex p = new PortfolioFlexImpl("flexTest");
   }
 
 
