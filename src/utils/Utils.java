@@ -73,7 +73,12 @@ public class Utils {
     }
    // System.out.println(dirName);
     File portfolioFile = createFileIfNotExists(name, dirName);
-    writePortfolioToFile(portfolioFile, orders);
+    if(dirName.endsWith("flex")){
+      writePortfolioToFileFlex(portfolioFile,orders);
+    }
+    else{
+      writePortfolioToFile(portfolioFile, orders);
+    }
   }
 
 
@@ -88,6 +93,23 @@ public class Utils {
               + "," + order.getStock().getBuyPrice()
               + "," + order.getQuantity()
               + "," + order.getStock().getBuyDate() + "\n"
+      );
+    }
+    myWriter.close();
+  }
+
+  private static void writePortfolioToFileFlex(File portfolioFile, List<StockOrder> orders)
+      throws IOException {
+    if (portfolioFile == null || orders == null) {
+      throw new IOException("passed null args");
+    }
+    FileWriter myWriter = new FileWriter(portfolioFile);
+    for (StockOrder order : orders) {
+      myWriter.write("" + order.getStock().getStockTickerName()
+          + "," + order.getStock().getBuyPrice()
+          + "," + order.getQuantity()
+          + "," + order.getStock().getBuyDate()
+          + "," + order.getCommFee() + "\n"
       );
     }
     myWriter.close();
@@ -171,7 +193,7 @@ public class Utils {
    * @return List of stock orders
    * @throws IOException if the portfolioName or the dirName are null.
    */
-  public static List<StockOrder> loadPortfolioData(String portfolioName, String dirName, String type)
+  public static List<StockOrder> loadPortfolioData(String portfolioName, String dirName)
           throws IOException {
     File portfolioFile = Utils.getFileByName(portfolioName, dirName);
     if (portfolioFile == null) {
@@ -184,17 +206,29 @@ public class Utils {
     while (myReader.hasNextLine()) {
       String input = myReader.nextLine();
       String[] splitInput = input.split(",");
-      if (splitInput.length != 4) {
+      if (splitInput.length != 4  && !dirName.endsWith("flex")) {
+        return null;
+      }
+      if(dirName.endsWith("flex") && splitInput.length!=5){
         return null;
       }
       String ticker = splitInput[0];
       String date = splitInput[3];
+
+      String type = dirName.endsWith("flex")?"flex":"inflex";
       if (!loadPortfolioValidator(ticker, date, splitInput[1], splitInput[2],type)) {
         return null;
       }
       double price = Double.parseDouble(splitInput[1]);
       double qty = Double.parseDouble(splitInput[2]);
-      StockOrder currentStockOrder = new StockOrderImpl(ticker.toUpperCase(), price, date, qty);
+      StockOrder currentStockOrder;
+      if(dirName.endsWith("flex")){
+        Double commFee = Double.parseDouble(splitInput[4]);
+        currentStockOrder = new StockOrderImpl(ticker.toUpperCase(), price, date, qty, commFee);
+      }
+      else{
+        currentStockOrder = new StockOrderImpl(ticker.toUpperCase(), price, date, qty);
+      }
       parsedFileInput.add(currentStockOrder);
     }
     myReader.close();
@@ -429,9 +463,7 @@ public class Utils {
     Date d1 = sdformat.parse(date1);
     Date d2 = sdformat.parse(date2);
     long differenceInTime = d2.getTime() - d1.getTime();
-    return (differenceInTime
-    / (1000 * 60 * 60 * 24))
-    % 365;
+    return (differenceInTime / (1000 * 60 * 60 * 24)) % 365;
   }
 
 }

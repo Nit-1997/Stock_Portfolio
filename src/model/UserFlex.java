@@ -11,10 +11,10 @@ public interface UserFlex extends User {
    * Adds a given Portfolio.
    *
    * @param name      name of portfolio
-   * @param stocksMap map of {tickerSymbol , map of {date, quantity}}
+   * @param stocksMap map of {tickerSymbol , map of {date, quantity, commFee}}
    * @return true if added , false otherwise
    */
-  boolean addPortfolio(String name, Map<String, Map<String, Double>> stocksMap);
+  boolean addPortfolio(String name, Map<String, Map<String, SimpleEntry<Double, Double>>> stocksMap);
 
   /**
    * Fetches the portfolio summary for a given portfolio.
@@ -54,19 +54,19 @@ public interface UserFlex extends User {
    * Buys a stock for a portfolio on a given date.
    *
    * @param portfolioName name of the portfolio
-   * @param newStock      stock that needs to be added {ticker symbol, date, quantity}
+   * @param newStock      stock that needs to be added {ticker symbol, date, quantity, commission fee}
    * @return true if successfully added.
    */
-  boolean buyStockForPortfolio(String portfolioName, SimpleEntry<String, SimpleEntry<String, Double>> newStock);
+  boolean buyStockForPortfolio(String portfolioName, SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newStock);
 
   /**
    * Sells a stock from a portfolio on a given date.
    *
    * @param portfolioName name of the portfolio
-   * @param newStock      stock that needs to be sold {ticker symbol, date, quantity}
+   * @param newStock      stock that needs to be sold {ticker symbol, date, quantity, commission fee}
    * @return true if successfully sold.
    */
-  boolean sellStockFromPortfolio(String portfolioName, SimpleEntry<String, SimpleEntry<String, Double>> newStock);
+  boolean sellStockFromPortfolio(String portfolioName, SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newStock);
 
   /**
    * Determine total money invested in portfolio (all purchases + total transactions*commission fee) till the given date.

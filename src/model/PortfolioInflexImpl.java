@@ -23,7 +23,7 @@ final class PortfolioInflexImpl implements PortfolioInflex {
    * @throws Exception can occur while reading/loading data dump
    */
   public PortfolioInflexImpl(String name) throws Exception {
-    this.stockOrder = Utils.loadPortfolioData(name, "portfolios","inflex");
+    this.stockOrder = Utils.loadPortfolioData(name, "portfolios");
     this.name = name;
     if (this.stockOrder == null) {
       return;

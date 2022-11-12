@@ -32,13 +32,13 @@ public interface PortfolioFlex extends Portfolio{
    * Add a new stock addition to the portfolio.
    * @param newEntry Stock transaction {Ticker Symbol, Transaction Date, Quantity} to be added
    */
-  void addStock(SimpleEntry<String, SimpleEntry<String, Double>> newEntry) throws Exception;
+  void addStock(SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newEntry) throws Exception;
 
   /**
    * Add a new stock sell to the portfolio.
    * @param newEntry Stock transaction {Ticker Symbol, Transaction Date, Quantity} to be added
    */
-  void sellStock(SimpleEntry<String, SimpleEntry<String, Double>> newEntry) throws Exception;
+  void sellStock(SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newEntry) throws Exception;
 
   /**
    * Fetches the cost basis till a given date.

@@ -24,11 +24,11 @@ public class PortfolioFlexImpl implements PortfolioFlex {
   /**
    * Creator constructor.
    *
-   * @param stocksMap { ticker : { date : qty} }
+   * @param stocksMap { ticker : { date : qty, commission fee} }
    * @param name      name of the portfolio
    * @throws Exception while reading/writing data dump
    */
-  public PortfolioFlexImpl(Map<String, Map<String, Double>> stocksMap, String name) throws Exception {
+  public PortfolioFlexImpl(Map<String, Map<String, SimpleEntry<Double, Double>>> stocksMap, String name) throws Exception {
     if (stocksMap == null || name == null) {
       throw new IllegalArgumentException("Null arguments to portfolio constructor");
     }
@@ -50,7 +50,7 @@ public class PortfolioFlexImpl implements PortfolioFlex {
             portfolioCreationDate = k;
           }
         }
-        this.stockOrders.add(new StockOrderImpl(key, stocksMap.get(key).get(k), k));
+        this.stockOrders.add(new StockOrderImpl(key, stocksMap.get(key).get(k).getKey(), k,stocksMap.get(key).get(k).getValue()));
       }
     }
     this.creationDate = portfolioCreationDate;
@@ -66,7 +66,7 @@ public class PortfolioFlexImpl implements PortfolioFlex {
    * @throws Exception while reading/writing data dump
    */
   public PortfolioFlexImpl(String portfolioName) throws Exception {
-    List<StockOrder> tempStockOrders =  Utils.loadPortfolioData(portfolioName, "portfolios" + File.separator + "flex","flex");
+    List<StockOrder> tempStockOrders =  Utils.loadPortfolioData(portfolioName, "portfolios" + File.separator + "flex");
     if(!Utils.FlexPortfolioValidator(tempStockOrders)) this.stockOrders=null;
     else this.stockOrders=tempStockOrders;
     this.name = portfolioName;
@@ -122,21 +122,21 @@ public class PortfolioFlexImpl implements PortfolioFlex {
   }
 
   @Override
-  public void addStock(SimpleEntry<String, SimpleEntry<String, Double>> newEntry) throws Exception {
+  public void addStock(SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newEntry) throws Exception {
     if (!Utils.dataExists(newEntry.getKey().toUpperCase(), "stock_data")) {
       Utils.loadStockData(newEntry.getKey().toUpperCase(), "stock_data");
     }
-    StockOrder newOrder = new StockOrderImpl(newEntry.getKey(), newEntry.getValue().getValue(), newEntry.getValue().getKey());
+    StockOrder newOrder = new StockOrderImpl(newEntry.getKey(), newEntry.getValue().getValue().getKey(), newEntry.getValue().getKey(),newEntry.getValue().getValue().getValue());
     this.stockOrders.add(newOrder);
     Utils.saveToFile(this.name, this.stockOrders, "portfolios" + File.separator + "flex");
   }
 
   @Override
-  public void sellStock(SimpleEntry<String, SimpleEntry<String, Double>> newEntry) throws Exception {
+  public void sellStock(SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newEntry) throws Exception {
     if (!Utils.dataExists(newEntry.getKey().toUpperCase(), "stock_data")) {
       Utils.loadStockData(newEntry.getKey().toUpperCase(), "stock_data");
     }
-    StockOrder newOrder = new StockOrderImpl(newEntry.getKey(), newEntry.getValue().getValue(), newEntry.getValue().getKey());
+    StockOrder newOrder = new StockOrderImpl(newEntry.getKey(), newEntry.getValue().getValue().getKey(), newEntry.getValue().getKey(),newEntry.getValue().getValue().getValue());
     this.stockOrders.add(newOrder);
     Utils.saveToFile(this.name, this.stockOrders, "portfolios" + File.separator + "flex");
   }
@@ -183,7 +183,7 @@ public class PortfolioFlexImpl implements PortfolioFlex {
 
   @Override
   public double getCostBasis(String date) throws Exception {
-    double buyTransVal = 0;
+
     double totalTrans = 0;
     for (StockOrder s : this.stockOrders) {
       String currentDate = s.getStock().getBuyDate();
@@ -192,11 +192,12 @@ public class PortfolioFlexImpl implements PortfolioFlex {
         continue;
       }
       if (s.getQuantity() > 0) {
-        buyTransVal += s.getQuantity() * s.getStock().getBuyPrice();
+        totalTrans += s.getQuantity() * s.getStock().getBuyPrice();
       }
-      totalTrans++;
+      totalTrans+=s.getCommFee();
+
     }
-    return buyTransVal + (totalTrans * Constants.COMMISSION_FEE);
+    return totalTrans;
   }
 
   @Override
@@ -209,11 +210,14 @@ public class PortfolioFlexImpl implements PortfolioFlex {
     int scaler = 0;
     if(dayDiff <= 30 ) {
       scaler = 1;
-    }else if(dayDiff > 30 && dayDiff < 210){
+    }else if(dayDiff > 30 && dayDiff <= 210){
       scaler = 7;
-    }else if(dayDiff >210 && dayDiff < 900){
+    }else if(dayDiff >210 && dayDiff <= 900){
       scaler = 30;
-    }else{
+    } else if(dayDiff > 900 && dayDiff<1461){
+      scaler=180;
+    }
+    else{
       scaler = 365;
     }
     return this.getScaledPerfData(date1 ,date2 , scaler);
@@ -225,7 +229,7 @@ public class PortfolioFlexImpl implements PortfolioFlex {
     LocalDate end = LocalDate.parse(date2);
     while (!start.isAfter(end)) {
      results.add(this.getValueOnDate(start.toString()));
-              start = start.plusDays(scaler);
+     start = start.plusDays(scaler);
     }
     return results;
   }

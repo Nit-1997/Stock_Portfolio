@@ -102,7 +102,7 @@ public class UtilsTest {
     Constants.STOCK_NAMES = Utils.loadStockNames("testingArtifacts",
         "stocks_list_correct.csv");
     List<StockOrder> s = Utils.loadPortfolioData("tech_working",
-        "testingArtifacts","inflex");
+        "testingArtifacts");
     assertEquals(2, s.size());
   }
 
@@ -111,7 +111,7 @@ public class UtilsTest {
     Constants.STOCK_NAMES = Utils.loadStockNames("testingArtifacts",
         "stocks_list_correct.csv");
     List<StockOrder> s = Utils.loadPortfolioData("error_incorrect_ticker",
-        "testingArtifacts","inflex");
+        "testingArtifacts");
     assertNull(s);
   }
 
@@ -120,7 +120,7 @@ public class UtilsTest {
     Constants.STOCK_NAMES = Utils.loadStockNames("testingArtifacts",
         "stocks_list_correct.csv");
     List<StockOrder> s = Utils.loadPortfolioData("error_less_column",
-        "testingArtifacts","inflex");
+        "testingArtifacts");
     assertNull(s);
   }
 
@@ -129,7 +129,7 @@ public class UtilsTest {
     Constants.STOCK_NAMES = Utils.loadStockNames("testingArtifacts",
         "stocks_list_correct.csv");
     List<StockOrder> s = Utils.loadPortfolioData("error_quantity_fractional",
-        "testingArtifacts","inflex");
+        "testingArtifacts");
     assertNull(s);
   }
 
@@ -138,7 +138,7 @@ public class UtilsTest {
     Constants.STOCK_NAMES = Utils.loadStockNames("testingArtifacts",
         "stocks_list_correct.csv");
     List<StockOrder> s = Utils.loadPortfolioData("error_quantity_negative",
-        "testingArtifacts","inflex");
+        "testingArtifacts");
     assertNull(s);
   }
 
@@ -147,7 +147,7 @@ public class UtilsTest {
     Constants.STOCK_NAMES = Utils.loadStockNames("testingArtifacts",
         "stocks_list_correct.csv");
     List<StockOrder> s = Utils.loadPortfolioData("error_quantity_Invalid",
-        "testingArtifacts","inflex");
+        "testingArtifacts");
     assertNull(s);
   }
 
@@ -156,7 +156,7 @@ public class UtilsTest {
     Constants.STOCK_NAMES = Utils.loadStockNames("testingArtifacts",
         "stocks_list_correct.csv");
     List<StockOrder> s = Utils.loadPortfolioData("incorrect_buyPrice",
-        "testingArtifacts","inflex");
+        "testingArtifacts");
     assertNull(s);
   }
 
@@ -165,7 +165,7 @@ public class UtilsTest {
     Constants.STOCK_NAMES = Utils.loadStockNames("testingArtifacts",
         "stocks_list_correct.csv");
     List<StockOrder> s = Utils.loadPortfolioData("negative_buyPrice",
-        "testingArtifacts","inflex");
+        "testingArtifacts");
     assertNull(s);
   }
 
@@ -174,7 +174,7 @@ public class UtilsTest {
     Constants.STOCK_NAMES = Utils.loadStockNames("testingArtifacts",
         "stocks_list_correct.csv");
     List<StockOrder> s = Utils.loadPortfolioData("invalid_date",
-        "testingArtifacts","inflex");
+        "testingArtifacts");
     assertNull(s);
   }
 
@@ -183,7 +183,7 @@ public class UtilsTest {
     Constants.STOCK_NAMES = Utils.loadStockNames("testingArtifacts",
         "stocks_list_correct.csv");
     List<StockOrder> s = Utils.loadPortfolioData("date_before_data",
-        "testingArtifacts","inflex");
+        "testingArtifacts");
     assertNull(s);
   }
 
@@ -192,7 +192,7 @@ public class UtilsTest {
     Constants.STOCK_NAMES = Utils.loadStockNames("testingArtifacts",
         "stocks_list_correct.csv");
     List<StockOrder> s = Utils.loadPortfolioData("date_after_data",
-        "testingArtifacts","inflex");
+        "testingArtifacts");
     assertNull(s);
   }
 

@@ -9,7 +9,6 @@ public class CostBasis {
 
   public static void calculateCostBasis(Scanner scan, PrintStream out, UserFlex user, String portfolioName){
     ViewPrint.waitLoadMessage(out);
-    ViewPrint.askDate(out);
     String date;
     do{
       ViewPrint.askDate(out);

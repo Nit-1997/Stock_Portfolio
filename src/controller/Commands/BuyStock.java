@@ -35,7 +35,14 @@ public class BuyStock {
     if (stockQuanDouble == null) {
       return;
     }
-    SimpleEntry<String,SimpleEntry<String,Double>> newStock=null;
+
+    Double commFee = AskCommissionFees.AskCommissionFees(scan, out);
+    if(commFee==null){
+      return;
+    }
+
+    // ticker vs date vs quantity vs commission fee
+    SimpleEntry<String,SimpleEntry<String,SimpleEntry<Double, Double>>> newStock=null;
     String date;
 
 
@@ -52,7 +59,7 @@ public class BuyStock {
           System.out.println("kindly enter date after latest transaction for this stock(0 to return to list view) : ");
         }
         else{
-          newStock = new SimpleEntry<>(ticker, new SimpleEntry<>(date,stockQuanDouble));
+          newStock = new SimpleEntry<>(ticker, new SimpleEntry<>(date,new SimpleEntry<>(stockQuanDouble,commFee)));
           break;
         }
       }
@@ -61,7 +68,7 @@ public class BuyStock {
           System.out.println("kindly enter date after portfolio creation(0 to return to list view) : ");
         }
         else{
-          newStock = new SimpleEntry<>(ticker, new SimpleEntry<>(date,stockQuanDouble));
+          newStock = new SimpleEntry<>(ticker, new SimpleEntry<>(date,new SimpleEntry<>(stockQuanDouble,commFee)));
           break;
         }
       }

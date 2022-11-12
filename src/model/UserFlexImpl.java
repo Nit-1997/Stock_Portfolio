@@ -81,7 +81,7 @@ public class UserFlexImpl extends AbstractUser implements UserFlex{
 
 
   @Override
-  public boolean addPortfolio(String name, Map<String, Map<String, Double>> stocksMap) {
+  public boolean addPortfolio(String name, Map<String, Map<String, SimpleEntry<Double, Double>>> stocksMap) {
     try {
       this.portfolioMap.put(name, new PortfolioFlexImpl(stocksMap, name));
       return true;
@@ -145,7 +145,7 @@ public class UserFlexImpl extends AbstractUser implements UserFlex{
 
   @Override
   public boolean buyStockForPortfolio(String portfolioName,
-                                      SimpleEntry<String, SimpleEntry<String, Double>> newStock) {
+                                      SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newStock) {
     try {
       if (portfolioMap.get(portfolioName) == null) {
         portfolioMap.put(portfolioName, new PortfolioFlexImpl(portfolioName));
@@ -160,7 +160,7 @@ public class UserFlexImpl extends AbstractUser implements UserFlex{
 
   @Override
   public boolean sellStockFromPortfolio(String portfolioName,
-                                        SimpleEntry<String, SimpleEntry<String, Double>> newStock) {
+                                        SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newStock) {
     try {
       if (portfolioMap.get(portfolioName) == null) {
         portfolioMap.put(portfolioName, new PortfolioFlexImpl(portfolioName));

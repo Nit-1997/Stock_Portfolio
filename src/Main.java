@@ -1,11 +1,4 @@
 import controller.WelcomeController;
-import java.util.ArrayList;
-import java.util.List;
-import model.StockOrder;
-import model.StockOrderImpl;
-import model.UserFlex;
-import model.UserFlexImpl;
-import utils.Utils;
 
 /**
  * This is the starter class that needs to be run to start the application.

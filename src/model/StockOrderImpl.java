@@ -11,6 +11,8 @@ final public class StockOrderImpl implements StockOrder {
   private final Stock stock;
   private final double quantity;
 
+  private final Double commFee;
+
   /**
    * Creates a StockOrderImpl object using ticker and qty.
    *
@@ -21,12 +23,20 @@ final public class StockOrderImpl implements StockOrder {
   public StockOrderImpl(String ticker, double qty) throws IOException {
     this.stock = new StockImpl(ticker);
     this.quantity = qty;
+    this.commFee=null;
   }
 
 
-  public StockOrderImpl(String ticker , double qty , String date) throws IOException {
+  public StockOrderImpl(String ticker , Double qty , String date, Double commFee) throws IOException {
     this.stock = new StockImpl(ticker, date);
     this.quantity = qty;
+    this.commFee=commFee;
+  }
+
+  public StockOrderImpl(String ticker ,Double buyPrice, String date, Double qty , Double commFee) throws IOException {
+    this.stock = new StockImpl(ticker, buyPrice, date);
+    this.quantity = qty;
+    this.commFee=commFee;
   }
 
   /**
@@ -41,6 +51,7 @@ final public class StockOrderImpl implements StockOrder {
   public StockOrderImpl(String ticker, double buyPrice, String date, double qty) {
     this.stock = new StockImpl(ticker, buyPrice, date);
     this.quantity = qty;
+    this.commFee=null;
   }
 
 
@@ -83,4 +94,11 @@ final public class StockOrderImpl implements StockOrder {
   public double getQuantity() {
     return this.quantity;
   }
+
+  @Override
+  public Double getCommFee() {
+    return this.commFee;
+  }
+
+
 }

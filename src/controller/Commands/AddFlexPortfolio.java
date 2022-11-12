@@ -1,6 +1,7 @@
 package controller.Commands;
 
 import java.io.PrintStream;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -20,7 +21,8 @@ public class AddFlexPortfolio {
         return;
       }
     }
-    Map<String, Map<String, Double>> stocksMap = new HashMap<>();
+    // ticker symbol vs map of date, quantity and commission fee
+    Map<String, Map<String, SimpleEntry<Double,Double>>> stocksMap = new HashMap<>();
     String ticker = null;
 
     ViewPrint.addStocksInPortfolioWelcomeNote(name, out);
@@ -47,13 +49,23 @@ public class AddFlexPortfolio {
           if (date == null) {
             return;
           }
-          Map<String, Double> map;
+          Double commFee = AskCommissionFees.AskCommissionFees(scan, out);
+          if(commFee==null){
+            return;
+          }
+          Map<String, SimpleEntry<Double,Double>> map;
           if (stocksMap.containsKey(ticker)) {
             map = stocksMap.get(ticker);
-            map.put(date, map.getOrDefault(date, 0.0) + stockQuanDouble);
+            if(stocksMap.get(ticker).containsKey(date)){
+              Double prevQuan = stocksMap.get(ticker).get(date).getKey();
+              map.put(date,new SimpleEntry<>(prevQuan+stockQuanDouble,commFee));
+            }
+            else{
+              map.put(date,new SimpleEntry<>(stockQuanDouble,commFee));
+            }
           } else {
             map = new HashMap<>();
-            map.put(date, stockQuanDouble);
+            map.put(date,new SimpleEntry<>(stockQuanDouble,commFee));
           }
           stocksMap.put(ticker, map);
 
@@ -82,6 +94,7 @@ public class AddFlexPortfolio {
           if (date == null) {
             break;
           }
+
 
           RemoveStocks.addPortfolioRemoveStocks(ticker, date, stockQuanDouble, stocksMap, out);
 

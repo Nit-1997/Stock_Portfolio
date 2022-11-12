@@ -23,7 +23,6 @@ public class AskStockNumber {
         if (stockQuanDouble <= 0 || stockQuanDouble != (int) stockQuanDouble) {
           throw new NumberFormatException();
         }
-        break;
       } catch (NumberFormatException e) {
         ViewPrint.askStockNumberAgain(out);
         stockQuantity = scan.nextLine();

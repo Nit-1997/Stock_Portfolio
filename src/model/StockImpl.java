@@ -8,7 +8,7 @@ import utils.Utils;
 /**
  * Implementation of the Stock interface. Used to store the data for each stock
  */
-final class StockImpl implements Stock {
+class StockImpl implements Stock {
 
   private final String ticker;
   private final double buyPrice;

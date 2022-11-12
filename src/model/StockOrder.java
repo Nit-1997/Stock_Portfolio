@@ -53,4 +53,6 @@ public interface StockOrder {
    * @return quantity inside the order
    */
   double getQuantity();
+
+  Double getCommFee();
 }

@@ -52,7 +52,13 @@ public class SellStock {
     }
     while(portfolioState.get(ticker).getValue() < stockQuanDouble);
 
-    SimpleEntry<String, SimpleEntry<String, Double>> newStock = null;
+
+    Double commFee = AskCommissionFees.AskCommissionFees(scan, out);
+    if(commFee==null){
+      return;
+    }
+
+    SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newStock = null;
     String date=null;
     while (newStock == null || !user.dateChecker(date)) {
       System.out.print("enter date (yyyy-mm-dd) : ");
@@ -65,7 +71,7 @@ public class SellStock {
       } else if (user.isBeforeDate(date, portfolioState.get(ticker).getKey())) {
         System.out.println("kindly enter date after latest transaction for this stock(0 to return to list view) : ");
       } else {
-        newStock = new SimpleEntry<>(ticker, new SimpleEntry<>(date, -stockQuanDouble));
+        newStock = new SimpleEntry<>(ticker, new SimpleEntry<>(date, new SimpleEntry<>(-stockQuanDouble,commFee)));
         break;
       }
     }
