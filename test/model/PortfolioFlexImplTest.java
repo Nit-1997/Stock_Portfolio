@@ -64,10 +64,13 @@ public class PortfolioFlexImplTest {
 
   @Test
   public void something() throws Exception {
-    System.out.println(Utils.shiftDateToValidStartPoint("weekly","2022-11-14"));
+//    PortfolioFlex p = new PortfolioFlexImpl(order , "flexTest");
+//    SimpleEntry<List<>> a = p.getScaledPerfData("2022-11-28" , "2022-12-20", "daily");
+//    for(SimpleEntry<String,Double> d : a){
+//      System.out.println(d.getValue());
+//    }
+//    System.out.println(a.size());
   }
-
-
 
 
 
