@@ -15,7 +15,7 @@ public class PortfolioSummary {
       return;
     }
     if(user.isBeforeDate(date,user.getPortfolioCreationDate(portfolioName))){
-      System.out.println("please enter a date after portfolio creation");
+      ViewPrint.wrongDateBeforePortfolioCreation(out);
       return;
     }
     Map<String, Double> stockMap = user.getPortfolioSummary(portfolioName, date);

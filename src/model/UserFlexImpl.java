@@ -6,16 +6,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.WeekFields;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,6 +23,7 @@ public class UserFlexImpl extends AbstractUser implements UserFlex{
   private final Map<String, PortfolioFlex> portfolioMap;
 
   public UserFlexImpl() {
+    portfolioMap = new HashMap<>();
     Utils.clearStockDirectory();
     try {
       Constants.STOCK_NAMES = Utils.loadStockNames("stocks", "stocks_list.csv");
@@ -37,13 +35,14 @@ public class UserFlexImpl extends AbstractUser implements UserFlex{
     File f = new File(portfolioDirectory);
     if (!f.exists()) {
       f.mkdirs();
+      return;
     }
     String[] files = f.list((f1, name) -> name.endsWith(".csv"));
 
     for (int i = 0; i < files.length; i++) {
-      files[i] = files[i].substring(0, files[i].indexOf('.'));
+      files[i] = files[i].substring(0, files[i].indexOf(".csv"));
     }
-    portfolioMap = new HashMap<>();
+
     for (String file : files) {
       portfolioMap.put(file, null);
     }
@@ -98,7 +97,6 @@ public class UserFlexImpl extends AbstractUser implements UserFlex{
 
   @Override
   public Map<String, Double> getPortfolioSummary(String name, String date) {
-    // ticker symbol vs quantity on that date
     try {
       if (portfolioMap.get(name) == null) {
         portfolioMap.put(name, new PortfolioFlexImpl(name));
@@ -150,7 +148,7 @@ public class UserFlexImpl extends AbstractUser implements UserFlex{
   }
 
   @Override
-  public boolean buyStockForPortfolio(String portfolioName,
+  public boolean transactionForPortfolio(String portfolioName,
                                       SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newStock) {
     try {
       if (portfolioMap.get(portfolioName) == null) {
@@ -164,20 +162,6 @@ public class UserFlexImpl extends AbstractUser implements UserFlex{
     }
   }
 
-  @Override
-  public boolean sellStockFromPortfolio(String portfolioName,
-                                        SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newStock) {
-    try {
-      if (portfolioMap.get(portfolioName) == null) {
-        portfolioMap.put(portfolioName, new PortfolioFlexImpl(portfolioName));
-      }
-      portfolioMap.get(portfolioName).sellStock(newStock);
-      return true;
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-      return false;
-    }
-  }
 
   @Override
   public Double getCostBasis(String portfolioName, String date){
@@ -190,8 +174,21 @@ public class UserFlexImpl extends AbstractUser implements UserFlex{
   }
 
   @Override
-  public SimpleEntry<List<String>,SimpleEntry<List<Integer>,Integer>> getGraphData(String date1, String date2, String portfolioName) throws Exception {
-    SimpleEntry<List<String>,List<Double>> data = portfolioMap.get(portfolioName).getPerfDataOverTime(date1,date2);
+  public SimpleEntry<List<String>,SimpleEntry<List<Integer>,Integer>> getGraphData(String date1, String date2, String portfolioName){
+    SimpleEntry<List<String>,List<Double>> data = null;
+    try {
+      if (portfolioMap.get(portfolioName) == null) {
+        portfolioMap.put(portfolioName, new PortfolioFlexImpl(portfolioName));
+      }
+      data = portfolioMap.get(portfolioName).getPerfDataOverTime(date1,date2);
+    } catch (Exception e) {
+      System.out.println("error from portfolio");
+      return null;
+    }
+    if(data==null){
+      System.out.println("null from portfolio");
+      return null;
+    }
     List<String> labels = data.getKey();
     List<Double> dataPoints = data.getValue();
     Double max=Collections.max(dataPoints);

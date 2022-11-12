@@ -7,7 +7,7 @@ import view.ViewPrint;
 public class AskCommissionFees {
 
   public static Double AskCommissionFees(Scanner scan, PrintStream out) {
-    System.out.print("Commission fee for this transaction: ");
+    ViewPrint.askCommissionFee(out);
     String commFee = scan.nextLine();
     double commFeesDouble = 0;
     do {
@@ -18,7 +18,7 @@ public class AskCommissionFees {
         }
 
       } catch (NumberFormatException e) {
-        System.out.print("Wrong format, again enter Commission fee for this transaction: ");
+        ViewPrint.askCommissionFeeAgain(out);
         commFee = scan.nextLine();
         if (commFee.equals("e")) {
           return null;

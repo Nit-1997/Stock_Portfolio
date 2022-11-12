@@ -6,6 +6,7 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+import javax.swing.text.View;
 import model.UserFlex;
 import view.ViewPrint;
 
@@ -15,13 +16,9 @@ public class BuyStock {
     ViewPrint.waitLoadMessage(out);
     String portfolioCreationDate = user.getPortfolioCreationDate(portfolioName);
     Map<String, SimpleEntry<String, Double>> portfolioState = user.getPortfolioState(portfolioName);
-    System.out.println("\nPortfolio creation date "+portfolioCreationDate);
-    System.out.println("    Stock     Quantity      Last Transaction Date");
-    for(String ticker : portfolioState.keySet()){
-      System.out.println("    "+ticker+"       "+portfolioState.get(ticker).getValue()+"         "+portfolioState.get(ticker).getKey());
-    }
+    ViewPrint.printPortfolioState(portfolioState,portfolioCreationDate,out);
 
-    System.out.println("\n");
+
     Set<String> stockList = user.getStockList();
     if (stockList != null && stockList.size() != 0) {
       ViewPrint.printAvailableStocks(stockList);
@@ -53,10 +50,10 @@ public class BuyStock {
         return ;
       }
       if(!user.dateChecker(date)){
-        System.out.println("Please enter in the correct format in the given range(0 to return to list view) : ");
+        ViewPrint.wrongDateMsg(out);
       } else if(portfolioState.containsKey(ticker)){
         if(user.isBeforeDate(date, portfolioState.get(ticker).getKey())){
-          System.out.println("kindly enter date after latest transaction for this stock(0 to return to list view) : ");
+          ViewPrint.wrongDateBeforeLastTx(out);
         }
         else{
           newStock = new SimpleEntry<>(ticker, new SimpleEntry<>(date,new SimpleEntry<>(stockQuanDouble,commFee)));
@@ -65,7 +62,7 @@ public class BuyStock {
       }
       else{
         if(user.isBeforeDate(date, portfolioCreationDate)){
-          System.out.println("kindly enter date after portfolio creation(0 to return to list view) : ");
+          ViewPrint.wrongDateBeforePortfolioCreation(out);
         }
         else{
           newStock = new SimpleEntry<>(ticker, new SimpleEntry<>(date,new SimpleEntry<>(stockQuanDouble,commFee)));
@@ -75,11 +72,11 @@ public class BuyStock {
     }
     while(!user.dateChecker(date) || newStock==null);
 
-    boolean val = user.buyStockForPortfolio(portfolioName,newStock);
+    boolean val = user.transactionForPortfolio(portfolioName,newStock);
     if (val) {
-      System.out.println("transaction successful for the portfolio");
+      ViewPrint.successfulTransaction(out);
     } else {
-      System.out.println("transaction unsuccessful");
+      ViewPrint.unSuccessfulTransaction(out);
     }
 
   }

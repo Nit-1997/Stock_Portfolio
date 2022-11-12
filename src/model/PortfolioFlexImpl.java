@@ -244,6 +244,7 @@ public class PortfolioFlexImpl implements PortfolioFlex {
   }
 
   private SimpleEntry<List<String>,List<Double>> getScaledPerfData(String date1, String date2 , String type) throws Exception {
+    System.out.println(type);
     List<Double> datapoints = new ArrayList<>();
     List<String> labels = new ArrayList<>();
     LocalDate start = LocalDate.parse(date1);
@@ -270,6 +271,8 @@ public class PortfolioFlexImpl implements PortfolioFlex {
           labels.add(month);
           datapoints.add(this.getValueOnDate(start.toString()));
           start=start.plusMonths(1);
+
+
         }
         break;
       case "quarterly":

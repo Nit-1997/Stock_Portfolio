@@ -464,7 +464,7 @@ public class Utils {
     Date d1 = sdformat.parse(date1);
     Date d2 = sdformat.parse(date2);
     long differenceInTime = d2.getTime() - d1.getTime();
-    return (differenceInTime / (1000 * 60 * 60 * 24)) % 365;
+    return (differenceInTime / (1000 * 60 * 60 * 24));
   }
 
 }

@@ -28,14 +28,14 @@ public class FlexController {
 
   public void start(UserFlex user) {
     Objects.requireNonNull(user);
-    System.out.println("-------------Flexible Portfolio Menu-------------");
+    ViewPrint.flexiblePortfolioHeader(this.out);
+    ViewPrint.printMenu(this.out);
     Scanner scan = new Scanner(this.in);
     boolean comingFromDefault = true;
-    ViewPrint.printMenu(this.out);
     String option;
     while (true) {
       if (!comingFromDefault) {
-        System.out.println("-------------Flexible Portfolio Menu-------------");
+        ViewPrint.flexiblePortfolioHeader(this.out);
         ViewPrint.printMenu(this.out);
       }
       comingFromDefault = false;
@@ -48,7 +48,7 @@ public class FlexController {
           LoadFlexPortfolio.loadPortfoliosController(scan, user, this.out);
           break;
         case "0":
-          System.out.println("\nthank you for using flexible portfolio wizard");
+          ViewPrint.flexPortfolioExitMsg(this.out);
           return;
         default:
           ViewPrint.errorNote(this.out);

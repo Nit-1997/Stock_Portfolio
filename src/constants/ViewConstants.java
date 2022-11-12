@@ -83,6 +83,7 @@ public class ViewConstants {
 
   public static final String ASK_DATE = "Please enter date (yyyy-MM-dd): ";
 
+
   public static final String ASK_DATE_AGAIN =
       "Please enter date in the correct format (yyyy-MM-dd) "
           + "in the given range (0 to return to list view): ";

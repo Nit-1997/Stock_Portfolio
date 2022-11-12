@@ -58,16 +58,8 @@ public interface UserFlex extends User {
    * @param newStock      stock that needs to be added {ticker symbol, date, quantity, commission fee}
    * @return true if successfully added.
    */
-  boolean buyStockForPortfolio(String portfolioName, SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newStock);
+  boolean transactionForPortfolio(String portfolioName, SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newStock);
 
-  /**
-   * Sells a stock from a portfolio on a given date.
-   *
-   * @param portfolioName name of the portfolio
-   * @param newStock      stock that needs to be sold {ticker symbol, date, quantity, commission fee}
-   * @return true if successfully sold.
-   */
-  boolean sellStockFromPortfolio(String portfolioName, SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newStock);
 
   /**
    * Determine total money invested in portfolio (all purchases + total transactions*commission fee) till the given date.
@@ -77,6 +69,6 @@ public interface UserFlex extends User {
   Double getCostBasis(String portfolioName, String date);
 
 
-  SimpleEntry<List<String>,SimpleEntry<List<Integer>,Integer>> getGraphData(String date1, String date2, String portfolioName) throws Exception;
+  SimpleEntry<List<String>,SimpleEntry<List<Integer>,Integer>> getGraphData(String date1, String date2, String portfolioName);
 
 }
