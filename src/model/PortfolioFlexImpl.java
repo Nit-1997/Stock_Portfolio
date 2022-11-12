@@ -47,7 +47,7 @@ public class PortfolioFlexImpl implements PortfolioFlex {
             portfolioCreationDate = k;
           }
         }
-        this.stockOrders.add(new StockOrderImpl(key, stocksMap.get(key).get(k).getKey(), k,stocksMap.get(key).get(k).getValue()));
+        this.stockOrders.add(new StockOrderImpl(key, stocksMap.get(key).get(k).getKey(), k, stocksMap.get(key).get(k).getValue()));
       }
     }
     this.creationDate = portfolioCreationDate;
@@ -63,9 +63,9 @@ public class PortfolioFlexImpl implements PortfolioFlex {
    * @throws Exception while reading/writing data dump
    */
   public PortfolioFlexImpl(String portfolioName) throws Exception {
-    List<StockOrder> tempStockOrders =  Utils.loadPortfolioData(portfolioName, "portfolios" + File.separator + "flex");
-    if(!Utils.FlexPortfolioValidator(tempStockOrders)) this.stockOrders=null;
-    else this.stockOrders=tempStockOrders;
+    List<StockOrder> tempStockOrders = Utils.loadPortfolioData(portfolioName, "portfolios" + File.separator + "flex");
+    if (!Utils.FlexPortfolioValidator(tempStockOrders)) this.stockOrders = null;
+    else this.stockOrders = tempStockOrders;
     this.name = portfolioName;
     if (this.stockOrders == null) {
       return;
@@ -123,7 +123,7 @@ public class PortfolioFlexImpl implements PortfolioFlex {
     if (!Utils.dataExists(newEntry.getKey().toUpperCase(), "stock_data")) {
       Utils.loadStockData(newEntry.getKey().toUpperCase(), "stock_data");
     }
-    StockOrder newOrder = new StockOrderImpl(newEntry.getKey(), newEntry.getValue().getValue().getKey(), newEntry.getValue().getKey(),newEntry.getValue().getValue().getValue());
+    StockOrder newOrder = new StockOrderImpl(newEntry.getKey(), newEntry.getValue().getValue().getKey(), newEntry.getValue().getKey(), newEntry.getValue().getValue().getValue());
     this.stockOrders.add(newOrder);
     Utils.saveToFile(this.name, this.stockOrders, "portfolios" + File.separator + "flex");
   }
@@ -133,7 +133,7 @@ public class PortfolioFlexImpl implements PortfolioFlex {
     if (!Utils.dataExists(newEntry.getKey().toUpperCase(), "stock_data")) {
       Utils.loadStockData(newEntry.getKey().toUpperCase(), "stock_data");
     }
-    StockOrder newOrder = new StockOrderImpl(newEntry.getKey(), newEntry.getValue().getValue().getKey(), newEntry.getValue().getKey(),newEntry.getValue().getValue().getValue());
+    StockOrder newOrder = new StockOrderImpl(newEntry.getKey(), newEntry.getValue().getValue().getKey(), newEntry.getValue().getKey(), newEntry.getValue().getValue().getValue());
     this.stockOrders.add(newOrder);
     Utils.saveToFile(this.name, this.stockOrders, "portfolios" + File.separator + "flex");
   }
@@ -148,9 +148,9 @@ public class PortfolioFlexImpl implements PortfolioFlex {
   @Override
   public Double getValueOnDate(String date) throws Exception {
     double totalVal = 0;
-    Map<String , Double > summary = this.getPortfolioSummary(date);
-    for(String ticker : summary.keySet()){
-      totalVal += Double.parseDouble(Utils.fetchStockValueByDate(ticker,date,"stock_data"))*summary.get(ticker);
+    Map<String, Double> summary = this.getPortfolioSummary(date);
+    for (String ticker : summary.keySet()) {
+      totalVal += Double.parseDouble(Utils.fetchStockValueByDate(ticker, date, "stock_data")) * summary.get(ticker);
     }
     return totalVal;
   }
@@ -191,65 +191,52 @@ public class PortfolioFlexImpl implements PortfolioFlex {
       if (s.getQuantity() > 0) {
         totalTrans += s.getQuantity() * s.getStock().getBuyPrice();
       }
-      totalTrans+=s.getCommFee();
+      totalTrans += s.getCommFee();
 
     }
     return totalTrans;
   }
 
-  private boolean datesValidationForGraph(String date1, String date2){
+  private boolean datesValidationForGraph(String date1, String date2) {
     LocalDate start = LocalDate.parse(date1);
     LocalDate end = LocalDate.parse(date2);
-    if(end.isBefore(start) || start.isBefore(LocalDate.parse(this.getCreationDate())) || end.isAfter(LocalDate.now())){
+    if (end.isBefore(start) || start.isBefore(LocalDate.parse(this.getCreationDate())) || end.isAfter(LocalDate.now())) {
       return false;
     }
     return true;
   }
 
+
   @Override
-  public  SimpleEntry<List<String>,List<Double>> getPerfDataOverTime(String date1, String date2) throws Exception {
-    if(!datesValidationForGraph(date1,date2)) return null;
-    //check date2 > date1
-    //map date1 / date2 based on portfolio creation date
-    // calculate total days difference
-    //write if else , call scaledData fun with correct separator
-    long dayDiff = Utils.computeDaysBetweenDates(date1 , date2);
-    String type="";
-    if(dayDiff <= 30 ) {
-      type="daily";
-    }else if(dayDiff > 30 && dayDiff <= 210){
-      type="weekly";
-      // TODO : shift to the friday of that week
-    }else if(dayDiff >210 && dayDiff <= 900){
-      type="monthly";
-      // TODO : shift to the last day of the month for start
-      //    LocalDate convertedDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-      //    convertedDate = convertedDate.withDayOfMonth(convertedDate.getMonth().length(convertedDate.isLeapYear()));
-    } else if(dayDiff > 900 && dayDiff<1461){
-      type="quarterly";
-      // TODO : shift start date to last date of that quarter (March,June,September,December)
+  public SimpleEntry<List<String>, List<Double>> getPerfDataOverTime(String date1, String date2) throws Exception {
+    if (!datesValidationForGraph(date1, date2)) return null;
+    long dayDiff = Utils.computeDaysBetweenDates(date1, date2);
+    String type = "";
+    if (dayDiff <= 30) {
+      type = "daily";
+    } else if (dayDiff > 30 && dayDiff <= 210) {
+      type = "weekly";
+      date1 = Utils.shiftDateToValidStartPoint(type, date1);
+    } else if (dayDiff > 210 && dayDiff <= 900) {
+      type = "monthly";
+      date1 = Utils.shiftDateToValidStartPoint(type, date1);
+    } else if (dayDiff > 900 && dayDiff < 1461) {
+      type = "quarterly";
+      date1 = Utils.shiftDateToValidStartPoint(type, date1);
+    } else {
+      type = "yearly";
+      date1 = Utils.shiftDateToValidStartPoint(type, date1);
     }
-    else{
-      type="yearly";
-      // TODO : shift start date to last date of the year
-      //convertedDate = convertedDate.with(lastDayOfYear());
-    }
-    return getScaledPerfData(date1,date2,type);
+    return getScaledPerfData(date1, date2, type);
   }
 
-  private String shiftToLast(String date){
-    LocalDate convertedDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-    convertedDate = convertedDate.withDayOfMonth(convertedDate.getMonth().length(convertedDate.isLeapYear()));
-    return convertedDate.toString();
-  }
 
-  private SimpleEntry<List<String>,List<Double>> getScaledPerfData(String date1, String date2 , String type) throws Exception {
-    System.out.println(type);
+  private SimpleEntry<List<String>, List<Double>> getScaledPerfData(String date1, String date2, String type) throws Exception {
     List<Double> datapoints = new ArrayList<>();
     List<String> labels = new ArrayList<>();
     LocalDate start = LocalDate.parse(date1);
     LocalDate end = LocalDate.parse(date2);
-    switch(type){
+    switch (type) {
       case "daily":
         while (!start.isAfter(end)) {
           labels.add(start.toString());
@@ -259,26 +246,24 @@ public class PortfolioFlexImpl implements PortfolioFlex {
         break;
       case "weekly":
         while (!start.isAfter(end)) {
-          String week = start.getMonth().toString().substring(0,3)+" Week "+(start.getDayOfMonth()/7+1);
+          String week = start.getMonth().toString().substring(0, 3) + " Week " + (start.getDayOfMonth() / 7 + 1);
           labels.add(week);
           datapoints.add(this.getValueOnDate(start.toString()));
-          start=start.plusWeeks(1);
+          start = start.plusWeeks(1);
         }
         break;
       case "monthly":
         while (!start.isAfter(end)) {
-          String month = start.getMonth().toString().substring(0,3)+" "+start.getYear();
+          String month = start.getMonth().toString().substring(0, 3) + " " + start.getYear();
           labels.add(month);
           datapoints.add(this.getValueOnDate(start.toString()));
-          start=start.plusMonths(1);
-
-
+          start = start.plusMonths(1);
         }
         break;
       case "quarterly":
-        start=getQuarterDate(start);
+        start = Utils.getQuarterDate(start);
         while (!start.isAfter(end)) {
-          String qtr = "Qtr"+(start.getMonthValue()/3)+" "+start.getYear();
+          String qtr = "Qtr" + (start.getMonthValue() / 3) + " " + start.getYear();
           labels.add(qtr);
           datapoints.add(this.getValueOnDate(start.toString()));
           start = start.plusMonths(3);
@@ -289,19 +274,10 @@ public class PortfolioFlexImpl implements PortfolioFlex {
           int year = start.getYear();
           labels.add(String.valueOf(year));
           datapoints.add(this.getValueOnDate(start.toString()));
-          start=start.plusYears(1);
+          start = start.plusYears(1);
         }
       default:
     }
-    return new SimpleEntry<>(labels,datapoints);
-  }
-
-  private LocalDate getQuarterDate(LocalDate date){
-    int month = date.getMonthValue();
-    if(month<3)date=date.plusMonths(3-date.getMonthValue());
-    else if(month>3 && month<6) date=date.plusMonths(6-date.getMonthValue());
-    else if(month>6 && month<9) date=date.plusMonths(9-date.getMonthValue());
-    else if(month>9 && month<12) date=date.plusMonths(12-date.getMonthValue());
-    return date;
+    return new SimpleEntry<>(labels, datapoints);
   }
 }
