@@ -1,8 +1,6 @@
 package model;
 
 import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -12,7 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import constants.Constants;
 import utils.Utils;
 
 public class PortfolioFlexImpl implements PortfolioFlex {
@@ -200,40 +197,44 @@ public class PortfolioFlexImpl implements PortfolioFlex {
     return totalTrans;
   }
 
+  private boolean datesValidationForGraph(String date1, String date2){
+    LocalDate start = LocalDate.parse(date1);
+    LocalDate end = LocalDate.parse(date2);
+    if(end.isBefore(start) || start.isBefore(LocalDate.parse(this.getCreationDate())) || end.isAfter(LocalDate.now())){
+      return false;
+    }
+    return true;
+  }
+
   @Override
-  public SimpleEntry<String,List<Double>> getPerfDataOverTime(String date1, String date2) throws Exception {
+  public  SimpleEntry<List<String>,List<Double>> getPerfDataOverTime(String date1, String date2) throws Exception {
+    if(!datesValidationForGraph(date1,date2)) return null;
     //check date2 > date1
     //map date1 / date2 based on portfolio creation date
     // calculate total days difference
     //write if else , call scaledData fun with correct separator
     long dayDiff = Utils.computeDaysBetweenDates(date1 , date2);
     String type="";
-    int scaler = 0;
     if(dayDiff <= 30 ) {
-      scaler = 1;
-      type="dailiy";
+      type="daily";
     }else if(dayDiff > 30 && dayDiff <= 210){
       type="weekly";
       // TODO : shift to the friday of that week
-      scaler = 7;
     }else if(dayDiff >210 && dayDiff <= 900){
       type="monthly";
-      // TODO : shift to the last day of the month for both dates
+      // TODO : shift to the last day of the month for start
       //    LocalDate convertedDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
       //    convertedDate = convertedDate.withDayOfMonth(convertedDate.getMonth().length(convertedDate.isLeapYear()));
-      scaler = 30;
     } else if(dayDiff > 900 && dayDiff<1461){
-      type="6monthly";
-      // TODO : shift to last date of that 6th month range (June or December)
-      scaler=180;
+      type="quarterly";
+      // TODO : shift start date to last date of that quarter (March,June,September,December)
     }
     else{
       type="yearly";
-      // TODO : shift to last date of the year
+      // TODO : shift start date to last date of the year
       //convertedDate = convertedDate.with(lastDayOfYear());
-      scaler = 365;
     }
-    return new SimpleEntry<>(type,this.getScaledPerfData(date1 ,date2 , scaler));
+    return getScaledPerfData(date1,date2,type);
   }
 
   private String shiftToLast(String date){
@@ -242,14 +243,62 @@ public class PortfolioFlexImpl implements PortfolioFlex {
     return convertedDate.toString();
   }
 
-  public List<Double> getScaledPerfData(String date1, String date2 , int scaler) throws Exception {
-    List<Double> results = new ArrayList<>();
+  private SimpleEntry<List<String>,List<Double>> getScaledPerfData(String date1, String date2 , String type) throws Exception {
+    List<Double> datapoints = new ArrayList<>();
+    List<String> labels = new ArrayList<>();
     LocalDate start = LocalDate.parse(date1);
     LocalDate end = LocalDate.parse(date2);
-    while (!start.isAfter(end)) {
-     results.add(this.getValueOnDate(start.toString()));
-     start = start.plusDays(scaler);
+    switch(type){
+      case "daily":
+        while (!start.isAfter(end)) {
+          labels.add(start.toString());
+          datapoints.add(this.getValueOnDate(start.toString()));
+          start = start.plusDays(1);
+        }
+        break;
+      case "weekly":
+        while (!start.isAfter(end)) {
+          String week = start.getMonth().toString().substring(0,3)+" Week "+(start.getDayOfMonth()/7+1);
+          labels.add(week);
+          datapoints.add(this.getValueOnDate(start.toString()));
+          start=start.plusWeeks(1);
+        }
+        break;
+      case "monthly":
+        while (!start.isAfter(end)) {
+          String month = start.getMonth().toString().substring(0,3)+" "+start.getYear();
+          labels.add(month);
+          datapoints.add(this.getValueOnDate(start.toString()));
+          start=start.plusMonths(1);
+        }
+        break;
+      case "quarterly":
+        start=getQuarterDate(start);
+        while (!start.isAfter(end)) {
+          String qtr = "Qtr"+(start.getMonthValue()/3)+" "+start.getYear();
+          labels.add(qtr);
+          datapoints.add(this.getValueOnDate(start.toString()));
+          start = start.plusMonths(3);
+        }
+
+      case "yearly":
+        while (!start.isAfter(end)) {
+          int year = start.getYear();
+          labels.add(String.valueOf(year));
+          datapoints.add(this.getValueOnDate(start.toString()));
+          start=start.plusYears(1);
+        }
+      default:
     }
-    return results;
+    return new SimpleEntry<>(labels,datapoints);
+  }
+
+  private LocalDate getQuarterDate(LocalDate date){
+    int month = date.getMonthValue();
+    if(month<3)date=date.plusMonths(3-date.getMonthValue());
+    else if(month>3 && month<6) date=date.plusMonths(6-date.getMonthValue());
+    else if(month>6 && month<9) date=date.plusMonths(9-date.getMonthValue());
+    else if(month>9 && month<12) date=date.plusMonths(12-date.getMonthValue());
+    return date;
   }
 }

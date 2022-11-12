@@ -6,10 +6,16 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.WeekFields;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -182,5 +188,25 @@ public class UserFlexImpl extends AbstractUser implements UserFlex{
       return null;
     }
   }
+
+  @Override
+  public SimpleEntry<List<String>,SimpleEntry<List<Integer>,Integer>> getGraphData(String date1, String date2, String portfolioName) throws Exception {
+    SimpleEntry<List<String>,List<Double>> data = portfolioMap.get(portfolioName).getPerfDataOverTime(date1,date2);
+    List<String> labels = data.getKey();
+    List<Double> dataPoints = data.getValue();
+    Double max=Collections.max(dataPoints);
+
+    int scale = (int)(max/50);
+    List<Integer> starPoints = new ArrayList<>();
+    for(Double dataPoint : dataPoints) starPoints.add((int) (dataPoint/scale));
+
+    return new SimpleEntry<>(labels,new SimpleEntry<>(starPoints,scale));
+
+
+  }
+
+
+
+
 
 }

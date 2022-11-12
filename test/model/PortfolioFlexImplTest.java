@@ -64,12 +64,12 @@ public class PortfolioFlexImplTest {
 
   @Test
   public void something() throws Exception {
-    PortfolioFlex p = new PortfolioFlexImpl(order , "flexTest");
-    List<Double> a = p.getScaledPerfData("2022-11-28" , "2022-12-20", 1);
-    for(double d : a){
-      System.out.println(d);
-    }
-    System.out.println(a.size());
+//    PortfolioFlex p = new PortfolioFlexImpl(order , "flexTest");
+//    SimpleEntry<List<>> a = p.getScaledPerfData("2022-11-28" , "2022-12-20", "daily");
+//    for(SimpleEntry<String,Double> d : a){
+//      System.out.println(d.getValue());
+//    }
+//    System.out.println(a.size());
   }
 
 

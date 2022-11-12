@@ -3,6 +3,7 @@ package model;
 import java.io.IOException;
 import java.util.AbstractMap;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.List;
 import java.util.Map;
 
 public interface UserFlex extends User {
@@ -74,5 +75,8 @@ public interface UserFlex extends User {
    * @return Total Money Invested.
    */
   Double getCostBasis(String portfolioName, String date);
+
+
+  SimpleEntry<List<String>,SimpleEntry<List<Integer>,Integer>> getGraphData(String date1, String date2, String portfolioName) throws Exception;
 
 }

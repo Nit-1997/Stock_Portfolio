@@ -1,7 +1,9 @@
 import controller.WelcomeController;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import static java.time.temporal.TemporalAdjusters.lastDayOfYear;
+import java.time.temporal.WeekFields;
+import java.util.Locale;
+import model.UserFlexImpl;
 
 
 /**
@@ -18,6 +20,5 @@ public class Main {
   public static void main(String[] args) throws Exception {
 
     new WelcomeController(System.in, System.out).start();
-
   }
 }

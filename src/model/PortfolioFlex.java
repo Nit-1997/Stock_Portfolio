@@ -55,8 +55,5 @@ public interface PortfolioFlex extends Portfolio{
    * @return List of portfolio values
    * @throws Exception can occur while reading/writing data dump
    */
-  SimpleEntry<String,List<Double>> getPerfDataOverTime(String date1, String date2) throws Exception;
-
-
-  public List<Double> getScaledPerfData(String date1, String date2 , int scaler) throws Exception;
+  SimpleEntry<List<String>,List<Double>> getPerfDataOverTime(String date1, String date2) throws Exception;
 }
