@@ -1,9 +1,8 @@
 import controller.WelcomeController;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.WeekFields;
-import java.util.Locale;
-import model.UserFlexImpl;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.HashMap;
+import java.util.Map;
+import view.ViewPrint;
 
 
 /**
@@ -20,5 +19,8 @@ public class Main {
   public static void main(String[] args) throws Exception {
 
     new WelcomeController(System.in, System.out).start();
+
+
   }
+
 }

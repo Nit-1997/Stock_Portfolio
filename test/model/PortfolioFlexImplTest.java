@@ -92,7 +92,7 @@ public class PortfolioFlexImplTest {
 
   @Test
   public void testGetValueOnDateBeforePortfolioCreation() throws Exception {
-    PortfolioFlex p = new PortfolioFlexImpl("flexTest");
+    PortfolioFlex p = new PortfolioFlexImpl(order,"flexTest");
     String date = "2012-10-01";
     double res = p.getValueOnDate(date);
     assertEquals(0.0 , res , 0);
@@ -101,7 +101,7 @@ public class PortfolioFlexImplTest {
 
   @Test
   public void testGetValueOnDateAfterPortfolioCreationBeforeLastTrans() throws Exception {
-    PortfolioFlex p = new PortfolioFlexImpl("flexTest");
+    PortfolioFlex p = new PortfolioFlexImpl(order,"flexTest");
     String date = "2022-10-31";
     double res = p.getValueOnDate(date);
     assertEquals(4844.02 , res , 0);
@@ -110,7 +110,7 @@ public class PortfolioFlexImplTest {
 
   @Test
   public void testGetValueOnDateAfterPortfolioCreationAfterLastTrans() throws Exception {
-    PortfolioFlex p = new PortfolioFlexImpl("flexTest");
+    PortfolioFlex p = new PortfolioFlexImpl(order,"flexTest");
     String date = "2022-11-01";
     double res = p.getValueOnDate(date);
     assertEquals(4768.870000000001 , res , 0);
@@ -118,7 +118,7 @@ public class PortfolioFlexImplTest {
 
   @Test
   public void testGetPortfolioSummaryOnLastTransDate() throws Exception {
-    PortfolioFlex p = new PortfolioFlexImpl("flexTest");
+    PortfolioFlex p = new PortfolioFlexImpl(order,"flexTest");
     String date = "2022-10-31";
     Map<String, Double> res = p.getPortfolioSummary(date);
     Map<String , Double> expected = new HashMap<>();
@@ -132,21 +132,6 @@ public class PortfolioFlexImplTest {
     }
   }
 
-  @Test
-  public void testGetPortfolioSummaryBeyondLastTransDate() throws Exception {
-    PortfolioFlex p = new PortfolioFlexImpl("flexTest");
-    String date = "2022-11-11";
-    Map<String, Double> res = p.getPortfolioSummary(date);
-    Map<String , Double> expected = new HashMap<>();
-    expected.put("NFLX",10.0);
-    expected.put("AAPL",9.0);
-    expected.put("CSCO",12.0);
-
-    for(String k : res.keySet()){
-      assertTrue(expected.containsKey(k));
-      assertEquals(expected.get(k) , res.get(k));
-    }
-  }
 
   @Test
   public void testGetPortfolioSummaryBeforeLastTransDate() throws Exception {
@@ -164,11 +149,129 @@ public class PortfolioFlexImplTest {
     }
   }
 
+
+  @Test
+  public void testAddBuyTransaction() throws Exception{
+    PortfolioFlex p = new PortfolioFlexImpl(order,"flexTest");
+    SimpleEntry<Double, Double> commQtyTuple = new SimpleEntry<>(12.0 , 2.0);
+    SimpleEntry<String, SimpleEntry<Double , Double>> dateQtyCommTuple = new SimpleEntry<>("2022-11-2", commQtyTuple);
+    SimpleEntry<String , SimpleEntry<String, SimpleEntry<Double , Double>>> transTuple = new SimpleEntry<>("CSCO" , dateQtyCommTuple);
+    p.addTransaction(transTuple);
+
+    Map<String, SimpleEntry<String, Double>> stateMap = p.getLatestState();
+
+    Map<String, SimpleEntry<String, Double>> expected = new HashMap<>();
+    SimpleEntry<String , Double> cscoEntry = new SimpleEntry<String , Double>("2022-11-2",24.0);
+    expected.put("CSCO" , cscoEntry);
+    SimpleEntry<String , Double> nflxEntry = new SimpleEntry<String , Double>("2022-10-31",10.0);
+    expected.put("NFLX" , nflxEntry);
+    SimpleEntry<String , Double> aaplEntry = new SimpleEntry<String , Double>("2022-10-31",9.0);
+    expected.put("AAPL" , aaplEntry);
+
+    for(String key : stateMap.keySet()){
+      assertTrue(expected.containsKey(key));
+      assertEquals( expected.get(key).getKey() , stateMap.get(key).getKey());
+      assertEquals(expected.get(key).getValue() , stateMap.get(key).getValue());
+    }
+  }
+
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testAddBuyTransactionNegCommision() throws Exception{
+    PortfolioFlex p = new PortfolioFlexImpl(order,"flexTest");
+    SimpleEntry<Double, Double> commQtyTuple = new SimpleEntry<>(12.0 , -2.0);
+    SimpleEntry<String, SimpleEntry<Double , Double>> dateQtyCommTuple = new SimpleEntry<>("2022-11-2", commQtyTuple);
+    SimpleEntry<String , SimpleEntry<String, SimpleEntry<Double , Double>>> transTuple = new SimpleEntry<>("CSCO" , dateQtyCommTuple);
+    p.addTransaction(transTuple);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testAddBuyTransactionIncorrectDate() throws Exception{
+    PortfolioFlex p = new PortfolioFlexImpl("flexTest");
+    SimpleEntry<Double, Double> commQtyTuple = new SimpleEntry<>(12.0 , 2.0);
+    SimpleEntry<String, SimpleEntry<Double , Double>> dateQtyCommTuple = new SimpleEntry<>("02-11-2022", commQtyTuple);
+    SimpleEntry<String , SimpleEntry<String, SimpleEntry<Double , Double>>> transTuple = new SimpleEntry<>("CSCO" , dateQtyCommTuple);
+    p.addTransaction(transTuple);
+  }
+
+
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testAddBuyTransactionNulLArgs() throws Exception{
+    PortfolioFlex p = new PortfolioFlexImpl("flexTest");
+    p.addTransaction(null);
+  }
+
+  @Test
+  public void testAddSellTransaction() throws Exception{
+    PortfolioFlex p = new PortfolioFlexImpl(order,"flexTest");
+    SimpleEntry<Double, Double> commQtyTuple = new SimpleEntry<>(-12.0 , 2.0);
+    SimpleEntry<String, SimpleEntry<Double , Double>> dateQtyCommTuple = new SimpleEntry<>("2022-11-2", commQtyTuple);
+    SimpleEntry<String , SimpleEntry<String, SimpleEntry<Double , Double>>> transTuple = new SimpleEntry<>("CSCO" , dateQtyCommTuple);
+    p.addTransaction(transTuple);
+    Map<String, SimpleEntry<String, Double>> stateMap = p.getLatestState();
+
+    Map<String, SimpleEntry<String, Double>> expected = new HashMap<>();
+    SimpleEntry<String , Double> cscoEntry = new SimpleEntry<String , Double>("2022-11-2",0.0);
+    expected.put("CSCO" , cscoEntry);
+    SimpleEntry<String , Double> nflxEntry = new SimpleEntry<String , Double>("2022-10-31",10.0);
+    expected.put("NFLX" , nflxEntry);
+    SimpleEntry<String , Double> aaplEntry = new SimpleEntry<String , Double>("2022-10-31",9.0);
+    expected.put("AAPL" , aaplEntry);
+
+    for(String key : stateMap.keySet()){
+      assertTrue(expected.containsKey(key));
+      assertEquals( expected.get(key).getKey() , stateMap.get(key).getKey());
+      assertEquals(expected.get(key).getValue() , stateMap.get(key).getValue());
+    }
+  }
+
   @Test
   public void testGetCostBasisOnLastTransDate() throws Exception {
-    PortfolioFlex p = new PortfolioFlexImpl("flexTest");
+     PortfolioFlex p = new PortfolioFlexImpl(order , "flexTest");
+     String date = "2022-10-31";
+     assertEquals(6002.72,p.getCostBasis(date),0);
+  }
+
+  @Test
+  public void testGetCostBasisBeyondLastTransDate() throws Exception {
+    PortfolioFlex p = new PortfolioFlexImpl(order , "flexTest");
+    String date = "2022-11-06";
+    assertEquals(6002.72,p.getCostBasis(date),0);
+  }
+
+  @Test
+  public void testGetCostBasisBeforeLastTransDate() throws Exception {
+    PortfolioFlex p = new PortfolioFlexImpl(order , "flexTest");
+    String date = "2022-10-22";
+    assertEquals(1120.0,p.getCostBasis(date),0);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testGetCostBasisInvalidDate() throws Exception {
+    PortfolioFlex p = new PortfolioFlexImpl(order , "flexTest");
+    String date = "06-11-2022";
+    p.getCostBasis(date);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testGetCostBasisNullDate() throws Exception {
+    PortfolioFlex p = new PortfolioFlexImpl(order , "flexTest");
+    p.getCostBasis(null);
+  }
+
+
+  @Test
+  public void testGetPerfDataOverTime(){
 
   }
+
+
+
+
+
+
+
 
 
 }

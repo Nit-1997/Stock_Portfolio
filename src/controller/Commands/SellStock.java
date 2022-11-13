@@ -4,6 +4,7 @@ import java.io.PrintStream;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
 import java.util.Scanner;
+import javax.swing.text.View;
 import model.UserFlex;
 import view.ViewPrint;
 
@@ -13,14 +14,8 @@ public class SellStock {
       PrintStream out) {
 
     ViewPrint.waitLoadMessage(out);
-    String portfolioCreationDate = user.getPortfolioCreationDate(portfolioName);
     Map<String, SimpleEntry<String, Double>> portfolioState = user.getPortfolioState(portfolioName);
-    System.out.println("    Stock     Quantity      Last Transaction Date");
-    for (String ticker : portfolioState.keySet()) {
-      System.out.println(
-          ticker + "   " + portfolioState.get(ticker).getValue() + "     " + portfolioState.get(
-              ticker).getKey());
-    }
+    ViewPrint.printPortfolioState(portfolioState,null,out);
 
     ViewPrint.askTickerSymbol(out);
     String ticker;
@@ -34,57 +29,53 @@ public class SellStock {
         continue;
       }
       if (!portfolioState.containsKey(ticker)) {
-        System.out.print(
-            "Portfolio doesn't contain this stock, enter again(0 to return to main menu): ");
+        ViewPrint.stockNotInPortfolioMsg(out);
       }
     }
-    while (!user.isValidStock(ticker) || !portfolioState.containsKey(ticker));
+      while (!user.isValidStock(ticker) || !portfolioState.containsKey(ticker));
 
-    Double stockQuanDouble = null;
-    do{
-      stockQuanDouble = AskStockNumber.addStocksAskStockNumber(scan, out);
-      if (stockQuanDouble == null) {
+      Double stockQuanDouble = null;
+      do {
+        stockQuanDouble = AskStockNumber.addStocksAskStockNumber(scan, out);
+        if (stockQuanDouble == null) {
+          return;
+        }
+        if (portfolioState.get(ticker).getValue() < stockQuanDouble) {
+          ViewPrint.stockLessThanInPortfolio(out);
+        }
+      }
+      while (portfolioState.get(ticker).getValue() < stockQuanDouble);
+
+      Double commFee = AskCommissionFees.AskCommissionFees(scan, out);
+      if (commFee == null) {
         return;
       }
-      if(portfolioState.get(ticker).getValue() < stockQuanDouble) {
-        System.out.println("Shares to be sold are more than the number of shares existing");
+
+      SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newStock = null;
+      String date = null;
+      while (newStock == null || !user.dateChecker(date)) {
+        ViewPrint.askDate(out);
+        date = scan.nextLine();
+        if (date.equals("0")) {
+          return;
+        }
+        if (!user.dateChecker(date)) {
+          ViewPrint.wrongDateMsg(out);
+        } else if (user.isBeforeDate(date, portfolioState.get(ticker).getKey())) {
+          ViewPrint.wrongDateBeforeLastTx(out);
+        } else {
+          newStock = new SimpleEntry<>(ticker,
+              new SimpleEntry<>(date, new SimpleEntry<>(-stockQuanDouble, commFee)));
+          break;
+        }
       }
-    }
-    while(portfolioState.get(ticker).getValue() < stockQuanDouble);
 
-
-    Double commFee = AskCommissionFees.AskCommissionFees(scan, out);
-    if(commFee==null){
-      return;
-    }
-
-    SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newStock = null;
-    String date=null;
-    while (newStock == null || !user.dateChecker(date)) {
-      System.out.print("enter date (yyyy-mm-dd) : ");
-      date = scan.nextLine();
-      if (date.equals("0")) {
-        return;
-      }
-      if (!user.dateChecker(date)) {
-        System.out.println("Please enter in the correct format in the given range(0 to return to list view) : ");
-      } else if (user.isBeforeDate(date, portfolioState.get(ticker).getKey())) {
-        System.out.println("kindly enter date after latest transaction for this stock(0 to return to list view) : ");
+      boolean val = user.transactionForPortfolio(portfolioName, newStock);
+      if (val) {
+        ViewPrint.successfulTransaction(out);
       } else {
-        newStock = new SimpleEntry<>(ticker, new SimpleEntry<>(date, new SimpleEntry<>(-stockQuanDouble,commFee)));
-        break;
+        ViewPrint.unSuccessfulTransaction(out);
       }
-    }
 
 
-    boolean val = user.sellStockFromPortfolio(portfolioName, newStock);
-    if (val) {
-      System.out.println("transaction successful for the portfolio\n");
-    } else {
-      System.out.println("transaction unsuccessful\n");
-    }
-
-
-  }
-
-}
+    }}

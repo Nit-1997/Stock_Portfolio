@@ -122,19 +122,18 @@ public class PortfolioFlexImpl implements PortfolioFlex {
   }
 
   @Override
-  public void addStock(SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newEntry) throws Exception {
+  public void addTransaction(SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newEntry) throws Exception {
+    if(newEntry == null){
+      throw new IllegalArgumentException("Null Args passed");
+    }
     if (!Utils.dataExists(newEntry.getKey().toUpperCase(), "stock_data")) {
       Utils.loadStockData(newEntry.getKey().toUpperCase(), "stock_data");
     }
-    StockOrder newOrder = new StockOrderImpl(newEntry.getKey(), newEntry.getValue().getValue().getKey(), newEntry.getValue().getKey(), newEntry.getValue().getValue().getValue());
-    this.stockOrders.add(newOrder);
-    Utils.saveToFile(this.name, this.stockOrders, "portfolios" + File.separator + "flex");
-  }
-
-  @Override
-  public void sellStock(SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newEntry) throws Exception {
-    if (!Utils.dataExists(newEntry.getKey().toUpperCase(), "stock_data")) {
-      Utils.loadStockData(newEntry.getKey().toUpperCase(), "stock_data");
+    if(!Utils.dateChecker(newEntry.getValue().getKey())){
+      throw new IllegalArgumentException("Incorrect Date format");
+    }
+    if(newEntry.getValue().getValue().getValue() < 0){
+      throw new IllegalArgumentException("Commission Fee cannot be negative");
     }
     StockOrder newOrder = new StockOrderImpl(newEntry.getKey(), newEntry.getValue().getValue().getKey(), newEntry.getValue().getKey(), newEntry.getValue().getValue().getValue());
     this.stockOrders.add(newOrder);
@@ -183,7 +182,12 @@ public class PortfolioFlexImpl implements PortfolioFlex {
 
   @Override
   public double getCostBasis(String date) throws Exception {
-
+    if(date == null){
+      throw new IllegalArgumentException("Null dates passed");
+    }
+    if(!Utils.dateChecker(date)){
+      throw new IllegalArgumentException("Incorrect Date format");
+    }
     double totalTrans = 0;
     for (StockOrder s : this.stockOrders) {
       String currentDate = s.getStock().getBuyDate();
@@ -200,19 +204,9 @@ public class PortfolioFlexImpl implements PortfolioFlex {
     return totalTrans;
   }
 
-  private boolean datesValidationForGraph(String date1, String date2) {
-    LocalDate start = LocalDate.parse(date1);
-    LocalDate end = LocalDate.parse(date2);
-    if (end.isBefore(start) || start.isBefore(LocalDate.parse(this.getCreationDate())) || end.isAfter(LocalDate.now())) {
-      return false;
-    }
-    return true;
-  }
-
-
   @Override
   public SimpleEntry<List<String>, List<Double>> getPerfDataOverTime(String date1, String date2) throws Exception {
-    if (!datesValidationForGraph(date1, date2)) return null;
+    if (!Utils.datesValidationForGraph(date1, date2,this.getCreationDate())) return null;
     long dayDiff = Utils.computeDaysBetweenDates(date1, date2);
     String type = "";
     if (dayDiff <= 30) {
@@ -230,57 +224,7 @@ public class PortfolioFlexImpl implements PortfolioFlex {
       type = "yearly";
       date1 = Utils.shiftDateToValidStartPoint(type, date1);
     }
-    return getScaledPerfData(date1, date2, type);
+    return Utils.getScaledPerfData(date1, date2, type , this);
   }
 
-
-  private SimpleEntry<List<String>, List<Double>> getScaledPerfData(String date1, String date2, String type) throws Exception {
-    List<Double> datapoints = new ArrayList<>();
-    List<String> labels = new ArrayList<>();
-    LocalDate start = LocalDate.parse(date1);
-    LocalDate end = LocalDate.parse(date2);
-    switch (type) {
-      case "daily":
-        while (!start.isAfter(end)) {
-          labels.add(start.toString());
-          datapoints.add(this.getValueOnDate(start.toString()));
-          start = start.plusDays(1);
-        }
-        break;
-      case "weekly":
-        while (!start.isAfter(end)) {
-          String week = start.getMonth().toString().substring(0, 3) + " Week " + (start.getDayOfMonth() / 7 + 1);
-          labels.add(week);
-          datapoints.add(this.getValueOnDate(start.toString()));
-          start = start.plusWeeks(1);
-        }
-        break;
-      case "monthly":
-        while (!start.isAfter(end)) {
-          String month = start.getMonth().toString().substring(0, 3) + " " + start.getYear();
-          labels.add(month);
-          datapoints.add(this.getValueOnDate(start.toString()));
-          start = start.plusMonths(1);
-        }
-        break;
-      case "quarterly":
-        start = Utils.getQuarterDate(start);
-        while (!start.isAfter(end)) {
-          String qtr = "Qtr" + (start.getMonthValue() / 3) + " " + start.getYear();
-          labels.add(qtr);
-          datapoints.add(this.getValueOnDate(start.toString()));
-          start = start.plusMonths(3);
-        }
-
-      case "yearly":
-        while (!start.isAfter(end)) {
-          int year = start.getYear();
-          labels.add(String.valueOf(year));
-          datapoints.add(this.getValueOnDate(start.toString()));
-          start = start.plusYears(1);
-        }
-      default:
-    }
-    return new SimpleEntry<>(labels, datapoints);
-  }
 }

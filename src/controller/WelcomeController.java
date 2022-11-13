@@ -30,21 +30,14 @@ public class WelcomeController implements StockController{
 
     boolean comingFromDefault = true;
 
-    System.out.println("1. flex portfolio");
-    System.out.println("2. inflex portfolio");
-    System.out.println("0. Exit");
-    System.out.print("Enter your choice: ");
+    ViewPrint.welcomeMenu(this.out);
 
     String option;
     while (true) {
       if (!comingFromDefault) {
         System.out.println();
         ViewPrint.welcomeNote(this.out);
-        System.out.println("************************************************************");
-        System.out.println("1. flex portfolio");
-        System.out.println("2. inflex portfolio");
-        System.out.println("0. Exit");
-        System.out.print("Enter your choice: ");
+        ViewPrint.welcomeMenu(this.out);
       }
       comingFromDefault = false;
       option = scan.nextLine();

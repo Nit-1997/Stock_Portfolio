@@ -17,15 +17,15 @@ public class CostBasis {
         return;
       }
       if(!user.dateChecker(date)){
-        System.out.println("Please enter in the correct format in the given range(0 to return to list view): ");
+        ViewPrint.wrongDateMsg(out);
       }else if(user.isBeforeDate(date,user.getPortfolioCreationDate(portfolioName))) {
-        System.out.println("please enter a date after portfolio creation(0 to return to list view) :");
+        ViewPrint.wrongDateBeforePortfolioCreation(out);
       }
     }
     while (!user.dateChecker(date) || user.isBeforeDate(date,user.getPortfolioCreationDate(portfolioName)));
 
     Double cost = user.getCostBasis(portfolioName,date);
-    System.out.println("\nCost basis of the portfolio till the given date : "+cost);
+    ViewPrint.printCostBasis(cost,out);
   }
 
 }

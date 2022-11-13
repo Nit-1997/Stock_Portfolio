@@ -50,9 +50,12 @@ public class LoadSingleFlexPortfolioDetail {
           CostBasis.calculateCostBasis(scan, out, user, portfolioName);
           break;
         case "7" :
+          PerformanceGraph.plotGraph(scan, out, user, portfolioName);
+          break;
+        case "8" :
           LoadFlexPortfolio.loadPortfoliosController(scan, user,out);
           return;
-        case "8":
+        case "9":
           return;
         default:
           ViewPrint.loadPortfolioErrorNote(out);
@@ -65,7 +68,7 @@ public class LoadSingleFlexPortfolioDetail {
       }
       comingFromDefault = false;
     }
-    while (!option.equals("8"));
+    while (!option.equals("9"));
 
   }
 

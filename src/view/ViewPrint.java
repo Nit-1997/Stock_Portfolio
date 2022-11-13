@@ -3,6 +3,7 @@ package view;
 import constants.ViewConstants;
 import java.io.PrintStream;
 import java.text.DecimalFormat;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,6 +16,22 @@ public class ViewPrint {
 
   public static final void welcomeNote(PrintStream out) {
     out.println(ViewConstants.WELCOME_MESSAGE);
+  }
+
+  public static final void welcomeMenu(PrintStream out){
+    out.println("************************************************************");
+    out.println("1. Flexible portfolio");
+    out.println("2. Inflexible portfolio");
+    out.println("0. Exit");
+    out.print("Enter your choice: ");
+  }
+
+  public static final void flexiblePortfolioHeader(PrintStream out){
+    out.println("-------------Flexible Portfolio Menu-------------");
+  }
+
+  public static final void flexPortfolioExitMsg(PrintStream out){
+    out.println("\nthank you for using flexible portfolio wizard");
   }
 
   public static final void printMenu(PrintStream out) {
@@ -79,6 +96,14 @@ public class ViewPrint {
     out.print(ViewConstants.ASK_STOCK_NUMBER_AGAIN);
   }
 
+  public static final void askCommissionFee(PrintStream out){
+    out.print("Commission fee for this transaction: ");
+  }
+
+  public static final void askCommissionFeeAgain(PrintStream out){
+    out.print("Wrong format, again enter Commission fee for this transaction: ");
+  }
+
   public static final void addStocksInPortfolioConfirmation(PrintStream out) {
     out.print(ViewConstants.ADD_STOCKS_IN_PORTFOLIO_CONFIRMATION);
   }
@@ -109,6 +134,10 @@ public class ViewPrint {
 
   public static final void addStocksInPortfolioErrorNode(PrintStream out) {
     out.print(ViewConstants.ADD_STOCKS_IN_PORTFOLIO_ERROR_NOTE);
+  }
+
+  public static final void unsuccessfulPortolioCreationMsg(PrintStream out){
+    out.println("portfolio cant be added");
   }
 
 
@@ -156,8 +185,9 @@ public class ViewPrint {
     System.out.println("4. Add stocks to the portfolio");
     System.out.println("5. Sell stocks from the portfolio");
     System.out.println("6. Cost basis of the portfolio");
-    System.out.println("7. Go back to list view menu");
-    System.out.println("8. Go to main menu");
+    System.out.println("7. Print Performance Graph");
+    System.out.println("8. Go back to list view menu");
+    System.out.println("9. Go to main menu");
     System.out.print("Enter your choice: ");
   }
 
@@ -173,8 +203,63 @@ public class ViewPrint {
     out.print(ViewConstants.ASK_DATE_AGAIN);
   }
 
+  public static final void wrongDateMsg(PrintStream out){
+    out.println("Please enter in the correct format in the given range(0 to return to list view) : ");
+  }
+
+  public static final void wrongDateBeforeLastTx(PrintStream out){
+    out.println("kindly enter date after latest transaction for this stock(0 to return to list view) : ");
+  }
+
+  public static final void wrongDateBeforePortfolioCreation(PrintStream out){
+    out.println("kindly enter date after portfolio creation(0 to return to list view) : ");
+  }
+
+  public static final void successfulTransaction(PrintStream out){
+    out.println("\ntransaction successful for the portfolio\n");
+  }
+
+  public static final void unSuccessfulTransaction(PrintStream out){
+    out.println("\ntransaction unsuccessful\n");
+  }
+
   public static final void printInCompatiblePortfolio(PrintStream out) {
     out.print(ViewConstants.PRINT_INCOMPATIBLE_PORTFOLIO);
+  }
+
+  public static final void stockNotInPortfolioMsg(PrintStream out){
+    out.print("Portfolio doesn't contain this stock, enter again(0 to return to main menu): ");
+  }
+
+  public static final void stockLessThanInPortfolio(PrintStream out){
+    out.println("Shares to be sold are more than the number of shares existing");
+  }
+
+  public static final void printCostBasis(Double cost, PrintStream out){
+    out.println("\nCost basis of the portfolio till the given date : "+cost);
+  }
+
+  public static final void printPortfolioState(Map<String, SimpleEntry<String, Double>> map,String portfolioCreationDate, PrintStream out) {
+    final DecimalFormat df = new DecimalFormat("0.00");
+    if(portfolioCreationDate!=null){
+      out.printf("%35s %15s", "Portfolio creation date",portfolioCreationDate);
+    }
+    out.println();
+    out.println(
+        "----------------------------------------------------------------------"
+    );
+    out.printf("%15s %15s %30s ", "Ticker Symbol", "Quantity", "Last Transaction Date\n");
+    out.println(
+        "----------------------------------------------------------------------"
+    );
+    for (String key : map.keySet()) {
+      out.format("%12s", key);
+      out.format("%20s", map.get(key).getKey());
+      out.format("%23s", df.format(map.get(key).getValue()));
+      out.println();
+    }
+    out.println(
+        "------------------------------------------------------------------------");
   }
 
   /**

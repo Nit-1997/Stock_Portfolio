@@ -127,7 +127,7 @@ public class AddFlexPortfolio {
     if (val) {
       ViewPrint.addStocksInPortfolioConfirmationLoading(name, out);
     } else {
-      System.out.println("portfolio cant be added");
+      ViewPrint.unsuccessfulPortolioCreationMsg(out);
     }
   }
 
