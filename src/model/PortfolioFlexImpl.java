@@ -63,6 +63,9 @@ public class PortfolioFlexImpl implements PortfolioFlex {
    * @throws Exception while reading/writing data dump
    */
   public PortfolioFlexImpl(String portfolioName) throws Exception {
+    if (portfolioName == null) {
+      throw new IllegalArgumentException("Null arguments to portfolio constructor");
+    }
     List<StockOrder> tempStockOrders = Utils.loadPortfolioData(portfolioName, "portfolios" + File.separator + "flex");
     if (!Utils.FlexPortfolioValidator(tempStockOrders)) this.stockOrders = null;
     else this.stockOrders = tempStockOrders;

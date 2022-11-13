@@ -174,7 +174,7 @@ public class Utils {
           return false;
         }
         double parsedQty = Double.parseDouble(qty);
-        if (type.equals("inflex") && parsedQty <= 0) {
+        if (!type.equals("flex") && parsedQty <= 0) {
           return false;
         }
       }
