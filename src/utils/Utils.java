@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -24,6 +25,7 @@ import java.util.Scanner;
 import java.util.Set;
 
 import model.ApiDataFetcher;
+import model.PortfolioFlex;
 import model.StockOrder;
 import model.StockOrderImpl;
 
@@ -173,7 +175,7 @@ public class Utils {
           return false;
         }
         double parsedQty = Double.parseDouble(qty);
-        if (type.equals("inflex") && parsedQty <= 0) {
+        if (!type.equals("flex") && parsedQty <= 0) {
           return false;
         }
       }
@@ -504,6 +506,66 @@ public class Utils {
       }
     }
     return shiftedDate;
+  }
+
+
+  public static boolean datesValidationForGraph(String date1, String date2 , String creationDate) {
+    LocalDate start = LocalDate.parse(date1);
+    LocalDate end = LocalDate.parse(date2);
+    if (end.isBefore(start) || start.isBefore(LocalDate.parse(creationDate)) || end.isAfter(LocalDate.now())) {
+      return false;
+    }
+    return true;
+  }
+
+  public static AbstractMap.SimpleEntry<List<String>, List<Double>> getScaledPerfData(String date1, String date2, String type , PortfolioFlex p) throws Exception {
+    List<Double> datapoints = new ArrayList<>();
+    List<String> labels = new ArrayList<>();
+    LocalDate start = LocalDate.parse(date1);
+    LocalDate end = LocalDate.parse(date2);
+    switch (type) {
+      case "daily":
+        while (!start.isAfter(end)) {
+          labels.add(start.toString());
+          datapoints.add(p.getValueOnDate(start.toString()));
+          start = start.plusDays(1);
+        }
+        break;
+      case "weekly":
+        while (!start.isAfter(end)) {
+          String week = start.getMonth().toString().substring(0, 3) + " Week " + (start.getDayOfMonth() / 7 + 1);
+          labels.add(week);
+          datapoints.add(p.getValueOnDate(start.toString()));
+          start = start.plusWeeks(1);
+        }
+        break;
+      case "monthly":
+        while (!start.isAfter(end)) {
+          String month = start.getMonth().toString().substring(0, 3) + " " + start.getYear();
+          labels.add(month);
+          datapoints.add(p.getValueOnDate(start.toString()));
+          start = start.plusMonths(1);
+        }
+        break;
+      case "quarterly":
+        start = Utils.getQuarterDate(start);
+        while (!start.isAfter(end)) {
+          String qtr = "Qtr" + (start.getMonthValue() / 3) + " " + start.getYear();
+          labels.add(qtr);
+          datapoints.add(p.getValueOnDate(start.toString()));
+          start = start.plusMonths(3);
+        }
+
+      case "yearly":
+        while (!start.isAfter(end)) {
+          int year = start.getYear();
+          labels.add(String.valueOf(year));
+          datapoints.add(p.getValueOnDate(start.toString()));
+          start = start.plusYears(1);
+        }
+      default:
+    }
+    return new AbstractMap.SimpleEntry<>(labels, datapoints);
   }
 
 }
