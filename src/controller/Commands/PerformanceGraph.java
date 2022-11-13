@@ -5,21 +5,23 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
 import java.util.Scanner;
 import model.UserFlex;
+import view.ViewPrint;
 
 public class PerformanceGraph {
 
   public static void plotGraph(Scanner scan, PrintStream out, UserFlex user, String portfolioName){
-    System.out.println("Starting date");
+    ViewPrint.askStartDateForGraph(out);
     String date1 = AskDate.addStocksAskDate(scan,out,user);
     if(date1==null) return;
-    System.out.println("End date");
+    ViewPrint.askEndDateForGraph(out);
     String date2 = AskDate.addStocksAskDate(scan,out,user);
     if(date2==null) return;
 
-    SimpleEntry<List<String>, SimpleEntry<List<Integer>,Integer>> data = user.getGraphData(date1,date2,portfolioName);
+    SimpleEntry<List<String>, SimpleEntry<List<Integer>,Integer>> data = user.getGraphData(date1,
+        date2,portfolioName);
 
     if (data == null) {
-      System.out.println("\nInvalid date range");
+      ViewPrint.graphInvalidRange(out);
       return;
     }
 
@@ -28,14 +30,7 @@ public class PerformanceGraph {
     int scale = data.getValue().getValue();
 
 
-    System.out.println("\n\t\tPerformance of portfolio "+portfolioName+" from "+date1+" to "+date2);
-    for(int i=0;i<labels.size();i++){
-      System.out.print("\t"+labels.get(i)+" : ");
-      for(int star=0;star<starPoints.get(i);star++)System.out.print("* ");
-      System.out.println();
-    }
-
-    System.out.println("\n\t Scale : * = "+scale);
+    ViewPrint.printGraph(out,date1,date2,portfolioName, labels, starPoints,scale);
 
   }
 

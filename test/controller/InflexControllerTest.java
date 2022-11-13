@@ -40,11 +40,8 @@ public class InflexControllerTest {
     in = new ByteArrayInputStream("0".getBytes());
     controller = new InflexController(in, out);
     controller.start(model);
-    assertEquals("clean stock directory", log.toString());
-    assertEquals(
-        ViewConstants.WELCOME_MESSAGE + "\n" + ViewConstants.MENU_MESSAGE +
-            ViewConstants.EXIT_NOTE,
-        bytes.toString());
+    assertEquals("", log.toString());
+    assertEquals(ViewConstants.MENU_MESSAGE, bytes.toString());
   }
 
   @Test

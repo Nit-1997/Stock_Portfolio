@@ -1,5 +1,6 @@
 package controller.Commands;
 
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
@@ -11,7 +12,7 @@ import view.ViewPrint;
 public class SellStock {
 
   public static void sellStockFromPortfolio(String portfolioName, Scanner scan, UserFlex user,
-      PrintStream out) {
+      PrintStream out){
 
     ViewPrint.waitLoadMessage(out);
     Map<String, SimpleEntry<String, Double>> portfolioState = user.getPortfolioState(portfolioName);
@@ -70,8 +71,13 @@ public class SellStock {
         }
       }
 
-      boolean val = user.transactionForPortfolio(portfolioName, newStock);
-      if (val) {
+    boolean val = false;
+    try {
+      val = user.transactionForPortfolio(portfolioName, newStock);
+    } catch (IOException e) {
+      System.out.println(e.getMessage());
+    }
+    if (val) {
         ViewPrint.successfulTransaction(out);
       } else {
         ViewPrint.unSuccessfulTransaction(out);

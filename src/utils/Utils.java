@@ -331,6 +331,7 @@ public class Utils {
     }
     myReader.close();
 
+    if(res==null) throw new IOException("Asked stock didn't exist on that date");
     return res;
   }
 

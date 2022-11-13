@@ -15,7 +15,8 @@ public interface UserFlex extends User {
    * @param stocksMap map of {tickerSymbol , map of {date, quantity, commFee}}
    * @return true if added , false otherwise
    */
-  boolean addPortfolio(String name, Map<String, Map<String, SimpleEntry<Double, Double>>> stocksMap);
+  boolean addPortfolio(String name, Map<String, Map<String, SimpleEntry<Double, Double>>> stocksMap)
+      throws IOException;
 
   /**
    * Fetches the portfolio summary for a given portfolio.
@@ -58,7 +59,8 @@ public interface UserFlex extends User {
    * @param newStock      stock that needs to be added {ticker symbol, date, quantity, commission fee}
    * @return true if successfully added.
    */
-  boolean transactionForPortfolio(String portfolioName, SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newStock);
+  boolean transactionForPortfolio(String portfolioName, SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newStock)
+      throws IOException;
 
 
   /**

@@ -19,19 +19,15 @@ public class ViewPrint {
   }
 
   public static final void welcomeMenu(PrintStream out){
-    out.println("************************************************************");
-    out.println("1. Flexible portfolio");
-    out.println("2. Inflexible portfolio");
-    out.println("0. Exit");
-    out.print("Enter your choice: ");
+    out.print(ViewConstants.WELCOME_MENU);
   }
 
   public static final void flexiblePortfolioHeader(PrintStream out){
-    out.println("-------------Flexible Portfolio Menu-------------");
+    out.print(ViewConstants.FLEXIBLE_PORTFOLIO_HEADER);
   }
 
   public static final void flexPortfolioExitMsg(PrintStream out){
-    out.println("\nthank you for using flexible portfolio wizard");
+    out.print(ViewConstants.FLEX_PORTFOLIO_EXIT_MSG);
   }
 
   public static final void printMenu(PrintStream out) {
@@ -97,11 +93,11 @@ public class ViewPrint {
   }
 
   public static final void askCommissionFee(PrintStream out){
-    out.print("Commission fee for this transaction: ");
+    out.print(ViewConstants.ASK_COMMISSION_FEE);
   }
 
   public static final void askCommissionFeeAgain(PrintStream out){
-    out.print("Wrong format, again enter Commission fee for this transaction: ");
+    out.print(ViewConstants.ASK_COMMISSION_FEE_AGAIN);
   }
 
   public static final void addStocksInPortfolioConfirmation(PrintStream out) {
@@ -137,7 +133,7 @@ public class ViewPrint {
   }
 
   public static final void unsuccessfulPortolioCreationMsg(PrintStream out){
-    out.println("portfolio cant be added");
+    out.print(ViewConstants.UNSUCCESSFUL_PORTFOLIO_CREATION_MSG);
   }
 
 
@@ -179,16 +175,7 @@ public class ViewPrint {
   }
 
   public static final void loadFlexPortfolioDetailMenu(PrintStream out){
-    System.out.println("1. Summary of the portfolio");
-    System.out.println("2. Current value of the portfolio");
-    System.out.println("3. Historical value of the portfolio");
-    System.out.println("4. Add stocks to the portfolio");
-    System.out.println("5. Sell stocks from the portfolio");
-    System.out.println("6. Cost basis of the portfolio");
-    System.out.println("7. Print Performance Graph");
-    System.out.println("8. Go back to list view menu");
-    System.out.println("9. Go to main menu");
-    System.out.print("Enter your choice: ");
+    out.print(ViewConstants.LOAD_FLEX_PORTFOLIO_DETAIL_MENU);
   }
 
   public static final void waitLoadMessage(PrintStream out) {
@@ -204,23 +191,23 @@ public class ViewPrint {
   }
 
   public static final void wrongDateMsg(PrintStream out){
-    out.println("Please enter in the correct format in the given range(0 to return to list view) : ");
+    out.print(ViewConstants.WRONG_DATE_MSG);
   }
 
   public static final void wrongDateBeforeLastTx(PrintStream out){
-    out.println("kindly enter date after latest transaction for this stock(0 to return to list view) : ");
+    out.print(ViewConstants.WRONG_DATE_BEFORE_LAST_TX);
   }
 
   public static final void wrongDateBeforePortfolioCreation(PrintStream out){
-    out.println("kindly enter date after portfolio creation(0 to return to list view) : ");
+    out.print(ViewConstants.WRONG_DATE_BEFORE_PORTFOLIO_CREATION);
   }
 
   public static final void successfulTransaction(PrintStream out){
-    out.println("\ntransaction successful for the portfolio\n");
+    out.print(ViewConstants.SUCCESSFUL_TRANSACTION);
   }
 
   public static final void unSuccessfulTransaction(PrintStream out){
-    out.println("\ntransaction unsuccessful\n");
+    out.print(ViewConstants.UNSUCCESSFUL_TRANSACTION);
   }
 
   public static final void printInCompatiblePortfolio(PrintStream out) {
@@ -228,11 +215,11 @@ public class ViewPrint {
   }
 
   public static final void stockNotInPortfolioMsg(PrintStream out){
-    out.print("Portfolio doesn't contain this stock, enter again(0 to return to main menu): ");
+    out.print(ViewConstants.STOCK_NOT_IN_PORTFOLIO_MSG);
   }
 
   public static final void stockLessThanInPortfolio(PrintStream out){
-    out.println("Shares to be sold are more than the number of shares existing");
+    out.print(ViewConstants.STOCK_LESS_THAN_IN_PORTFOLIO);
   }
 
   public static final void printCostBasis(Double cost, PrintStream out){
@@ -350,6 +337,31 @@ public class ViewPrint {
 
   public static final void loadPortfolioErrorNote(PrintStream out) {
     out.print(ViewConstants.LOAD_PORTFOLIO_ERROR_NOTE);
+  }
+
+  public static final void askStartDateForGraph(PrintStream out){
+    out.print(ViewConstants.ASK_START_DATE_FOR_GRAPH);
+  }
+
+  public static final void askEndDateForGraph(PrintStream out){
+    out.print(ViewConstants.ASK_END_DATE_FOR_GRAPH);
+  }
+
+  public static final void graphInvalidRange(PrintStream out){
+    out.print(ViewConstants.GRAPH_INVALID_RANGE);
+  }
+
+  public static final void printGraph(PrintStream out, String date1, String date2,
+      String portfolioName,List<String> labels, List<Integer> starPoints, int scale){
+    out.println("\n\t\tPerformance of portfolio "+portfolioName+" from "+date1+" to "+date2);
+
+    for(int i=0;i<labels.size();i++){
+      out.print("\t"+labels.get(i)+" : ");
+      for(int star=0;star<starPoints.get(i);star++)out.print("* ");
+      out.println();
+    }
+
+    out.println("\n\t Scale : * = "+scale+"\n");
   }
 
 }

@@ -72,12 +72,19 @@ public class BuyStock {
     }
     while(!user.dateChecker(date) || newStock==null);
 
-    boolean val = user.transactionForPortfolio(portfolioName,newStock);
-    if (val) {
-      ViewPrint.successfulTransaction(out);
-    } else {
+    boolean val;
+    try {
+      val = user.transactionForPortfolio(portfolioName,newStock);
+      if (val) {
+        ViewPrint.successfulTransaction(out);
+      } else {
+        ViewPrint.unSuccessfulTransaction(out);
+      }
+    } catch (IOException e) {
+      System.out.println("\n"+e.getMessage().substring(e.getMessage().indexOf(": ")+2));
       ViewPrint.unSuccessfulTransaction(out);
     }
+
 
   }
 

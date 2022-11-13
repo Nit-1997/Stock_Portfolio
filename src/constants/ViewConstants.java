@@ -1,5 +1,7 @@
 package constants;
 
+import java.io.PrintStream;
+
 /**
  * This class contains all the constant printing statements for the view.
  */
@@ -96,5 +98,52 @@ public class ViewConstants {
   public static final String LOAD_PORTFOLIO_ERROR_NOTE = "Please enter an integer value from above"
       + " options: ";
 
+  public static final String WELCOME_MENU = "************************************************************\n"+
+      "1. Flexible portfolio\n"+
+      "2. Inflexible portfolio\n"+
+      "0. Exit\n"+
+      "Enter your choice: ";
 
-}
+  public static final String FLEXIBLE_PORTFOLIO_HEADER = "-------------Flexible Portfolio Menu-------------\n";
+
+  public static final String FLEX_PORTFOLIO_EXIT_MSG = "\nthank you for using flexible portfolio wizard\n";
+
+  public static final String ASK_COMMISSION_FEE = "\nCommission fee for this transaction: ";
+
+  public static final String ASK_COMMISSION_FEE_AGAIN = "\nWrong format, again enter Commission fee for this transaction: ";
+
+  public static final String UNSUCCESSFUL_PORTFOLIO_CREATION_MSG="portfolio cant be added\n";
+
+  public static final String LOAD_FLEX_PORTFOLIO_DETAIL_MENU = "1. Summary of the portfolio\n"+
+      "2. Current value of the portfolio\n"+
+      "3. Historical value of the portfolio\n"+
+      "4. Add stocks to the portfolio\n"+
+      "5. Sell stocks from the portfolio\n"+
+      "6. Cost basis of the portfolio\n"+
+      "7. Print Performance Graph\n"+
+      "8. Go back to list view menu\n"+
+      "9. Go to main menu\n"+
+      "Enter your choice: ";
+
+  public static final String WRONG_DATE_MSG = "Please enter in the correct format in the given range(0 to return to list view)\n";
+
+  public static final String WRONG_DATE_BEFORE_LAST_TX ="kindly enter date after latest transaction for this stock(0 to return to list view)\n";
+
+  public static final String WRONG_DATE_BEFORE_PORTFOLIO_CREATION = "kindly enter date after portfolio creation(0 to return to list view)\n";
+
+  public static final String SUCCESSFUL_TRANSACTION = "\ntransaction successful for the portfolio\n\n";
+
+  public static final String UNSUCCESSFUL_TRANSACTION = "\ntransaction unsuccessful\n\n";
+
+  public static final String STOCK_NOT_IN_PORTFOLIO_MSG = "Portfolio doesn't contain this stock, enter again(0 to return to main menu): ";
+
+  public static final String STOCK_LESS_THAN_IN_PORTFOLIO = "Shares to be sold are more than the number of shares existing\n";
+
+  public static final String ASK_START_DATE_FOR_GRAPH = "Starting date\n";
+
+  public static final String ASK_END_DATE_FOR_GRAPH = "Ending date\n";
+
+  public static final String GRAPH_INVALID_RANGE = "\nInvalid date range\n";
+
+
+  }

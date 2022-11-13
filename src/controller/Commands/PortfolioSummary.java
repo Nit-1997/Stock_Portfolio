@@ -14,11 +14,13 @@ public class PortfolioSummary {
     if (date == null) {
       return;
     }
+    Map<String, Double> stockMap = user.getPortfolioSummary(portfolioName, date);
+
     if(user.isBeforeDate(date,user.getPortfolioCreationDate(portfolioName))){
       ViewPrint.wrongDateBeforePortfolioCreation(out);
       return;
     }
-    Map<String, Double> stockMap = user.getPortfolioSummary(portfolioName, date);
+
     if (stockMap == null) {
       ViewPrint.printInCompatiblePortfolio(out);
       return;

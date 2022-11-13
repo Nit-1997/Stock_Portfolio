@@ -1,5 +1,6 @@
 package controller.Commands;
 
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.HashMap;
@@ -21,7 +22,6 @@ public class AddFlexPortfolio {
         return;
       }
     }
-    // ticker symbol vs map of date, quantity and commission fee
     Map<String, Map<String, SimpleEntry<Double,Double>>> stocksMap = new HashMap<>();
     String ticker = null;
 
@@ -123,10 +123,17 @@ public class AddFlexPortfolio {
     while (confirmation.equals("y") || confirmation.equals("Y"));
 
     ViewPrint.waitMessage(out);
-    boolean val = user.addPortfolio(name, stocksMap);
-    if (val) {
-      ViewPrint.addStocksInPortfolioConfirmationLoading(name, out);
-    } else {
+    boolean val = false;
+
+    try {
+      val = user.addPortfolio(name, stocksMap);
+      if (val) {
+        ViewPrint.addStocksInPortfolioConfirmationLoading(name, out);
+      } else {
+        ViewPrint.unsuccessfulPortolioCreationMsg(out);
+      }
+    } catch (IOException e) {
+      out.println("\n"+e.getMessage().substring(e.getMessage().indexOf(": ")+1));
       ViewPrint.unsuccessfulPortolioCreationMsg(out);
     }
   }
