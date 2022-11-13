@@ -154,7 +154,7 @@ public class UserFlexImpl extends AbstractUser implements UserFlex{
       if (portfolioMap.get(portfolioName) == null) {
         portfolioMap.put(portfolioName, new PortfolioFlexImpl(portfolioName));
       }
-      portfolioMap.get(portfolioName).addStock(newStock);
+      portfolioMap.get(portfolioName).addTransaction(newStock);
       return true;
     } catch (Exception e) {
       System.out.println(e.getMessage());

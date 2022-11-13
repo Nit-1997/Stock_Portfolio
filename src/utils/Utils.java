@@ -71,7 +71,6 @@ public class Utils {
     if (name == null || orders == null) {
       throw new IOException("passed null args");
     }
-   // System.out.println(dirName);
     File portfolioFile = createFileIfNotExists(name, dirName);
     if(dirName.endsWith("flex")){
       writePortfolioToFileFlex(portfolioFile,orders);
@@ -467,5 +466,43 @@ public class Utils {
     return (differenceInTime / (1000 * 60 * 60 * 24));
   }
 
+  public static LocalDate getQuarterDate(LocalDate date) {
+    int month = date.getMonthValue();
+    if (month < 3) date = date.plusMonths(3 - date.getMonthValue());
+    else if (month > 3 && month < 6) date = date.plusMonths(6 - date.getMonthValue());
+    else if (month > 6 && month < 9) date = date.plusMonths(9 - date.getMonthValue());
+    else if (month > 9 && month < 12) date = date.plusMonths(12 - date.getMonthValue());
+    return date;
+  }
+
+  public static String shiftDateToValidStartPoint(String shiftType, String date) {
+    String shiftedDate = null;
+    LocalDate dateObj = LocalDate.parse(date);
+    switch (shiftType) {
+      case "weekly": {
+        dateObj = dateObj.plusDays(5 - dateObj.getDayOfWeek().getValue());
+        shiftedDate = dateObj.toString();
+        break;
+      }
+      case "monthly": {
+        dateObj = dateObj.plusDays(dateObj.lengthOfMonth() - dateObj.getDayOfMonth());
+        shiftedDate = dateObj.toString();
+        break;
+      }
+      case "quarterly": {
+        dateObj = getQuarterDate(dateObj);
+        dateObj = dateObj.plusDays(dateObj.lengthOfMonth() - dateObj.getDayOfMonth());
+        shiftedDate = dateObj.toString();
+        break;
+      }
+      default: {
+        //yearly
+        dateObj = dateObj.plusDays(dateObj.lengthOfYear() - dateObj.getDayOfYear());
+        shiftedDate = dateObj.toString();
+        break;
+      }
+    }
+    return shiftedDate;
+  }
 
 }

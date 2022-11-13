@@ -119,7 +119,7 @@ public class PortfolioFlexImpl implements PortfolioFlex {
   }
 
   @Override
-  public void addStock(SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newEntry) throws Exception {
+  public void addTransaction(SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newEntry) throws Exception {
     if (!Utils.dataExists(newEntry.getKey().toUpperCase(), "stock_data")) {
       Utils.loadStockData(newEntry.getKey().toUpperCase(), "stock_data");
     }
@@ -128,15 +128,6 @@ public class PortfolioFlexImpl implements PortfolioFlex {
     Utils.saveToFile(this.name, this.stockOrders, "portfolios" + File.separator + "flex");
   }
 
-  @Override
-  public void sellStock(SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newEntry) throws Exception {
-    if (!Utils.dataExists(newEntry.getKey().toUpperCase(), "stock_data")) {
-      Utils.loadStockData(newEntry.getKey().toUpperCase(), "stock_data");
-    }
-    StockOrder newOrder = new StockOrderImpl(newEntry.getKey(), newEntry.getValue().getValue().getKey(), newEntry.getValue().getKey(), newEntry.getValue().getValue().getValue());
-    this.stockOrders.add(newOrder);
-    Utils.saveToFile(this.name, this.stockOrders, "portfolios" + File.separator + "flex");
-  }
 
 
   @Override
