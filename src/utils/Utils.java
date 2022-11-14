@@ -512,10 +512,7 @@ public class Utils {
   public static boolean datesValidationForGraph(String date1, String date2 , String creationDate) {
     LocalDate start = LocalDate.parse(date1);
     LocalDate end = LocalDate.parse(date2);
-    if (end.isBefore(start) || start.isBefore(LocalDate.parse(creationDate)) || end.isAfter(LocalDate.now())) {
-      return false;
-    }
-    return true;
+    return !end.isBefore(start) && !start.isBefore(LocalDate.parse(creationDate)) && !end.isAfter(LocalDate.now());
   }
 
   public static AbstractMap.SimpleEntry<List<String>, List<Double>> getScaledPerfData(String date1, String date2, String type , PortfolioFlex p) throws Exception {
