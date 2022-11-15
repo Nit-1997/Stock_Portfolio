@@ -224,7 +224,12 @@ public class PortfolioFlexImpl implements PortfolioFlex {
       type = "yearly";
       date1 = Utils.shiftDateToValidStartPoint(type, date1);
     }
-    return Utils.getScaledPerfData(date1, date2, type , this);
+    SimpleEntry<List<String>, List<Double>> scaledPerfData  = Utils.getScaledPerfData(date1, date2, type , this);
+    if(scaledPerfData.getKey().size() >= 5){
+      return scaledPerfData;
+    }else{
+      throw new IllegalArgumentException("Date ranges are too close");
+    }
   }
 
 }
