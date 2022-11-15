@@ -201,7 +201,7 @@ public class InflexControllerTest {
         + "        AAPL             5.00            93.50            95.00             1.50\n"
         + "-------------------------------------------------------------------------------------"
         + "-----\n"
-        + "                        Value of the portfolio on that day: 0.00\n"
+        + "                        Value of the portfolio on that day: $0.00\n"
         + "Your portfolio has the same value as that of buying day\n"
         + ViewConstants.LOAD_PORTFOLIO_DETAIL_MENU, bytes.toString());
   }
@@ -218,7 +218,7 @@ public class InflexControllerTest {
         log.toString());
     assertEquals(ViewConstants.ASK_NAME_OF_PORTFOLIO + "For the portfolio: techLoad\n"
             + ViewConstants.LOAD_PORTFOLIO_DETAIL_MENU + ViewConstants.WAIT_LOAD_MESSAGE
-            + "Value of the portfolio on that day: 0.00\n" +
+            + "Value of the portfolio on that day: $0.00\n" +
             ViewConstants.LOAD_PORTFOLIO_DETAIL_MENU,
         bytes.toString());
   }
@@ -246,7 +246,7 @@ public class InflexControllerTest {
         + "        AAPL             5.00            93.50            95.00             1.50\n"
         + "-------------------------------------------------------------------------------------"
         + "-----\n"
-        + "                        Value of the portfolio on that day: 0.00\n"
+        + "                        Value of the portfolio on that day: $0.00\n"
         + "Your portfolio has the same value as that of buying day\n"
         + ViewConstants.LOAD_PORTFOLIO_DETAIL_MENU, bytes.toString());
   }
@@ -261,7 +261,7 @@ public class InflexControllerTest {
 
     assertEquals(ViewConstants.ASK_NAME_OF_PORTFOLIO + "For the portfolio: techLoad\n"
         + ViewConstants.LOAD_PORTFOLIO_DETAIL_MENU + ViewConstants.ASK_DATE
-        + ViewConstants.WAIT_LOAD_MESSAGE + "Value of the portfolio on that day: 0.00\n"
+        + ViewConstants.WAIT_LOAD_MESSAGE + "Value of the portfolio on that day: $0.00\n"
         + ViewConstants.LOAD_PORTFOLIO_DETAIL_MENU, bytes.toString());
   }
 

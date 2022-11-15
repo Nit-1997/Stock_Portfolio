@@ -177,8 +177,8 @@ public class FlexControllerTest {
             + "\n"+
         ViewConstants.LOAD_FLEX_PORTFOLIO_DETAIL_MENU,bytes.toString());
     assertEquals("unique name checker"+"checking the date 2018-07-16"+
-        "get portfolio creation date for flexControllerTest"+"2018-07-16 is before date 2011-02-15"+
-        "\ngetting portfolio summary for flexControllerTest for the date: 2018-07-16",
+        "\ngetting portfolio summary for flexControllerTest for the date: 2018-07-16"+
+        "get portfolio creation date for flexControllerTest"+"2018-07-16 is before date 2011-02-15",
         log.toString());
   }
 
@@ -192,10 +192,10 @@ public class FlexControllerTest {
         ViewConstants.LOAD_FLEX_PORTFOLIO_DETAIL_MENU+
 
         ViewConstants.WAIT_LOAD_MESSAGE+
-        "Value of the portfolio on that day: 0.00\n"+
+        "Value of the portfolio on that day: $0.00\n"+
         ViewConstants.LOAD_FLEX_PORTFOLIO_DETAIL_MENU,bytes.toString());
     assertEquals("unique name checker"+"get portfolio creation date for flexControllerTest"
-        +"2022-11-13 is before date 2011-02-15"+
+        +date+" is before date 2011-02-15"+
         "\ngetting portfolio value for flexControllerTest for the date " + date,log.toString());
   }
 
@@ -208,7 +208,7 @@ public class FlexControllerTest {
         ViewConstants.LOAD_FLEX_PORTFOLIO_DETAIL_MENU+
         ViewConstants.ASK_DATE+
         ViewConstants.WAIT_LOAD_MESSAGE+
-        "Value of the portfolio on that day: 0.00\n"+
+        "Value of the portfolio on that day: $0.00\n"+
         ViewConstants.LOAD_FLEX_PORTFOLIO_DETAIL_MENU,bytes.toString());
     assertEquals("unique name checker"+"checking the date 2018-09-28"+
         "get portfolio creation date for flexControllerTest"+
@@ -281,7 +281,7 @@ public class FlexControllerTest {
         ViewConstants.LOAD_FLEX_PORTFOLIO_DETAIL_MENU+
         ViewConstants.WAIT_LOAD_MESSAGE+
         ViewConstants.ASK_DATE+
-        "\nCost basis of the portfolio till the given date : 0.0\n"+
+        "\nCost basis of the portfolio till the given date : $0.0\n"+
         ViewConstants.LOAD_FLEX_PORTFOLIO_DETAIL_MENU,bytes.toString());
 
     assertEquals("unique name checker"+"checking the date 2018-09-28"+
@@ -309,7 +309,7 @@ public class FlexControllerTest {
         + "\tAPR 2022 : * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n"
         + "\tMAY 2022 : * * * * * \n"
         + "\n"
-        + "\t Scale : * = 235"+"\n\n"+
+        + "\t Scale : * = $235"+"\n\n"+
         ViewConstants.LOAD_FLEX_PORTFOLIO_DETAIL_MENU,bytes.toString());
 
     assertEquals("unique name checker"+"checking the date 2022-01-01"+

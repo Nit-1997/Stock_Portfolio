@@ -15,7 +15,7 @@ public class Constants {
   //          + ".co/query?function=GLOBAL_QUOTE";
 
   public static final String YAHOO_API_BASE_URL = "https://query1.finance.yahoo.com/v7/finance/download/";
-  public static final int TOTAL_HANDLED_STOCKS = 20;
+  public static final int TOTAL_HANDLED_STOCKS = 102;
   public static Set<String> STOCK_NAMES;
 
   public static final int COMMISSION_FEE = 2;

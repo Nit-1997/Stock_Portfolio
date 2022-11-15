@@ -64,16 +64,17 @@ public class ViewPrint {
    * @param stockList list of stocks.
    */
   public static final void printAvailableStocks(Set<String> stockList) {
-    System.out.println("List of available stocks");
-    int i = 0;
-    for (String stockName : stockList) {
-      System.out.print(stockName + "\t\t\t");
-      i++;
-      if (i == 10) {
-        System.out.println();
-      }
-    }
-    System.out.println();
+    System.out.println("List of available stocks : ");
+    System.out.println("---------------NASDAQ 100---------------");
+    //    int i = 0;
+    //    for (String stockName : stockList) {
+    //      System.out.print(stockName + "\t\t\t");
+    //      i++;
+    //      if (i == 10) {
+    //        System.out.println();
+    //      }
+    //    }
+    //    System.out.println();
   }
 
   public static final void askTickerSymbol(PrintStream out) {
@@ -223,7 +224,7 @@ public class ViewPrint {
   }
 
   public static final void printCostBasis(Double cost, PrintStream out){
-    out.println("\nCost basis of the portfolio till the given date : "+cost);
+    out.println("\nCost basis of the portfolio till the given date : $"+cost);
   }
 
   public static final void printPortfolioState(Map<String, SimpleEntry<String, Double>> map,String portfolioCreationDate, PrintStream out) {
@@ -300,7 +301,7 @@ public class ViewPrint {
         "-------------------------------------------------------------------------------------"
             + "-----");
     out.printf("%60s", "Value of the portfolio on that day: ");
-    out.println(df.format(portfolioValue));
+    out.println("$"+df.format(portfolioValue));
 
   }
 
@@ -314,10 +315,10 @@ public class ViewPrint {
     portfolioPnL = Double.parseDouble(df.format(portfolioPnL));
     if (portfolioPnL > 0) {
       out.println(
-          "Your portfolio has earned a profit of " + df.format(portfolioPnL) + " on that day.");
+          "Your portfolio has earned a profit of $" + df.format(portfolioPnL) + " on that day.");
     } else if (portfolioPnL < 0) {
       out.println(
-          "Your portfolio has been in loss of " + df.format(portfolioPnL) + " on that day.");
+          "Your portfolio has been in loss of $" + df.format(portfolioPnL) + " on that day.");
     } else {
       out.println("Your portfolio has the same value as that of buying day");
     }
@@ -331,7 +332,7 @@ public class ViewPrint {
   public static final void printPortfolioValue(Double portfolioValue, PrintStream out) {
 
     out.println(
-        "Value of the portfolio on that day: "
+        "Value of the portfolio on that day: $"
             + new DecimalFormat("0.00").format(portfolioValue));
   }
 
@@ -361,7 +362,7 @@ public class ViewPrint {
       out.println();
     }
 
-    out.println("\n\t Scale : * = "+scale+"\n");
+    out.println("\n\t Scale : * = $"+scale+"\n");
   }
 
 }
