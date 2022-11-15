@@ -31,8 +31,15 @@ public class UserFlexImpl extends AbstractUser implements UserFlex{
       System.out.println(e.getMessage());
     }
 
-    String portfolioDirectory = Paths.get("portfolios" + File.separator + "flex").toAbsolutePath().toString();
+    String portfolioDirectory = Paths.get("portfolios").toAbsolutePath().toString();
+
     File f = new File(portfolioDirectory);
+    if (!f.exists()) {
+      f.mkdirs();
+    }
+
+    portfolioDirectory = Paths.get("portfolios" + File.separator + "flex").toAbsolutePath().toString();
+    f = new File(portfolioDirectory);
     if (!f.exists()) {
       f.mkdirs();
       return;
