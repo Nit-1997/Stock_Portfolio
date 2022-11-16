@@ -535,6 +535,8 @@ public class Utils {
           datapoints.add(p.getValueOnDate(start.toString()));
           start = start.plusWeeks(1);
         }
+        labels.add(end.getMonth().toString().substring(0, 3) + " Week " + (end.getDayOfMonth() / 7 + 1));
+        datapoints.add(p.getValueOnDate(end.toString()));
         break;
       case "monthly":
         while (!start.isAfter(end)) {
@@ -543,6 +545,8 @@ public class Utils {
           datapoints.add(p.getValueOnDate(start.toString()));
           start = start.plusMonths(1);
         }
+        labels.add(end.getMonth().toString().substring(0, 3) + " " + end.getYear());
+        datapoints.add(p.getValueOnDate(end.toString()));
         break;
       case "quarterly":
         start = Utils.getQuarterDate(start);
@@ -552,7 +556,9 @@ public class Utils {
           datapoints.add(p.getValueOnDate(start.toString()));
           start = start.plusMonths(3);
         }
-
+        labels.add("Qtr" + (int)Math.ceil((double)end.getMonthValue() / 3) + " " + end.getYear());
+        datapoints.add(p.getValueOnDate(end.toString()));
+        break;
       case "yearly":
         while (!start.isAfter(end)) {
           int year = start.getYear();
@@ -560,6 +566,9 @@ public class Utils {
           datapoints.add(p.getValueOnDate(start.toString()));
           start = start.plusYears(1);
         }
+        labels.add(String.valueOf(end.getYear()));
+        datapoints.add(p.getValueOnDate(end.toString()));
+        break;
       default:
     }
     return new AbstractMap.SimpleEntry<>(labels, datapoints);

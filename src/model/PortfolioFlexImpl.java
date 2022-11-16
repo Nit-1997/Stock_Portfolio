@@ -211,25 +211,20 @@ public class PortfolioFlexImpl implements PortfolioFlex {
     String type = "";
     if (dayDiff <= 30) {
       type = "daily";
-    } else if (dayDiff > 30 && dayDiff <= 210) {
+    } else if (dayDiff <= 210) {
       type = "weekly";
       date1 = Utils.shiftDateToValidStartPoint(type, date1);
-    } else if (dayDiff > 210 && dayDiff <= 900) {
+    } else if (dayDiff <= 900) {
       type = "monthly";
       date1 = Utils.shiftDateToValidStartPoint(type, date1);
-    } else if (dayDiff > 900 && dayDiff < 1461) {
+    } else if (dayDiff < 3500) {
       type = "quarterly";
       date1 = Utils.shiftDateToValidStartPoint(type, date1);
     } else {
       type = "yearly";
       date1 = Utils.shiftDateToValidStartPoint(type, date1);
     }
-    SimpleEntry<List<String>, List<Double>> scaledPerfData  = Utils.getScaledPerfData(date1, date2, type , this);
-    if(scaledPerfData.getKey().size() >= 5){
-      return scaledPerfData;
-    }else{
-      throw new IllegalArgumentException("Date ranges are too close");
-    }
+    return Utils.getScaledPerfData(date1, date2, type , this);
   }
 
 }

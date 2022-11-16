@@ -359,17 +359,17 @@ public class PortfolioFlexImplTest {
     }
   }
 
-  @Test(expected = IllegalArgumentException.class)
-  public void testGetPerfDataOverTimePrintDailyWithOnly2Days() throws Exception {
-    PortfolioFlex p = new PortfolioFlexImpl(this.generatePerfTestPortfolioOrder() , "perfTest");
-    SimpleEntry<List<String>, List<Double>> ans = p.getPerfDataOverTime("2019-09-12","2019-09-13");
-    for( String s : ans.getKey()){
-      System.out.print(s+" , ");
-    }
-    for( double s : ans.getValue()){
-      System.out.print(s+" , ");
-    }
-  }
+//  @Test(expected = IllegalArgumentException.class)
+//  public void testGetPerfDataOverTimePrintDailyWithOnly2Days() throws Exception {
+//    PortfolioFlex p = new PortfolioFlexImpl(this.generatePerfTestPortfolioOrder() , "perfTest");
+//    SimpleEntry<List<String>, List<Double>> ans = p.getPerfDataOverTime("2019-09-12","2019-09-13");
+//    for( String s : ans.getKey()){
+//      System.out.print(s+" , ");
+//    }
+//    for( double s : ans.getValue()){
+//      System.out.print(s+" , ");
+//    }
+//  }
 
   @Test
   public void testGetPerfDataOverTimePrintMonthly() throws Exception {
