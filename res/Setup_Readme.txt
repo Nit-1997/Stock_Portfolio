@@ -33,7 +33,7 @@ How To Run Program
 ===============================================
 How to Run Tests
 ===============================================
-For the tests to work properly your folder structure should look like this :-
+For the tests to work properly your folder structure should look like this (testingArtifacts and portfolios/flex/flexUserTest2.csv are in res folder of submission) :-
          |_ src
          |_ test
          |_ testingArtifacts (contains dumps required to run tests)
