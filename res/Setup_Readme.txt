@@ -1,22 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<hr>
-<hr>
-<h1 class="code-line" data-line-start=2 data-line-end=3 ><a id="StockApp___Setup_Readme_2"></a>Stock-App :  Set-up Readme</h1>
-<hr>
-<hr>
-<h3 class="code-line" data-line-start=6 data-line-end=7 ><a id="Folder_Structure_Required_to_run_the_JAR_6"></a>Folder Structure Required to run the JAR</h3>
-<hr>
-<pre><code>    assignment.zip :  unzip it.
+================================================
+Stock-App : Set-up Readme
+================================================
+
+------------------------------------------------
+Folder Structure Required to run the JAR
+------------------------------------------------
+
+    assignment.zip :  unzip it.
 
     assignment
          |_ assignment.jar
          |_ testingArtifcats (contains dumps required to run tests)
+         |_ portfolios/flex/flexUserTest2.csv (contains seed portfolois required for the tests to run correctly , NOTE: application works even without this only tests will fail as they need this to validate certain scenarios)
          |_ stock
               |_ stock_list.csv ( contains list of stock symbols supported by the application)
 
@@ -26,28 +21,35 @@
                     create this repo manually then add those csv files in it.
            |_ flex :-  portfolios directory consists of flex directory that keeps track of the flexible portfolios, if you wish to create one manually create the csv here.
     - stock_data :- This stores the historic API data dump for the stock to be added dynamically into a csv file
-</code></pre>
-<h3 class="code-line" data-line-start=23 data-line-end=24 ><a id="How_To_Run_Program_23"></a>How To Run Program</h3>
-<hr>
-<ul>
-    <li class="has-line-data" data-line-start="25" data-line-end="26"><strong><em>Unzip the submission file</em></strong></li>
-    <li class="has-line-data" data-line-start="26" data-line-end="27"><strong><em>You should see the stock folder with stock_list.csv file containing all the stock’s ticker symbol we support.</em></strong></li>
-    <li class="has-line-data" data-line-start="27" data-line-end="28"><strong><em>In cmd/terminal enter</em></strong> <code>java -jar hw5.jar</code></li>
-    <li class="has-line-data" data-line-start="28" data-line-end="29"><strong><em>make sure you maintain the folder structure as mentioned above.</em></strong></li>
-</ul>
-<h3 class="code-line" data-line-start=31 data-line-end=32 ><a id="How_to_Run_Tests_31"></a>How to Run Tests</h3>
-<hr>
-<ul>
-    <li class="has-line-data" data-line-start="33" data-line-end="34"><strong><em>In order to run the tests we require testingArtifacts folder at the root level to dump all the testing data.</em></strong></li>
-    <li class="has-line-data" data-line-start="34" data-line-end="36"><strong><em>You can go to the test and then run all tests and that should trigger the Junit for all the tests.</em></strong></li>
-</ul>
-<h3 class="code-line" data-line-start=36 data-line-end=37 ><a id="Getting_Started_36"></a>Getting Started</h3>
-<hr>
-<h2 class="code-line" data-line-start=38 data-line-end=39 ><a id="Inflexible_Portfolios_38"></a>Inflexible Portfolios</h2>
-<ul>
-    <li class="has-line-data" data-line-start="39" data-line-end="60">
-        <h4 class="code-line" data-line-start=39 data-line-end=40 ><a id="create_portfolio_with_23_different_stocks_using_CLI_39"></a><strong><em>create portfolio with 2/3 different stocks using CLI</em></strong>.</h4>
-        <pre><code>         - In the welcome menu press 2 to create Inflexible Portfolios
+
+
+===============================================
+How To Run Program
+===============================================
+
+1.) Unzip the submission file
+2.) You should see the stock folder with stock_list.csv file containing all the stock’s ticker symbol we support.
+3.) In cmd/terminal enter java -jar hw5.jar
+4.) make sure you maintain the folder structure as mentioned above.
+
+===============================================
+How to Run Tests
+===============================================
+
+1.) In order to run the tests we require testingArtifacts and portfolios/flex/flexUserTest2.csv folder at the root level to dump all the testing data.
+2.) You can go to the test and then run all tests and that should trigger the Junit for all the tests.
+
+===============================================
+Getting Started
+===============================================
+
+-----------------------------------------------
+Inflexible Portfolios
+-----------------------------------------------
+
+create portfolio with 2/3 different stocks using CLI.
+
+         - In the welcome menu press 2 to create Inflexible Portfolios
          - Enter the name of the Portfolio you want to create e.g tech
          - If the portfolio with this name already exists you will get a prompt to enter other name or press
            0 to go back to previous menu
@@ -64,22 +66,19 @@
    - Do this 3 times to add 3 stocks / 2 times to add 2 stocks
    - If you press 2 option in the add/remove/save menu you are asked the number of stocks you want to remove
    - If you press 3 option then your portfolio gets saved to a csv file in the Portfolios directory.
-</code></pre>
-    </li>
-    <li class="has-line-data" data-line-start="60" data-line-end="69">
-        <h4 class="code-line" data-line-start=60 data-line-end=61 ><a id="create_portfolio_with_23_different_stocks_using_Files_60"></a><strong><em>create portfolio with 2/3 different stocks using Files</em></strong>.</h4>
-        <pre><code>    We allow user to create their own Portfolio CSV files and feed it to our system.
+
+
+create portfolio with 2/3 different stocks using Files :-
+    We allow user to create their own Portfolio CSV files and feed it to our system.
     In that case the csv file should look like this :-
-    &lt;ticker_symbol,BuyPrice,Quantity,Date&gt;
+    <ticker_symbol,BuyPrice,Quantity,Date>
     eg: NVDA,134.970001,12.0,2022-11-01
    - All the query functionality works as it it.
    - Program validates the file user manually creates and in case the file does not follow the
      constraints of program , it tells user to recreate it or use another portfolio.
-</code></pre>
-    </li>
-    <li class="has-line-data" data-line-start="69" data-line-end="88">
-        <h4 class="code-line" data-line-start=69 data-line-end=70 ><a id="How_to_query_portfolios_69"></a><strong><em>How to query portfolios:-</em></strong></h4>
-        <pre><code>          1. In the main menu press 2 to view portfolios
+
+How to query portfolios:-
+          1. In the main menu press 2 to view portfolios
           2. List of portfolios is displayed
           3. Press 1 to get details of the portfolio eg tech
           4. Enter the valid name from the display else you get the validation prompt with option
@@ -95,15 +94,17 @@
                    - If you enter invalid date you get validaiton prompt and are asked to enter correct date.
           10. Press 6 to return to the list of portfolios
           11. Press 7 to return to main menu.
-</code></pre>
-    </li>
-</ul>
-<hr>
-<h2 class="code-line" data-line-start=89 data-line-end=90 ><a id="Flexible_Portfolios_89"></a>Flexible Portfolios</h2>
-<ul>
-    <li class="has-line-data" data-line-start="90" data-line-end="113">
-        <h4 class="code-line" data-line-start=90 data-line-end=91 ><a id="create_portfolio_with_3_different_stocks_using_CLI_90"></a><strong><em>create portfolio with 3 different stocks using CLI</em></strong>.</h4>
-        <pre><code>         - In the welcome menu press 1 to create Flexible Portfolios
+
+
+------------------------------------------
+Flexible Portfolios
+------------------------------------------
+
+.........................................................
+create portfolio with 3 different stocks using CLI.
+.........................................................
+
+         - In the welcome menu press 1 to create Flexible Portfolios
          - Press 1 to Add new Portfolio
          - Enter the name of the Portfolio you want to create e.g tech
          - If the portfolio with this name already exists you will get a prompt to enter other name or press
@@ -122,22 +123,24 @@
    - Do this 3 times to add 3 stocks / 2 times to add 2 stocks
    - If you press 2 option in the add/remove/save menu you are asked the number of stocks you want to remove
    - If you press 3 option then your portfolio gets saved to a csv file in the Portfolios directory.
-</code></pre>
-    </li>
-    <li class="has-line-data" data-line-start="113" data-line-end="122">
-        <h4 class="code-line" data-line-start=113 data-line-end=114 ><a id="create_portfolio_with_3_different_stocks_using_Files_113"></a><strong><em>create portfolio with 3 different stocks using Files</em></strong>.</h4>
-        <pre><code>    We allow user to create their own Portfolio CSV files and feed it to our system.
+
+............................................................
+create portfolio with 3 different stocks using Files.
+............................................................
+
+    We allow user to create their own Portfolio CSV files and feed it to our system.
     In that case the csv file should look like this :-
-    &lt;Ticker_Symbol,Price,Quantity,Date,Commision_Fee&gt;
+    <Ticker_Symbol,Price,Quantity,Date,Commision_Fee>
     eg: NVDA,134.970001,12.0,2022-11-01,2.2
     Negative Quantity signifies Sell transactions.
    - All the query functionality works as it it.
    - Program validates the file user manually creates and in case the file does not follow the constraints of program , it tells user to recreate it or use another portfolio.
-</code></pre>
-    </li>
-    <li class="has-line-data" data-line-start="122" data-line-end="156">
-        <h4 class="code-line" data-line-start=122 data-line-end=123 ><a id="How_to_query_portfolios_122"></a><strong><em>How to query portfolios:-</em></strong></h4>
-        <pre><code>          1. In the flex portfolio main menu press 2 to view portfolios
+
+............................................................
+How to query portfolios:-
+............................................................
+
+          1. In the flex portfolio main menu press 2 to view portfolios
           2. List of portfolios is displayed
           3. Press 1 to get details of the portfolio eg tech
           4. Enter the valid name from the display else you get the validation prompt with option
@@ -170,18 +173,16 @@
         - Enter Valid start date
         - Enter Valid end date
         - Graph gets generated as per the appropriate scale
-</code></pre>
-    </li>
-</ul>
-<h3 class="code-line" data-line-start=156 data-line-end=157 ><a id="Program_Limitations_156"></a>Program Limitations</h3>
-<hr>
-<ul>
-    <li class="has-line-data" data-line-start="158" data-line-end="159">
-        <p class="has-line-data" data-line-start="158" data-line-end="159"><strong><em>Our application only supports data till 1st January 2000.</em></strong></p>
-    </li>
-    <li class="has-line-data" data-line-start="159" data-line-end="264">
-        <p class="has-line-data" data-line-start="159" data-line-end="160"><strong><em>Our application only supports 100 ticker symbols from NASDAQ 100 as specified in the stock_list.csv file namely :-</em></strong></p>
-        <pre><code>      AAPL
+
+==========================================
+Program Limitations
+==========================================
+
+- Our application only supports data till 1st January 2000.
+
+- Our application only supports 100 ticker symbols from NASDAQ 100 as specified in the stock_list.csv file namely :-
+
+      AAPL
       ABNB
       ADBE
       ADI
@@ -283,29 +284,20 @@
       XEL
       ZM
       ZS
-</code></pre>
-    </li>
-    <li class="has-line-data" data-line-start="264" data-line-end="265">
-        <p class="has-line-data" data-line-start="264" data-line-end="265"><strong><em>Our application is dependent on alpha vantage historic api to fetch historic data.</em></strong></p>
-    </li>
-    <li class="has-line-data" data-line-start="265" data-line-end="267">
-        <p class="has-line-data" data-line-start="265" data-line-end="267"><strong><em>If the user enters the data on which the stock exchange is closed the buyPrice becomes the last traded price</em></strong><br>
-            <strong><em>and buyDate becomes the last traded date</em></strong></p>
-    </li>
-    <li class="has-line-data" data-line-start="267" data-line-end="268">
-        <p class="has-line-data" data-line-start="267" data-line-end="268"><strong><em>User created .csv files should be created in portfolios directory , if it does not exist create it.</em></strong></p>
-    </li>
-    <li class="has-line-data" data-line-start="268" data-line-end="276">
-        <p class="has-line-data" data-line-start="268" data-line-end="269"><strong><em>User creted file should comply to this given types :-</em></strong></p>
-        <h5 class="code-line" data-line-start=269 data-line-end=270 ><a id="Inflex_Portfolios_269"></a><strong><em>Inflex Portfolios</em></strong></h5>
-        <p class="has-line-data" data-line-start="270" data-line-end="272"><strong><em>&lt;string , double , double , valid_date&gt;</em></strong><br>
-            <strong><em>&lt;ticker , price , qty , transaction_date&gt;</em></strong></p>
-        <h5 class="code-line" data-line-start=272 data-line-end=273 ><a id="Flex_Portfolios_272"></a><strong><em>Flex Portfolios</em></strong></h5>
-        <p class="has-line-data" data-line-start="273" data-line-end="276"><strong><em>&lt;string , double , double , valid_date , double&gt;</em></strong><br>
-            <strong><em>&lt;ticker , price , qty , transaction_date , commision_fee&gt;</em></strong><br>
-            <strong><em>Incase of flex portfolis negative qty means sell transaction and positive means buy transactions.</em></strong></p>
-    </li>
-</ul>
+- Our application is dependent on alpha vantage historic api to fetch historic data.
 
-</body>
-</html>
+- If the user enters the data on which the stock exchange is closed the buyPrice becomes the last traded price
+and buyDate becomes the last traded date
+
+- User created .csv files should be created in portfolios directory , if it does not exist create it.
+
+- User creted file should comply to this given types :-
+
+- Inflex Portfolios
+<string , double , double , valid_date>
+<ticker , price , qty , transaction_date>
+
+- Flex Portfolios
+<string , double , double , valid_date , double>
+<ticker , price , qty , transaction_date , commision_fee>
+Incase of flex portfolis negative qty means sell transaction and positive means buy transactions.
