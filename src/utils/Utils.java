@@ -405,7 +405,7 @@ public class Utils {
   }
 
   /**
-   * Returns -1 if date1 < date2. 1 if date1 > date2 0 if date1 = date2
+   * Returns -1 if date1 less tha date2. 1 if date1 greater than date2 0 if date1 = date2
    *
    * @param date1 date1
    * @param date2 date2

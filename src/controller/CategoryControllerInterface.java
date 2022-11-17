@@ -10,7 +10,7 @@ public interface CategoryControllerInterface<T> {
   /**
    * Starter function for controller.
    *
-   * @param user
+   * @param user user object.
    */
   void start(T user);
 }

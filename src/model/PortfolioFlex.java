@@ -15,6 +15,7 @@ public interface PortfolioFlex extends Portfolio {
    *
    * @param date date for which summary is asked.
    * @return List of StockOrder.
+   * @throws Exception is date is not valid.
    */
   Map<String, Double> getPortfolioSummary(String date) throws Exception;
 
@@ -30,6 +31,7 @@ public interface PortfolioFlex extends Portfolio {
    * the total quantity for each stock.
    *
    * @return List of StockOrder.
+   * @throws Exception if state not available.
    */
   Map<String, SimpleEntry<String, Double>> getLatestState() throws Exception;
 
@@ -37,6 +39,7 @@ public interface PortfolioFlex extends Portfolio {
    * Add a new stock transaction to the portfolio.
    *
    * @param newEntry Stock transaction {Ticker Symbol, Transaction Date, Quantity} to be added
+   * @throws Exception if arguments are invalid.
    */
   void addTransaction(
       SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newEntry)
@@ -48,6 +51,7 @@ public interface PortfolioFlex extends Portfolio {
    *
    * @param date date till which you want cost basis
    * @return cost basis
+   * @throws Exception is date is not valid.
    */
   double getCostBasis(String date) throws Exception;
 

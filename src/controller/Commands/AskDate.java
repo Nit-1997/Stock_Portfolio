@@ -16,6 +16,7 @@ public class AskDate {
    * @param scan input object.
    * @param user model object.
    * @param out  output object.
+   * @return date.
    */
   public static String addStocksAskDate(Scanner scan, PrintStream out, UserFlex user) {
     ViewPrint.askDate(out);

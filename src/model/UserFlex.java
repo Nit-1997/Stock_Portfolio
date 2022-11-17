@@ -15,6 +15,7 @@ public interface UserFlex extends User {
    * @param name      name of portfolio
    * @param stocksMap map of {tickerSymbol , map of {date, quantity, commFee}}
    * @return true if added , false otherwise
+   * @throws Exception if the date is not valid.
    */
   boolean addPortfolio(String name, Map<String, Map<String, SimpleEntry<Double, Double>>> stocksMap)
       throws Exception;
@@ -60,6 +61,7 @@ public interface UserFlex extends User {
    * @param newStock      stock that needs to be added {ticker symbol, date, quantity, commission
    *                      fee}
    * @return true if successfully added.
+   * @throws Exception is input is not valid.
    */
   boolean transactionForPortfolio(String portfolioName,
       SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newStock)
@@ -71,6 +73,7 @@ public interface UserFlex extends User {
    * till the given date.
    *
    * @param date date for which getBasis required.
+   * @param portfolioName name of the portfolio.
    * @return Total Money Invested.
    */
   Double getCostBasis(String portfolioName, String date);
@@ -80,6 +83,7 @@ public interface UserFlex extends User {
    *
    * @param date1 starting date.
    * @param date2 ending date.
+   * @param portfolioName name of the portfolio.
    * @return true if the range is valid else false.
    */
   boolean graphDateChecker(String date1, String date2, String portfolioName);

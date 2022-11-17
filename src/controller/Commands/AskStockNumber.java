@@ -14,6 +14,7 @@ public class AskStockNumber {
    * This function takes valid stock number for adding in portfolio.
    *
    * @param scan input object
+   * @param out output object.
    * @return a valid stock number
    */
   public static Double addStocksAskStockNumber(Scanner scan, PrintStream out) {

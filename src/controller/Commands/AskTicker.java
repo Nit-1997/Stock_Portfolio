@@ -15,6 +15,7 @@ public class AskTicker {
    *
    * @param scan input object
    * @param user model object
+   * @param out output object
    * @return a valid ticker name
    */
   public static String addStocksAskTicker(Scanner scan, UserFlex user, PrintStream out) {
