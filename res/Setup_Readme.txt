@@ -10,8 +10,6 @@ Folder Structure Required to run the JAR
 
     assignment
          |_ assignment.jar
-         |_ testingArtifcats (contains dumps required to run tests)
-         |_ portfolios/flex/flexUserTest2.csv (contains seed portfolois required for the tests to run correctly , NOTE: application works even without this only tests will fail as they need this to validate certain scenarios)
          |_ stock
               |_ stock_list.csv ( contains list of stock symbols supported by the application)
 
@@ -29,13 +27,17 @@ How To Run Program
 
 1.) Unzip the submission file
 2.) You should see the stock folder with stock_list.csv file containing all the stock’s ticker symbol we support.
-3.) In cmd/terminal enter java -jar hw5.jar
+3.) In cmd/terminal enter java -jar assignment.jar
 4.) make sure you maintain the folder structure as mentioned above.
 
 ===============================================
 How to Run Tests
 ===============================================
-
+For the tests to work properly your folder structure should look like this :-
+         |_ src
+         |_ test
+         |_ testingArtifacts (contains dumps required to run tests)
+         |_ portfolios/flex/flexUserTest2.csv (contains seed portfolois required for the tests to run correctly , NOTE: application works even without this only tests will fail as they need this to validate certain scenarios)
 1.) In order to run the tests we require testingArtifacts and portfolios/flex/flexUserTest2.csv folder at the root level to dump all the testing data.
 2.) You can go to the test and then run all tests and that should trigger the Junit for all the tests.
 
