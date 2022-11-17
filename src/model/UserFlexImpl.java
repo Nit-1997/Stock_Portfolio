@@ -207,7 +207,7 @@ public class UserFlexImpl extends AbstractUser implements UserFlex {
 
   @Override
   public SimpleEntry<SimpleEntry<List<String>, List<Integer>>, SimpleEntry<Integer, Double>>
-  getGraphData(
+      getGraphData(
       String date1, String date2, String portfolioName) {
     SimpleEntry<List<String>, List<Double>> data;
     try {

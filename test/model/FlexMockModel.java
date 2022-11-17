@@ -10,7 +10,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class FlexMockModel implements UserFlex{
+/**
+ * Flexible mock model for testing flexController.
+ */
+public class FlexMockModel implements UserFlex {
 
   private final StringBuilder log;
 
@@ -24,11 +27,14 @@ public class FlexMockModel implements UserFlex{
     log.append("\nInput " + name);
     log.append("\n stock map: \n");
     for (String ticker : stocksMap.keySet()) {
-      for(String date : stocksMap.get(ticker).keySet()){
-        log.append(ticker+"->"+date+"->"+stocksMap.get(ticker).get(date).getKey()+","+stocksMap.get(ticker).get(date).getValue());
+      for (String date : stocksMap.get(ticker).keySet()) {
+        log.append(ticker + "->" + date + "->" + stocksMap.get(ticker).get(date).getKey() + ","
+            + stocksMap.get(ticker).get(date).getValue());
       }
       log.append("\n");
-      if(ticker.equals("META")) throw new IOException("Asked stock didn't exist on that date");
+      if (ticker.equals("META")) {
+        throw new IOException("Asked stock didn't exist on that date");
+      }
     }
 
     return true;
@@ -36,7 +42,7 @@ public class FlexMockModel implements UserFlex{
 
   @Override
   public Map<String, Double> getPortfolioSummary(String name, String date) {
-    log.append("\ngetting portfolio summary for " + name + " for the date: "+date);
+    log.append("\ngetting portfolio summary for " + name + " for the date: " + date);
     Map<String, Double> map = new HashMap<>();
     map.put("MSFT", 10.0);
     map.put("AAPL", 12.0);
@@ -45,22 +51,22 @@ public class FlexMockModel implements UserFlex{
 
   @Override
   public String getPortfolioCreationDate(String name) {
-    log.append("get portfolio creation date for "+name);
+    log.append("get portfolio creation date for " + name);
     return "2011-02-15";
   }
 
   @Override
   public Map<String, SimpleEntry<String, Double>> getPortfolioState(String name) {
-    log.append("get portfolio state for "+name);
-    Map<String, SimpleEntry<String, Double>> latestState= new HashMap<>();
-    latestState.put("MSFT",new SimpleEntry<>("2013-06-18",10.0));
-    latestState.put("AAPL",new SimpleEntry<>("2016-03-29",17.0));
+    log.append("get portfolio state for " + name);
+    Map<String, SimpleEntry<String, Double>> latestState = new HashMap<>();
+    latestState.put("MSFT", new SimpleEntry<>("2013-06-18", 10.0));
+    latestState.put("AAPL", new SimpleEntry<>("2016-03-29", 17.0));
     return latestState;
   }
 
   @Override
   public boolean isBeforeDate(String firstDate, String secondDate) {
-    log.append(firstDate+" is before date "+secondDate);
+    log.append(firstDate + " is before date " + secondDate);
     return false;
   }
 
@@ -68,35 +74,37 @@ public class FlexMockModel implements UserFlex{
   public boolean transactionForPortfolio(String portfolioName,
       SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newStock)
       throws IOException {
-    log.append("transaction for portfolio "+portfolioName+":\n");
-    log.append(newStock.getKey()+" "+newStock.getValue().getKey()+" "
-        +newStock.getValue().getValue().getKey()+" "+newStock.getValue().getValue().getValue());
+    log.append("transaction for portfolio " + portfolioName + ":\n");
+    log.append(newStock.getKey() + " " + newStock.getValue().getKey() + " "
+        + newStock.getValue().getValue().getKey() + " " + newStock.getValue().getValue()
+        .getValue());
 
     return true;
   }
 
   @Override
   public Double getCostBasis(String portfolioName, String date) {
-    log.append("Cost basis of portfolio "+portfolioName+" for the date "+date);
+    log.append("Cost basis of portfolio " + portfolioName + " for the date " + date);
     return 0.0;
   }
 
   @Override
   public boolean graphDateChecker(String date1, String date2, String portfolioName) {
-    log.append("start date : "+date1+" end date : "+date2+" for portfolio: "+portfolioName);
+    log.append(
+        "start date : " + date1 + " end date : " + date2 + " for portfolio: " + portfolioName);
     return true;
   }
 
   @Override
-  public SimpleEntry<SimpleEntry<List<String>,List<Integer>>,SimpleEntry<Integer,Double>>
-  getGraphData(String date1, String date2, String portfolioName) {
-    log.append("get graph data for "+portfolioName+" from "+date1+" to date "+date2);
+  public SimpleEntry<SimpleEntry<List<String>, List<Integer>>, SimpleEntry<Integer, Double>>
+      getGraphData(String date1, String date2, String portfolioName) {
+    log.append("get graph data for " + portfolioName + " from " + date1 + " to date " + date2);
 
     List<String> labels = new ArrayList<>(Arrays.asList(
         new String[]{"JAN 2022", "FEB 2022", "MAR 2022", "APR 2022", "MAY 2022"}));
 
-    List<Integer> starPoints = new ArrayList<>(Arrays.asList(new Integer[]{7,9,16,28,5}));
-    return new SimpleEntry<>(new SimpleEntry<>(labels,starPoints),new SimpleEntry<>(235,0.0));
+    List<Integer> starPoints = new ArrayList<>(Arrays.asList(new Integer[]{7, 9, 16, 28, 5}));
+    return new SimpleEntry<>(new SimpleEntry<>(labels, starPoints), new SimpleEntry<>(235, 0.0));
   }
 
   @Override

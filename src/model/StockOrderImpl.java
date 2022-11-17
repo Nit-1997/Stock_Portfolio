@@ -26,13 +26,26 @@ final public class StockOrderImpl implements StockOrder {
     this.commFee = null;
   }
 
-
+  /**
+   * Creates a StockOrderImpl object using ticker, qty, date and commission fee.
+   *
+   * @param ticker ticker symbol of the stock
+   * @param qty    quantity of the stock
+   * @throws IOException can occur while loading/ reading data dump
+   */
   public StockOrderImpl(String ticker, Double qty, String date, Double commFee) throws IOException {
     this.stock = new StockImpl(ticker, date);
     this.quantity = qty;
     this.commFee = commFee;
   }
 
+  /**
+   * Creates a StockOrderImpl object using ticker,buyPrice, date, qty and commission Fee.
+   *
+   * @param ticker ticker symbol of the stock
+   * @param qty    quantity of the stock
+   * @throws IOException can occur while loading/ reading data dump
+   */
   public StockOrderImpl(String ticker, Double buyPrice, String date, Double qty, Double commFee) {
     this.stock = new StockImpl(ticker, buyPrice, date);
     this.quantity = qty;

@@ -229,6 +229,12 @@ public class ViewPrint {
     out.println("\nCost basis of the portfolio till the given date : $" + cost);
   }
 
+  /**
+   * Print the latest state of the portfolio.
+   * @param map {ticker vs latest date and quantity}
+   * @param portfolioCreationDate creation date of the portfolio.
+   * @param out output object.
+   */
   public static final void printPortfolioState(Map<String, SimpleEntry<String, Double>> map,
       String portfolioCreationDate, PrintStream out) {
     final DecimalFormat df = new DecimalFormat("0.00");
@@ -359,6 +365,17 @@ public class ViewPrint {
     out.print(ViewConstants.GRAPH_INVALID_RANGE);
   }
 
+  /**
+   * Prints the performance graph.
+   * @param out output object.
+   * @param date1 starting date.
+   * @param date2 ending date.
+   * @param portfolioName name of the portfolio.
+   * @param labels label list.
+   * @param starPoints starPoint list.
+   * @param scale scale of graph.
+   * @param baseAmount starting point of x-axis.
+   */
   public static final void printGraph(PrintStream out, String date1, String date2,
       String portfolioName, List<String> labels, List<Integer> starPoints, int scale,
       double baseAmount) {

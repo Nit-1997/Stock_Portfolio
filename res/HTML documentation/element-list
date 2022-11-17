@@ -1,7 +1,7 @@
 unnamed package
 constants
 controller
-controller.Commands
+controller.commands
 model
 utils
 view

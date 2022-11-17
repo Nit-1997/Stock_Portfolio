@@ -245,8 +245,8 @@ public class Utils {
    * @throws Exception if directory not found or any issue in API.
    */
   public static void loadStockData(String ticker, String stockDataDir) throws Exception {
-//    String output = ApiDataFetcher.fetchStockDataBySymbolYahoo(ticker,
-//        Constants.YAHOO_API_BASE_URL);
+    //    String output = ApiDataFetcher.fetchStockDataBySymbolYahoo(ticker,
+    //        Constants.YAHOO_API_BASE_URL);
     String output = ApiDataFetcher.fetchStockDataBySymbolAlphaVantage(ticker);
     File stockFile = createFileIfNotExists(ticker, stockDataDir);
     writeStockDataDumpToFile(stockFile, output);
@@ -419,7 +419,12 @@ public class Utils {
     return d1.compareTo(d2);
   }
 
-  public static boolean FlexPortfolioValidator(List<StockOrder> stockOrders) {
+  /**
+   * Flexible portfolio validator.
+   * @param stockOrders Portfolio date
+   * @return true is portfolio data is valid.
+   */
+  public static boolean flexPortfolioValidator(List<StockOrder> stockOrders) {
     Collections.sort(stockOrders, (s1, s2) -> {
       if (s1.getStock().getStockTickerName() != s2.getStock().getStockTickerName()) {
         return s1.getStock().getStockTickerName().compareTo(s2.getStock().getStockTickerName());

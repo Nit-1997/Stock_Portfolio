@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Map;
 import utils.Utils;
 
+/**
+ * Implementation of PortfolioFlex interface representing Flexible Portfolio.
+ */
 public class PortfolioFlexImpl implements PortfolioFlex {
 
   private final String name;
@@ -77,7 +80,7 @@ public class PortfolioFlexImpl implements PortfolioFlex {
     }
     List<StockOrder> tempStockOrders = Utils.loadPortfolioData(portfolioName,
         "portfolios" + File.separator + "flex");
-    if (tempStockOrders == null || !Utils.FlexPortfolioValidator(tempStockOrders)) {
+    if (tempStockOrders == null || !Utils.flexPortfolioValidator(tempStockOrders)) {
       this.stockOrders = null;
     } else {
       this.stockOrders = tempStockOrders;

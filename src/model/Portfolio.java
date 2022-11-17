@@ -1,7 +1,6 @@
 package model;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Interface to specify Portfolio specs.

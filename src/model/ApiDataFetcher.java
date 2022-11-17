@@ -1,19 +1,17 @@
 package model;
 
+import constants.Constants;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedList;
-
-import constants.Constants;
 import utils.Utils;
 
 /**
- * This class is used to fetch historic stock data.
- * The source can either be alpha vantage / yahoo.
- * As part of this implementation we are using yahoo's finance api.
- * as yahoo api does not rate limit users after 5 requests
+ * This class is used to fetch historic stock data. The source can either be alpha vantage / yahoo.
+ * As part of this implementation we are using yahoo's finance api. as yahoo api does not rate limit
+ * users after 5 requests
  */
 public class ApiDataFetcher {
 
@@ -34,10 +32,10 @@ public class ApiDataFetcher {
     try {
       String[] periods = Utils.yahooApiDateFetcher();
       String apiUrl = baseUrl
-              + ticker
-              + "?metrics=high?&interval=1d&period1="
-              + periods[0] + "&period2="
-              + periods[1];
+          + ticker
+          + "?metrics=high?&interval=1d&period1="
+          + periods[0] + "&period2="
+          + periods[1];
       url = new URL(apiUrl);
     } catch (MalformedURLException e) {
       throw new RuntimeException("the yahoo API has either changed or " + "no longer works");
@@ -74,29 +72,35 @@ public class ApiDataFetcher {
     }
   }
 
-    public static String fetchStockDataBySymbolAlphaVantage(String ticker) throws Exception {
-      URL url = null;
-      try {
-        url = new URL(Constants.getDailyDataTimeSeriesApi
-                + "&symbol"
-                + "=" + ticker + "&apikey=" + Constants.ApiKey );
-      } catch (MalformedURLException e) {
-        throw new RuntimeException("the alphaVantage API has either changed or "
-                + "no longer works");
-      }
-      InputStream in = null;
-      StringBuilder output = new StringBuilder();
-
-      try {
-        in = url.openStream();
-        int b;
-
-        while ((b = in.read()) != -1) {
-          output.append((char) b);
-        }
-        return output.toString();
-      } catch (IOException e) {
-        throw new IllegalArgumentException("No price data found for this symbol.");
-      }
+  /**
+   * Fetches stock data by symbol from alpha vantage API.
+   * @param ticker stock symbol
+   * @return stock data.
+   * @throws Exception if ticker is not valid.
+   */
+  public static String fetchStockDataBySymbolAlphaVantage(String ticker) throws Exception {
+    URL url = null;
+    try {
+      url = new URL(Constants.GET_DAILY_DATA_TIME_SERIES_API
+          + "&symbol"
+          + "=" + ticker + "&apikey=" + Constants.API_KEY);
+    } catch (MalformedURLException e) {
+      throw new RuntimeException("the alphaVantage API has either changed or "
+          + "no longer works");
     }
+    InputStream in = null;
+    StringBuilder output = new StringBuilder();
+
+    try {
+      in = url.openStream();
+      int b;
+
+      while ((b = in.read()) != -1) {
+        output.append((char) b);
+      }
+      return output.toString();
+    } catch (IOException e) {
+      throw new IllegalArgumentException("No price data found for this symbol.");
+    }
+  }
 }

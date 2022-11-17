@@ -18,7 +18,7 @@ import view.ViewPrint;
  * This class contains the functionalities of the controller of the application and takes input from
  * the user and delegates appropriate tasks to model and view based on input.
  */
-public class InflexController implements CategoryControllerInterface<UserInflex>{
+public class InflexController implements CategoryControllerInterface<UserInflex> {
 
   final InputStream in;
   final PrintStream out;
@@ -35,7 +35,7 @@ public class InflexController implements CategoryControllerInterface<UserInflex>
   }
 
   @Override
-  public void start(UserInflex user){
+  public void start(UserInflex user) {
     Objects.requireNonNull(user);
     System.out.println("-------------Inflexible Portfolio Menu-------------");
     Scanner scan = new Scanner(this.in);
@@ -125,7 +125,7 @@ public class InflexController implements CategoryControllerInterface<UserInflex>
    * @param user model object
    * @return a valid ticker name
    */
-  void addStocksToPortfolioController(Scanner scan, UserInflex user){
+  void addStocksToPortfolioController(Scanner scan, UserInflex user) {
     ViewPrint.addPortfolio(this.out);
     String name = scan.nextLine();
     while (!user.isUniqueName(name)) {

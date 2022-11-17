@@ -1,29 +1,29 @@
 package model;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import constants.Constants;
 import java.util.AbstractMap.SimpleEntry;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.sound.sampled.Port;
-
-import constants.Constants;
+import org.junit.Before;
+import org.junit.Test;
 import utils.Utils;
 
-import static org.junit.Assert.*;
-
+/**
+ * JUnit class for PortfolioFlexImpl class.
+ */
 public class PortfolioFlexImplTest {
 
   Map<String, Map<String, SimpleEntry<Double, Double>>> order;
 
   @Before
   public void beforeSuit() throws Exception {
-    Constants.STOCK_NAMES = Utils.loadStockNames("stocks", "stocks_list.csv");
+    Constants.STOCK_NAMES = Utils.loadStockNames("stocks",
+        "stocks_list.csv");
     Utils.clearStockDirectory();
     order = new HashMap<>();
     Map<String, SimpleEntry<Double, Double>> ciscoTuple = new HashMap<>();
@@ -43,6 +43,10 @@ public class PortfolioFlexImplTest {
     order.put("AAPL", appleTuple);
   }
 
+  /**
+   * Generates Portfolio for Performance Test.
+   * @return Portfolio date.
+   */
   public Map<String, Map<String, SimpleEntry<Double, Double>>> generatePerfTestPortfolioOrder() {
     Map<String, Map<String, SimpleEntry<Double, Double>>> perfTestOrder = new HashMap<>();
     Map<String, SimpleEntry<Double, Double>> ciscoTuple = new HashMap<>();
@@ -71,6 +75,7 @@ public class PortfolioFlexImplTest {
   @Test
   public void testPortfolioFlexImplCreatorConst() throws Exception {
     PortfolioFlex p = new PortfolioFlexImpl(order, "flexTest");
+    assertNotNull(p);
   }
 
   @Test(expected = Exception.class)
@@ -83,10 +88,11 @@ public class PortfolioFlexImplTest {
     PortfolioFlex p = new PortfolioFlexImpl(order, null);
   }
 
-  @Test
-  public void testPortfolioFlexImplRetreiverConst() throws Exception {
-    PortfolioFlex p = new PortfolioFlexImpl("flexTest");
-  }
+  //  @Test
+  //  public void testPortfolioFlexImplRetreiverConst() throws Exception {
+  //    PortfolioFlex p = new PortfolioFlexImpl("flexTest");
+  //    assertTrue(1>0);
+  //  }
 
   @Test(expected = Exception.class)
   public void testPortfolioFlexImplRetreiverConstFailure() throws Exception {
@@ -179,8 +185,11 @@ public class PortfolioFlexImplTest {
   public void testAddBuyTransaction() throws Exception {
     PortfolioFlex p = new PortfolioFlexImpl(order, "flexTest");
     SimpleEntry<Double, Double> commQtyTuple = new SimpleEntry<>(12.0, 2.0);
-    SimpleEntry<String, SimpleEntry<Double, Double>> dateQtyCommTuple = new SimpleEntry<>("2022-11-2", commQtyTuple);
-    SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> transTuple = new SimpleEntry<>("CSCO", dateQtyCommTuple);
+    SimpleEntry<String, SimpleEntry<Double, Double>> dateQtyCommTuple = new SimpleEntry<>(
+        "2022-11-2", commQtyTuple);
+    SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> transTuple =
+        new SimpleEntry<>(
+            "CSCO", dateQtyCommTuple);
     p.addTransaction(transTuple);
 
     Map<String, SimpleEntry<String, Double>> stateMap = p.getLatestState();
@@ -205,8 +214,11 @@ public class PortfolioFlexImplTest {
   public void testAddBuyTransactionNegCommision() throws Exception {
     PortfolioFlex p = new PortfolioFlexImpl(order, "flexTest");
     SimpleEntry<Double, Double> commQtyTuple = new SimpleEntry<>(12.0, -2.0);
-    SimpleEntry<String, SimpleEntry<Double, Double>> dateQtyCommTuple = new SimpleEntry<>("2022-11-2", commQtyTuple);
-    SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> transTuple = new SimpleEntry<>("CSCO", dateQtyCommTuple);
+    SimpleEntry<String, SimpleEntry<Double, Double>> dateQtyCommTuple = new SimpleEntry<>(
+        "2022-11-2", commQtyTuple);
+    SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> transTuple =
+        new SimpleEntry<>(
+            "CSCO", dateQtyCommTuple);
     p.addTransaction(transTuple);
   }
 
@@ -214,8 +226,11 @@ public class PortfolioFlexImplTest {
   public void testAddBuyTransactionIncorrectDate() throws Exception {
     PortfolioFlex p = new PortfolioFlexImpl("flexTest");
     SimpleEntry<Double, Double> commQtyTuple = new SimpleEntry<>(12.0, 2.0);
-    SimpleEntry<String, SimpleEntry<Double, Double>> dateQtyCommTuple = new SimpleEntry<>("02-11-2022", commQtyTuple);
-    SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> transTuple = new SimpleEntry<>("CSCO", dateQtyCommTuple);
+    SimpleEntry<String, SimpleEntry<Double, Double>> dateQtyCommTuple = new SimpleEntry<>(
+        "02-11-2022", commQtyTuple);
+    SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> transTuple =
+        new SimpleEntry<>(
+            "CSCO", dateQtyCommTuple);
     p.addTransaction(transTuple);
   }
 
@@ -230,8 +245,11 @@ public class PortfolioFlexImplTest {
   public void testAddSellTransaction() throws Exception {
     PortfolioFlex p = new PortfolioFlexImpl(order, "flexTest");
     SimpleEntry<Double, Double> commQtyTuple = new SimpleEntry<>(-12.0, 2.0);
-    SimpleEntry<String, SimpleEntry<Double, Double>> dateQtyCommTuple = new SimpleEntry<>("2022-11-2", commQtyTuple);
-    SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> transTuple = new SimpleEntry<>("CSCO", dateQtyCommTuple);
+    SimpleEntry<String, SimpleEntry<Double, Double>> dateQtyCommTuple = new SimpleEntry<>(
+        "2022-11-2", commQtyTuple);
+    SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> transTuple =
+        new SimpleEntry<>(
+            "CSCO", dateQtyCommTuple);
     p.addTransaction(transTuple);
     Map<String, SimpleEntry<String, Double>> stateMap = p.getLatestState();
 
@@ -287,15 +305,16 @@ public class PortfolioFlexImplTest {
 
   @Test
   public void testGetPerfDataOverTimePrintWeekly() throws Exception {
-    PortfolioFlex p = new PortfolioFlexImpl(this.generatePerfTestPortfolioOrder(), "perfTest");
+    PortfolioFlex p = new PortfolioFlexImpl(this.generatePerfTestPortfolioOrder(),
+        "perfTest");
     SimpleEntry<List<String>, List<Double>> ans = p.getPerfDataOverTime("2019-09-30", "2019-11-01");
 
-    String[] expectedLabels = {"OCT Week 1","OCT Week 2",
-            "OCT Week 3","OCT Week 4",
-            "NOV Week 1","NOV Week 1"};
-    double[] expectedDatapoints = {373898.38,373469.56000000006,
-            380245.86,383176.02,
-            388085.44,388085.44};
+    String[] expectedLabels = {"OCT Week 1", "OCT Week 2",
+        "OCT Week 3", "OCT Week 4",
+        "NOV Week 1", "NOV Week 1"};
+    double[] expectedDatapoints = {373898.38, 373469.56000000006,
+        380245.86, 383176.02,
+        388085.44, 388085.44};
 
     int index = 0;
     for (String s : ans.getKey()) {
@@ -311,26 +330,27 @@ public class PortfolioFlexImplTest {
 
   @Test
   public void testGetPerfDataOverTimePrintDaily() throws Exception {
-    PortfolioFlex p = new PortfolioFlexImpl(this.generatePerfTestPortfolioOrder(), "perfTest");
+    PortfolioFlex p = new PortfolioFlexImpl(this.generatePerfTestPortfolioOrder(),
+        "perfTest");
     SimpleEntry<List<String>, List<Double>> ans = p.getPerfDataOverTime("2019-09-30", "2019-10-30");
 
     String[] expectedLabels = {
-            "2019-09-30", "2019-10-01",
-            "2019-10-02", "2019-10-03",
-            "2019-10-04", "2019-10-05",
-            "2019-10-06", "2019-10-07",
-            "2019-10-08", "2019-10-09",
-            "2019-10-10", "2019-10-11",
-            "2019-10-12", "2019-10-13",
-            "2019-10-14", "2019-10-15",
-            "2019-10-16", "2019-10-17",
-            "2019-10-18", "2019-10-19",
-            "2019-10-20", "2019-10-21",
-            "2019-10-22", "2019-10-23",
-            "2019-10-24", "2019-10-25",
-            "2019-10-26", "2019-10-27",
-            "2019-10-28", "2019-10-29",
-            "2019-10-30"
+        "2019-09-30", "2019-10-01",
+        "2019-10-02", "2019-10-03",
+        "2019-10-04", "2019-10-05",
+        "2019-10-06", "2019-10-07",
+        "2019-10-08", "2019-10-09",
+        "2019-10-10", "2019-10-11",
+        "2019-10-12", "2019-10-13",
+        "2019-10-14", "2019-10-15",
+        "2019-10-16", "2019-10-17",
+        "2019-10-18", "2019-10-19",
+        "2019-10-20", "2019-10-21",
+        "2019-10-22", "2019-10-23",
+        "2019-10-24", "2019-10-25",
+        "2019-10-26", "2019-10-27",
+        "2019-10-28", "2019-10-29",
+        "2019-10-30"
     };
     int index = 0;
     for (String s : ans.getKey()) {
@@ -338,22 +358,22 @@ public class PortfolioFlexImplTest {
       index++;
     }
     double[] expectedDatapoints = {
-            374682.10000000003, 372780.54,
-            366436.06000000006, 369295.4,
-            373898.38, 373898.38,
-            373898.38, 372672.68000000005,
-            366913.98, 370553.7,
-            371167.36, 373469.56000000006,
-            373469.56000000006, 373469.56000000006,
-            374285.38, 381253.0,
-            382660.66000000003, 385154.48,
-            380245.86, 380245.86,
-            380245.86, 383927.92000000004,
-            380970.33999999997, 382476.02,
-            385054.04, 383176.02,
-            383176.02, 383176.02,
-            388203.64, 382916.34,
-            385177.66000000003
+        374682.10000000003, 372780.54,
+        366436.06000000006, 369295.4,
+        373898.38, 373898.38,
+        373898.38, 372672.68000000005,
+        366913.98, 370553.7,
+        371167.36, 373469.56000000006,
+        373469.56000000006, 373469.56000000006,
+        374285.38, 381253.0,
+        382660.66000000003, 385154.48,
+        380245.86, 380245.86,
+        380245.86, 383927.92000000004,
+        380970.33999999997, 382476.02,
+        385054.04, 383176.02,
+        383176.02, 383176.02,
+        388203.64, 382916.34,
+        385177.66000000003
     };
     index = 0;
     for (double s : ans.getValue()) {
@@ -369,16 +389,16 @@ public class PortfolioFlexImplTest {
     SimpleEntry<List<String>, List<Double>> ans = p.getPerfDataOverTime("2018-09-30", "2019-11-01");
 
     String[] expectedLabels = {"SEP 2018", "OCT 2018",
-            "NOV 2018", "DEC 2018",
-            "JAN 2019", "FEB 2019",
-            "MAR 2019", "APR 2019", "MAY 2019", "JUN 2019",
-            "JUL 2019", "AUG 2019", "SEP 2019", "OCT 2019",
-            "NOV 2019"};
+        "NOV 2018", "DEC 2018",
+        "JAN 2019", "FEB 2019",
+        "MAR 2019", "APR 2019", "MAY 2019", "JUN 2019",
+        "JUL 2019", "AUG 2019", "SEP 2019", "OCT 2019",
+        "NOV 2019"};
     double[] expectedDatapoints = {411591.36, 330741.95999999996,
-            358955.86, 323159.36, 351070.42, 350713.14,
-            373679.4, 409477.66000000003, 377921.78,
-            378650.94, 404662.81999999995, 372524.45999999996,
-            373860.66000000003, 388203.64, 388085.44};
+        358955.86, 323159.36, 351070.42, 350713.14,
+        373679.4, 409477.66000000003, 377921.78,
+        378650.94, 404662.81999999995, 372524.45999999996,
+        373860.66000000003, 388203.64, 388085.44};
 
     int index = 0;
     for (String s : ans.getKey()) {
@@ -394,20 +414,21 @@ public class PortfolioFlexImplTest {
 
   @Test
   public void testGetPerfDataOverTimePrintYearly() throws Exception {
-    PortfolioFlex p = new PortfolioFlexImpl(this.generatePerfTestPortfolioOrder(), "perfTest");
+    PortfolioFlex p = new PortfolioFlexImpl(this.generatePerfTestPortfolioOrder(),
+        "perfTest");
     SimpleEntry<List<String>, List<Double>> ans = p.getPerfDataOverTime("2011-09-30", "2022-11-01");
-    String[] expectedLabels = {"2011","2012","2013",
-            "2014","2015","2016",
-            "2017","2018","2019",
-            "2020","2021","2022"};
+    String[] expectedLabels = {"2011", "2012", "2013",
+        "2014", "2015", "2016",
+        "2017", "2018", "2019",
+        "2020", "2021", "2022"};
     double[] expectedDatapoints = {22503.0,
-            37934.829000000005,
-            59965.060000000005,
-            44564.58,93012.26,
-            198278.14,285097.92000000004,
-            326135.22000000003,403655.32,
-            309987.46,160709.12,
-            15862.42};
+        37934.829000000005,
+        59965.060000000005,
+        44564.58, 93012.26,
+        198278.14, 285097.92000000004,
+        326135.22000000003, 403655.32,
+        309987.46, 160709.12,
+        15862.42};
     int index = 0;
     for (String s : ans.getKey()) {
       assertEquals(expectedLabels[index], s);
@@ -422,24 +443,25 @@ public class PortfolioFlexImplTest {
 
   @Test
   public void testGetPerfDataOverTimePrintQtrly() throws Exception {
-    PortfolioFlex p = new PortfolioFlexImpl(this.generatePerfTestPortfolioOrder(), "perfTest");
+    PortfolioFlex p = new PortfolioFlexImpl(this.generatePerfTestPortfolioOrder(),
+        "perfTest");
     SimpleEntry<List<String>, List<Double>> ans = p.getPerfDataOverTime("2019-01-01", "2021-12-01");
 
     String[] expectedLabels = {"Qtr1 2019",
-            "Qtr2 2019","Qtr3 2019",
-            "Qtr4 2019","Qtr1 2020",
-            "Qtr2 2020","Qtr3 2020",
-            "Qtr4 2020","Qtr1 2021",
-            "Qtr2 2021","Qtr3 2021",
-            "Qtr4 2021"};
-    double[] expectedDatapoints = {375211.78,378650.94,
-            374682.10000000003,403549.86,
-            198785.17999999996,
-            255882.28000000003,
-            272057.62,308883.74,
-            339371.34,398463.44,
-            421681.36000000004,
-            162152.24};
+        "Qtr2 2019", "Qtr3 2019",
+        "Qtr4 2019", "Qtr1 2020",
+        "Qtr2 2020", "Qtr3 2020",
+        "Qtr4 2020", "Qtr1 2021",
+        "Qtr2 2021", "Qtr3 2021",
+        "Qtr4 2021"};
+    double[] expectedDatapoints = {375211.78, 378650.94,
+        374682.10000000003, 403549.86,
+        198785.17999999996,
+        255882.28000000003,
+        272057.62, 308883.74,
+        339371.34, 398463.44,
+        421681.36000000004,
+        162152.24};
 
     int index = 0;
     for (String s : ans.getKey()) {

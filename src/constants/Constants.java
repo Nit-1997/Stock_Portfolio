@@ -7,10 +7,10 @@ import java.util.Set;
  */
 public class Constants {
 
-  public static String getDailyDataTimeSeriesApi = "https://www.alphavantage"
+  public static String GET_DAILY_DATA_TIME_SERIES_API = "https://www.alphavantage"
           + ".co/query?function=TIME_SERIES_DAILY"
           + "&outputsize=full" + "&datatype=csv";
-  public static String ApiKey = "2ZLBEVS8SUFF6UBC";
+  public static String API_KEY = "2ZLBEVS8SUFF6UBC";
   //  public static String getCurrentValueApi = "https://www.alphavantage"
   //          + ".co/query?function=GLOBAL_QUOTE";
 

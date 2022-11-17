@@ -3,7 +3,10 @@ package model;
 import java.io.IOException;
 import java.util.List;
 
-public interface PortfolioInflex extends Portfolio{
+/**
+ * Implementation of PortfolioInflex interface representingInflexible Portfolio.
+ */
+public interface PortfolioInflex extends Portfolio {
 
 
   /**
@@ -23,14 +26,13 @@ public interface PortfolioInflex extends Portfolio{
 
 
   /**
-   * Fetches from local file and provides current detailed portfolio data
-   * {(ticker_symbol, quantity) vs (buying price, currentPrice)} .
+   * Fetches from local file and provides current detailed portfolio data {(ticker_symbol, quantity)
+   * vs (buying price, currentPrice)} .
    *
    * @return list of maps containing ticker symbol, quantity vs buying price
    * @throws IOException if data not found.
    */
   List<PortfolioDetailedPojo> getCurrentPortfolioDetailed() throws IOException;
-
 
 
   /**

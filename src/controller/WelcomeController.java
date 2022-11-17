@@ -7,6 +7,9 @@ import model.UserFlexImpl;
 import model.UserInflexImpl;
 import view.ViewPrint;
 
+/**
+ * Starting class for the application.
+ */
 public class WelcomeController implements StockController {
 
   final InputStream in;

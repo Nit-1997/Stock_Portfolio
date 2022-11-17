@@ -1,7 +1,7 @@
 package controller;
 
-import controller.Commands.AddFlexPortfolio;
-import controller.Commands.LoadFlexPortfolio;
+import controller.commands.AddFlexPortfolio;
+import controller.commands.LoadFlexPortfolio;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Objects;

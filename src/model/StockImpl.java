@@ -29,7 +29,7 @@ class StockImpl implements Stock {
   }
 
   public StockImpl(String ticker , String date) throws IOException {
-    if(ticker == null || date == null){
+    if (ticker == null || date == null) {
       throw new IOException("Arguments cannot be Null");
     }
     this.ticker = ticker;

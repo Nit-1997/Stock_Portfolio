@@ -270,23 +270,24 @@ public class UtilsTest {
 
   @Test
   public void testCompareDates() throws Exception {
-    int ans = Utils.compareDates("2019-04-15" , "2019-08-10");
-    assertEquals(-1 , ans);
-    ans = Utils.compareDates("2019-09-15" , "2019-08-10");
-    assertEquals(1 , ans);
-    ans = Utils.compareDates("2019-09-15" , "2019-09-15");
-    assertEquals(0 , ans);
+    int ans = Utils.compareDates("2019-04-15", "2019-08-10");
+    assertEquals(-1, ans);
+    ans = Utils.compareDates("2019-09-15", "2019-08-10");
+    assertEquals(1, ans);
+    ans = Utils.compareDates("2019-09-15", "2019-09-15");
+    assertEquals(0, ans);
   }
 
   @Test(expected = Exception.class)
   public void testCompareDatesIllegal() throws Exception {
-    int ans = Utils.compareDates("hello" , "2019-08-10");
+    int ans = Utils.compareDates("hello", "2019-08-10");
   }
 
   @Test
-  public void test(){
+  public void test() {
     String currentDate = String.valueOf(java.time.LocalDate.now());
     System.out.println(currentDate);
+    assertNotNull(currentDate);
   }
 
 
