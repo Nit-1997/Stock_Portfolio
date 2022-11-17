@@ -49,7 +49,7 @@ public class UserInflexImplTest {
 
   @Test
   public void testUserConstructor3() {
-    assertEquals(20, Constants.STOCK_NAMES.size());
+    assertEquals(102, Constants.STOCK_NAMES.size());
   }
 
   @Test
@@ -70,7 +70,7 @@ public class UserInflexImplTest {
   @Test
   public void testAddPortfolio3() {
     Map<String, Double> stocks = new HashMap<>();
-    stocks.put("abcd", 10.0);
+    stocks.put("tubh", 10.0);
     stocks.put("MSFT", 10.0);
     boolean val = user.addPortfolio("test", stocks);
     assertFalse(val);

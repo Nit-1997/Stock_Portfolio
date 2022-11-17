@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
-import model.User;
 import model.UserInflex;
 import view.ViewPrint;
 
@@ -19,7 +18,7 @@ import view.ViewPrint;
  * This class contains the functionalities of the controller of the application and takes input from
  * the user and delegates appropriate tasks to model and view based on input.
  */
-public class InflexController{
+public class InflexController implements CategoryControllerInterface<UserInflex>{
 
   final InputStream in;
   final PrintStream out;
@@ -35,13 +34,8 @@ public class InflexController{
     this.out = out;
   }
 
-  /**
-   * This is the first function that will get executed on starting the application.
-   *
-   * @param user Object of the model
-   * @throws Exception Exception is thrown for unwanted scenarios.
-   */
-  public void start(UserInflex user) throws Exception {
+  @Override
+  public void start(UserInflex user){
     Objects.requireNonNull(user);
     System.out.println("-------------Inflexible Portfolio Menu-------------");
     Scanner scan = new Scanner(this.in);
@@ -131,7 +125,7 @@ public class InflexController{
    * @param user model object
    * @return a valid ticker name
    */
-  void addStocksToPortfolioController(Scanner scan, UserInflex user) throws Exception {
+  void addStocksToPortfolioController(Scanner scan, UserInflex user){
     ViewPrint.addPortfolio(this.out);
     String name = scan.nextLine();
     while (!user.isUniqueName(name)) {
@@ -239,7 +233,7 @@ public class InflexController{
    * @param user model object
    * @return a valid ticker name
    */
-  void loadPortfoliosController(Scanner scan, UserInflex user) throws Exception {
+  void loadPortfoliosController(Scanner scan, UserInflex user) {
     Set<String> portfolioNames = user.getPortfolios();
     if (portfolioNames != null) {
       ViewPrint.printPortfolios(portfolioNames, this.out);
@@ -272,7 +266,7 @@ public class InflexController{
    * @param user model object
    * @return a valid ticker name
    */
-  void loadSinglePortfolioDetailController(Scanner scan, UserInflex user) throws Exception {
+  void loadSinglePortfolioDetailController(Scanner scan, UserInflex user) {
     ViewPrint.askNameOfPortfolio(this.out);
     String name = scan.nextLine();
     while (user.isUniqueName(name)) {

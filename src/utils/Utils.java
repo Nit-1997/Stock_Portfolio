@@ -1,7 +1,6 @@
 package utils;
 
 import constants.Constants;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,7 +13,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
-
 import model.ApiDataFetcher;
 import model.PortfolioFlex;
 import model.StockOrder;
@@ -69,31 +66,30 @@ public class Utils {
    * @throws IOException if directory doesn't exist or any argument exception.
    */
   public static void saveToFile(String name, List<StockOrder> orders, String dirName)
-          throws IOException {
+      throws IOException {
     if (name == null || orders == null) {
       throw new IOException("passed null args");
     }
     File portfolioFile = createFileIfNotExists(name, dirName);
-    if(dirName.endsWith("flex")){
-      writePortfolioToFileFlex(portfolioFile,orders);
-    }
-    else{
+    if (dirName.endsWith("flex")) {
+      writePortfolioToFileFlex(portfolioFile, orders);
+    } else {
       writePortfolioToFile(portfolioFile, orders);
     }
   }
 
 
   private static void writePortfolioToFile(File portfolioFile, List<StockOrder> orders)
-          throws IOException {
+      throws IOException {
     if (portfolioFile == null || orders == null) {
       throw new IOException("passed null args");
     }
     FileWriter myWriter = new FileWriter(portfolioFile);
     for (StockOrder order : orders) {
       myWriter.write("" + order.getStock().getStockTickerName()
-              + "," + order.getStock().getBuyPrice()
-              + "," + order.getQuantity()
-              + "," + order.getStock().getBuyDate() + "\n"
+          + "," + order.getStock().getBuyPrice()
+          + "," + order.getQuantity()
+          + "," + order.getStock().getBuyDate() + "\n"
       );
     }
     myWriter.close();
@@ -138,10 +134,10 @@ public class Utils {
    * @throws IOException if directory or file not present.
    */
   public static Set<String> loadStockNames(String stockRepoName, String stockFileName)
-          throws IOException {
+      throws IOException {
     String portfolioDirectory = Paths.get(stockRepoName).toAbsolutePath().toString();
     File[] stockFiles = new File(portfolioDirectory).listFiles(
-            (f1, name) -> name.equals(stockFileName));
+        (f1, name) -> name.equals(stockFileName));
     if (stockFiles == null) {
       throw new IOException("Could not find the directory");
     }
@@ -162,8 +158,8 @@ public class Utils {
     return parsedStocks;
   }
 
-  private static boolean  loadPortfolioValidator(String ticker, String date, String price,
-                                                String qty, String type) {
+  private static boolean loadPortfolioValidator(String ticker, String date, String price,
+      String qty, String type) {
     try {
       if (!Constants.STOCK_NAMES.contains(ticker.toUpperCase())) {
         return false;
@@ -195,7 +191,7 @@ public class Utils {
    * @throws IOException if the portfolioName or the dirName are null.
    */
   public static List<StockOrder> loadPortfolioData(String portfolioName, String dirName)
-          throws IOException {
+      throws IOException {
     File portfolioFile = Utils.getFileByName(portfolioName, dirName);
     if (portfolioFile == null) {
       return null;
@@ -207,27 +203,26 @@ public class Utils {
     while (myReader.hasNextLine()) {
       String input = myReader.nextLine();
       String[] splitInput = input.split(",");
-      if (splitInput.length != 4  && !dirName.endsWith("flex")) {
+      if (splitInput.length != 4 && !dirName.endsWith("flex")) {
         return null;
       }
-      if(dirName.endsWith("flex") && splitInput.length!=5){
+      if (dirName.endsWith("flex") && splitInput.length != 5) {
         return null;
       }
       String ticker = splitInput[0];
       String date = splitInput[3];
 
-      String type = dirName.endsWith("flex")?"flex":"inflex";
-      if (!loadPortfolioValidator(ticker, date, splitInput[1], splitInput[2],type)) {
+      String type = dirName.endsWith("flex") ? "flex" : "inflex";
+      if (!loadPortfolioValidator(ticker, date, splitInput[1], splitInput[2], type)) {
         return null;
       }
       double price = Double.parseDouble(splitInput[1]);
       double qty = Double.parseDouble(splitInput[2]);
       StockOrder currentStockOrder;
-      if(dirName.endsWith("flex")){
+      if (dirName.endsWith("flex")) {
         Double commFee = Double.parseDouble(splitInput[4]);
         currentStockOrder = new StockOrderImpl(ticker.toUpperCase(), price, date, qty, commFee);
-      }
-      else{
+      } else {
         currentStockOrder = new StockOrderImpl(ticker.toUpperCase(), price, date, qty);
       }
       parsedFileInput.add(currentStockOrder);
@@ -306,7 +301,7 @@ public class Utils {
    * @throws IOException if file or directory doesn't exist
    */
   public static String fetchStockValueByDate(String ticker, String date, String dirName)
-          throws IOException {
+      throws IOException {
     if (ticker == null || date == null) {
       throw new IOException("passed null args");
     }
@@ -333,7 +328,9 @@ public class Utils {
     }
     myReader.close();
 
-    if(res==null) throw new IOException("Asked stock didn't exist on that date");
+    if (res == null) {
+      throw new IOException("Asked stock didn't exist on that date");
+    }
     return res;
   }
 
@@ -350,7 +347,7 @@ public class Utils {
       Date date = sdf.parse(dateStr);
       Date firstDate = sdf.parse("2010-01-04");
       Date currentDate = sdf.parse(
-              DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now()));
+          DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now()));
       if (date.before(firstDate) || date.after(currentDate)) {
         return false;
       }
@@ -391,9 +388,9 @@ public class Utils {
     try {
       initialDate = simpleDateFormat.parse("2010-01-01");
       currentDate = simpleDateFormat
-              .parse(DateTimeFormatter
-                      .ofPattern("yyyy-MM-dd")
-                      .format(LocalDateTime.now()));
+          .parse(DateTimeFormatter
+              .ofPattern("yyyy-MM-dd")
+              .format(LocalDateTime.now()));
     } catch (ParseException e) {
       System.out.println("wrong date");
     }
@@ -408,9 +405,7 @@ public class Utils {
   }
 
   /**
-   * Returns -1 if date1 < date2.
-   * 1 if date1 > date2
-   * 0 if date1 = date2
+   * Returns -1 if date1 < date2. 1 if date1 > date2 0 if date1 = date2
    *
    * @param date1 date1
    * @param date2 date2
@@ -425,12 +420,12 @@ public class Utils {
   }
 
   public static boolean FlexPortfolioValidator(List<StockOrder> stockOrders) {
-    Collections.sort(stockOrders,(s1,s2)->{
-      if(s1.getStock().getStockTickerName()!=s2.getStock().getStockTickerName())
-       return s1.getStock().getStockTickerName().compareTo(s2.getStock().getStockTickerName());
-       else {
+    Collections.sort(stockOrders, (s1, s2) -> {
+      if (s1.getStock().getStockTickerName() != s2.getStock().getStockTickerName()) {
+        return s1.getStock().getStockTickerName().compareTo(s2.getStock().getStockTickerName());
+      } else {
         try {
-          return compareDates(s1.getStock().getBuyDate(),s2.getStock().getBuyDate());
+          return compareDates(s1.getStock().getBuyDate(), s2.getStock().getBuyDate());
         } catch (Exception e) {
           throw new RuntimeException(e);
         }
@@ -438,30 +433,40 @@ public class Utils {
     });
 
     Map<String, Double> checkerMap = new HashMap<>();
-    for(StockOrder s : stockOrders){
-      if(s.getCommFee()<0) return false;
-      if(checkerMap.containsKey(s.getStock().getStockTickerName())){
+    for (StockOrder s : stockOrders) {
+      if (s.getCommFee() < 0) {
+        return false;
+      }
+      if (checkerMap.containsKey(s.getStock().getStockTickerName())) {
         Double quantity = s.getQuantity();
-        if(quantity>0){
-          quantity=checkerMap.get(s.getStock().getStockTickerName())+quantity;
-          checkerMap.put(s.getStock().getStockTickerName(),quantity);
-        }
-        else{
-          quantity=Math.abs(quantity);
-          if(checkerMap.get(s.getStock().getStockTickerName())<quantity) return false;
-          else{
-            quantity=checkerMap.get(s.getStock().getStockTickerName())-quantity;
-            checkerMap.put(s.getStock().getStockTickerName(),quantity);
+        if (quantity > 0) {
+          quantity = checkerMap.get(s.getStock().getStockTickerName()) + quantity;
+          checkerMap.put(s.getStock().getStockTickerName(), quantity);
+        } else {
+          quantity = Math.abs(quantity);
+          if (checkerMap.get(s.getStock().getStockTickerName()) < quantity) {
+            return false;
+          } else {
+            quantity = checkerMap.get(s.getStock().getStockTickerName()) - quantity;
+            checkerMap.put(s.getStock().getStockTickerName(), quantity);
           }
         }
-      }else {
-        checkerMap.put(s.getStock().getStockTickerName(),s.getQuantity());
+      } else {
+        checkerMap.put(s.getStock().getStockTickerName(), s.getQuantity());
       }
     }
     return true;
   }
 
-  public static long computeDaysBetweenDates(String date1 , String date2) throws Exception{
+  /**
+   * Computes number of days between 2 dates.
+   *
+   * @param date1 starting date
+   * @param date2 ending date
+   * @return difference of dates.
+   * @throws Exception if dates are not in proper format.
+   */
+  public static long computeDaysBetweenDates(String date1, String date2) throws Exception {
     SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
     Date d1 = sdformat.parse(date1);
     Date d2 = sdformat.parse(date2);
@@ -469,15 +474,33 @@ public class Utils {
     return (differenceInTime / (1000 * 60 * 60 * 24));
   }
 
+  /**
+   * Shifts the date to last of that quarter.
+   *
+   * @param date given date
+   * @return last date of the quarter.
+   */
   public static LocalDate getQuarterDate(LocalDate date) {
     int month = date.getMonthValue();
-    if (month < 3) date = date.plusMonths(3 - date.getMonthValue());
-    else if (month > 3 && month < 6) date = date.plusMonths(6 - date.getMonthValue());
-    else if (month > 6 && month < 9) date = date.plusMonths(9 - date.getMonthValue());
-    else if (month > 9 && month < 12) date = date.plusMonths(12 - date.getMonthValue());
+    if (month < 3) {
+      date = date.plusMonths(3 - date.getMonthValue());
+    } else if (month > 3 && month < 6) {
+      date = date.plusMonths(6 - date.getMonthValue());
+    } else if (month > 6 && month < 9) {
+      date = date.plusMonths(9 - date.getMonthValue());
+    } else if (month > 9 && month < 12) {
+      date = date.plusMonths(12 - date.getMonthValue());
+    }
     return date;
   }
 
+  /**
+   * Shifts the date to last of the given range.
+   *
+   * @param shiftType type of range
+   * @param date      date to be shifted.
+   * @return shifted date.
+   */
   public static String shiftDateToValidStartPoint(String shiftType, String date) {
     String shiftedDate = null;
     LocalDate dateObj = LocalDate.parse(date);
@@ -509,13 +532,33 @@ public class Utils {
   }
 
 
-  public static boolean datesValidationForGraph(String date1, String date2 , String creationDate) {
+  /**
+   * date validation for graph.
+   *
+   * @param date1        starting date
+   * @param date2        ending date.
+   * @param creationDate creation date of portfolio.
+   * @return true if dates are valid
+   */
+  public static boolean datesValidationForGraph(String date1, String date2, String creationDate) {
     LocalDate start = LocalDate.parse(date1);
     LocalDate end = LocalDate.parse(date2);
-    return !end.isBefore(start) && !start.isBefore(LocalDate.parse(creationDate)) && !end.isAfter(LocalDate.now());
+    return !end.isBefore(start) && !start.isBefore(LocalDate.parse(creationDate)) && !end.isAfter(
+        LocalDate.now());
   }
 
-  public static AbstractMap.SimpleEntry<List<String>, List<Double>> getScaledPerfData(String date1, String date2, String type , PortfolioFlex p) throws Exception {
+  /**
+   * Scales the date to the asked range.
+   *
+   * @param date1 starting date.
+   * @param date2 ending date.
+   * @param type  type of the range.
+   * @param p     object of portfolio.
+   * @return Abstract map of labels and dataPoints.
+   * @throws Exception if dates are not valid.
+   */
+  public static AbstractMap.SimpleEntry<List<String>, List<Double>> getScaledPerfData(String date1,
+      String date2, String type, PortfolioFlex p) throws Exception {
     List<Double> datapoints = new ArrayList<>();
     List<String> labels = new ArrayList<>();
     LocalDate start = LocalDate.parse(date1);
@@ -530,12 +573,15 @@ public class Utils {
         break;
       case "weekly":
         while (!start.isAfter(end)) {
-          String week = start.getMonth().toString().substring(0, 3) + " Week " + (start.getDayOfMonth() / 7 + 1);
+          String week =
+              start.getMonth().toString().substring(0, 3) + " Week " + (start.getDayOfMonth() / 7
+                  + 1);
           labels.add(week);
           datapoints.add(p.getValueOnDate(start.toString()));
           start = start.plusWeeks(1);
         }
-        labels.add(end.getMonth().toString().substring(0, 3) + " Week " + (end.getDayOfMonth() / 7 + 1));
+        labels.add(
+            end.getMonth().toString().substring(0, 3) + " Week " + (end.getDayOfMonth() / 7 + 1));
         datapoints.add(p.getValueOnDate(end.toString()));
         break;
       case "monthly":
@@ -556,7 +602,7 @@ public class Utils {
           datapoints.add(p.getValueOnDate(start.toString()));
           start = start.plusMonths(3);
         }
-        labels.add("Qtr" + (int)Math.ceil((double)end.getMonthValue() / 3) + " " + end.getYear());
+        labels.add("Qtr" + (int) Math.ceil((double) end.getMonthValue() / 3) + " " + end.getYear());
         datapoints.add(p.getValueOnDate(end.toString()));
         break;
       case "yearly":

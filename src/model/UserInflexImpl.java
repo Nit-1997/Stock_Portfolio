@@ -186,6 +186,4 @@ public class UserInflexImpl extends AbstractUser implements UserInflex {
   }
 
 
-
-
 }

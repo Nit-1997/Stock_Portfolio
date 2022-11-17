@@ -5,9 +5,19 @@ import java.util.Scanner;
 import model.UserFlex;
 import view.ViewPrint;
 
+/**
+ * Asks date.
+ */
 public class AskDate {
 
-  public static String addStocksAskDate(Scanner scan, PrintStream out, UserFlex user){
+  /**
+   * Asks dates for stocks.
+   *
+   * @param scan input object.
+   * @param user model object.
+   * @param out  output object.
+   */
+  public static String addStocksAskDate(Scanner scan, PrintStream out, UserFlex user) {
     ViewPrint.askDate(out);
     String date = scan.nextLine();
     while (!user.dateChecker(date)) {

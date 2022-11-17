@@ -4,6 +4,9 @@ import constants.Constants;
 import java.util.Set;
 import utils.Utils;
 
+/**
+ * Abstract User class containing all common functions implementations.
+ */
 public abstract class AbstractUser implements User {
 
   @Override

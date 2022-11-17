@@ -1,11 +1,12 @@
 package model;
 
-import java.io.IOException;
-import java.util.AbstractMap;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Interface for all the new functions required for flexible portfolio.
+ */
 public interface UserFlex extends User {
 
   /**
@@ -16,7 +17,7 @@ public interface UserFlex extends User {
    * @return true if added , false otherwise
    */
   boolean addPortfolio(String name, Map<String, Map<String, SimpleEntry<Double, Double>>> stocksMap)
-      throws IOException;
+      throws Exception;
 
   /**
    * Fetches the portfolio summary for a given portfolio.
@@ -56,21 +57,41 @@ public interface UserFlex extends User {
    * Buys a stock for a portfolio on a given date.
    *
    * @param portfolioName name of the portfolio
-   * @param newStock      stock that needs to be added {ticker symbol, date, quantity, commission fee}
+   * @param newStock      stock that needs to be added {ticker symbol, date, quantity, commission
+   *                      fee}
    * @return true if successfully added.
    */
-  boolean transactionForPortfolio(String portfolioName, SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newStock)
-      throws IOException;
+  boolean transactionForPortfolio(String portfolioName,
+      SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newStock)
+      throws Exception;
 
 
   /**
-   * Determine total money invested in portfolio (all purchases + total transactions*commission fee) till the given date.
+   * Determine total money invested in portfolio (all purchases + total transactions*commission fee)
+   * till the given date.
+   *
    * @param date date for which getBasis required.
    * @return Total Money Invested.
    */
   Double getCostBasis(String portfolioName, String date);
 
+  /**
+   * Checks the starting and ending dates for the performance graph.
+   *
+   * @param date1 starting date.
+   * @param date2 ending date.
+   * @return true if the range is valid else false.
+   */
+  boolean graphDateChecker(String date1, String date2, String portfolioName);
 
-  SimpleEntry<List<String>,SimpleEntry<List<Integer>,Integer>> getGraphData(String date1, String date2, String portfolioName);
-
+  /**
+   * Returns the data for plotting the performance graph.
+   *
+   * @param date1         starting date for graph.
+   * @param date2         ending date for graph.
+   * @param portfolioName name of the portfolio for which graph to be printed.
+   * @return {Labels List, DataPoints List, Scale, baseAmount}
+   */
+  SimpleEntry<SimpleEntry<List<String>, List<Integer>>, SimpleEntry<Integer, Double>> getGraphData(
+      String date1, String date2, String portfolioName);
 }

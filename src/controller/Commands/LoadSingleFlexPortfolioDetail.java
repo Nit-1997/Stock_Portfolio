@@ -7,9 +7,19 @@ import java.util.Scanner;
 import model.UserFlex;
 import view.ViewPrint;
 
+/**
+ * Class for loading and taking input for single portfolio menu.
+ */
 public class LoadSingleFlexPortfolioDetail {
-
-  public static void loadSinglePortfolioDetailController(Scanner scan, UserFlex user, PrintStream out)  {
+  /**
+   * loading and taking input for single portfolio menu.
+   *
+   * @param scan input object.
+   * @param user model object.
+   * @param out  output object.
+   */
+  public static void loadSinglePortfolioDetailController(Scanner scan, UserFlex user,
+      PrintStream out) {
     ViewPrint.askNameOfPortfolio(out);
     String portfolioName = scan.nextLine();
     while (user.isUniqueName(portfolioName)) {
@@ -27,33 +37,33 @@ public class LoadSingleFlexPortfolioDetail {
     do {
       switch (option) {
         case "1":
-          PortfolioSummary.getPortfolioSummary(scan,out,user,portfolioName);
+          PortfolioSummary.getPortfolioSummary(scan, out, user, portfolioName);
           break;
         case "2":
           String date = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
-          PortfolioValue.getPortfolioValue(portfolioName,date,out,user);
+          PortfolioValue.getPortfolioValue(portfolioName, date, out, user);
           break;
         case "3":
           date = AskDate.addStocksAskDate(scan, out, user);
           if (date == null) {
             return;
           }
-          PortfolioValue.getPortfolioValue(portfolioName,date,out,user);
+          PortfolioValue.getPortfolioValue(portfolioName, date, out, user);
           break;
-        case "4" :
-          BuyStock.buyStockToPortfolio(portfolioName,scan,user,out);
+        case "4":
+          BuyStock.buyStockToPortfolio(portfolioName, scan, user, out);
           break;
-        case "5" :
-          SellStock.sellStockFromPortfolio(portfolioName,scan,user,out);
+        case "5":
+          SellStock.sellStockFromPortfolio(portfolioName, scan, user, out);
           break;
-        case "6" :
+        case "6":
           CostBasis.calculateCostBasis(scan, out, user, portfolioName);
           break;
-        case "7" :
+        case "7":
           PerformanceGraph.plotGraph(scan, out, user, portfolioName);
           break;
-        case "8" :
-          LoadFlexPortfolio.loadPortfoliosController(scan, user,out);
+        case "8":
+          LoadFlexPortfolio.loadPortfoliosController(scan, user, out);
           return;
         case "9":
           return;
@@ -67,8 +77,7 @@ public class LoadSingleFlexPortfolioDetail {
         option = scan.nextLine().trim();
       }
       comingFromDefault = false;
-    }
-    while (!option.equals("9"));
+    } while (!option.equals("9"));
 
   }
 

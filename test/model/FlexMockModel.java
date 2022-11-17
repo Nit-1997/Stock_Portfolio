@@ -82,15 +82,21 @@ public class FlexMockModel implements UserFlex{
   }
 
   @Override
-  public SimpleEntry<List<String>, SimpleEntry<List<Integer>, Integer>> getGraphData(String date1,
-      String date2, String portfolioName) {
+  public boolean graphDateChecker(String date1, String date2, String portfolioName) {
+    log.append("start date : "+date1+" end date : "+date2+" for portfolio: "+portfolioName);
+    return true;
+  }
+
+  @Override
+  public SimpleEntry<SimpleEntry<List<String>,List<Integer>>,SimpleEntry<Integer,Double>>
+  getGraphData(String date1, String date2, String portfolioName) {
     log.append("get graph data for "+portfolioName+" from "+date1+" to date "+date2);
 
     List<String> labels = new ArrayList<>(Arrays.asList(
         new String[]{"JAN 2022", "FEB 2022", "MAR 2022", "APR 2022", "MAY 2022"}));
 
     List<Integer> starPoints = new ArrayList<>(Arrays.asList(new Integer[]{7,9,16,28,5}));
-    return new SimpleEntry<>(labels,new SimpleEntry<>(starPoints,235));
+    return new SimpleEntry<>(new SimpleEntry<>(labels,starPoints),new SimpleEntry<>(235,0.0));
   }
 
   @Override

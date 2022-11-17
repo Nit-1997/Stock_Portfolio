@@ -1,7 +1,5 @@
 package model;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 
@@ -12,14 +10,12 @@ import java.util.Set;
 public interface User {
 
 
-
   /**
    * Returns List of Portfolios.
    *
    * @return list of portfolis
    */
   public Set<String> getPortfolios();
-
 
 
   /**

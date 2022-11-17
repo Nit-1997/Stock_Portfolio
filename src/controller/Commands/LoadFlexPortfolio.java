@@ -6,8 +6,18 @@ import java.util.Set;
 import model.UserFlex;
 import view.ViewPrint;
 
+/**
+ * Class for main menu of the load controller.
+ */
 public class LoadFlexPortfolio {
 
+  /**
+   * main menu of the view controller.
+   *
+   * @param scan input object.
+   * @param user model object.
+   * @param out  output object.
+   */
   public static void loadPortfoliosController(Scanner scan, UserFlex user, PrintStream out) {
     Set<String> portfolioNames = user.getPortfolios();
     if (portfolioNames != null) {

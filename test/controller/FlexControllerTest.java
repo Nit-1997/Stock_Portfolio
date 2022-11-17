@@ -228,8 +228,8 @@ public class FlexControllerTest {
             + "----------------------------------------------------------------------\n"
             + "  Ticker Symbol        Quantity         Last Transaction Date\n"
             + " ----------------------------------------------------------------------\n"
-            + "        MSFT          2013-06-18                  10.00\n"
-            + "        AAPL          2016-03-29                  17.00\n"
+            +"        MSFT                  10.00          2013-06-18\n"
+            + "        AAPL                  17.00          2016-03-29\n"
             + "------------------------------------------------------------------------\n"+
         ViewConstants.ADD_STOCKS_IN_PORTFOLIO_ASK_TICKER_SYMBOL+
         ViewConstants.ADD_STOCKS_IN_PORTFOLIO_ASK_STOCK_NUMBER+
@@ -256,8 +256,8 @@ public class FlexControllerTest {
         + "----------------------------------------------------------------------\n"
         + "  Ticker Symbol        Quantity         Last Transaction Date\n"
         + " ----------------------------------------------------------------------\n"
-        + "        MSFT          2013-06-18                  10.00\n"
-        + "        AAPL          2016-03-29                  17.00\n"
+        +"        MSFT                  10.00          2013-06-18\n"
+        +"        AAPL                  17.00          2016-03-29\n"
         + "------------------------------------------------------------------------\n"+
         ViewConstants.ADD_STOCKS_IN_PORTFOLIO_ASK_TICKER_SYMBOL+
         ViewConstants.ADD_STOCKS_IN_PORTFOLIO_ASK_STOCK_NUMBER+
@@ -298,10 +298,12 @@ public class FlexControllerTest {
     assertEquals(ViewConstants.ASK_NAME_OF_PORTFOLIO+
         "For the portfolio: flexControllerTest\n"+
         ViewConstants.LOAD_FLEX_PORTFOLIO_DETAIL_MENU+
+        ViewConstants.WAIT_LOAD_MESSAGE+
         ViewConstants.ASK_START_DATE_FOR_GRAPH+
         ViewConstants.ASK_DATE+
         ViewConstants.ASK_END_DATE_FOR_GRAPH+
-        ViewConstants.ASK_DATE+"\n"+
+        ViewConstants.ASK_DATE+
+        ViewConstants.WAIT_LOAD_MESSAGE+"\n"+
         "\t\tPerformance of portfolio flexControllerTest from 2022-01-01 to 2022-06-06\n"
         + "\tJAN 2022 : * * * * * * * \n"
         + "\tFEB 2022 : * * * * * * * * * \n"
@@ -312,8 +314,9 @@ public class FlexControllerTest {
         + "\t Scale : * = $235"+"\n\n"+
         ViewConstants.LOAD_FLEX_PORTFOLIO_DETAIL_MENU,bytes.toString());
 
-    assertEquals("unique name checker"+"checking the date 2022-01-01"+
-        "checking the date 2022-06-06"+
+    assertEquals("unique name checker"+"get portfolio creation date for flexController"+
+        "Testchecking the date 2022-01-01"+"checking the date 2022-06-06"+
+        "start date : 2022-01-01 end date : 2022-06-06 for portfolio: flexControllerTest"+
         "get graph data for flexControllerTest from 2022-01-01 to date 2022-06-06",log.toString());
   }
 

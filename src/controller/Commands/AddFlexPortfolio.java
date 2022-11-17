@@ -10,8 +10,18 @@ import java.util.Set;
 import model.UserFlex;
 import view.ViewPrint;
 
+/**
+ * Controller Class for creating flexible portfolio.
+ */
 public class AddFlexPortfolio {
 
+  /**
+   * Adds stocks to the portfolio for creation.
+   *
+   * @param scan input object.
+   * @param user model object.
+   * @param out  output object.
+   */
   public static void addStocksToPortfolioController(Scanner scan, UserFlex user, PrintStream out) {
     ViewPrint.addPortfolio(out);
     String name = scan.nextLine();
@@ -123,7 +133,7 @@ public class AddFlexPortfolio {
     while (confirmation.equals("y") || confirmation.equals("Y"));
 
     ViewPrint.waitMessage(out);
-    boolean val = false;
+    boolean val;
 
     try {
       val = user.addPortfolio(name, stocksMap);
@@ -132,8 +142,8 @@ public class AddFlexPortfolio {
       } else {
         ViewPrint.unsuccessfulPortolioCreationMsg(out);
       }
-    } catch (IOException e) {
-      out.println("\n"+e.getMessage().substring(e.getMessage().indexOf(": ")+1));
+    } catch (Exception e) {
+      ViewPrint.printError(e,out);
       ViewPrint.unsuccessfulPortolioCreationMsg(out);
     }
   }

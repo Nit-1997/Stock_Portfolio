@@ -4,8 +4,17 @@ import java.io.PrintStream;
 import java.util.Scanner;
 import view.ViewPrint;
 
+/**
+ * Asks commission fee for each transaction.
+ */
 public class AskCommissionFees {
 
+  /**
+   * Adds commission fee for each transction.w
+   *
+   * @param scan input object.
+   * @param out  output object.
+   */
   public static Double AskCommissionFees(Scanner scan, PrintStream out) {
     ViewPrint.askCommissionFee(out);
     String commFee = scan.nextLine();

@@ -6,9 +6,21 @@ import java.util.Scanner;
 import model.UserFlex;
 import view.ViewPrint;
 
+/**
+ * Class for summary of the portfolio.
+ */
 public class PortfolioSummary {
 
-  public static void getPortfolioSummary(Scanner scan, PrintStream out, UserFlex user, String portfolioName){
+  /**
+   * prints the portfolio summary.
+   *
+   * @param scan          input object.
+   * @param user          model object.
+   * @param out           output object.
+   * @param portfolioName name of the portfolio.
+   */
+  public static void getPortfolioSummary(Scanner scan, PrintStream out, UserFlex user,
+      String portfolioName) {
     ViewPrint.waitLoadMessage(out);
     String date = AskDate.addStocksAskDate(scan, out, user);
     if (date == null) {
@@ -16,8 +28,13 @@ public class PortfolioSummary {
     }
     Map<String, Double> stockMap = user.getPortfolioSummary(portfolioName, date);
 
-    if(user.isBeforeDate(date,user.getPortfolioCreationDate(portfolioName))){
-      ViewPrint.wrongDateBeforePortfolioCreation(out);
+    String creationDate = user.getPortfolioCreationDate(portfolioName);
+    if (creationDate == null) {
+      ViewPrint.printInCompatiblePortfolio(out);
+      return;
+    }
+    if (user.isBeforeDate(date, creationDate)) {
+      System.out.println("Date entered is before portfolio creation date ( " + creationDate + " )");
       return;
     }
 

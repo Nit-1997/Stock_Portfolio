@@ -7,7 +7,7 @@ import model.UserFlexImpl;
 import model.UserInflexImpl;
 import view.ViewPrint;
 
-public class WelcomeController implements StockController{
+public class WelcomeController implements StockController {
 
   final InputStream in;
   final PrintStream out;
@@ -24,7 +24,7 @@ public class WelcomeController implements StockController{
   }
 
   @Override
-  public void start() throws Exception {
+  public void start() {
     Scanner scan = new Scanner(this.in);
     ViewPrint.welcomeNote(this.out);
 
@@ -40,13 +40,16 @@ public class WelcomeController implements StockController{
         ViewPrint.welcomeMenu(this.out);
       }
       comingFromDefault = false;
+      CategoryControllerInterface obj;
       option = scan.nextLine();
       switch (option) {
         case "1":
-          new FlexController(System.in, System.out).start(new UserFlexImpl());
+          obj = new FlexController(System.in, System.out);
+          obj.start(new UserFlexImpl());
           break;
         case "2":
-          new InflexController(System.in, System.out).start(new UserInflexImpl());
+          obj = new InflexController(System.in, System.out);
+          obj.start(new UserInflexImpl());
           break;
         case "0":
           new UserInflexImpl().cleanStockDirectory();

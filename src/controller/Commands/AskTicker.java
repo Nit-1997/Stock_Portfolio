@@ -5,6 +5,9 @@ import java.util.Scanner;
 import model.UserFlex;
 import view.ViewPrint;
 
+/**
+ * Class for asking stock symbol.
+ */
 public class AskTicker {
 
   /**
@@ -25,8 +28,7 @@ public class AskTicker {
       if (!user.isValidStock(ticker)) {
         ViewPrint.askTickerSymbolAgain(out);
       }
-    }
-    while (!user.isValidStock(ticker));
+    } while (!user.isValidStock(ticker));
     return ticker;
   }
 

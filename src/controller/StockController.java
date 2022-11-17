@@ -1,7 +1,13 @@
 package controller;
 
+/**
+ * Main controller interface.
+ */
 public interface StockController {
 
-  void start() throws Exception;
+  /**
+   * Starter for the application.
+   */
+  void start();
 
 }

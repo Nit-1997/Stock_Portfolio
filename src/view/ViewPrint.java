@@ -18,15 +18,15 @@ public class ViewPrint {
     out.println(ViewConstants.WELCOME_MESSAGE);
   }
 
-  public static final void welcomeMenu(PrintStream out){
+  public static final void welcomeMenu(PrintStream out) {
     out.print(ViewConstants.WELCOME_MENU);
   }
 
-  public static final void flexiblePortfolioHeader(PrintStream out){
+  public static final void flexiblePortfolioHeader(PrintStream out) {
     out.print(ViewConstants.FLEXIBLE_PORTFOLIO_HEADER);
   }
 
-  public static final void flexPortfolioExitMsg(PrintStream out){
+  public static final void flexPortfolioExitMsg(PrintStream out) {
     out.print(ViewConstants.FLEX_PORTFOLIO_EXIT_MSG);
   }
 
@@ -61,10 +61,11 @@ public class ViewPrint {
 
   /**
    * print available stocks.
+   *
    * @param stockList list of stocks.
    */
   public static final void printAvailableStocks(Set<String> stockList) {
-    System.out.println("List of available stocks : ");
+    System.out.print("\nList of available stocks : ");
     System.out.println("---------------NASDAQ 100---------------");
     //    int i = 0;
     //    for (String stockName : stockList) {
@@ -93,11 +94,11 @@ public class ViewPrint {
     out.print(ViewConstants.ASK_STOCK_NUMBER_AGAIN);
   }
 
-  public static final void askCommissionFee(PrintStream out){
+  public static final void askCommissionFee(PrintStream out) {
     out.print(ViewConstants.ASK_COMMISSION_FEE);
   }
 
-  public static final void askCommissionFeeAgain(PrintStream out){
+  public static final void askCommissionFeeAgain(PrintStream out) {
     out.print(ViewConstants.ASK_COMMISSION_FEE_AGAIN);
   }
 
@@ -133,15 +134,16 @@ public class ViewPrint {
     out.print(ViewConstants.ADD_STOCKS_IN_PORTFOLIO_ERROR_NOTE);
   }
 
-  public static final void unsuccessfulPortolioCreationMsg(PrintStream out){
+  public static final void unsuccessfulPortolioCreationMsg(PrintStream out) {
     out.print(ViewConstants.UNSUCCESSFUL_PORTFOLIO_CREATION_MSG);
   }
 
 
   /**
    * print portfolios.
+   *
    * @param portfolioNames portfolio names
-   * @param out out stream.
+   * @param out            out stream.
    */
   public static final void printPortfolios(Set<String> portfolioNames, PrintStream out) {
     out.println();
@@ -175,7 +177,7 @@ public class ViewPrint {
     out.print(ViewConstants.LOAD_PORTFOLIO_DETAIL_MENU);
   }
 
-  public static final void loadFlexPortfolioDetailMenu(PrintStream out){
+  public static final void loadFlexPortfolioDetailMenu(PrintStream out) {
     out.print(ViewConstants.LOAD_FLEX_PORTFOLIO_DETAIL_MENU);
   }
 
@@ -191,23 +193,23 @@ public class ViewPrint {
     out.print(ViewConstants.ASK_DATE_AGAIN);
   }
 
-  public static final void wrongDateMsg(PrintStream out){
+  public static final void wrongDateMsg(PrintStream out) {
     out.print(ViewConstants.WRONG_DATE_MSG);
   }
 
-  public static final void wrongDateBeforeLastTx(PrintStream out){
+  public static final void wrongDateBeforeLastTx(PrintStream out) {
     out.print(ViewConstants.WRONG_DATE_BEFORE_LAST_TX);
   }
 
-  public static final void wrongDateBeforePortfolioCreation(PrintStream out){
+  public static final void wrongDateBeforePortfolioCreation(PrintStream out) {
     out.print(ViewConstants.WRONG_DATE_BEFORE_PORTFOLIO_CREATION);
   }
 
-  public static final void successfulTransaction(PrintStream out){
+  public static final void successfulTransaction(PrintStream out) {
     out.print(ViewConstants.SUCCESSFUL_TRANSACTION);
   }
 
-  public static final void unSuccessfulTransaction(PrintStream out){
+  public static final void unSuccessfulTransaction(PrintStream out) {
     out.print(ViewConstants.UNSUCCESSFUL_TRANSACTION);
   }
 
@@ -215,22 +217,23 @@ public class ViewPrint {
     out.print(ViewConstants.PRINT_INCOMPATIBLE_PORTFOLIO);
   }
 
-  public static final void stockNotInPortfolioMsg(PrintStream out){
+  public static final void stockNotInPortfolioMsg(PrintStream out) {
     out.print(ViewConstants.STOCK_NOT_IN_PORTFOLIO_MSG);
   }
 
-  public static final void stockLessThanInPortfolio(PrintStream out){
+  public static final void stockLessThanInPortfolio(PrintStream out) {
     out.print(ViewConstants.STOCK_LESS_THAN_IN_PORTFOLIO);
   }
 
-  public static final void printCostBasis(Double cost, PrintStream out){
-    out.println("\nCost basis of the portfolio till the given date : $"+cost);
+  public static final void printCostBasis(Double cost, PrintStream out) {
+    out.println("\nCost basis of the portfolio till the given date : $" + cost);
   }
 
-  public static final void printPortfolioState(Map<String, SimpleEntry<String, Double>> map,String portfolioCreationDate, PrintStream out) {
+  public static final void printPortfolioState(Map<String, SimpleEntry<String, Double>> map,
+      String portfolioCreationDate, PrintStream out) {
     final DecimalFormat df = new DecimalFormat("0.00");
-    if(portfolioCreationDate!=null){
-      out.printf("%35s %15s", "Portfolio creation date",portfolioCreationDate);
+    if (portfolioCreationDate != null) {
+      out.printf("%35s %15s", "Portfolio creation date", portfolioCreationDate);
     }
     out.println();
     out.println(
@@ -242,8 +245,8 @@ public class ViewPrint {
     );
     for (String key : map.keySet()) {
       out.format("%12s", key);
-      out.format("%20s", map.get(key).getKey());
       out.format("%23s", df.format(map.get(key).getValue()));
+      out.format("%20s", map.get(key).getKey());
       out.println();
     }
     out.println(
@@ -252,8 +255,9 @@ public class ViewPrint {
 
   /**
    * print portfolio summary.
+   *
    * @param stockMap map of stocks
-   * @param out out stream.
+   * @param out      out stream.
    */
   public static final void printPortfolioSummary(Map<String, Double> stockMap, PrintStream out) {
     out.printf("%40s", "Table for portfolio summary");
@@ -272,9 +276,10 @@ public class ViewPrint {
 
   /**
    * print portfolio detail.
-   * @param mapDetail map detail.
+   *
+   * @param mapDetail      map detail.
    * @param portfolioValue portfolio value
-   * @param out out stream.
+   * @param out            out stream.
    */
   public static final void printPortfolioDetail(Map<String, List<Double>> mapDetail,
       double portfolioValue, PrintStream out) {
@@ -301,14 +306,15 @@ public class ViewPrint {
         "-------------------------------------------------------------------------------------"
             + "-----");
     out.printf("%60s", "Value of the portfolio on that day: ");
-    out.println("$"+df.format(portfolioValue));
+    out.println("$" + df.format(portfolioValue));
 
   }
 
   /**
    * print portfolio performance.
+   *
    * @param portfolioPnL pnl of portfolio.
-   * @param out out stream.
+   * @param out          out stream.
    */
   public static final void printPortfolioPerformance(Double portfolioPnL, PrintStream out) {
     final DecimalFormat df = new DecimalFormat("0.00");
@@ -326,8 +332,9 @@ public class ViewPrint {
 
   /**
    * print portfolio value.
+   *
    * @param portfolioValue portfolio value.
-   * @param out out stream.
+   * @param out            out stream.
    */
   public static final void printPortfolioValue(Double portfolioValue, PrintStream out) {
 
@@ -340,29 +347,44 @@ public class ViewPrint {
     out.print(ViewConstants.LOAD_PORTFOLIO_ERROR_NOTE);
   }
 
-  public static final void askStartDateForGraph(PrintStream out){
+  public static final void askStartDateForGraph(PrintStream out) {
     out.print(ViewConstants.ASK_START_DATE_FOR_GRAPH);
   }
 
-  public static final void askEndDateForGraph(PrintStream out){
+  public static final void askEndDateForGraph(PrintStream out) {
     out.print(ViewConstants.ASK_END_DATE_FOR_GRAPH);
   }
 
-  public static final void graphInvalidRange(PrintStream out){
+  public static final void graphInvalidRange(PrintStream out) {
     out.print(ViewConstants.GRAPH_INVALID_RANGE);
   }
 
   public static final void printGraph(PrintStream out, String date1, String date2,
-      String portfolioName,List<String> labels, List<Integer> starPoints, int scale){
-    out.println("\n\t\tPerformance of portfolio "+portfolioName+" from "+date1+" to "+date2);
+      String portfolioName, List<String> labels, List<Integer> starPoints, int scale,
+      double baseAmount) {
+    out.println(
+        "\n\t\tPerformance of portfolio " + portfolioName + " from " + date1 + " to " + date2);
 
-    for(int i=0;i<labels.size();i++){
-      out.print("\t"+labels.get(i)+" : ");
-      for(int star=0;star<starPoints.get(i);star++)out.print("* ");
+    for (int i = 0; i < labels.size(); i++) {
+      out.print("\t" + labels.get(i) + " : ");
+      for (int star = 0; star < starPoints.get(i); star++) {
+        out.print("* ");
+      }
       out.println();
     }
 
-    out.println("\n\t Scale : * = $"+scale+"\n");
+    if (baseAmount == 0) {
+      out.println("\n\t Scale : * = $" + scale + "\n");
+    } else {
+      out.println("\n\t\tone * is $" + scale + " more than a base amount of $" + new DecimalFormat(
+          "0.00").format(baseAmount));
+      out.println("\t\t(zero * approximates value to baseAmount)\n");
+    }
+
+  }
+
+  public static final void printError(Exception e, PrintStream out) {
+    out.println("\n" + e.getMessage().substring(e.getMessage().indexOf(": ") + 1));
   }
 
 }

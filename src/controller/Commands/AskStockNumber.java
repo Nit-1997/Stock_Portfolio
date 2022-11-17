@@ -4,6 +4,9 @@ import java.io.PrintStream;
 import java.util.Scanner;
 import view.ViewPrint;
 
+/**
+ * Class for asking stock quantity.
+ */
 public class AskStockNumber {
 
 

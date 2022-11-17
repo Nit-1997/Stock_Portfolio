@@ -1,7 +1,6 @@
 package model;
 
 import java.io.File;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.AbstractMap.SimpleEntry;
@@ -9,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import utils.Utils;
 
 public class PortfolioFlexImpl implements PortfolioFlex {
@@ -25,20 +23,30 @@ public class PortfolioFlexImpl implements PortfolioFlex {
    * @param name      name of the portfolio
    * @throws Exception while reading/writing data dump
    */
-  public PortfolioFlexImpl(Map<String, Map<String, SimpleEntry<Double, Double>>> stocksMap, String name) throws Exception {
+  public PortfolioFlexImpl(Map<String, Map<String, SimpleEntry<Double, Double>>> stocksMap,
+      String name) throws Exception {
     if (stocksMap == null || name == null) {
       throw new IllegalArgumentException("Null arguments to portfolio constructor");
     }
+
     this.stockOrders = new ArrayList<>();
     this.name = name;
 
     String portfolioCreationDate = null;
 
     for (String key : stocksMap.keySet()) {
+      if (key == null || stocksMap.get(key) == null) {
+        throw new IllegalArgumentException("Null arguments to portfolio constructor");
+      }
       if (!Utils.dataExists(key, "stock_data")) {
         Utils.loadStockData(key, "stock_data");
       }
       for (String k : stocksMap.get(key).keySet()) {
+        if (k == null || stocksMap.get(key).get(k) == null
+            || stocksMap.get(key).get(k).getKey() == null ||
+            stocksMap.get(key).get(k).getValue() == null) {
+          throw new IllegalArgumentException("Null arguments to portfolio constructor");
+        }
         if (portfolioCreationDate == null) {
           portfolioCreationDate = k;
         } else {
@@ -47,7 +55,8 @@ public class PortfolioFlexImpl implements PortfolioFlex {
             portfolioCreationDate = k;
           }
         }
-        this.stockOrders.add(new StockOrderImpl(key, stocksMap.get(key).get(k).getKey(), k, stocksMap.get(key).get(k).getValue()));
+        this.stockOrders.add(new StockOrderImpl(key, stocksMap.get(key).get(k).getKey(), k,
+            stocksMap.get(key).get(k).getValue()));
       }
     }
     this.creationDate = portfolioCreationDate;
@@ -66,9 +75,13 @@ public class PortfolioFlexImpl implements PortfolioFlex {
     if (portfolioName == null) {
       throw new IllegalArgumentException("Null arguments to portfolio constructor");
     }
-    List<StockOrder> tempStockOrders = Utils.loadPortfolioData(portfolioName, "portfolios" + File.separator + "flex");
-    if (!Utils.FlexPortfolioValidator(tempStockOrders)) this.stockOrders = null;
-    else this.stockOrders = tempStockOrders;
+    List<StockOrder> tempStockOrders = Utils.loadPortfolioData(portfolioName,
+        "portfolios" + File.separator + "flex");
+    if (tempStockOrders == null || !Utils.FlexPortfolioValidator(tempStockOrders)) {
+      this.stockOrders = null;
+    } else {
+      this.stockOrders = tempStockOrders;
+    }
     this.name = portfolioName;
     if (this.stockOrders == null) {
       return;
@@ -122,20 +135,51 @@ public class PortfolioFlexImpl implements PortfolioFlex {
   }
 
   @Override
-  public void addTransaction(SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newEntry) throws Exception {
-    if(newEntry == null){
+  public void addTransaction(
+      SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newEntry)
+      throws Exception {
+    if (newEntry == null || newEntry.getKey() == null || newEntry.getValue() == null ||
+        newEntry.getValue().getKey() == null || newEntry.getValue().getValue() == null ||
+        newEntry.getValue().getValue().getKey() == null
+        || newEntry.getValue().getValue().getValue() == null) {
       throw new IllegalArgumentException("Null Args passed");
     }
+    String ticker = newEntry.getKey();
+    String date = newEntry.getValue().getKey();
+    double stockQuanDouble = newEntry.getValue().getValue().getKey();
+    Map<String, SimpleEntry<String, Double>> state = this.getLatestState();
+
+    if (!state.containsKey(ticker) && stockQuanDouble < 0) {
+      throw new IllegalArgumentException("cannot sell non existing stock");
+    }
+    if (stockQuanDouble < 0 && state.get(ticker).getValue() < Math.abs(stockQuanDouble)) {
+      throw new IllegalArgumentException("cannot sell more than the available stocks");
+    }
+
     if (!Utils.dataExists(newEntry.getKey().toUpperCase(), "stock_data")) {
       Utils.loadStockData(newEntry.getKey().toUpperCase(), "stock_data");
     }
-    if(!Utils.dateChecker(newEntry.getValue().getKey())){
+    if (!Utils.dateChecker(newEntry.getValue().getKey())) {
       throw new IllegalArgumentException("Incorrect Date format");
     }
-    if(newEntry.getValue().getValue().getValue() < 0){
+    if (Utils.compareDates(newEntry.getValue().getKey(), this.getCreationDate()) < 0) {
+      throw new IllegalArgumentException(" Date before portfolio creation date");
+    }
+
+    if (state.containsKey(ticker) && Utils.compareDates(date, state.get(ticker).getKey()) < 0) {
+      throw new IllegalArgumentException(" Date before last transaction for asked stock");
+    }
+    if (newEntry.getValue().getValue().getValue() < 0) {
       throw new IllegalArgumentException("Commission Fee cannot be negative");
     }
-    StockOrder newOrder = new StockOrderImpl(newEntry.getKey(), newEntry.getValue().getValue().getKey(), newEntry.getValue().getKey(), newEntry.getValue().getValue().getValue());
+
+    if (stockQuanDouble != (int) stockQuanDouble) {
+      throw new IllegalArgumentException("Stock quantity wrong format.");
+    }
+
+    StockOrder newOrder = new StockOrderImpl(newEntry.getKey(),
+        newEntry.getValue().getValue().getKey(), newEntry.getValue().getKey(),
+        newEntry.getValue().getValue().getValue());
     this.stockOrders.add(newOrder);
     Utils.saveToFile(this.name, this.stockOrders, "portfolios" + File.separator + "flex");
   }
@@ -152,7 +196,9 @@ public class PortfolioFlexImpl implements PortfolioFlex {
     double totalVal = 0;
     Map<String, Double> summary = this.getPortfolioSummary(date);
     for (String ticker : summary.keySet()) {
-      totalVal += Double.parseDouble(Utils.fetchStockValueByDate(ticker, date, "stock_data")) * summary.get(ticker);
+      totalVal +=
+          Double.parseDouble(Utils.fetchStockValueByDate(ticker, date, "stock_data")) * summary.get(
+              ticker);
     }
     return totalVal;
   }
@@ -182,10 +228,10 @@ public class PortfolioFlexImpl implements PortfolioFlex {
 
   @Override
   public double getCostBasis(String date) throws Exception {
-    if(date == null){
+    if (date == null) {
       throw new IllegalArgumentException("Null dates passed");
     }
-    if(!Utils.dateChecker(date)){
+    if (!Utils.dateChecker(date)) {
       throw new IllegalArgumentException("Incorrect Date format");
     }
     double totalTrans = 0;
@@ -205,8 +251,11 @@ public class PortfolioFlexImpl implements PortfolioFlex {
   }
 
   @Override
-  public SimpleEntry<List<String>, List<Double>> getPerfDataOverTime(String date1, String date2) throws Exception {
-    if (!Utils.datesValidationForGraph(date1, date2,this.getCreationDate())) return null;
+  public SimpleEntry<List<String>, List<Double>> getPerfDataOverTime(String date1, String date2)
+      throws Exception {
+    if (!Utils.datesValidationForGraph(date1, date2, this.getCreationDate())) {
+      return null;
+    }
     long dayDiff = Utils.computeDaysBetweenDates(date1, date2);
     String type = "";
     if (dayDiff <= 30) {
@@ -224,7 +273,7 @@ public class PortfolioFlexImpl implements PortfolioFlex {
       type = "yearly";
       date1 = Utils.shiftDateToValidStartPoint(type, date1);
     }
-    return Utils.getScaledPerfData(date1, date2, type , this);
+    return Utils.getScaledPerfData(date1, date2, type, this);
   }
 
 }

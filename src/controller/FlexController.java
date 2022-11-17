@@ -2,7 +2,6 @@ package controller;
 
 import controller.Commands.AddFlexPortfolio;
 import controller.Commands.LoadFlexPortfolio;
-
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Objects;
@@ -10,7 +9,10 @@ import java.util.Scanner;
 import model.UserFlex;
 import view.ViewPrint;
 
-public class FlexController {
+/**
+ * Controller class for flexible portfolio model.
+ */
+public class FlexController implements CategoryControllerInterface<UserFlex> {
 
   final InputStream in;
   final PrintStream out;
@@ -26,6 +28,7 @@ public class FlexController {
     this.out = out;
   }
 
+  @Override
   public void start(UserFlex user) {
     Objects.requireNonNull(user);
     ViewPrint.flexiblePortfolioHeader(this.out);
@@ -42,7 +45,7 @@ public class FlexController {
       option = scan.nextLine();
       switch (option) {
         case "1":
-          AddFlexPortfolio.addStocksToPortfolioController(scan, user,this.out);
+          AddFlexPortfolio.addStocksToPortfolioController(scan, user, this.out);
           break;
         case "2":
           LoadFlexPortfolio.loadPortfoliosController(scan, user, this.out);
@@ -56,5 +59,4 @@ public class FlexController {
       }
     }
   }
-
 }
