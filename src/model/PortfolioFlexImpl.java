@@ -1,6 +1,7 @@
 package model;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.AbstractMap.SimpleEntry;
@@ -15,10 +16,11 @@ import utils.Utils;
  */
 public class PortfolioFlexImpl implements PortfolioFlex {
 
-  private final String name;
-  private final List<StockOrder> stockOrders;
-  private String creationDate;
+  protected String name;
+  protected List<StockOrder> stockOrders;
+  protected String creationDate;
 
+  protected PortfolioFlexImpl(){}
   /**
    * Creator constructor.
    *
@@ -139,8 +141,46 @@ public class PortfolioFlexImpl implements PortfolioFlex {
 
   @Override
   public void addTransaction(
-      SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newEntry)
+      SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newEntry, String date)
       throws Exception {
+
+    this.addTransactionChecker(newEntry, date);
+    this.addTransactionCheckerSpecialized(newEntry, date);
+
+    StockOrder newOrder = new StockOrderImpl(newEntry.getKey(),
+        newEntry.getValue().getValue().getKey(), newEntry.getValue().getKey(),
+        newEntry.getValue().getValue().getValue());
+    this.stockOrders.add(newOrder);
+    Utils.saveToFile(this.name, this.stockOrders, "portfolios" + File.separator + "flex");
+  }
+
+  @Override
+  public void addMultipleTransactions(
+      Map<String, SimpleEntry<String, SimpleEntry<Double, Double>>> entryMap) throws Exception {
+    for(String ticker: entryMap.keySet()){
+
+      this.addTransactionChecker(
+          new SimpleEntry<>(ticker, new SimpleEntry<>(entryMap.get(ticker).getKey(),
+              new SimpleEntry<>(entryMap.get(ticker).getValue().getKey(),
+                  entryMap.get(ticker).getValue().getValue()))), entryMap.get(ticker).getKey());
+
+
+      String date = entryMap.get(ticker).getKey();
+      Double amount = entryMap.get(ticker).getValue().getKey();
+      Double commFee = entryMap.get(ticker).getValue().getValue();
+
+      Double price = Double.parseDouble(Utils.fetchStockValueByDate(ticker, date, "stock_data"));
+
+      Double qty = amount/price;
+
+      StockOrder newOrder = new StockOrderImpl(ticker,price,date,qty,commFee);
+      this.stockOrders.add(newOrder);
+    }
+    Utils.saveToFile(this.name, this.stockOrders, "portfolios" + File.separator + "flex");
+  }
+
+  protected void addTransactionChecker(SimpleEntry<String, SimpleEntry<String,
+      SimpleEntry<Double, Double>>> newEntry, String paraDate) throws Exception{
     if (newEntry == null || newEntry.getKey() == null || newEntry.getValue() == null ||
         newEntry.getValue().getKey() == null || newEntry.getValue().getValue() == null ||
         newEntry.getValue().getValue().getKey() == null
@@ -149,42 +189,56 @@ public class PortfolioFlexImpl implements PortfolioFlex {
     }
     String ticker = newEntry.getKey();
     String date = newEntry.getValue().getKey();
+    double commFee = newEntry.getValue().getValue().getValue();
     double stockQuanDouble = newEntry.getValue().getValue().getKey();
-    Map<String, SimpleEntry<String, Double>> state = this.getLatestState();
+
+    Map<String, Double> state = this.getPortfolioSummary(paraDate);
 
     if (!state.containsKey(ticker) && stockQuanDouble < 0) {
       throw new IllegalArgumentException("cannot sell non existing stock");
     }
-    if (stockQuanDouble < 0 && state.get(ticker).getValue() < Math.abs(stockQuanDouble)) {
+    if (stockQuanDouble < 0 && state.get(ticker) < Math.abs(stockQuanDouble)) {
       throw new IllegalArgumentException("cannot sell more than the available stocks");
     }
 
-    if (!Utils.dataExists(newEntry.getKey().toUpperCase(), "stock_data")) {
-      Utils.loadStockData(newEntry.getKey().toUpperCase(), "stock_data");
+    if (state.containsKey(ticker) && stockQuanDouble<0 && Utils.compareDates(date, paraDate) < 0) {
+      throw new IllegalArgumentException(" Date before last transaction for selling stock");
     }
-    if (!Utils.dateChecker(newEntry.getValue().getKey())) {
+
+    if (!Utils.dataExists(ticker.toUpperCase(), "stock_data")) {
+      Utils.loadStockData(ticker.toUpperCase(), "stock_data");
+    }
+    if (!Utils.dateChecker(date)) {
       throw new IllegalArgumentException("Incorrect Date format");
     }
-    if (Utils.compareDates(newEntry.getValue().getKey(), this.getCreationDate()) < 0) {
+    if (Utils.compareDates(date, this.getCreationDate()) < 0) {
       throw new IllegalArgumentException(" Date before portfolio creation date");
     }
 
-    if (state.containsKey(ticker) && Utils.compareDates(date, state.get(ticker).getKey()) < 0) {
-      throw new IllegalArgumentException(" Date before last transaction for asked stock");
-    }
-    if (newEntry.getValue().getValue().getValue() < 0) {
+    if (commFee < 0) {
       throw new IllegalArgumentException("Commission Fee cannot be negative");
+    }
+
+  }
+
+  protected void addTransactionCheckerSpecialized(SimpleEntry<String, SimpleEntry<String,
+      SimpleEntry<Double, Double>>> newEntry, String paraDate) throws Exception {
+
+
+    String ticker = newEntry.getKey();
+    Map<String, SimpleEntry<String, Double>> state = this.getLatestState();
+
+    String dateCompare = paraDate.equals(LocalDate.now().toString()) ? state.get(ticker).getKey() : paraDate;
+    String date = newEntry.getValue().getKey();
+    double stockQuanDouble = newEntry.getValue().getValue().getKey();
+    if (state.containsKey(ticker) && Utils.compareDates(date,dateCompare ) < 0) {
+      throw new IllegalArgumentException(" Date before last transaction for asked stock");
     }
 
     if (stockQuanDouble != (int) stockQuanDouble) {
       throw new IllegalArgumentException("Stock quantity wrong format.");
     }
 
-    StockOrder newOrder = new StockOrderImpl(newEntry.getKey(),
-        newEntry.getValue().getValue().getKey(), newEntry.getValue().getKey(),
-        newEntry.getValue().getValue().getValue());
-    this.stockOrders.add(newOrder);
-    Utils.saveToFile(this.name, this.stockOrders, "portfolios" + File.separator + "flex");
   }
 
 

@@ -14,6 +14,8 @@ import java.util.Scanner;
 import model.MockModel;
 import org.junit.Before;
 import org.junit.Test;
+import view.IView;
+import view.ViewPrint;
 
 /**
  * Junit Class to test StockController.
@@ -27,18 +29,21 @@ public class InflexControllerTest {
   InputStream in;
   PrintStream out;
 
+  IView view;
+
   @Before
   public void init() {
     bytes = new ByteArrayOutputStream();
     out = new PrintStream(bytes);
     log = new StringBuilder();
     model = new MockModel(log);
+    view = new ViewPrint();
   }
 
   @Test
   public void testGo() throws Exception {
     in = new ByteArrayInputStream("0".getBytes());
-    controller = new InflexController(in, out);
+    controller = new InflexController(in, out,view);
     controller.start(model);
     assertEquals("", log.toString());
     assertEquals(ViewConstants.MENU_MESSAGE, bytes.toString());
@@ -47,7 +52,7 @@ public class InflexControllerTest {
   @Test
   public void testAddStocksAskTicker() {
     in = new ByteArrayInputStream("aapl\n".getBytes());
-    controller = new InflexController(in, out);
+    controller = new InflexController(in, out, view);
     String ticker = controller.addStocksAskTicker(new Scanner(in), model);
     assertEquals("Name of ticker is AAPLName of ticker is AAPL", log.toString());
     assertEquals(ViewConstants.ADD_STOCKS_IN_PORTFOLIO_ASK_TICKER_SYMBOL,
@@ -57,7 +62,7 @@ public class InflexControllerTest {
   @Test
   public void testAddStocksAskTicker2() {
     in = new ByteArrayInputStream("goog\naapl\n".getBytes());
-    controller = new InflexController(in, out);
+    controller = new InflexController(in, out, view);
     String ticker = controller.addStocksAskTicker(new Scanner(in), model);
     assertEquals(
         "Name of ticker is GOOGName of ticker is GOOGName of ticker is AAPLName of ticker "
@@ -70,7 +75,7 @@ public class InflexControllerTest {
   @Test
   public void testAddStocksAskStockNumber() {
     in = new ByteArrayInputStream("458.00\n".getBytes());
-    controller = new InflexController(in, out);
+    controller = new InflexController(in, out, view);
     Double stockQuan = controller.addStocksAskStockNumber(new Scanner(in));
     assertEquals(ViewConstants.ADD_STOCKS_IN_PORTFOLIO_ASK_STOCK_NUMBER,
         bytes.toString());
@@ -79,7 +84,7 @@ public class InflexControllerTest {
   @Test
   public void testAddStocksAskStockNumber2() {
     in = new ByteArrayInputStream("-458.28\n23\n".getBytes());
-    controller = new InflexController(in, out);
+    controller = new InflexController(in, out, view);
     Double stockQuan = controller.addStocksAskStockNumber(new Scanner(in));
     assertEquals(ViewConstants.ADD_STOCKS_IN_PORTFOLIO_ASK_STOCK_NUMBER
         + ViewConstants.ASK_STOCK_NUMBER_AGAIN, bytes.toString());
@@ -88,7 +93,7 @@ public class InflexControllerTest {
   @Test
   public void testAddStocksToPortfolioControllerOnce() throws Exception {
     in = new ByteArrayInputStream("test\naapl\n11.00\nn\n".getBytes());
-    controller = new InflexController(in, out);
+    controller = new InflexController(in, out, view);
     controller.addStocksToPortfolioController(new Scanner(in), model);
     assertEquals(
         "unique name checker" + "\nget stock list" + "Name of ticker is AAPLName of ticker "
@@ -106,7 +111,7 @@ public class InflexControllerTest {
   @Test
   public void testAddStocksToPortfolioControllerMultiple() throws Exception {
     in = new ByteArrayInputStream("test\naapl\n11.00\ny\n1\naapl\n4\nn\n".getBytes());
-    controller = new InflexController(in, out);
+    controller = new InflexController(in, out, view);
     controller.addStocksToPortfolioController(new Scanner(in), model);
     assertEquals("unique name checker\n"
         + "get stock listName of ticker is AAPLName of ticker is AAPLName of ticker is AAPLName of "
@@ -128,7 +133,7 @@ public class InflexControllerTest {
   @Test
   public void testAddStocksToPortfolioControllerAddRemove() throws Exception {
     in = new ByteArrayInputStream("test\naapl\n11.00\ny\n2\naapl\n4\nn\n".getBytes());
-    controller = new InflexController(in, out);
+    controller = new InflexController(in, out, view);
     controller.addStocksToPortfolioController(new Scanner(in), model);
     assertEquals("unique name checker\n"
         + "get stock listName of ticker is AAPLName of ticker is AAPLName of ticker is AAPLName of "
@@ -151,7 +156,7 @@ public class InflexControllerTest {
   @Test
   public void testLoadPortfoliosController() throws Exception {
     in = new ByteArrayInputStream("2\n".getBytes());
-    controller = new InflexController(in, out);
+    controller = new InflexController(in, out, view);
     controller.loadPortfoliosController(new Scanner(in), model);
     assertEquals("get Portfolios list", log.toString());
     assertEquals("\nYour portfolio lists : \n" + "* tech\n" +
@@ -162,7 +167,7 @@ public class InflexControllerTest {
   @Test
   public void testLoadSinglePortfolioDetailControllerSummary() throws Exception {
     in = new ByteArrayInputStream("techLoad\n1\n7\n".getBytes());
-    controller = new InflexController(in, out);
+    controller = new InflexController(in, out, view);
     controller.loadSinglePortfolioDetailController(new Scanner(in), model);
     assertEquals("unique name checker\n" + "getting portfolio summary for techLoad",
         log.toString());
@@ -181,7 +186,7 @@ public class InflexControllerTest {
   @Test
   public void testLoadSinglePortfolioDetailControllerCurrentDetail() throws Exception {
     in = new ByteArrayInputStream("techLoad\n2\n7\n".getBytes());
-    controller = new InflexController(in, out);
+    controller = new InflexController(in, out, view);
     controller.loadSinglePortfolioDetailController(new Scanner(in), model);
     String date = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
     assertEquals(
@@ -209,7 +214,7 @@ public class InflexControllerTest {
   @Test
   public void testLoadSinglePortfolioDetailControllerCurrentValue() throws Exception {
     in = new ByteArrayInputStream("techLoad\n3\n7\n".getBytes());
-    controller = new InflexController(in, out);
+    controller = new InflexController(in, out, view);
     controller.loadSinglePortfolioDetailController(new Scanner(in), model);
     String date = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
     assertEquals(
@@ -226,7 +231,7 @@ public class InflexControllerTest {
   @Test
   public void testLoadSinglePortfolioDetailControllerHostoricalDetail() throws Exception {
     in = new ByteArrayInputStream("techLoad\n4\n2022-02-26\n7\n".getBytes());
-    controller = new InflexController(in, out);
+    controller = new InflexController(in, out, view);
     controller.loadSinglePortfolioDetailController(new Scanner(in), model);
 
     assertEquals("unique name checkerchecking the date 2022-02-26\n"
@@ -254,7 +259,7 @@ public class InflexControllerTest {
   @Test
   public void testLoadSinglePortfolioDetailControllerHistoricalValue() throws Exception {
     in = new ByteArrayInputStream("techLoad\n5\n2022-02-26\n7\n".getBytes());
-    controller = new InflexController(in, out);
+    controller = new InflexController(in, out, view);
     controller.loadSinglePortfolioDetailController(new Scanner(in), model);
     assertEquals("unique name checkerchecking the date 2022-02-26\n"
         + "getting portfolio value for techLoad for the date 2022-02-26", log.toString());
@@ -268,7 +273,7 @@ public class InflexControllerTest {
   @Test
   public void testLoadSinglePortfolioDetailControllerReturnToList() throws Exception {
     in = new ByteArrayInputStream("techLoad\n6\n2\n".getBytes());
-    controller = new InflexController(in, out);
+    controller = new InflexController(in, out, view);
     controller.loadSinglePortfolioDetailController(new Scanner(in), model);
     assertEquals("unique name checkerget Portfolios list", log.toString());
     assertEquals(ViewConstants.ASK_NAME_OF_PORTFOLIO + "For the portfolio: techLoad\n"
@@ -279,7 +284,7 @@ public class InflexControllerTest {
   @Test
   public void testLoadSinglePortfolioDetailControllerReturnToMainMenu() throws Exception {
     in = new ByteArrayInputStream("techLoad\n7\n".getBytes());
-    controller = new InflexController(in, out);
+    controller = new InflexController(in, out, view);
     controller.loadSinglePortfolioDetailController(new Scanner(in), model);
     assertEquals("unique name checker", log.toString());
     assertEquals(ViewConstants.ASK_NAME_OF_PORTFOLIO + "For the portfolio: techLoad\n"

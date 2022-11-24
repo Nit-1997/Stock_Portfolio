@@ -2,7 +2,7 @@ package controller.commands;
 
 import java.io.PrintStream;
 import model.UserFlex;
-import view.ViewPrint;
+import view.IView;
 
 /**
  * Class for value of the portfolio.
@@ -18,12 +18,12 @@ public class PortfolioValue {
    * @param date          date for which value is required.
    */
   public static void getPortfolioValue(String portfolioName, String date, PrintStream out,
-      UserFlex user) {
-    ViewPrint.waitLoadMessage(out);
+      UserFlex user, IView view) {
+    view.waitLoadMessage(out);
     Double portfolioValue;
     String creationDate = user.getPortfolioCreationDate(portfolioName);
     if (creationDate == null) {
-      ViewPrint.printInCompatiblePortfolio(out);
+      view.printInCompatiblePortfolio(out);
       return;
     }
     if (user.isBeforeDate(date, creationDate)) {
@@ -33,10 +33,10 @@ public class PortfolioValue {
     }
 
     if (portfolioValue == null) {
-      ViewPrint.printInCompatiblePortfolio(out);
+      view.printInCompatiblePortfolio(out);
       return;
     }
-    ViewPrint.printPortfolioValue(portfolioValue, out);
+    view.printPortfolioValue(portfolioValue, out);
   }
 
 }

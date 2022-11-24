@@ -2,7 +2,7 @@ package controller.commands;
 
 import java.io.PrintStream;
 import java.util.Scanner;
-import view.ViewPrint;
+import view.IView;
 
 /**
  * Asks commission fee for each transaction.
@@ -16,8 +16,8 @@ public class AskCommissionFees {
    * @param out  output object.
    * @return commission fee.
    */
-  public static Double askCommissionFees(Scanner scan, PrintStream out) {
-    ViewPrint.askCommissionFee(out);
+  public static Double askCommissionFees(Scanner scan, PrintStream out, IView view) {
+    view.askCommissionFee(out);
     String commFee = scan.nextLine();
     double commFeesDouble = 0;
     do {
@@ -28,7 +28,7 @@ public class AskCommissionFees {
         }
 
       } catch (NumberFormatException e) {
-        ViewPrint.askCommissionFeeAgain(out);
+        view.askCommissionFeeAgain(out);
         commFee = scan.nextLine();
         if (commFee.equals("e")) {
           return null;

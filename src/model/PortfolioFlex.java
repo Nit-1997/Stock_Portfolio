@@ -42,7 +42,17 @@ public interface PortfolioFlex extends Portfolio {
    * @throws Exception if arguments are invalid.
    */
   void addTransaction(
-      SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newEntry)
+      SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newEntry, String date)
+      throws Exception;
+
+  /**
+   * Add multiple new transactions to the portfolio.
+   *
+   * @param entryMap Stock transaction Map of {Ticker Symbol, Transaction Date, Quantity} to be added
+   * @throws Exception if arguments are invalid.
+   */
+  void addMultipleTransactions(
+      Map<String, SimpleEntry<String, SimpleEntry<Double, Double>>> entryMap)
       throws Exception;
 
 
@@ -66,4 +76,6 @@ public interface PortfolioFlex extends Portfolio {
    */
   SimpleEntry<List<String>, List<Double>> getPerfDataOverTime(String date1, String date2)
       throws Exception;
+
+
 }

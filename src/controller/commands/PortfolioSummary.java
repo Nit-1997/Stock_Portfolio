@@ -4,7 +4,7 @@ import java.io.PrintStream;
 import java.util.Map;
 import java.util.Scanner;
 import model.UserFlex;
-import view.ViewPrint;
+import view.IView;
 
 /**
  * Class for summary of the portfolio.
@@ -20,9 +20,9 @@ public class PortfolioSummary {
    * @param portfolioName name of the portfolio.
    */
   public static void getPortfolioSummary(Scanner scan, PrintStream out, UserFlex user,
-      String portfolioName) {
-    ViewPrint.waitLoadMessage(out);
-    String date = AskDate.addStocksAskDate(scan, out, user);
+      String portfolioName, IView view) {
+    view.waitLoadMessage(out);
+    String date = AskDate.addStocksAskDate(scan, out, user, view);
     if (date == null) {
       return;
     }
@@ -30,7 +30,7 @@ public class PortfolioSummary {
 
     String creationDate = user.getPortfolioCreationDate(portfolioName);
     if (creationDate == null) {
-      ViewPrint.printInCompatiblePortfolio(out);
+      view.printInCompatiblePortfolio(out);
       return;
     }
     if (user.isBeforeDate(date, creationDate)) {
@@ -39,10 +39,10 @@ public class PortfolioSummary {
     }
 
     if (stockMap == null) {
-      ViewPrint.printInCompatiblePortfolio(out);
+      view.printInCompatiblePortfolio(out);
       return;
     }
-    ViewPrint.printPortfolioSummary(stockMap, out);
+    view.printPortfolioSummary(stockMap, out);
   }
 
 }

@@ -55,7 +55,7 @@ public interface UserFlex extends User {
   boolean isBeforeDate(String firstDate, String secondDate);
 
   /**
-   * Buys a stock for a portfolio on a given date.
+   * Transaction of a stock for a portfolio on a given date.
    *
    * @param portfolioName name of the portfolio
    * @param newStock      stock that needs to be added {ticker symbol, date, quantity, commission

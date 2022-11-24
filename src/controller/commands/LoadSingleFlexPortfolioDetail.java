@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import model.UserFlex;
-import view.ViewPrint;
+import view.IView;
 
 /**
  * Class for loading and taking input for single portfolio menu.
@@ -19,61 +19,61 @@ public class LoadSingleFlexPortfolioDetail {
    * @param out  output object.
    */
   public static void loadSinglePortfolioDetailController(Scanner scan, UserFlex user,
-      PrintStream out) {
-    ViewPrint.askNameOfPortfolio(out);
+      PrintStream out, IView view) {
+    view.askNameOfPortfolio(out);
     String portfolioName = scan.nextLine();
     while (user.isUniqueName(portfolioName)) {
-      ViewPrint.askPortfolioNameAgainUnique(out);
+      view.askPortfolioNameAgainUnique(out);
       portfolioName = scan.nextLine();
       if (portfolioName.equals("0")) {
-        LoadFlexPortfolio.loadPortfoliosController(scan, user, out);
+        LoadFlexPortfolio.loadPortfoliosController(scan, user, out, view);
         return;
       }
     }
-    ViewPrint.portfolioDetailWelcomeNote(portfolioName, out);
-    ViewPrint.loadFlexPortfolioDetailMenu(out);
+    view.portfolioDetailWelcomeNote(portfolioName, out);
+    view.loadFlexPortfolioDetailMenu(out);
     String option = scan.nextLine().trim();
     boolean comingFromDefault = false;
     do {
       switch (option) {
         case "1":
-          PortfolioSummary.getPortfolioSummary(scan, out, user, portfolioName);
+          PortfolioSummary.getPortfolioSummary(scan, out, user, portfolioName,view);
           break;
         case "2":
           String date = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
-          PortfolioValue.getPortfolioValue(portfolioName, date, out, user);
+          PortfolioValue.getPortfolioValue(portfolioName, date, out, user,view);
           break;
         case "3":
-          date = AskDate.addStocksAskDate(scan, out, user);
+          date = AskDate.addStocksAskDate(scan, out, user, view);
           if (date == null) {
             return;
           }
-          PortfolioValue.getPortfolioValue(portfolioName, date, out, user);
+          PortfolioValue.getPortfolioValue(portfolioName, date, out, user,view);
           break;
         case "4":
-          BuyStock.buyStockToPortfolio(portfolioName, scan, user, out);
+          BuyStock.buyStockToPortfolio(portfolioName, scan, user, out, view);
           break;
         case "5":
-          SellStock.sellStockFromPortfolio(portfolioName, scan, user, out);
+          SellStock.sellStockFromPortfolio(portfolioName, scan, user, out,view);
           break;
         case "6":
-          CostBasis.calculateCostBasis(scan, out, user, portfolioName);
+          CostBasis.calculateCostBasis(scan, out, user, portfolioName, view);
           break;
         case "7":
-          PerformanceGraph.plotGraph(scan, out, user, portfolioName);
+          PerformanceGraph.plotGraph(scan, out, user, portfolioName, view);
           break;
         case "8":
-          LoadFlexPortfolio.loadPortfoliosController(scan, user, out);
+          LoadFlexPortfolio.loadPortfoliosController(scan, user, out, view);
           return;
         case "9":
           return;
         default:
-          ViewPrint.loadPortfolioErrorNote(out);
+          view.loadPortfolioErrorNote(out);
           option = scan.nextLine();
           comingFromDefault = true;
       }
       if (!comingFromDefault) {
-        ViewPrint.loadFlexPortfolioDetailMenu(out);
+        view.loadFlexPortfolioDetailMenu(out);
         option = scan.nextLine().trim();
       }
       comingFromDefault = false;

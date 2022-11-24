@@ -2,7 +2,7 @@ package controller.commands;
 
 import java.io.PrintStream;
 import java.util.Scanner;
-import view.ViewPrint;
+import view.IView;
 
 /**
  * Class for asking stock quantity.
@@ -17,8 +17,8 @@ public class AskStockNumber {
    * @param out output object.
    * @return a valid stock number
    */
-  public static Double addStocksAskStockNumber(Scanner scan, PrintStream out) {
-    ViewPrint.askStockNumber(out);
+  public static Double addStocksAskStockNumber(Scanner scan, PrintStream out, IView view) {
+    view.askStockNumber(out);
     String stockQuantity = scan.nextLine();
     double stockQuanDouble = 0;
     do {
@@ -28,7 +28,7 @@ public class AskStockNumber {
           throw new NumberFormatException();
         }
       } catch (NumberFormatException e) {
-        ViewPrint.askStockNumberAgain(out);
+        view.askStockNumberAgain(out);
         stockQuantity = scan.nextLine();
         if (stockQuantity.equals("e")) {
           return null;

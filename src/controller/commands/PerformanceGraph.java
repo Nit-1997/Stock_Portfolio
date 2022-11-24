@@ -7,7 +7,7 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
 import java.util.Scanner;
 import model.UserFlex;
-import view.ViewPrint;
+import view.IView;
 
 /**
  * Class for printing performance graph.
@@ -22,33 +22,33 @@ public class PerformanceGraph {
    * @param out           output object.
    * @param portfolioName name of the portfolio.
    */
-  public static void plotGraph(Scanner scan, PrintStream out, UserFlex user, String portfolioName) {
-    ViewPrint.waitLoadMessage(out);
+  public static void plotGraph(Scanner scan, PrintStream out, UserFlex user, String portfolioName, IView view) {
+    view.waitLoadMessage(out);
     String creationDate = user.getPortfolioCreationDate(portfolioName);
     if (creationDate == null) {
-      ViewPrint.printInCompatiblePortfolio(out);
+      view.printInCompatiblePortfolio(out);
       return;
     }
     String currentDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
     System.out.println(
         "Valid date range for performance graphs : - ( " + creationDate + ") - (" + currentDate
             + ")");
-    ViewPrint.askStartDateForGraph(out);
-    String date1 = AskDate.addStocksAskDate(scan, out, user);
+    view.askStartDateForGraph(out);
+    String date1 = AskDate.addStocksAskDate(scan, out, user,view);
     if (date1 == null) {
       return;
     }
-    ViewPrint.askEndDateForGraph(out);
-    String date2 = AskDate.addStocksAskDate(scan, out, user);
+    view.askEndDateForGraph(out);
+    String date2 = AskDate.addStocksAskDate(scan, out, user, view);
     if (date2 == null) {
       return;
     }
 
     if (!user.graphDateChecker(date1, date2, portfolioName)) {
-      ViewPrint.graphInvalidRange(out);
+      view.graphInvalidRange(out);
       return;
     }
-    ViewPrint.waitLoadMessage(out);
+    view.waitLoadMessage(out);
 
     SimpleEntry<SimpleEntry<List<String>, List<Integer>>, SimpleEntry<Integer, Double>> data =
         user.getGraphData(
@@ -56,7 +56,7 @@ public class PerformanceGraph {
         date2, portfolioName);
 
     if (data == null) {
-      ViewPrint.printInCompatiblePortfolio(out);
+      view.printInCompatiblePortfolio(out);
       return;
     }
 
@@ -65,7 +65,7 @@ public class PerformanceGraph {
     int scale = data.getValue().getKey();
     double baseAmount = data.getValue().getValue();
 
-    ViewPrint.printGraph(out, date1, date2, portfolioName, labels, starPoints, scale, baseAmount);
+    view.printGraph(out, date1, date2, portfolioName, labels, starPoints, scale, baseAmount);
 
   }
 

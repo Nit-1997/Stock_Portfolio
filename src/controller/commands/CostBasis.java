@@ -3,7 +3,7 @@ package controller.commands;
 import java.io.PrintStream;
 import java.util.Scanner;
 import model.UserFlex;
-import view.ViewPrint;
+import view.IView;
 
 /**
  * Calculates cost basis for portfolio.
@@ -19,24 +19,24 @@ public class CostBasis {
    * @param portfolioName name of the portfolio.
    */
   public static void calculateCostBasis(Scanner scan, PrintStream out, UserFlex user,
-      String portfolioName) {
-    ViewPrint.waitLoadMessage(out);
+      String portfolioName, IView view) {
+    view.waitLoadMessage(out);
     String creationDate = user.getPortfolioCreationDate(portfolioName);
     if (creationDate == null) {
-      ViewPrint.printInCompatiblePortfolio(out);
+      view.printInCompatiblePortfolio(out);
       return;
     }
     String date;
     do {
-      ViewPrint.askDate(out);
+      view.askDate(out);
       date = scan.nextLine();
       if (date.equals("0")) {
         return;
       }
       if (!user.dateChecker(date)) {
-        ViewPrint.wrongDateMsg(out);
+        view.wrongDateMsg(out);
       } else if (user.isBeforeDate(date, creationDate)) {
-        ViewPrint.wrongDateBeforePortfolioCreation(out);
+        view.wrongDateBeforePortfolioCreation(out);
       }
     }
     while (!user.dateChecker(date) || user.isBeforeDate(date,
@@ -44,10 +44,10 @@ public class CostBasis {
 
     Double cost = user.getCostBasis(portfolioName, date);
     if (cost == null) {
-      ViewPrint.printInCompatiblePortfolio(out);
+      view.printInCompatiblePortfolio(out);
       return;
     }
-    ViewPrint.printCostBasis(cost, out);
+    view.printCostBasis(cost, out);
   }
 
 }

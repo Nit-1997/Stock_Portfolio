@@ -7,7 +7,8 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 import model.UserFlex;
-import view.ViewPrint;
+import view.IView;
+
 
 /**
  * Controller Class for creating flexible portfolio.
@@ -21,11 +22,11 @@ public class AddFlexPortfolio {
    * @param user model object.
    * @param out  output object.
    */
-  public static void addStocksToPortfolioController(Scanner scan, UserFlex user, PrintStream out) {
-    ViewPrint.addPortfolio(out);
+  public static void addStocksToPortfolioController(Scanner scan, UserFlex user, PrintStream out, IView view) {
+    view.addPortfolio(out);
     String name = scan.nextLine();
     while (!user.isUniqueName(name)) {
-      ViewPrint.askPortfolioNameAgain(out);
+      view.askPortfolioNameAgain(out);
       name = scan.nextLine();
       if (name.equals("0")) {
         return;
@@ -34,10 +35,10 @@ public class AddFlexPortfolio {
     Map<String, Map<String, SimpleEntry<Double, Double>>> stocksMap = new HashMap<>();
     String ticker = null;
 
-    ViewPrint.addStocksInPortfolioWelcomeNote(name, out);
+    view.addStocksInPortfolioWelcomeNote(name, out);
     Set<String> stockList = user.getStockList();
     if (stockList != null && stockList.size() != 0) {
-      ViewPrint.printAvailableStocks(stockList);
+      view.printAvailableStocks(stockList);
     }
     String confirmation = null;
     String option = "1";
@@ -46,19 +47,19 @@ public class AddFlexPortfolio {
     do {
       switch (option) {
         case "1":
-          ticker = AskTicker.addStocksAskTicker(scan, user, out);
+          ticker = AskTicker.addStocksAskTicker(scan, user, out, view);
           if (ticker == null) {
             return;
           }
-          Double stockQuanDouble = AskStockNumber.addStocksAskStockNumber(scan, out);
+          Double stockQuanDouble = AskStockNumber.addStocksAskStockNumber(scan, out, view);
           if (stockQuanDouble == null) {
             return;
           }
-          String date = AskDate.addStocksAskDate(scan, out, user);
+          String date = AskDate.addStocksAskDate(scan, out, user, view);
           if (date == null) {
             return;
           }
-          Double commFee = AskCommissionFees.askCommissionFees(scan, out);
+          Double commFee = AskCommissionFees.askCommissionFees(scan, out, view);
           if (commFee == null) {
             return;
           }
@@ -77,38 +78,38 @@ public class AddFlexPortfolio {
           }
           stocksMap.put(ticker, map);
 
-          ViewPrint.addStocksInPortfolioConfirmation(out);
+          view.addStocksInPortfolioConfirmation(out);
           confirmation = scan.nextLine();
           while (!confirmation.equals("y") && !confirmation.equals("Y") && !confirmation.equals("n")
               && !confirmation.equals("N")) {
-            ViewPrint.askconfirmation(out);
+            view.askconfirmation(out);
             confirmation = scan.nextLine();
           }
           break;
         case "2":
-          ticker = AskTicker.addStocksAskTicker(scan, user, out);
+          ticker = AskTicker.addStocksAskTicker(scan, user, out, view);
           if (ticker == null) {
             break;
           }
           if (!stocksMap.containsKey(ticker)) {
-            ViewPrint.stockNotInPortfolio(out);
+            view.stockNotInPortfolio(out);
             break;
           }
-          stockQuanDouble = AskStockNumber.addStocksAskStockNumber(scan, out);
+          stockQuanDouble = AskStockNumber.addStocksAskStockNumber(scan, out, view);
           if (stockQuanDouble == null) {
             break;
           }
-          date = AskDate.addStocksAskDate(scan, out, user);
+          date = AskDate.addStocksAskDate(scan, out, user, view);
           if (date == null) {
             break;
           }
 
-          RemoveStocks.addPortfolioRemoveStocks(ticker, date, stockQuanDouble, stocksMap, out);
+          RemoveStocks.addPortfolioRemoveStocks(ticker, date, stockQuanDouble, stocksMap, out, view);
 
           confirmation = scan.nextLine();
           while (!confirmation.equals("y") && !confirmation.equals("Y") && !confirmation.equals("n")
               && !confirmation.equals("N")) {
-            ViewPrint.askconfirmation(out);
+            view.askconfirmation(out);
             confirmation = scan.nextLine();
           }
           break;
@@ -116,32 +117,32 @@ public class AddFlexPortfolio {
           confirmation = "n";
           break;
         default:
-          ViewPrint.addStocksInPortfolioErrorNode(out);
+          view.addStocksInPortfolioErrorNode(out);
           option = scan.nextLine();
           comingFromDefault = true;
       }
 
       if (!comingFromDefault && (confirmation.equals("y") || confirmation.equals("Y"))) {
-        ViewPrint.stocksInPortfolioAddOrRemoveMenu(out);
+        view.stocksInPortfolioAddOrRemoveMenu(out);
         option = scan.nextLine().trim();
       }
       comingFromDefault = false;
     }
     while (confirmation.equals("y") || confirmation.equals("Y"));
 
-    ViewPrint.waitMessage(out);
+    view.waitMessage(out);
     boolean val;
 
     try {
       val = user.addPortfolio(name, stocksMap);
       if (val) {
-        ViewPrint.addStocksInPortfolioConfirmationLoading(name, out);
+        view.addStocksInPortfolioConfirmationLoading(name, out);
       } else {
-        ViewPrint.unsuccessfulPortolioCreationMsg(out);
+        view.unsuccessfulPortolioCreationMsg(out);
       }
     } catch (Exception e) {
-      ViewPrint.printError(e, out);
-      ViewPrint.unsuccessfulPortolioCreationMsg(out);
+      view.printError(e, out);
+      view.unsuccessfulPortolioCreationMsg(out);
     }
   }
 

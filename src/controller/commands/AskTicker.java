@@ -3,7 +3,7 @@ package controller.commands;
 import java.io.PrintStream;
 import java.util.Scanner;
 import model.UserFlex;
-import view.ViewPrint;
+import view.IView;
 
 /**
  * Class for asking stock symbol.
@@ -18,8 +18,8 @@ public class AskTicker {
    * @param out output object
    * @return a valid ticker name
    */
-  public static String addStocksAskTicker(Scanner scan, UserFlex user, PrintStream out) {
-    ViewPrint.askTickerSymbol(out);
+  public static String addStocksAskTicker(Scanner scan, UserFlex user, PrintStream out, IView view) {
+    view.askTickerSymbol(out);
     String ticker;
     do {
       ticker = scan.nextLine().toUpperCase();
@@ -27,7 +27,7 @@ public class AskTicker {
         return null;
       }
       if (!user.isValidStock(ticker)) {
-        ViewPrint.askTickerSymbolAgain(out);
+        view.askTickerSymbolAgain(out);
       }
     }
     while (!user.isValidStock(ticker));

@@ -17,6 +17,8 @@ import model.FlexMockModel;
 import model.UserFlex;
 import org.junit.Before;
 import org.junit.Test;
+import view.IView;
+import view.ViewPrint;
 
 /**
  * JUnit class for testing FlexController.
@@ -30,18 +32,21 @@ public class FlexControllerTest {
   InputStream in;
   PrintStream out;
 
+  IView view;
+
   @Before
   public void init() {
     bytes = new ByteArrayOutputStream();
     out = new PrintStream(bytes);
     log = new StringBuilder();
     model = new FlexMockModel(log);
+    view = new ViewPrint();
   }
 
   @Test
   public void testStart() {
     in = new ByteArrayInputStream("0\n0".getBytes());
-    controller = new FlexController(in, out);
+    controller = new FlexController(in, out,view);
     controller.start(model);
     assertEquals(ViewConstants.FLEXIBLE_PORTFOLIO_HEADER +
         ViewConstants.MENU_MESSAGE +
@@ -51,7 +56,7 @@ public class FlexControllerTest {
   @Test
   public void testAddControllerOneStock() {
     in = new ByteArrayInputStream("controllerTest\naapl\n10\n2022-01-01\n4.8\nn".getBytes());
-    AddFlexPortfolio.addStocksToPortfolioController(new Scanner(in), model, out);
+    AddFlexPortfolio.addStocksToPortfolioController(new Scanner(in), model, out,view);
     assertEquals(ViewConstants.ADD_PORTFOLIO +
         "-------------For the Portfolio controllerTest: Add stocks------------\n" +
         ViewConstants.ADD_STOCKS_IN_PORTFOLIO_ASK_TICKER_SYMBOL +
@@ -73,7 +78,7 @@ public class FlexControllerTest {
   public void testAddControllerMultipleStocks() {
     in = new ByteArrayInputStream(("controllerTest\naapl\n10\n2020-05-15\n4.8\ny\n1\ngoog\n"
         + "13\n2018-09-28\n3.5\nn").getBytes());
-    AddFlexPortfolio.addStocksToPortfolioController(new Scanner(in), model, out);
+    AddFlexPortfolio.addStocksToPortfolioController(new Scanner(in), model, out,view);
     assertEquals(ViewConstants.ADD_PORTFOLIO + "-------------For the Portfolio"
         + " controllerTest: Add stocks------------\n" +
         ViewConstants.ADD_STOCKS_IN_PORTFOLIO_ASK_TICKER_SYMBOL +
@@ -99,7 +104,7 @@ public class FlexControllerTest {
   public void testAddControllerMultipleStocksAddRemove() {
     in = new ByteArrayInputStream(("controllerTest\naapl\n10\n2020-05-15\n4.8\ny\n2\naapl\n6\n"
         + "2020-05-15\nn").getBytes());
-    AddFlexPortfolio.addStocksToPortfolioController(new Scanner(in), model, out);
+    AddFlexPortfolio.addStocksToPortfolioController(new Scanner(in), model, out, view);
     assertEquals(ViewConstants.ADD_PORTFOLIO + "-------------For the Portfolio "
         + "controllerTest: Add stocks------------\n" +
         ViewConstants.ADD_STOCKS_IN_PORTFOLIO_ASK_TICKER_SYMBOL +
@@ -125,7 +130,7 @@ public class FlexControllerTest {
   @Test
   public void testAddControllerUnsuccessful() {
     in = new ByteArrayInputStream("controllerTest\nmeta\n10\n2010-01-05\n4.8\nn".getBytes());
-    AddFlexPortfolio.addStocksToPortfolioController(new Scanner(in), model, out);
+    AddFlexPortfolio.addStocksToPortfolioController(new Scanner(in), model, out, view);
     assertEquals(ViewConstants.ADD_PORTFOLIO +
         "-------------For the Portfolio controllerTest: Add stocks------------\n" +
         ViewConstants.ADD_STOCKS_IN_PORTFOLIO_ASK_TICKER_SYMBOL +
@@ -147,7 +152,7 @@ public class FlexControllerTest {
   @Test
   public void testLoadFlexController() {
     in = new ByteArrayInputStream("2".getBytes());
-    LoadFlexPortfolio.loadPortfoliosController(new Scanner(in), model, out);
+    LoadFlexPortfolio.loadPortfoliosController(new Scanner(in), model, out, view);
     assertEquals("\nYour portfolio lists : \n" +
         "* flexTest\n" + ViewConstants.LOAD_PORTFOLIO_MENU, bytes.toString());
     assertEquals("get Portfolios list", log.toString());
@@ -156,7 +161,7 @@ public class FlexControllerTest {
   @Test
   public void testLoadSinglePortfolio() {
     in = new ByteArrayInputStream("flexControllerTest\n9".getBytes());
-    LoadSingleFlexPortfolioDetail.loadSinglePortfolioDetailController(new Scanner(in), model, out);
+    LoadSingleFlexPortfolioDetail.loadSinglePortfolioDetailController(new Scanner(in), model, out, view);
     assertEquals(ViewConstants.ASK_NAME_OF_PORTFOLIO +
         "For the portfolio: flexControllerTest\n" +
         ViewConstants.LOAD_FLEX_PORTFOLIO_DETAIL_MENU, bytes.toString());
@@ -166,7 +171,7 @@ public class FlexControllerTest {
   @Test
   public void testLoadSinglePortfolioSummary() {
     in = new ByteArrayInputStream("flexControllerTest\n1\n2018-07-16\n9".getBytes());
-    LoadSingleFlexPortfolioDetail.loadSinglePortfolioDetailController(new Scanner(in), model, out);
+    LoadSingleFlexPortfolioDetail.loadSinglePortfolioDetailController(new Scanner(in), model, out, view);
     assertEquals(ViewConstants.ASK_NAME_OF_PORTFOLIO +
         "For the portfolio: flexControllerTest\n" +
         ViewConstants.LOAD_FLEX_PORTFOLIO_DETAIL_MENU +
@@ -192,7 +197,7 @@ public class FlexControllerTest {
   public void testLoadSinglePortfolioCurrentValue() {
     String date = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
     in = new ByteArrayInputStream("flexControllerTest\n2\n9".getBytes());
-    LoadSingleFlexPortfolioDetail.loadSinglePortfolioDetailController(new Scanner(in), model, out);
+    LoadSingleFlexPortfolioDetail.loadSinglePortfolioDetailController(new Scanner(in), model, out, view);
     assertEquals(ViewConstants.ASK_NAME_OF_PORTFOLIO +
         "For the portfolio: flexControllerTest\n" +
         ViewConstants.LOAD_FLEX_PORTFOLIO_DETAIL_MENU +
@@ -208,7 +213,7 @@ public class FlexControllerTest {
   @Test
   public void testLoadSinglePortfolioHistoricValue() {
     in = new ByteArrayInputStream("flexControllerTest\n3\n2018-09-28\n9".getBytes());
-    LoadSingleFlexPortfolioDetail.loadSinglePortfolioDetailController(new Scanner(in), model, out);
+    LoadSingleFlexPortfolioDetail.loadSinglePortfolioDetailController(new Scanner(in), model, out, view);
     assertEquals(ViewConstants.ASK_NAME_OF_PORTFOLIO +
         "For the portfolio: flexControllerTest\n" +
         ViewConstants.LOAD_FLEX_PORTFOLIO_DETAIL_MENU +
@@ -225,7 +230,7 @@ public class FlexControllerTest {
   @Test
   public void testLoadSinglePortfolioBuyStock() {
     in = new ByteArrayInputStream("flexControllerTest\n4\naapl\n6\n4.8\n2018-09-28\n9".getBytes());
-    LoadSingleFlexPortfolioDetail.loadSinglePortfolioDetailController(new Scanner(in), model, out);
+    LoadSingleFlexPortfolioDetail.loadSinglePortfolioDetailController(new Scanner(in), model, out, view);
     assertEquals(ViewConstants.ASK_NAME_OF_PORTFOLIO +
         "For the portfolio: flexControllerTest\n" +
         ViewConstants.LOAD_FLEX_PORTFOLIO_DETAIL_MENU +
@@ -254,7 +259,7 @@ public class FlexControllerTest {
   @Test
   public void testLoadSinglePortfolioSellStock() {
     in = new ByteArrayInputStream("flexControllerTest\n5\naapl\n6\n4.8\n2018-09-28\n9".getBytes());
-    LoadSingleFlexPortfolioDetail.loadSinglePortfolioDetailController(new Scanner(in), model, out);
+    LoadSingleFlexPortfolioDetail.loadSinglePortfolioDetailController(new Scanner(in), model, out, view);
     assertEquals(ViewConstants.ASK_NAME_OF_PORTFOLIO +
         "For the portfolio: flexControllerTest\n" +
         ViewConstants.LOAD_FLEX_PORTFOLIO_DETAIL_MENU +
@@ -281,7 +286,7 @@ public class FlexControllerTest {
   @Test
   public void testLoadSinglePortfolioCostBasis() {
     in = new ByteArrayInputStream("flexControllerTest\n6\n2018-09-28\n9".getBytes());
-    LoadSingleFlexPortfolioDetail.loadSinglePortfolioDetailController(new Scanner(in), model, out);
+    LoadSingleFlexPortfolioDetail.loadSinglePortfolioDetailController(new Scanner(in), model, out, view);
     assertEquals(ViewConstants.ASK_NAME_OF_PORTFOLIO +
         "For the portfolio: flexControllerTest\n" +
         ViewConstants.LOAD_FLEX_PORTFOLIO_DETAIL_MENU +
@@ -301,7 +306,7 @@ public class FlexControllerTest {
   @Test
   public void testLoadSinglePortfolioGraph() {
     in = new ByteArrayInputStream("flexControllerTest\n7\n2022-01-01\n2022-06-06\n9".getBytes());
-    LoadSingleFlexPortfolioDetail.loadSinglePortfolioDetailController(new Scanner(in), model, out);
+    LoadSingleFlexPortfolioDetail.loadSinglePortfolioDetailController(new Scanner(in), model, out, view);
     assertEquals(ViewConstants.ASK_NAME_OF_PORTFOLIO +
         "For the portfolio: flexControllerTest\n" +
         ViewConstants.LOAD_FLEX_PORTFOLIO_DETAIL_MENU +
@@ -330,7 +335,7 @@ public class FlexControllerTest {
   @Test
   public void testLoadSinglePortfolioBackToPortfolioList() {
     in = new ByteArrayInputStream("flexControllerTest\n8\n2".getBytes());
-    LoadSingleFlexPortfolioDetail.loadSinglePortfolioDetailController(new Scanner(in), model, out);
+    LoadSingleFlexPortfolioDetail.loadSinglePortfolioDetailController(new Scanner(in), model, out, view);
     assertEquals(ViewConstants.ASK_NAME_OF_PORTFOLIO +
         "For the portfolio: flexControllerTest\n" +
         ViewConstants.LOAD_FLEX_PORTFOLIO_DETAIL_MENU +

@@ -4,7 +4,8 @@ import java.io.PrintStream;
 import java.util.Scanner;
 import java.util.Set;
 import model.UserFlex;
-import view.ViewPrint;
+import view.IView;
+
 
 /**
  * Class for main menu of the load controller.
@@ -18,25 +19,25 @@ public class LoadFlexPortfolio {
    * @param user model object.
    * @param out  output object.
    */
-  public static void loadPortfoliosController(Scanner scan, UserFlex user, PrintStream out) {
+  public static void loadPortfoliosController(Scanner scan, UserFlex user, PrintStream out, IView view) {
     Set<String> portfolioNames = user.getPortfolios();
     if (portfolioNames != null) {
-      ViewPrint.printPortfolios(portfolioNames, out);
+      view.printPortfolios(portfolioNames, out);
     }
-    ViewPrint.loadPortfolioMenu(out);
+    view.loadPortfolioMenu(out);
 
     String option = scan.nextLine().trim();
 
     do {
       switch (option) {
         case "1":
-          LoadSingleFlexPortfolioDetail.loadSinglePortfolioDetailController(scan, user, out);
+          LoadSingleFlexPortfolioDetail.loadSinglePortfolioDetailController(scan, user, out, view);
           option = "2";
           break;
         case "2":
           return;
         default:
-          ViewPrint.loadPortfolioErrorNote(out);
+          view.loadPortfolioErrorNote(out);
           option = scan.nextLine().trim();
       }
     }

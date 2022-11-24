@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 import model.UserFlex;
-import view.ViewPrint;
+import view.IView;
 
 /**
  * Class for buying stocks.
@@ -20,36 +20,36 @@ public class BuyStock {
    * @param portfolioName name of the portfolio.
    */
   public static void buyStockToPortfolio(String portfolioName, Scanner scan, UserFlex user,
-      PrintStream out) {
-    ViewPrint.waitLoadMessage(out);
+      PrintStream out, IView view) {
+    view.waitLoadMessage(out);
     String portfolioCreationDate = user.getPortfolioCreationDate(portfolioName);
 
     if (portfolioCreationDate == null) {
-      ViewPrint.printInCompatiblePortfolio(out);
+      view.printInCompatiblePortfolio(out);
       return;
     }
     Map<String, SimpleEntry<String, Double>> portfolioState = user.getPortfolioState(portfolioName);
     if (portfolioState == null) {
-      ViewPrint.printInCompatiblePortfolio(out);
+      view.printInCompatiblePortfolio(out);
       return;
     }
-    ViewPrint.printPortfolioState(portfolioState, portfolioCreationDate, out);
+    view.printPortfolioState(portfolioState, portfolioCreationDate, out);
 
     Set<String> stockList = user.getStockList();
     if (stockList != null && stockList.size() != 0) {
-      ViewPrint.printAvailableStocks(stockList);
+      view.printAvailableStocks(stockList);
     }
 
-    String ticker = AskTicker.addStocksAskTicker(scan, user, out);
+    String ticker = AskTicker.addStocksAskTicker(scan, user, out, view);
     if (ticker == null) {
       return;
     }
-    Double stockQuanDouble = AskStockNumber.addStocksAskStockNumber(scan, out);
+    Double stockQuanDouble = AskStockNumber.addStocksAskStockNumber(scan, out, view);
     if (stockQuanDouble == null) {
       return;
     }
 
-    Double commFee = AskCommissionFees.askCommissionFees(scan, out);
+    Double commFee = AskCommissionFees.askCommissionFees(scan, out, view);
     if (commFee == null) {
       return;
     }
@@ -59,16 +59,16 @@ public class BuyStock {
     String date;
 
     do {
-      ViewPrint.askDate(out);
+      view.askDate(out);
       date = scan.nextLine();
       if (date.equals("0")) {
         return;
       }
       if (!user.dateChecker(date)) {
-        ViewPrint.wrongDateMsg(out);
+        view.wrongDateMsg(out);
       } else if (portfolioState.containsKey(ticker)) {
         if (user.isBeforeDate(date, portfolioState.get(ticker).getKey())) {
-          ViewPrint.wrongDateBeforeLastTx(out);
+          view.wrongDateBeforeLastTx(out);
         } else {
           newStock = new SimpleEntry<>(ticker,
               new SimpleEntry<>(date, new SimpleEntry<>(stockQuanDouble, commFee)));
@@ -76,7 +76,7 @@ public class BuyStock {
         }
       } else {
         if (user.isBeforeDate(date, portfolioCreationDate)) {
-          ViewPrint.wrongDateBeforePortfolioCreation(out);
+          view.wrongDateBeforePortfolioCreation(out);
         } else {
           newStock = new SimpleEntry<>(ticker,
               new SimpleEntry<>(date, new SimpleEntry<>(stockQuanDouble, commFee)));
@@ -90,13 +90,13 @@ public class BuyStock {
     try {
       val = user.transactionForPortfolio(portfolioName, newStock);
       if (val) {
-        ViewPrint.successfulTransaction(out);
+        view.successfulTransaction(out);
       } else {
-        ViewPrint.unSuccessfulTransaction(out);
+        view.unSuccessfulTransaction(out);
       }
     } catch (Exception e) {
-      ViewPrint.printError(e, out);
-      ViewPrint.unSuccessfulTransaction(out);
+      view.printError(e, out);
+      view.unSuccessfulTransaction(out);
     }
 
 

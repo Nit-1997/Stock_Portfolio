@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import constants.Constants;
+import java.time.LocalDate;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.HashMap;
 import java.util.List;
@@ -190,7 +191,7 @@ public class PortfolioFlexImplTest {
     SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> transTuple =
         new SimpleEntry<>(
             "CSCO", dateQtyCommTuple);
-    p.addTransaction(transTuple);
+    p.addTransaction(transTuple, LocalDate.now().toString());
 
     Map<String, SimpleEntry<String, Double>> stateMap = p.getLatestState();
 
@@ -219,7 +220,7 @@ public class PortfolioFlexImplTest {
     SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> transTuple =
         new SimpleEntry<>(
             "CSCO", dateQtyCommTuple);
-    p.addTransaction(transTuple);
+    p.addTransaction(transTuple, LocalDate.now().toString());
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -231,14 +232,14 @@ public class PortfolioFlexImplTest {
     SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> transTuple =
         new SimpleEntry<>(
             "CSCO", dateQtyCommTuple);
-    p.addTransaction(transTuple);
+    p.addTransaction(transTuple, LocalDate.now().toString());
   }
 
 
   @Test(expected = IllegalArgumentException.class)
   public void testAddBuyTransactionNulLArgs() throws Exception {
     PortfolioFlex p = new PortfolioFlexImpl("flexTest");
-    p.addTransaction(null);
+    p.addTransaction(null, LocalDate.now().toString());
   }
 
   @Test
@@ -250,7 +251,7 @@ public class PortfolioFlexImplTest {
     SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> transTuple =
         new SimpleEntry<>(
             "CSCO", dateQtyCommTuple);
-    p.addTransaction(transTuple);
+    p.addTransaction(transTuple, LocalDate.now().toString());
     Map<String, SimpleEntry<String, Double>> stateMap = p.getLatestState();
 
     Map<String, SimpleEntry<String, Double>> expected = new HashMap<>();

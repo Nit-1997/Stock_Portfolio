@@ -2,6 +2,7 @@ package utils;
 
 import constants.Constants;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -23,6 +24,7 @@ import java.util.Scanner;
 import java.util.Set;
 import model.ApiDataFetcher;
 import model.PortfolioFlex;
+import model.Stock;
 import model.StockOrder;
 import model.StockOrderImpl;
 
@@ -120,7 +122,7 @@ public class Utils {
     return path;
   }
 
-  private static File createFileIfNotExists(String name, String dirName) throws IOException {
+  public static File createFileIfNotExists(String name, String dirName) throws IOException {
     String path = getFilePath(name, dirName);
     return new File(path);
   }
@@ -623,6 +625,94 @@ public class Utils {
       default:
     }
     return new AbstractMap.SimpleEntry<>(labels, datapoints);
+  }
+
+  public static List<StockOrder> DCAFileValidator(String portfolioName,File file,List<StockOrder> stockOrders)
+      throws IOException {
+    Scanner myReader = new Scanner(file);
+    String[] data = myReader.nextLine().split(",");
+    if(data.length!=5) throw new IOException("File corrupted");
+    String startDate = data[0];
+    String endDate = data[2];
+    if(!Utils.dateChecker(startDate) || !Utils.dateChecker(endDate) ) throw new IOException("File corrupted");
+    int interval;
+    Double amount;
+    Double commFee;
+    try{
+      interval = Integer.parseInt(data[1]);
+      amount = Double.parseDouble(data[3]);
+      commFee = Double.parseDouble(data[4]);
+    } catch(NumberFormatException e){
+      throw new IOException("File corrupted");
+    }
+    Map<String, Double> weightage = null;
+    Double sum=0.0;
+    while(myReader.hasNextLine()){
+      data = myReader.nextLine().split(",");
+      if(data.length!=2) throw new IOException("File corrupted");
+      if(!Constants.STOCK_NAMES.contains(data[0])) throw new IOException("File corrupted");
+      Double percent;
+      try{
+        percent = Double.parseDouble(data[1]);
+        if(percent<0) throw new NumberFormatException();
+      } catch( NumberFormatException e){
+        throw new IOException("File corrupted");
+      }
+      sum+=percent;
+      weightage.put(data[0],percent);
+    }
+
+    if (sum!=100.0) throw new IOException("File corrupted");
+
+    stockOrders=Utils.updatePortfolioFromDCA(portfolioName,startDate,endDate,weightage,
+        interval,amount,commFee,stockOrders);
+
+    return stockOrders;
+  }
+
+  public static List<StockOrder> updatePortfolioFromDCA(String portfolioName, String startDate,
+      String endDate, Map<String,Double> weightage, int interval,Double amount, Double commFee,
+      List<StockOrder> stockOrders) throws IOException {
+    LocalDate start = LocalDate.parse(startDate);
+    LocalDate now = LocalDate.now();
+
+    LocalDate lastDate = (endDate == null || LocalDate.parse(endDate).isAfter(now)) ? now : LocalDate.parse(endDate);
+
+    while(start.isBefore(lastDate)){
+      boolean flag=false;
+      for(String ticker : weightage.keySet()){
+        Double tempCommFee = !flag ? commFee : 0;
+        if(!flag) flag=true;
+
+        double specificAmount = amount*weightage.get(ticker)/100;
+        double price = Double.parseDouble(Utils.fetchStockValueByDate(ticker, start.toString(),
+            "stock_data"));
+        double qty = specificAmount/price;
+
+        StockOrder newOrder = new StockOrderImpl(ticker,price,start.toString(),qty,tempCommFee);
+        stockOrders.add(newOrder);
+      }
+      start=start.plusDays(interval);
+    }
+    if(endDate!=null || lastDate==LocalDate.parse(endDate)){
+      // do nothing
+      // TODO : delete DCA file if exists (the end date of the file has now passed, no need of DCA file)
+      if (Utils.dataExists(portfolioName+"_DCA", "portfolios" + File.separator + "flex")){
+        Utils.getFileByName(portfolioName+"_DCA","portfolios" + File.separator + "flex").delete();
+      }
+    }
+    else if(lastDate==now){
+      File portfolioDCA = Utils.createFileIfNotExists(portfolioName+"_DCA",
+          "portfolios" + File.separator + "flex" + File.separator + "DCA");
+      FileWriter myWriter = new FileWriter(portfolioDCA);
+
+      myWriter.write(start+","+interval+","+endDate+","+amount+","+commFee+"\n");
+      for (String ticker : weightage.keySet()) {
+        myWriter.write(ticker+","+weightage.get(ticker)+"\n");
+      }
+      myWriter.close();
+    }
+    return stockOrders;
   }
 
 }

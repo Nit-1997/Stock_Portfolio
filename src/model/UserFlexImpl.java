@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.AbstractMap.SimpleEntry;
@@ -21,13 +22,13 @@ import utils.Utils;
  */
 public class UserFlexImpl extends AbstractUser implements UserFlex {
 
-  private final Map<String, PortfolioFlex> portfolioMap;
+  protected final Map<String, PortfolioFlex> portfolioMap;
 
   /**
    * Constructor of UserFlexImpl.
    */
   public UserFlexImpl() {
-    portfolioMap = new HashMap<>();
+    this.portfolioMap = new HashMap<>();
     Utils.clearStockDirectory();
     try {
       Constants.STOCK_NAMES = Utils.loadStockNames("stocks",
@@ -65,21 +66,32 @@ public class UserFlexImpl extends AbstractUser implements UserFlex {
     return this.portfolioMap.keySet();
   }
 
+  protected void loadPortfolio(String name) throws Exception{
+    if (this.portfolioMap.get(name) == null) {
+      if(Utils.dataExists(name+"_DCA","portfolios" + File.separator + "flex")){
+        this.portfolioMap.put(name, new PortfolioFlexInvestImpl(name));
+      }
+      else{
+        this.portfolioMap.put(name, new PortfolioFlexImpl(name));
+      }
+
+    }
+  }
+
   @Override
   public Double getPortfolioValue(String name, String date) {
     try {
       if (!Utils.dateChecker(date)) {
         throw new Exception("wrong arguments");
       }
-      if (portfolioMap.get(name) == null) {
-        portfolioMap.put(name, new PortfolioFlexImpl(name));
-      }
+
+      this.loadPortfolio(name);
       Double portfolioValue;
       String currentDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
       if (date.equals(currentDate)) {
-        portfolioValue = portfolioMap.get(name).getCurrentValue();
+        portfolioValue = this.portfolioMap.get(name).getCurrentValue();
       } else {
-        portfolioValue = portfolioMap.get(name).getValueOnDate(date);
+        portfolioValue = this.portfolioMap.get(name).getValueOnDate(date);
       }
       return portfolioValue;
     } catch (IOException e) {
@@ -121,10 +133,8 @@ public class UserFlexImpl extends AbstractUser implements UserFlex {
           this.getPortfolioCreationDate(name))) {
         throw new Exception("wrong arguments");
       }
-      if (portfolioMap.get(name) == null) {
-        portfolioMap.put(name, new PortfolioFlexImpl(name));
-      }
-      return portfolioMap.get(name).getPortfolioSummary(date);
+      this.loadPortfolio(name);
+      return this.portfolioMap.get(name).getPortfolioSummary(date);
     } catch (FileNotFoundException e) {
       return null;
     } catch (IOException e) {
@@ -137,9 +147,7 @@ public class UserFlexImpl extends AbstractUser implements UserFlex {
   @Override
   public String getPortfolioCreationDate(String portfolioName) {
     try {
-      if (portfolioMap.get(portfolioName) == null) {
-        portfolioMap.put(portfolioName, new PortfolioFlexImpl(portfolioName));
-      }
+      this.loadPortfolio(portfolioName);
       return this.portfolioMap.get(portfolioName).getCreationDate();
     } catch (Exception e) {
       System.out.println(e.getMessage());
@@ -151,10 +159,8 @@ public class UserFlexImpl extends AbstractUser implements UserFlex {
   @Override
   public Map<String, SimpleEntry<String, Double>> getPortfolioState(String portfolioName) {
     try {
-      if (portfolioMap.get(portfolioName) == null) {
-        portfolioMap.put(portfolioName, new PortfolioFlexImpl(portfolioName));
-      }
-      return portfolioMap.get(portfolioName).getLatestState();
+      this.loadPortfolio(portfolioName);
+      return this.portfolioMap.get(portfolioName).getLatestState();
     } catch (Exception e) {
       System.out.println(e.getMessage());
       return null;
@@ -175,10 +181,8 @@ public class UserFlexImpl extends AbstractUser implements UserFlex {
       SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newStock)
       throws Exception {
     try {
-      if (portfolioMap.get(portfolioName) == null) {
-        portfolioMap.put(portfolioName, new PortfolioFlexImpl(portfolioName));
-      }
-      portfolioMap.get(portfolioName).addTransaction(newStock);
+      this.loadPortfolio(portfolioName);
+      this.portfolioMap.get(portfolioName).addTransaction(newStock, LocalDate.now().toString());
       return true;
     } catch (Exception e) {
       throw e;
@@ -189,9 +193,7 @@ public class UserFlexImpl extends AbstractUser implements UserFlex {
   @Override
   public Double getCostBasis(String portfolioName, String date) {
     try {
-      if (portfolioMap.get(portfolioName) == null) {
-        portfolioMap.put(portfolioName, new PortfolioFlexImpl(portfolioName));
-      }
+      this.loadPortfolio(portfolioName);
       return this.portfolioMap.get(portfolioName).getCostBasis(date);
     } catch (Exception e) {
       System.out.println(e.getMessage());
@@ -211,13 +213,11 @@ public class UserFlexImpl extends AbstractUser implements UserFlex {
       String date1, String date2, String portfolioName) {
     SimpleEntry<List<String>, List<Double>> data;
     try {
-      if (portfolioMap.get(portfolioName) == null) {
-        portfolioMap.put(portfolioName, new PortfolioFlexImpl(portfolioName));
-      }
+      this.loadPortfolio(portfolioName);
       if (!this.graphDateChecker(date1, date2, portfolioName)) {
         return null;
       }
-      data = portfolioMap.get(portfolioName).getPerfDataOverTime(date1, date2);
+      data = this.portfolioMap.get(portfolioName).getPerfDataOverTime(date1, date2);
     } catch (Exception e) {
       return null;
     }

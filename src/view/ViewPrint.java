@@ -12,59 +12,66 @@ import java.util.Set;
 /**
  * This is the view class that contains all the printing function for the application.
  */
-public class ViewPrint {
+public class ViewPrint implements IView {
 
-  public static final void welcomeNote(PrintStream out) {
+  @Override
+  public void welcomeNote(PrintStream out) {
     out.println(ViewConstants.WELCOME_MESSAGE);
   }
 
-  public static final void welcomeMenu(PrintStream out) {
+  @Override
+  public void welcomeMenu(PrintStream out) {
     out.print(ViewConstants.WELCOME_MENU);
   }
 
-  public static final void flexiblePortfolioHeader(PrintStream out) {
+  @Override
+  public void flexiblePortfolioHeader(PrintStream out) {
     out.print(ViewConstants.FLEXIBLE_PORTFOLIO_HEADER);
   }
 
-  public static final void flexPortfolioExitMsg(PrintStream out) {
+  @Override
+  public void flexPortfolioExitMsg(PrintStream out) {
     out.print(ViewConstants.FLEX_PORTFOLIO_EXIT_MSG);
   }
 
-  public static final void printMenu(PrintStream out) {
+  @Override
+  public void printMenu(PrintStream out) {
     out.print(ViewConstants.MENU_MESSAGE);
   }
 
-  public static final void errorNote(PrintStream out) {
+  @Override
+  public void errorNote(PrintStream out) {
     out.print(ViewConstants.ERROR_NOTE);
   }
 
-  public static final void exitNote(PrintStream out) {
+  @Override
+  public void exitNote(PrintStream out) {
     out.print(ViewConstants.EXIT_NOTE);
   }
 
 
-  public static final void addPortfolio(PrintStream out) {
+  @Override
+  public void addPortfolio(PrintStream out) {
     out.print(ViewConstants.ADD_PORTFOLIO);
   }
 
-  public static final void askPortfolioNameAgain(PrintStream out) {
+  @Override
+  public void askPortfolioNameAgain(PrintStream out) {
     out.print(ViewConstants.ASK_PORTFOLIO_NAME_AGAIN);
   }
 
-  public static final void stockNotInPortfolio(PrintStream out) {
+  @Override
+  public void stockNotInPortfolio(PrintStream out) {
     out.print(ViewConstants.STOCK_NOT_IN_PORTFOLIO);
   }
 
-  public static final void addStocksInPortfolioWelcomeNote(String portfolioName, PrintStream out) {
+  @Override
+  public void addStocksInPortfolioWelcomeNote(String portfolioName, PrintStream out) {
     out.println("-------------For the Portfolio " + portfolioName + ": Add stocks------------");
   }
 
-  /**
-   * print available stocks.
-   *
-   * @param stockList list of stocks.
-   */
-  public static final void printAvailableStocks(Set<String> stockList) {
+  @Override
+  public void printAvailableStocks(Set<String> stockList) {
     System.out.print("\nList of available stocks : ");
     System.out.println("---------------NASDAQ 100---------------");
     //    int i = 0;
@@ -78,74 +85,84 @@ public class ViewPrint {
     //    System.out.println();
   }
 
-  public static final void askTickerSymbol(PrintStream out) {
+  @Override
+  public void askTickerSymbol(PrintStream out) {
     out.print(ViewConstants.ADD_STOCKS_IN_PORTFOLIO_ASK_TICKER_SYMBOL);
   }
 
-  public static final void askTickerSymbolAgain(PrintStream out) {
+  @Override
+  public void askTickerSymbolAgain(PrintStream out) {
     out.print(ViewConstants.ASK_TICKER_SYMBOL_AGAIN);
   }
 
-  public static final void askStockNumber(PrintStream out) {
+  @Override
+  public void askStockNumber(PrintStream out) {
     out.print(ViewConstants.ADD_STOCKS_IN_PORTFOLIO_ASK_STOCK_NUMBER);
   }
 
-  public static final void askStockNumberAgain(PrintStream out) {
+  @Override
+  public void askStockNumberAgain(PrintStream out) {
     out.print(ViewConstants.ASK_STOCK_NUMBER_AGAIN);
   }
 
-  public static final void askCommissionFee(PrintStream out) {
+  @Override
+  public void askCommissionFee(PrintStream out) {
     out.print(ViewConstants.ASK_COMMISSION_FEE);
   }
 
-  public static final void askCommissionFeeAgain(PrintStream out) {
+  @Override
+  public void askCommissionFeeAgain(PrintStream out) {
     out.print(ViewConstants.ASK_COMMISSION_FEE_AGAIN);
   }
 
-  public static final void addStocksInPortfolioConfirmation(PrintStream out) {
+  @Override
+  public void addStocksInPortfolioConfirmation(PrintStream out) {
     out.print(ViewConstants.ADD_STOCKS_IN_PORTFOLIO_CONFIRMATION);
   }
 
-  public static final void stocksInPortfolioAddOrRemoveMenu(PrintStream out) {
+  @Override
+  public void stocksInPortfolioAddOrRemoveMenu(PrintStream out) {
     out.print(ViewConstants.STOCKS_IN_PORTFOLIO_ADD_OR_REMOVE_MENU);
   }
 
-  public static final void removeStocksInPortfolioSuccessfulConfirmation(PrintStream out) {
+  @Override
+  public void removeStocksInPortfolioSuccessfulConfirmation(PrintStream out) {
     out.print(ViewConstants.REMOVE_STOCKS_IN_PORTFOLIO_SUCCESSFUL_CONFIRMATION);
   }
 
-  public static final void removeStocksInPortfolioUnSuccessfulConfirmation(PrintStream out) {
+  @Override
+  public void removeStocksInPortfolioUnSuccessfulConfirmation(PrintStream out) {
     out.print(ViewConstants.REMOVE_STOCKS_IN_PORTFOLIO_UNSUCCESSFUL_CONFIRMATION);
   }
 
-  public static final void askconfirmation(PrintStream out) {
+  @Override
+  public void askconfirmation(PrintStream out) {
     out.print(ViewConstants.ASK_CONFIRMATION);
   }
 
-  public static final void waitMessage(PrintStream out) {
+  @Override
+  public void waitMessage(PrintStream out) {
     out.println(ViewConstants.WAIT_MESSAGE);
   }
 
-  public static final void addStocksInPortfolioConfirmationLoading(String name, PrintStream out) {
+  @Override
+  public void addStocksInPortfolioConfirmationLoading(String name, PrintStream out) {
     out.println("\n" + name + " Portfolio has been added to your list of portfolios");
   }
 
-  public static final void addStocksInPortfolioErrorNode(PrintStream out) {
+  @Override
+  public void addStocksInPortfolioErrorNode(PrintStream out) {
     out.print(ViewConstants.ADD_STOCKS_IN_PORTFOLIO_ERROR_NOTE);
   }
 
-  public static final void unsuccessfulPortolioCreationMsg(PrintStream out) {
+  @Override
+  public void unsuccessfulPortolioCreationMsg(PrintStream out) {
     out.print(ViewConstants.UNSUCCESSFUL_PORTFOLIO_CREATION_MSG);
   }
 
 
-  /**
-   * print portfolios.
-   *
-   * @param portfolioNames portfolio names
-   * @param out            out stream.
-   */
-  public static final void printPortfolios(Set<String> portfolioNames, PrintStream out) {
+  @Override
+  public void printPortfolios(Set<String> portfolioNames, PrintStream out) {
     out.println();
     out.println("Your portfolio lists : ");
     for (String portfolio : portfolioNames) {
@@ -153,89 +170,103 @@ public class ViewPrint {
     }
   }
 
-  public static final void loadPortfolioMenu(PrintStream out) {
+  @Override
+  public void loadPortfolioMenu(PrintStream out) {
     out.print(ViewConstants.LOAD_PORTFOLIO_MENU);
   }
 
-  public static final void askChoice(PrintStream out) {
+  @Override
+  public void askChoice(PrintStream out) {
     out.print("Enter your choice: ");
   }
 
-  public static final void askNameOfPortfolio(PrintStream out) {
+  @Override
+  public void askNameOfPortfolio(PrintStream out) {
     out.print(ViewConstants.ASK_NAME_OF_PORTFOLIO);
   }
 
-  public static final void askPortfolioNameAgainUnique(PrintStream out) {
+  @Override
+  public void askPortfolioNameAgainUnique(PrintStream out) {
     out.print(ViewConstants.ASK_PORTFOLIO_NAME_AGAIN_UNIQUE);
   }
 
-  public static final void portfolioDetailWelcomeNote(String name, PrintStream out) {
+  @Override
+  public void portfolioDetailWelcomeNote(String name, PrintStream out) {
     out.println("For the portfolio: " + name);
   }
 
-  public static final void loadPortfolioDetailMenu(PrintStream out) {
+  @Override
+  public void loadPortfolioDetailMenu(PrintStream out) {
     out.print(ViewConstants.LOAD_PORTFOLIO_DETAIL_MENU);
   }
 
-  public static final void loadFlexPortfolioDetailMenu(PrintStream out) {
+  @Override
+  public void loadFlexPortfolioDetailMenu(PrintStream out) {
     out.print(ViewConstants.LOAD_FLEX_PORTFOLIO_DETAIL_MENU);
   }
 
-  public static final void waitLoadMessage(PrintStream out) {
+  @Override
+  public void waitLoadMessage(PrintStream out) {
     out.print(ViewConstants.WAIT_LOAD_MESSAGE);
   }
 
-  public static final void askDate(PrintStream out) {
+  @Override
+  public void askDate(PrintStream out) {
     out.print(ViewConstants.ASK_DATE);
   }
 
-  public static final void askDateAgain(PrintStream out) {
+  @Override
+  public void askDateAgain(PrintStream out) {
     out.print(ViewConstants.ASK_DATE_AGAIN);
   }
 
-  public static final void wrongDateMsg(PrintStream out) {
+  @Override
+  public void wrongDateMsg(PrintStream out) {
     out.print(ViewConstants.WRONG_DATE_MSG);
   }
 
-  public static final void wrongDateBeforeLastTx(PrintStream out) {
+  @Override
+  public void wrongDateBeforeLastTx(PrintStream out) {
     out.print(ViewConstants.WRONG_DATE_BEFORE_LAST_TX);
   }
 
-  public static final void wrongDateBeforePortfolioCreation(PrintStream out) {
+  @Override
+  public void wrongDateBeforePortfolioCreation(PrintStream out) {
     out.print(ViewConstants.WRONG_DATE_BEFORE_PORTFOLIO_CREATION);
   }
 
-  public static final void successfulTransaction(PrintStream out) {
+  @Override
+  public void successfulTransaction(PrintStream out) {
     out.print(ViewConstants.SUCCESSFUL_TRANSACTION);
   }
 
-  public static final void unSuccessfulTransaction(PrintStream out) {
+  @Override
+  public void unSuccessfulTransaction(PrintStream out) {
     out.print(ViewConstants.UNSUCCESSFUL_TRANSACTION);
   }
 
-  public static final void printInCompatiblePortfolio(PrintStream out) {
+  @Override
+  public void printInCompatiblePortfolio(PrintStream out) {
     out.print(ViewConstants.PRINT_INCOMPATIBLE_PORTFOLIO);
   }
 
-  public static final void stockNotInPortfolioMsg(PrintStream out) {
+  @Override
+  public void stockNotInPortfolioMsg(PrintStream out) {
     out.print(ViewConstants.STOCK_NOT_IN_PORTFOLIO_MSG);
   }
 
-  public static final void stockLessThanInPortfolio(PrintStream out) {
+  @Override
+  public void stockLessThanInPortfolio(PrintStream out) {
     out.print(ViewConstants.STOCK_LESS_THAN_IN_PORTFOLIO);
   }
 
-  public static final void printCostBasis(Double cost, PrintStream out) {
+  @Override
+  public void printCostBasis(Double cost, PrintStream out) {
     out.println("\nCost basis of the portfolio till the given date : $" + cost);
   }
 
-  /**
-   * Print the latest state of the portfolio.
-   * @param map {ticker vs latest date and quantity}
-   * @param portfolioCreationDate creation date of the portfolio.
-   * @param out output object.
-   */
-  public static final void printPortfolioState(Map<String, SimpleEntry<String, Double>> map,
+  @Override
+  public void printPortfolioState(Map<String, SimpleEntry<String, Double>> map,
       String portfolioCreationDate, PrintStream out) {
     final DecimalFormat df = new DecimalFormat("0.00");
     if (portfolioCreationDate != null) {
@@ -259,13 +290,8 @@ public class ViewPrint {
         "------------------------------------------------------------------------");
   }
 
-  /**
-   * print portfolio summary.
-   *
-   * @param stockMap map of stocks
-   * @param out      out stream.
-   */
-  public static final void printPortfolioSummary(Map<String, Double> stockMap, PrintStream out) {
+  @Override
+  public void printPortfolioSummary(Map<String, Double> stockMap, PrintStream out) {
     out.printf("%40s", "Table for portfolio summary");
     out.println();
     out.println("----------------------------------------------------------");
@@ -280,14 +306,8 @@ public class ViewPrint {
     out.println();
   }
 
-  /**
-   * print portfolio detail.
-   *
-   * @param mapDetail      map detail.
-   * @param portfolioValue portfolio value
-   * @param out            out stream.
-   */
-  public static final void printPortfolioDetail(Map<String, List<Double>> mapDetail,
+  @Override
+  public void printPortfolioDetail(Map<String, List<Double>> mapDetail,
       double portfolioValue, PrintStream out) {
     final DecimalFormat df = new DecimalFormat("0.00");
     out.printf("%60s", "Table for portfolio details");
@@ -316,13 +336,8 @@ public class ViewPrint {
 
   }
 
-  /**
-   * print portfolio performance.
-   *
-   * @param portfolioPnL pnl of portfolio.
-   * @param out          out stream.
-   */
-  public static final void printPortfolioPerformance(Double portfolioPnL, PrintStream out) {
+  @Override
+  public void printPortfolioPerformance(Double portfolioPnL, PrintStream out) {
     final DecimalFormat df = new DecimalFormat("0.00");
     portfolioPnL = Double.parseDouble(df.format(portfolioPnL));
     if (portfolioPnL > 0) {
@@ -336,47 +351,36 @@ public class ViewPrint {
     }
   }
 
-  /**
-   * print portfolio value.
-   *
-   * @param portfolioValue portfolio value.
-   * @param out            out stream.
-   */
-  public static final void printPortfolioValue(Double portfolioValue, PrintStream out) {
+  @Override
+  public void printPortfolioValue(Double portfolioValue, PrintStream out) {
 
     out.println(
         "Value of the portfolio on that day: $"
             + new DecimalFormat("0.00").format(portfolioValue));
   }
 
-  public static final void loadPortfolioErrorNote(PrintStream out) {
+  @Override
+  public void loadPortfolioErrorNote(PrintStream out) {
     out.print(ViewConstants.LOAD_PORTFOLIO_ERROR_NOTE);
   }
 
-  public static final void askStartDateForGraph(PrintStream out) {
+  @Override
+  public void askStartDateForGraph(PrintStream out) {
     out.print(ViewConstants.ASK_START_DATE_FOR_GRAPH);
   }
 
-  public static final void askEndDateForGraph(PrintStream out) {
+  @Override
+  public void askEndDateForGraph(PrintStream out) {
     out.print(ViewConstants.ASK_END_DATE_FOR_GRAPH);
   }
 
-  public static final void graphInvalidRange(PrintStream out) {
+  @Override
+  public void graphInvalidRange(PrintStream out) {
     out.print(ViewConstants.GRAPH_INVALID_RANGE);
   }
 
-  /**
-   * Prints the performance graph.
-   * @param out output object.
-   * @param date1 starting date.
-   * @param date2 ending date.
-   * @param portfolioName name of the portfolio.
-   * @param labels label list.
-   * @param starPoints starPoint list.
-   * @param scale scale of graph.
-   * @param baseAmount starting point of x-axis.
-   */
-  public static final void printGraph(PrintStream out, String date1, String date2,
+  @Override
+  public void printGraph(PrintStream out, String date1, String date2,
       String portfolioName, List<String> labels, List<Integer> starPoints, int scale,
       double baseAmount) {
     out.println(
@@ -400,7 +404,8 @@ public class ViewPrint {
 
   }
 
-  public static final void printError(Exception e, PrintStream out) {
+  @Override
+  public void printError(Exception e, PrintStream out) {
     out.println("\n" + e.getMessage().substring(e.getMessage().indexOf(": ") + 1));
   }
 
