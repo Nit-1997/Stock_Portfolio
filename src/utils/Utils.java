@@ -634,7 +634,7 @@ public class Utils {
     if(data.length!=5) throw new IOException("File corrupted");
     String startDate = data[0];
     String endDate = data[2];
-    if(!Utils.dateChecker(startDate) || !Utils.dateChecker(endDate) ) throw new IOException("File corrupted");
+//    if(!Utils.dateChecker(startDate) || (endDate!=null && !Utils.dateChecker(endDate)) ) throw new IOException("File corrupted");
     int interval;
     Double amount;
     Double commFee;
@@ -645,7 +645,7 @@ public class Utils {
     } catch(NumberFormatException e){
       throw new IOException("File corrupted");
     }
-    Map<String, Double> weightage = null;
+    Map<String, Double> weightage = new HashMap<>();
     Double sum=0.0;
     while(myReader.hasNextLine()){
       data = myReader.nextLine().split(",");
@@ -664,7 +664,7 @@ public class Utils {
 
     if (sum!=100.0) throw new IOException("File corrupted");
 
-    stockOrders=Utils.updatePortfolioFromDCA(portfolioName,startDate,endDate,weightage,
+    stockOrders=Utils.updatePortfolioFromDCA(portfolioName,startDate,endDate.equals("null")?null:endDate,weightage,
         interval,amount,commFee,stockOrders);
 
     return stockOrders;
@@ -694,7 +694,7 @@ public class Utils {
       }
       start=start.plusDays(interval);
     }
-    if(endDate!=null || lastDate==LocalDate.parse(endDate)){
+    if(endDate!=null && lastDate==LocalDate.parse(endDate)){
       // do nothing
       // TODO : delete DCA file if exists (the end date of the file has now passed, no need of DCA file)
       if (Utils.dataExists(portfolioName+"_DCA", "portfolios" + File.separator + "flex")){
@@ -702,8 +702,7 @@ public class Utils {
       }
     }
     else if(lastDate==now){
-      File portfolioDCA = Utils.createFileIfNotExists(portfolioName+"_DCA",
-          "portfolios" + File.separator + "flex" + File.separator + "DCA");
+      File portfolioDCA = Utils.createFileIfNotExists(portfolioName+"_DCA", "portfolios" + File.separator + "flex");
       FileWriter myWriter = new FileWriter(portfolioDCA);
 
       myWriter.write(start+","+interval+","+endDate+","+amount+","+commFee+"\n");

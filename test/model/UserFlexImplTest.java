@@ -89,56 +89,91 @@ public class UserFlexImplTest {
   }
 
   @Test
-  public void testGetPortfolioValueBeforePortfolioCreation() {
+  public void testGetPortfolioValueBeforePortfolioCreation() throws Exception {
     String portfolioCreationDate = user.getPortfolioCreationDate("flexUserTest2");
-    Double portfolioValue = user.getPortfolioValue("flexUserTest2",
-        LocalDate.parse(portfolioCreationDate).minusDays(10).toString());
+    Double portfolioValue;
+    try {
+      portfolioValue = user.getPortfolioValue("flexUserTest2",
+          LocalDate.parse(portfolioCreationDate).minusDays(10).toString());
+    } catch (Exception e) {
+      portfolioValue=null;
+    }
     assertEquals(0.0, portfolioValue, 0.01);
   }
 
   @Test
-  public void testGetPortfolioValueAfterPortfolioCreationDate() {
+  public void testGetPortfolioValueAfterPortfolioCreationDate() throws Exception {
     String portfolioCreationDate = user.getPortfolioCreationDate("flexUserTest2");
-    Double portfolioValue = user.getPortfolioValue("flexUserTest2",
-        LocalDate.parse(portfolioCreationDate).plusDays(100).toString());
+    Double portfolioValue;
+    try {
+      portfolioValue = user.getPortfolioValue("flexUserTest2",
+          LocalDate.parse(portfolioCreationDate).plusDays(100).toString());
+    } catch (Exception e) {
+      portfolioValue=null;
+    }
     assertEquals(6293.75, portfolioValue, 0.01);
   }
 
   @Test
   public void testGetPortfolioCurrentValue() {
 
-    Double portfolioValue = user.getPortfolioValue("flexUserTest2",
-        LocalDate.now().toString());
+    Double portfolioValue;
+    try {
+      portfolioValue = user.getPortfolioValue("flexUserTest2",
+          LocalDate.now().toString());
+    } catch (Exception e) {
+      portfolioValue=null;
+    }
     assertEquals(15621.65, portfolioValue, 0.01);
   }
 
   @Test
   public void testGetPortfolioValueAfterToday() {
 
-    Double portfolioValue = user.getPortfolioValue("flexUserTest2",
-        LocalDate.now().plusDays(1).toString());
+    Double portfolioValue;
+    try {
+      portfolioValue = user.getPortfolioValue("flexUserTest2",
+          LocalDate.now().plusDays(1).toString());
+    } catch (Exception e) {
+      portfolioValue=null;
+    }
     assertNull(portfolioValue);
   }
 
   @Test
   public void testGetPortfolioValueWrongPortfolioName() {
-    Double portfolioValue = user.getPortfolioValue("svhcjk",
-        LocalDate.now().plusDays(1).toString());
+    Double portfolioValue;
+    try {
+      portfolioValue = user.getPortfolioValue("svhcjk",
+          LocalDate.now().plusDays(1).toString());
+    } catch (Exception e) {
+      portfolioValue=null;
+    }
     assertNull(portfolioValue);
   }
 
   @Test
   public void testGetPortfolioSummaryBeforeCreationDate() {
-    Map<String, Double> summary = user.getPortfolioSummary("flexUserTest2",
-        "2014-01-01");
+    Map<String, Double> summary;
+    try {
+      summary = user.getPortfolioSummary("flexUserTest2",
+          "2014-01-01");
+    } catch (Exception e) {
+      summary = null;
+    }
     assertNull(summary);
   }
 
   @Test
-  public void testGetPortfolioSummaryAfterPortfolioCreationDate() {
+  public void testGetPortfolioSummaryAfterPortfolioCreationDate() throws Exception {
     String portfolioCreationDate = user.getPortfolioCreationDate("flexUserTest2");
-    Map<String, Double> summary = user.getPortfolioSummary("flexUserTest2",
-        LocalDate.parse(portfolioCreationDate).plusDays(100).toString());
+    Map<String, Double> summary;
+    try {
+      summary = user.getPortfolioSummary("flexUserTest2",
+          LocalDate.parse(portfolioCreationDate).plusDays(100).toString());
+    } catch (Exception e) {
+      summary=null;
+    }
     assertEquals(summary.size(), 2);
     assertTrue(summary.containsKey("AAPL"));
     assertTrue(summary.containsKey("INTU"));
@@ -147,10 +182,15 @@ public class UserFlexImplTest {
   }
 
   @Test
-  public void testGetPortfolioSummaryAfterPortfolioCreationDate2() {
+  public void testGetPortfolioSummaryAfterPortfolioCreationDate2() throws Exception {
     String portfolioCreationDate = user.getPortfolioCreationDate("flexUserTest2");
-    Map<String, Double> summary = user.getPortfolioSummary("flexUserTest2",
-        LocalDate.parse(portfolioCreationDate).plusWeeks(400).toString());
+    Map<String, Double> summary;
+    try {
+      summary = user.getPortfolioSummary("flexUserTest2",
+          LocalDate.parse(portfolioCreationDate).plusWeeks(400).toString());
+    } catch (Exception e) {
+      summary=null;
+    }
     assertEquals(summary.size(), 5);
     assertTrue(summary.containsKey("AAPL"));
     assertTrue(summary.containsKey("INTU"));
@@ -162,13 +202,18 @@ public class UserFlexImplTest {
 
   @Test
   public void testGetPortfolioSummaryAfterToday() {
-    Map<String, Double> summary = user.getPortfolioSummary("flexUserTest2",
-        LocalDate.now().plusDays(3).toString());
+    Map<String, Double> summary;
+    try {
+      summary = user.getPortfolioSummary("flexUserTest2",
+          LocalDate.now().plusDays(3).toString());
+    } catch (Exception e) {
+      summary=null;
+    }
     assertNull(summary);
   }
 
   @Test
-  public void testGetCurrentPortfolioSummary() {
+  public void testGetCurrentPortfolioSummary() throws Exception {
     Map<String, Double> summary = user.getPortfolioSummary("flexUserTest2",
         LocalDate.now().toString());
     assertEquals(summary.size(), 5);
@@ -181,19 +226,19 @@ public class UserFlexImplTest {
   }
 
   @Test
-  public void testGetPortfolioSummaryWrongPortfolioName() {
+  public void testGetPortfolioSummaryWrongPortfolioName() throws Exception {
     Map<String, Double> summary = user.getPortfolioSummary("kfjdvnc", "2016-01-01");
     assertNull(summary);
   }
 
   @Test
-  public void testGetPortfolioCreationDate() {
+  public void testGetPortfolioCreationDate() throws Exception {
     String creationDate = user.getPortfolioCreationDate("flexUserTest2");
     assertEquals("2015-01-15", creationDate);
   }
 
   @Test
-  public void testGetPortfolioCreationDateWrongPortfolioName() {
+  public void testGetPortfolioCreationDateWrongPortfolioName() throws Exception {
     String creationDate = user.getPortfolioCreationDate(null);
     assertNull(creationDate);
 
@@ -230,12 +275,17 @@ public class UserFlexImplTest {
 
   @Test
   public void testGetCostBasisBeforeCreationDate() {
-    Double cost = user.getCostBasis("userFlexTest2", "2014-01-01");
+    Double cost = null;
+    try {
+      cost = user.getCostBasis("userFlexTest2", "2014-01-01");
+    } catch (Exception e) {
+      cost = null;
+    }
     assertNull(cost);
   }
 
   @Test
-  public void testGetCostBasisAfterCreationdate() {
+  public void testGetCostBasisAfterCreationdate() throws Exception {
     String portfolioCreationDate = user.getPortfolioCreationDate("flexUserTest2");
     Double cost = user.getCostBasis("flexUserTest2",
         LocalDate.parse(portfolioCreationDate).plusDays(100).toString());
@@ -259,21 +309,31 @@ public class UserFlexImplTest {
   }
 
   @Test
-  public void testGetCurrentCostBasis() {
+  public void testGetCurrentCostBasis() throws Exception {
     Double cost = user.getCostBasis("flexUserTest2", LocalDate.now().toString());
     assertEquals(204207.73, cost, 0.01);
   }
 
   @Test
   public void testGetCostBasisAfterToday() {
-    Double cost = user.getCostBasis("flexUserTest2",
-        LocalDate.now().plusDays(10).toString());
+    Double cost = null;
+    try {
+      cost = user.getCostBasis("flexUserTest2",
+          LocalDate.now().plusDays(10).toString());
+    } catch (Exception e) {
+      cost = null;
+    }
     assertNull(cost);
   }
 
   @Test
   public void testGetCostBasisWrongPortfolioName() {
-    Double cost = user.getCostBasis("irhj", LocalDate.now().toString());
+    Double cost = null;
+    try {
+      cost = user.getCostBasis("irhj", LocalDate.now().toString());
+    } catch (Exception e) {
+      cost = null;
+    }
     assertNull(cost);
   }
 

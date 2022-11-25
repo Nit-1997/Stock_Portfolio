@@ -125,25 +125,45 @@ public class UserInflexImplTest {
   @Test
   public void testGetPortfolioValueCurrent() {
     String currentDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
-    double val = user.getPortfolioValue("test", currentDate);
+    Double val;
+    try {
+      val = user.getPortfolioValue("test", currentDate);
+    } catch (Exception e) {
+      val=null;
+    }
     assertNotNull(val);
   }
 
   @Test
   public void testGetPortfolioValueHistoric() {
-    Double val = user.getPortfolioValue("test", "2022-05-24");
+    Double val;
+    try {
+      val = user.getPortfolioValue("test", "2022-05-24");
+    } catch (Exception e) {
+      val=null;
+    }
     assertNotNull(val);
   }
 
   @Test
   public void testGetPortfolioValueWrongFileName() {
-    Double val = user.getPortfolioValue("jgevbh", "2022-05-24");
+    Double val;
+    try {
+      val = user.getPortfolioValue("jgevbh", "2022-05-24");
+    } catch (Exception e) {
+      val=null;
+    }
     assertNull(val);
   }
 
   @Test
   public void testGetPortfolioValueWrongDate() {
-    Double val = user.getPortfolioValue("test", "2023-05-24");
+    Double val;
+    try {
+      val = user.getPortfolioValue("test", "2023-05-24");
+    } catch (Exception e) {
+      val=null;
+    }
     assertNull(val);
   }
 

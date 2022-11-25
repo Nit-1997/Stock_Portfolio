@@ -24,7 +24,12 @@ public class PerformanceGraph {
    */
   public static void plotGraph(Scanner scan, PrintStream out, UserFlex user, String portfolioName, IView view) {
     view.waitLoadMessage(out);
-    String creationDate = user.getPortfolioCreationDate(portfolioName);
+    String creationDate;
+    try {
+      creationDate = user.getPortfolioCreationDate(portfolioName);
+    } catch (Exception e) {
+      creationDate = null;
+    }
     if (creationDate == null) {
       view.printInCompatiblePortfolio(out);
       return;

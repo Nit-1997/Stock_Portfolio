@@ -21,7 +21,12 @@ public class CostBasis {
   public static void calculateCostBasis(Scanner scan, PrintStream out, UserFlex user,
       String portfolioName, IView view) {
     view.waitLoadMessage(out);
-    String creationDate = user.getPortfolioCreationDate(portfolioName);
+    String creationDate = null;
+    try {
+      creationDate = user.getPortfolioCreationDate(portfolioName);
+    } catch (Exception e) {
+      creationDate = null;
+    }
     if (creationDate == null) {
       view.printInCompatiblePortfolio(out);
       return;
@@ -39,10 +44,14 @@ public class CostBasis {
         view.wrongDateBeforePortfolioCreation(out);
       }
     }
-    while (!user.dateChecker(date) || user.isBeforeDate(date,
-        user.getPortfolioCreationDate(portfolioName)));
+    while (!user.dateChecker(date) || user.isBeforeDate(date, creationDate));
 
-    Double cost = user.getCostBasis(portfolioName, date);
+    Double cost = null;
+    try {
+      cost = user.getCostBasis(portfolioName, date);
+    } catch (Exception e) {
+      cost = null;
+    }
     if (cost == null) {
       view.printInCompatiblePortfolio(out);
       return;

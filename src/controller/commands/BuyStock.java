@@ -22,7 +22,12 @@ public class BuyStock {
   public static void buyStockToPortfolio(String portfolioName, Scanner scan, UserFlex user,
       PrintStream out, IView view) {
     view.waitLoadMessage(out);
-    String portfolioCreationDate = user.getPortfolioCreationDate(portfolioName);
+    String portfolioCreationDate = null;
+    try {
+      portfolioCreationDate = user.getPortfolioCreationDate(portfolioName);
+    } catch (Exception e) {
+      portfolioCreationDate = null;
+    }
 
     if (portfolioCreationDate == null) {
       view.printInCompatiblePortfolio(out);

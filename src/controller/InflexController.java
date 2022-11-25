@@ -303,7 +303,12 @@ public class InflexController implements CategoryControllerInterface<UserInflex>
             this.view.printInCompatiblePortfolio(this.out);
             return;
           }
-          Double portfolioValue = user.getPortfolioValue(name, date);
+          Double portfolioValue = null;
+          try {
+            portfolioValue = user.getPortfolioValue(name, date);
+          } catch (Exception e) {
+            portfolioValue=null;
+          }
           Double portfolioPerformance = user.getPortfolioPnL(name, date);
           if (portfolioValue == null || portfolioPerformance == null) {
             System.out.println("portfolio doesnt exist on this day");
@@ -315,7 +320,11 @@ public class InflexController implements CategoryControllerInterface<UserInflex>
         case "3":
           date = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
           this.view.waitLoadMessage(this.out);
-          portfolioValue = user.getPortfolioValue(name, date);
+          try {
+            portfolioValue = user.getPortfolioValue(name, date);
+          } catch (Exception e) {
+            portfolioValue=null;
+          }
           if (portfolioValue == null) {
             this.view.printInCompatiblePortfolio(this.out);
             return;
@@ -339,7 +348,11 @@ public class InflexController implements CategoryControllerInterface<UserInflex>
             this.view.printInCompatiblePortfolio(this.out);
             return;
           }
-          portfolioValue = user.getPortfolioValue(name, date);
+          try {
+            portfolioValue = user.getPortfolioValue(name, date);
+          } catch (Exception e) {
+            portfolioValue=null;
+          }
           portfolioPerformance = user.getPortfolioPnL(name, date);
           this.view.printPortfolioDetail(detailedMap, portfolioValue, this.out);
           this.view.printPortfolioPerformance(portfolioPerformance, this.out);
@@ -356,7 +369,11 @@ public class InflexController implements CategoryControllerInterface<UserInflex>
             }
           }
           this.view.waitLoadMessage(this.out);
-          portfolioValue = user.getPortfolioValue(name, date);
+          try {
+            portfolioValue = user.getPortfolioValue(name, date);
+          } catch (Exception e) {
+            portfolioValue=null;
+          }
           if (portfolioValue == null) {
             this.view.printInCompatiblePortfolio(this.out);
             return;

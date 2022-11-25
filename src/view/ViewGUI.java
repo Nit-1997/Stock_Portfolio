@@ -4,7 +4,6 @@ import java.awt.event.ActionListener;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
 import java.util.Map;
-import javax.swing.JPanel;
 import view.panels.IPanel;
 
 public interface ViewGUI {
@@ -19,5 +18,19 @@ public interface ViewGUI {
   void printForNormalPortfolioCreation(String str);
 
   List<String> getNormalPortfolioCreationFormDataAddMore();
+
+  List<String> getDCAPortfolioCreationData();
+
+  Map<String, Double> getDCAPortfolioCreationMap();
+
+  void printForDCAPortfolioCreation(String str);
+
+  SimpleEntry<String,String> getNameAndDate();
+
+  void setValue(String type, Double value);
+
+  void setStockMap(Map<String, Double> stockMap);
+
+  void setPortfolioCreationDate(String date);
 
 }

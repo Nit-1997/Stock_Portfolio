@@ -6,7 +6,9 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -17,38 +19,18 @@ import java.awt.*;
 
 public class CreatePortfolioPanel extends JPanel implements IPanel{
 
-  private String dates[]
-      = { "1", "2", "3", "4", "5",
-      "6", "7", "8", "9", "10",
-      "11", "12", "13", "14", "15",
-      "16", "17", "18", "19", "20",
-      "21", "22", "23", "24", "25",
-      "26", "27", "28", "29", "30",
-      "31" };
-  private String months[]
-      = { "Jan", "feb", "Mar", "Apr",
-      "May", "Jun", "July", "Aug",
-      "Sup", "Oct", "Nov", "Dec" };
-  private String years[]
-      = { "1995", "1996", "1997", "1998",
-      "1999", "2000", "2001", "2002",
-      "2003", "2004", "2005", "2006",
-      "2007", "2008", "2009", "2010",
-      "2011", "2012", "2013", "2014",
-      "2015", "2016", "2017", "2018",
-      "2019","2020","2021","2022" };
-
   JPanel form=null;
 
   JButton normalFormSubmitButton, DCAFormSubmitButton, normalFormAddMoreButton;
 
-  JTextField portNameInput, stockInput, quantityInput, commFeeInput;
-  
-  JComboBox date, month, year;
-  
+  JTextField portNameInput, dateInput, stockInput, quantityInput, commFeeInput;
+
+  JTextField startDateInput, endDateInput, amountInput, percentageInput, intervalInput;
   JTextArea tout;
 
   JLabel confirmationMsg;
+
+  Map<String, Double> dcaStockMap;
 
 
   public CreatePortfolioPanel(){
@@ -65,6 +47,12 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
     this.normalFormAddMoreButton.setFont(new Font("Arial", Font.PLAIN, 15));
     this.normalFormAddMoreButton.setSize(200, 20);
     this.normalFormAddMoreButton.setLocation(150, 350);
+
+    this.DCAFormSubmitButton = new JButton("Submit");
+    this.DCAFormSubmitButton.setActionCommand("DCA Form Submit");
+    this.DCAFormSubmitButton.setFont(new Font("Arial", Font.PLAIN, 15));
+    this.DCAFormSubmitButton.setSize(70, 20);
+    this.DCAFormSubmitButton.setLocation(50, 350);
 
     this.setLayout(new BorderLayout());
 
@@ -110,81 +98,70 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
     form.add(title);
 
     JLabel portfolioName = new JLabel("Portfolio Name");
-    portfolioName.setFont(new Font("Arial", Font.PLAIN, 10));
+    portfolioName.setFont(new Font("Arial", Font.PLAIN, 13));
     portfolioName.setSize(100, 20);
     portfolioName.setLocation(50, 100);
     form.add(portfolioName);
 
     this.portNameInput = new JTextField();
-    this.portNameInput.setFont(new Font("Arial", Font.PLAIN, 10));
+    this.portNameInput.setFont(new Font("Arial", Font.PLAIN, 13));
     this.portNameInput.setSize(190, 20);
-    this.portNameInput.setLocation(130, 100);
+    this.portNameInput.setLocation(140, 100);
     form.add(this.portNameInput);
 
     JLabel stock = new JLabel("Stock");
-    stock.setFont(new Font("Arial", Font.PLAIN, 10));
+    stock.setFont(new Font("Arial", Font.PLAIN, 13));
     stock.setSize(100, 20);
     stock.setLocation(50, 150);
     form.add(stock);
 
     this.stockInput = new JTextField();
-    this.stockInput.setFont(new Font("Arial", Font.PLAIN, 10));
+    this.stockInput.setFont(new Font("Arial", Font.PLAIN, 13));
     this.stockInput.setSize(190, 20);
     this.stockInput.setLocation(100, 150);
     this.form.add(stockInput);
 
     JLabel mno = new JLabel("date of transaction");
-    mno.setFont(new Font("Arial", Font.PLAIN, 10));
+    mno.setFont(new Font("Arial", Font.PLAIN, 13));
     mno.setSize(100, 20);
     mno.setLocation(50, 200);
     form.add(mno);
 
 
-    this.date = new JComboBox(dates);
-    this.date.setFont(new Font("Arial", Font.PLAIN, 10));
-    this.date.setSize(50, 20);
-    this.date.setLocation(150, 200);
-    form.add(this.date);
+    this.dateInput = new JTextField();
+    this.dateInput.setFont(new Font("Arial", Font.PLAIN, 13));
+    this.dateInput.setSize(150, 20);
+    this.dateInput.setLocation(150, 200);
+    form.add(this.dateInput);
 
-    this.month = new JComboBox(months);
-    this.month.setFont(new Font("Arial", Font.PLAIN, 10));
-    this.month.setSize(60, 20);
-    this.month.setLocation(200, 200);
-    form.add(this.month);
-
-    this.year = new JComboBox(years);
-    this.year.setFont(new Font("Arial", Font.PLAIN, 10));
-    this.year.setSize(60, 20);
-    this.year.setLocation(250, 200);
-    form.add(this.year);
 
     JLabel quantity = new JLabel("Number of stocks");
-    quantity.setFont(new Font("Arial", Font.PLAIN, 10));
+    quantity.setFont(new Font("Arial", Font.PLAIN, 13));
     quantity.setSize(100, 20);
     quantity.setLocation(50, 250);
     form.add(quantity);
 
     this.quantityInput = new JTextField();
-    this.quantityInput.setFont(new Font("Arial", Font.PLAIN, 10));
+    this.quantityInput.setFont(new Font("Arial", Font.PLAIN, 13));
     this.quantityInput.setSize(190, 20);
     this.quantityInput.setLocation(150, 250);
     form.add(this.quantityInput);
 
     JLabel commFee = new JLabel("Commission Fee");
-    commFee.setFont(new Font("Arial", Font.PLAIN, 10));
+    commFee.setFont(new Font("Arial", Font.PLAIN, 13));
     commFee.setSize(100, 20);
     commFee.setLocation(50, 300);
     form.add(commFee);
 
     this.commFeeInput = new JTextField();
-    this.commFeeInput.setFont(new Font("Arial", Font.PLAIN, 10));
+    this.commFeeInput.setFont(new Font("Arial", Font.PLAIN, 13));
     this.commFeeInput.setSize(190, 20);
     this.commFeeInput.setLocation(150, 300);
     form.add(this.commFeeInput);
 
-    this.tout = new JTextArea("Portfolio stocks data");
+    this.tout = new JTextArea("");
     this.tout.setFont(new Font("Arial", Font.PLAIN, 15));
-    this.tout.setBackground(Color.YELLOW);
+    this.tout.setBackground(Color.CYAN);
     this.tout.setSize(250, 200);
     this.tout.setLocation(350, 80);
     this.tout.setLineWrap(true);
@@ -192,25 +169,13 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
     form.add(this.tout);
 
     this.confirmationMsg = new JLabel("");
-    this.confirmationMsg.setFont(new Font("Arial", Font.PLAIN, 10));
-    this.confirmationMsg.setSize(200, 20);
-    this.confirmationMsg.setLocation(350, 300);
+    this.confirmationMsg.setFont(new Font("Arial", Font.PLAIN, 12));
+    this.confirmationMsg.setSize(250, 20);
+    this.confirmationMsg.setLocation(370, 300);
     form.add(this.confirmationMsg);
-
-
-    this.normalFormSubmitButton = new JButton("Submit");
-    this.normalFormAddMoreButton.setActionCommand("Normal Portfolio Creation Submit");
-    this.normalFormSubmitButton.setFont(new Font("Arial", Font.PLAIN, 15));
-    this.normalFormSubmitButton.setSize(70, 20);
-    this.normalFormSubmitButton.setLocation(50, 350);
 
     form.add(this.normalFormSubmitButton);
 
-    this.normalFormAddMoreButton = new JButton("Add more stocks");
-    this.normalFormAddMoreButton.setActionCommand("Normal Form Add More Button");
-    this.normalFormAddMoreButton.setFont(new Font("Arial", Font.PLAIN, 15));
-    this.normalFormAddMoreButton.setSize(200, 20);
-    this.normalFormAddMoreButton.setLocation(150, 350);
 
     form.add(this.normalFormAddMoreButton);
 
@@ -223,21 +188,21 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
       stockInput.setText(def);
       commFeeInput.setText(def);
       quantityInput.setText(def);
-      date.setSelectedIndex(0);
-      month.setSelectedIndex(0);
-      year.setSelectedIndex(0);
+      dateInput.setText(def);
     });
     form.add(resetBtn);
 
 
 
-    this.add(form);
+    this.add(form, BorderLayout.CENTER);
     this.revalidate();
     this.repaint();
+    form.setFocusable(false);
   }
 
   private void printDCACreationMenu(){
 
+    this.dcaStockMap = new HashMap<>();
 
     this.setLayout(new BorderLayout());
     if(this.form!=null)this.remove(this.form);
@@ -254,50 +219,63 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
     JLabel portfolioName = new JLabel("Portfolio Name");
     portfolioName.setFont(new Font("Arial", Font.PLAIN, 15));
     portfolioName.setSize(100, 20);
-    portfolioName.setLocation(50, 100);
+    portfolioName.setLocation(40, 100);
     form.add(portfolioName);
 
-    JTextField portNameInput = new JTextField();
-    portNameInput.setFont(new Font("Arial", Font.PLAIN, 15));
-    portNameInput.setSize(160, 20);
-    portNameInput.setLocation(180, 100);
-    form.add(portNameInput);
+    this.portNameInput = new JTextField();
+    this.portNameInput.setFont(new Font("Arial", Font.PLAIN, 15));
+    this.portNameInput.setSize(160, 20);
+    this.portNameInput.setLocation(150, 100);
+    form.add(this.portNameInput);
 
-    JLabel startDate = new JLabel("Start Date (MM/dd/YYYY)");
+    JLabel amount = new JLabel("Amount to be invested($)");
+    amount.setFont(new Font("Arial", Font.PLAIN, 15));
+    amount.setSize(170, 20);
+    amount.setLocation(320, 100);
+    form.add(amount);
+
+    this.amountInput = new JTextField(10);
+    this.amountInput.setFont(new Font("Arial", Font.PLAIN, 15));
+    this.amountInput.setSize(80, 20);
+    this.amountInput.setLocation(500, 100);
+    form.add(this.amountInput);
+
+    JLabel startDate = new JLabel("Start Date (yyyy-MM-dd)");
     startDate.setFont(new Font("Arial", Font.PLAIN, 15));
     startDate.setSize(170, 20);
     startDate.setLocation(20, 130);
     form.add(startDate);
 
-    JTextField startDateInput = new JTextField(10);
-    startDateInput.setFont(new Font("Arial", Font.PLAIN, 15));
-    startDateInput.setSize(100, 20);
-    startDateInput.setLocation(200, 130);
-    form.add(startDateInput);
+    this.startDateInput = new JTextField(10);
+    this.startDateInput.setFont(new Font("Arial", Font.PLAIN, 15));
+    this.startDateInput.setSize(100, 20);
+    this.startDateInput.setLocation(200, 130);
+    form.add(this.startDateInput);
 
-    JLabel endDate = new JLabel("End Date (MM/dd/YYYY)");
+    JLabel endDate = new JLabel("End Date (yyyy-MM-dd)");
     endDate.setFont(new Font("Arial", Font.PLAIN, 15));
     endDate.setSize(170, 20);
     endDate.setLocation(310, 130);
     form.add(endDate);
 
-    JTextField endDateInput = new JTextField(10);
-    endDateInput.setFont(new Font("Arial", Font.PLAIN, 15));
-    endDateInput.setSize(100, 20);
-    endDateInput.setLocation(480, 130);
-    form.add(endDateInput);
+    this.endDateInput = new JTextField(10);
+    this.endDateInput.setFont(new Font("Arial", Font.PLAIN, 15));
+    this.endDateInput.setSize(100, 20);
+    this.endDateInput.setLocation(480, 130);
+    form.add(this.endDateInput);
 
-    JLabel amount = new JLabel("Amount to be invested($)");
-    amount.setFont(new Font("Arial", Font.PLAIN, 15));
-    amount.setSize(170, 20);
-    amount.setLocation(20, 160);
-    form.add(amount);
 
-    JTextField amountInput = new JTextField(10);
-    amountInput.setFont(new Font("Arial", Font.PLAIN, 15));
-    amountInput.setSize(80, 20);
-    amountInput.setLocation(200, 160);
-    form.add(amountInput);
+    JLabel interval = new JLabel("Interval (in days)");
+    interval.setFont(new Font("Arial", Font.PLAIN, 15));
+    interval.setSize(130, 20);
+    interval.setLocation(20, 160);
+    form.add(interval);
+
+    this.intervalInput = new JTextField(10);
+    this.intervalInput.setFont(new Font("Arial", Font.PLAIN, 15));
+    this.intervalInput.setSize(80, 20);
+    this.intervalInput.setLocation(150, 160);
+    form.add(this.intervalInput);
 
     JLabel commFee = new JLabel("Commission Fee($)");
     commFee.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -305,11 +283,11 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
     commFee.setLocation(290, 160);
     form.add(commFee);
 
-    JTextField commFeeInput = new JTextField(10);
-    commFeeInput.setFont(new Font("Arial", Font.PLAIN, 15));
-    commFeeInput.setSize(100, 20);
-    commFeeInput.setLocation(430, 160);
-    form.add(commFeeInput);
+    this.commFeeInput = new JTextField(10);
+    this.commFeeInput.setFont(new Font("Arial", Font.PLAIN, 15));
+    this.commFeeInput.setSize(100, 20);
+    this.commFeeInput.setLocation(430, 160);
+    form.add(this.commFeeInput);
 
     JPanel scrollPanel = new JPanel();
     scrollPanel.setLayout(new BoxLayout(scrollPanel,BoxLayout.Y_AXIS));
@@ -326,11 +304,11 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
     temp.add(stock);
 
 
-    JTextField stockInput = new JTextField(10);
-    stockInput.setFont(new Font("Arial", Font.PLAIN, 15));
-    stockInput.setSize(100, 20);
-    stockInput.setLocation(70, 200);
-    temp.add(stockInput);
+    this.stockInput = new JTextField(10);
+    this.stockInput.setFont(new Font("Arial", Font.PLAIN, 15));
+    this.stockInput.setSize(100, 20);
+    this.stockInput.setLocation(70, 200);
+    temp.add(this.stockInput);
 
     JLabel quantity = new JLabel("Weight(%) ");
     quantity.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -338,11 +316,11 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
     quantity.setLocation(180, 200);
     temp.add(quantity);
 
-    JTextField quantityInput = new JTextField(10);
-    quantityInput.setFont(new Font("Arial", Font.PLAIN, 15));
-    quantityInput.setSize(100, 20);
-    quantityInput.setLocation(270, 200);
-    temp.add(quantityInput);
+    this.percentageInput = new JTextField(10);
+    this.percentageInput.setFont(new Font("Arial", Font.PLAIN, 15));
+    this.percentageInput.setSize(100, 20);
+    this.percentageInput.setLocation(270, 200);
+    temp.add(this.percentageInput);
 
     scrollPanel.add(temp);
 
@@ -359,12 +337,13 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
     });
           form.add(moreAdd);
 
-          this.DCAFormSubmitButton = new JButton("Submit");
-          this.DCAFormSubmitButton.setActionCommand("DCA Form Submit");
-          this.DCAFormSubmitButton.setFont(new Font("Arial", Font.PLAIN, 15));
-          this.DCAFormSubmitButton.setSize(70, 20);
-          this.DCAFormSubmitButton.setLocation(50, 350);
           form.add(this.DCAFormSubmitButton);
+
+          this.confirmationMsg = new JLabel("");
+          this.confirmationMsg.setFont(new Font("Arial", Font.PLAIN, 15));
+          this.confirmationMsg.setSize(250, 20);
+          this.confirmationMsg.setLocation(130, 350);
+          form.add(this.confirmationMsg);
 
           JButton resetBtn = new JButton("");
           resetBtn.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -372,13 +351,19 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
           resetBtn.setLocation(260, 350);
           form.add(resetBtn);
 
-          this.add(form);
+
+
+          this.add(form,BorderLayout.CENTER);
           this.revalidate();
           this.repaint();
         }
 
   private void printMoreLines(int y, JPanel scrollPane, ActionEvent evt) {
-    System.out.println(y);
+
+    if(!this.inputValidation()) return;
+    System.out.println(this.dcaStockMap);
+
+    this.printForDCAPortfolioCreation("Added",true);
 
     JPanel temp = new JPanel();
 
@@ -389,11 +374,11 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
     temp.add(stock);
 
 
-    JTextField stockInput = new JTextField(10);
-    stockInput.setFont(new Font("Arial", Font.PLAIN, 15));
-    stockInput.setSize(100, 20);
-    stockInput.setLocation(70, y);
-    temp.add(stockInput);
+    this.stockInput = new JTextField(10);
+    this.stockInput.setFont(new Font("Arial", Font.PLAIN, 15));
+    this.stockInput.setSize(100, 20);
+    this.stockInput.setLocation(70, y);
+    temp.add(this.stockInput);
 
 
     JLabel quantity = new JLabel("Weight(%) ");
@@ -403,18 +388,46 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
     temp.add(quantity);
 
 
-    JTextField quantityInput = new JTextField(10);
-    quantityInput.setFont(new Font("Arial", Font.PLAIN, 15));
-    quantityInput.setSize(100, 20);
-    quantityInput.setLocation(270, y);
-    temp.add(quantityInput);
+    this.percentageInput = new JTextField(10);
+    this.percentageInput.setFont(new Font("Arial", Font.PLAIN, 15));
+    this.percentageInput.setSize(100, 20);
+    this.percentageInput.setLocation(270, y);
+    temp.add(this.percentageInput);
 
 
     scrollPane.add(temp);
     scrollPane.revalidate();
     scrollPane.repaint();
 
+  }
 
+  private boolean inputValidation(){
+    String stock = this.stockInput.getText();
+    String percentage = this.percentageInput.getText();
+    if(stock.equals("") || percentage.equals("")){
+      this.printForDCAPortfolioCreation("Empty record",false);
+      return false;
+    }
+    Double percent;
+    try{
+      percent = Double.parseDouble(percentage);
+    } catch(NumberFormatException e){
+      this.printForDCAPortfolioCreation("Number not in numeric format",false);
+      return false;
+    }
+    if(percent==0){
+      this.printForDCAPortfolioCreation("Percentage 0",false);
+      return false;
+    }
+    if(percent<0 || percent>100){
+      this.printForDCAPortfolioCreation("Percentage -ve or 100+",false);
+      return false;
+    }
+    if(this.dcaStockMap.containsKey(stock.toUpperCase()))
+      this.dcaStockMap.put(stock.toUpperCase(),this.dcaStockMap.get(stock)+percent);
+    else this.dcaStockMap.put(stock.toUpperCase(),percent);
+
+    return true;
   }
 
   public List<String> getNormalFormData(){
@@ -422,7 +435,7 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
     data.add(this.portNameInput.getText().trim());
     data.add(this.stockInput.getText().trim());
     data.add(this.quantityInput.getText().trim());
-    data.add(month.getSelectedItem()+"/"+date.getSelectedItem()+"/"+year.getSelectedItem());
+    data.add(this.dateInput.getText().trim());
     data.add(this.commFeeInput.getText().trim());
     return data;
   }
@@ -431,22 +444,66 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
       return this.tout.getText();
   }
 
+  public List<String> getDCAFormData(){
+    List<String> data = new ArrayList<>();
+    data.add(this.portNameInput.getText().trim());
+    data.add(this.startDateInput.getText().trim());
+    data.add(this.endDateInput.getText().trim());
+    data.add(this.amountInput.getText().trim());
+    data.add(this.intervalInput.getText().trim());
+    data.add(this.commFeeInput.getText().trim());
+    return data;
+  }
+
+  public Map<String, Double> getDcaStockMap(){
+    this.inputValidation();
+    this.dcaStockMap.remove("");
+    return this.dcaStockMap;
+  }
+
   @Override
   public void addActionListener(ActionListener listener) {
-    this.normalFormSubmitButton.addActionListener(listener);
-//    this.DCAFormSubmitButton.addActionListener(listener);
-    this.normalFormAddMoreButton.addActionListener(listener);
+    normalFormSubmitButton.addActionListener(listener);
+    DCAFormSubmitButton.addActionListener(listener);
+    normalFormAddMoreButton.addActionListener(listener);
   }
 
 
+  public void printForDCAPortfolioCreation(String str, boolean isGood){
+    if(str.equals("Portfolio Successfully Saved")){
+      this.printDCACreationMenu();
+    }
+    if(isGood) this.confirmationMsg.setForeground(Color.GREEN);
+    else this.confirmationMsg.setForeground(Color.RED);
+    this.confirmationMsg.setText(str);
+  }
 
   public void printForNormalPortfolioCreation(String str){
     this.confirmationMsg.setText(str);
+
+    if(str.equals("Stock Added successfully")){
+      String text = this.getAreaText();
+      text=text+"\n"+this.stockInput.getText()+","+this.dateInput.getText()+","+this.quantityInput.getText()+","
+          +this.commFeeInput.getText();
+      this.tout.setText(text);
+    }
+
     if(str.equals("Portfolio Successfully Saved")){
+      this.tout.setText("");
+      this.portNameInput.setText("");
+    }
+
+    if(str.equals("Portfolio Successfully Saved") || str.equals("Stock Added successfully")){
         this.confirmationMsg.setForeground(Color.GREEN);
+        this.stockInput.setText("");
+        this.dateInput.setText("");
+        this.quantityInput.setText("");
+        this.commFeeInput.setText("");
       }
       else{
       this.confirmationMsg.setForeground(Color.RED);
       }
+
+
   }
 }

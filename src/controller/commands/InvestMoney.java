@@ -17,7 +17,12 @@ public class InvestMoney {
 
     view.waitLoadMessage(out);
 
-    String portfolioCreationDate = user.getPortfolioCreationDate(portfolioName);
+    String portfolioCreationDate = null;
+    try {
+      portfolioCreationDate = user.getPortfolioCreationDate(portfolioName);
+    } catch (Exception e) {
+      portfolioCreationDate = null;
+    }
     if (portfolioCreationDate == null) {
       view.printInCompatiblePortfolio(out);
       return;
@@ -40,7 +45,12 @@ public class InvestMoney {
     }
     while (!user.dateChecker(date) || user.isBeforeDate(date, portfolioCreationDate));
 
-    Map<String, Double> portfolioComposition = user.getPortfolioSummary(portfolioName,date);
+    Map<String, Double> portfolioComposition;
+    try {
+      portfolioComposition = user.getPortfolioSummary(portfolioName,date);
+    } catch (Exception e) {
+      portfolioComposition=null;
+    }
     if (portfolioComposition == null) {
       view.printInCompatiblePortfolio(out);
       return;

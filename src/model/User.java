@@ -24,8 +24,9 @@ public interface User {
    * @param name name of the portfolio
    * @param date date for which portfolio value is required
    * @return total value of portfolio
+   * @throws Exception if there is any error.
    */
-  public Double getPortfolioValue(String name, String date);
+  public Double getPortfolioValue(String name, String date) throws Exception;
 
 
   /**

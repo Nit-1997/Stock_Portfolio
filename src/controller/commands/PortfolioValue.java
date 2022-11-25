@@ -21,7 +21,12 @@ public class PortfolioValue {
       UserFlex user, IView view) {
     view.waitLoadMessage(out);
     Double portfolioValue;
-    String creationDate = user.getPortfolioCreationDate(portfolioName);
+    String creationDate;
+    try {
+      creationDate = user.getPortfolioCreationDate(portfolioName);
+    } catch (Exception e) {
+      creationDate = null;
+    }
     if (creationDate == null) {
       view.printInCompatiblePortfolio(out);
       return;
@@ -29,7 +34,12 @@ public class PortfolioValue {
     if (user.isBeforeDate(date, creationDate)) {
       portfolioValue = 0.0;
     } else {
-      portfolioValue = user.getPortfolioValue(portfolioName, date);
+      try{
+        portfolioValue = user.getPortfolioValue(portfolioName, date);
+      }catch(Exception e){
+        portfolioValue=null;
+      }
+
     }
 
     if (portfolioValue == null) {

@@ -249,7 +249,7 @@ public class PortfolioFlexImpl implements PortfolioFlex {
   }
 
   @Override
-  public Double getValueOnDate(String date) throws Exception {
+  public Double getValueOnDate(String date) throws Exception  {
     double totalVal = 0;
     Map<String, Double> summary = this.getPortfolioSummary(date);
     for (String ticker : summary.keySet()) {
@@ -261,7 +261,7 @@ public class PortfolioFlexImpl implements PortfolioFlex {
   }
 
   @Override
-  public Map<String, Double> getPortfolioSummary(String date) throws Exception {
+  public Map<String, Double> getPortfolioSummary(String date)  throws Exception {
     Map<String, Double> stateMap = new HashMap<>();
 
     for (StockOrder s : this.stockOrders) {

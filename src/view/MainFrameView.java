@@ -3,12 +3,15 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JFrame;
 import view.panels.CreatePortfolioPanel;
 import view.panels.IPanel;
 import view.panels.MainMenuPanel;
 import view.panels.SideBarPanel;
+import view.panels.SinglePortfolioDetailPanel;
 
 public class MainFrameView extends JFrame implements ViewGUI{
 
@@ -65,9 +68,51 @@ public class MainFrameView extends JFrame implements ViewGUI{
   }
 
   @Override
+  public List<String> getDCAPortfolioCreationData(){
+    CreatePortfolioPanel obj = (CreatePortfolioPanel)this.mainPanel;
+    return obj.getDCAFormData();
+  }
+
+  @Override
+  public Map<String, Double> getDCAPortfolioCreationMap(){
+    CreatePortfolioPanel obj = (CreatePortfolioPanel)this.mainPanel;
+    return obj.getDcaStockMap();
+  }
+
+  @Override
   public void printForNormalPortfolioCreation(String str) {
     CreatePortfolioPanel obj = (CreatePortfolioPanel)this.mainPanel;
     obj.printForNormalPortfolioCreation(str);
+  }
+
+  @Override
+  public void printForDCAPortfolioCreation(String str){
+    CreatePortfolioPanel obj = (CreatePortfolioPanel)this.mainPanel;
+    obj.printForDCAPortfolioCreation(str,str.equals("Portfolio Successfully Saved"));
+  }
+
+  @Override
+  public SimpleEntry<String,String> getNameAndDate(){
+    SinglePortfolioDetailPanel obj = (SinglePortfolioDetailPanel)this.mainPanel;
+    return obj.getNameAndDate();
+  }
+
+  @Override
+  public void setValue(String type, Double value){
+    SinglePortfolioDetailPanel obj = (SinglePortfolioDetailPanel)this.mainPanel;
+    obj.setValue(type, value);
+  }
+
+  @Override
+  public void setPortfolioCreationDate(String date){
+    SinglePortfolioDetailPanel obj = (SinglePortfolioDetailPanel)this.mainPanel;
+    obj.setPortfolioCreationDate(date);
+  }
+
+  @Override
+  public void setStockMap(Map<String, Double> stockMap){
+    SinglePortfolioDetailPanel obj = (SinglePortfolioDetailPanel)this.mainPanel;
+    obj.setStockMap(stockMap);
   }
 
   @Override

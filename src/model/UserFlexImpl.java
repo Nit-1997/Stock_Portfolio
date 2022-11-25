@@ -50,7 +50,7 @@ public class UserFlexImpl extends AbstractUser implements UserFlex {
       f.mkdirs();
       return;
     }
-    String[] files = f.list((f1, name) -> name.endsWith(".csv"));
+    String[] files = f.list((f1, name) -> name.endsWith(".csv") && !name.endsWith("_DCA.csv"));
 
     for (int i = 0; i < files.length; i++) {
       files[i] = files[i].substring(0, files[i].indexOf(".csv"));
@@ -79,26 +79,23 @@ public class UserFlexImpl extends AbstractUser implements UserFlex {
   }
 
   @Override
-  public Double getPortfolioValue(String name, String date) {
-    try {
+  public Double getPortfolioValue(String name, String date) throws Exception {
+
       if (!Utils.dateChecker(date)) {
         throw new Exception("wrong arguments");
       }
 
       this.loadPortfolio(name);
+      if(this.isBeforeDate(date,this.portfolioMap.get(name).getCreationDate())) return 0.0;
       Double portfolioValue;
       String currentDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
       if (date.equals(currentDate)) {
         portfolioValue = this.portfolioMap.get(name).getCurrentValue();
       } else {
+
         portfolioValue = this.portfolioMap.get(name).getValueOnDate(date);
       }
       return portfolioValue;
-    } catch (IOException e) {
-      return null;
-    } catch (Exception e) {
-      return null;
-    }
   }
 
 
@@ -127,32 +124,20 @@ public class UserFlexImpl extends AbstractUser implements UserFlex {
   }
 
   @Override
-  public Map<String, Double> getPortfolioSummary(String name, String date) {
-    try {
+  public Map<String, Double> getPortfolioSummary(String name, String date) throws Exception {
       if (!Utils.dateChecker(date) || this.isBeforeDate(date,
           this.getPortfolioCreationDate(name))) {
         throw new Exception("wrong arguments");
       }
       this.loadPortfolio(name);
       return this.portfolioMap.get(name).getPortfolioSummary(date);
-    } catch (FileNotFoundException e) {
-      return null;
-    } catch (IOException e) {
-      return null;
-    } catch (Exception e) {
-      return null;
     }
-  }
 
   @Override
-  public String getPortfolioCreationDate(String portfolioName) {
-    try {
+  public String getPortfolioCreationDate(String portfolioName) throws Exception {
+
       this.loadPortfolio(portfolioName);
       return this.portfolioMap.get(portfolioName).getCreationDate();
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-      return null;
-    }
 
   }
 
@@ -180,25 +165,17 @@ public class UserFlexImpl extends AbstractUser implements UserFlex {
   public boolean transactionForPortfolio(String portfolioName,
       SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newStock)
       throws Exception {
-    try {
-      this.loadPortfolio(portfolioName);
-      this.portfolioMap.get(portfolioName).addTransaction(newStock, LocalDate.now().toString());
-      return true;
-    } catch (Exception e) {
-      throw e;
-    }
+    this.loadPortfolio(portfolioName);
+    this.portfolioMap.get(portfolioName).addTransaction(newStock, LocalDate.now().toString());
+    return true;
   }
 
 
   @Override
-  public Double getCostBasis(String portfolioName, String date) {
-    try {
+  public Double getCostBasis(String portfolioName, String date) throws Exception {
       this.loadPortfolio(portfolioName);
       return this.portfolioMap.get(portfolioName).getCostBasis(date);
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-      return null;
-    }
+
   }
 
   @Override

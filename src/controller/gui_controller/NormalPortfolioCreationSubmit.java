@@ -74,12 +74,17 @@ public class NormalPortfolioCreationSubmit {
 
   public Map<String, Map<String, SimpleEntry<Double, Double>>> parseExtra() {
     String[] arr = data.get(5).split("\n");
+    boolean flag=false;
     Map<String, Map<String, SimpleEntry<Double, Double>>> stockMap = new HashMap<>();
     for (String line : arr) {
+      if(!flag){
+        flag=true;
+        continue;
+      }
       String[] stockData = line.split(",");
       String stock = stockData[0];
-      Double stockQuantity = Double.parseDouble(stockData[1]);
-      String date = stockData[2];
+      Double stockQuantity = Double.parseDouble(stockData[2]);
+      String date = stockData[1];
       Double commFee = Double.parseDouble(stockData[3]);
       if (stockMap.containsKey(stock)) {
         // if stock also exist and that date also exist, just add in prev date
@@ -105,9 +110,14 @@ public class NormalPortfolioCreationSubmit {
   private String formChecker(){
 
 
-    String stock = data.get(1);
+    String stock = data.get(1).toUpperCase();
     if(stock.equals("")) return "Empty Stock";
     else if(!user.isValidStock(stock)) return "Please enter a valid stock name";
+
+    String date = data.get(3);
+
+
+    if(!user.dateChecker(date)) return "Wrong date format";
 
     String quantity = data.get(2);
     int quan;
@@ -119,8 +129,7 @@ public class NormalPortfolioCreationSubmit {
       return "Wrong Quantity Format";
     }
 
-    String date = data.get(3);
-    if(!user.dateChecker(date)) return "Wrong date format";
+
 
     String commFee = data.get(4);
     Double commFeeDouble;

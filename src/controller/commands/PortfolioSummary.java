@@ -26,9 +26,23 @@ public class PortfolioSummary {
     if (date == null) {
       return;
     }
-    Map<String, Double> stockMap = user.getPortfolioSummary(portfolioName, date);
+    Map<String, Double> stockMap;
+    try {
+      stockMap = user.getPortfolioSummary(portfolioName, date);
+    } catch (Exception e) {
+      stockMap=null;
+    }
+    if(stockMap==null){
+      view.printInCompatiblePortfolio(out);
+      return;
+    }
 
-    String creationDate = user.getPortfolioCreationDate(portfolioName);
+    String creationDate = null;
+    try {
+      creationDate = user.getPortfolioCreationDate(portfolioName);
+    } catch (Exception e) {
+      creationDate = null;
+    }
     if (creationDate == null) {
       view.printInCompatiblePortfolio(out);
       return;

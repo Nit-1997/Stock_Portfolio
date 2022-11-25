@@ -53,6 +53,7 @@ public class UserFlexInvestImpl extends UserFlexImpl implements UserFlexInvest{
     }
   }
 
+
   private String latestTransactionDateForStock(String portfolioName, String ticker){
     Map<String, SimpleEntry<String, Double>> map = this.getPortfolioState(portfolioName);
     for(String stock : map.keySet()){

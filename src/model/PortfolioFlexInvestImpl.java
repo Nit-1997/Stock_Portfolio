@@ -31,7 +31,7 @@ public class PortfolioFlexInvestImpl extends PortfolioFlexImpl{
     this.creationDate=startDate;
 
     if (weightage == null || portfolioName == null || amount == null || startDate == null ||
-     endDate == null || interval == null || commFee == null) {
+        interval == null || commFee == null) {
       throw new IllegalArgumentException("Null arguments to portfolio constructor");
     }
 
