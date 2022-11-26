@@ -3,6 +3,7 @@ package controller.gui_controller;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import model.UserFlexInvest;
 import view.ViewGUI;
@@ -82,6 +83,29 @@ public class MainGUIController {
         System.out.println(e.getMessage());
       }
     });
+
+    buttonClickedMap.put("BuyStock",()->{
+      List<String> buySellData = this.view.getBuySellData();
+      String str = new BuyStock(buySellData,user).execute();
+      this.view.setBuySellMsg(str);
+    });
+
+    buttonClickedMap.put("Get Composition for Sell",()->{
+      SimpleEntry<String,String> nameAndDate = this.view.getNameAndDate();
+      PortfolioComposition obj = new PortfolioComposition(nameAndDate.getKey(), nameAndDate.getValue(),user);
+      String str = obj.execute();
+      Map<String, Double> stockMap = obj.getStockMap();
+      this.view.setSellInterimMessage(str);
+      if(str.equals("Success3"))this.view.setStockMap(stockMap);
+    });
+
+    buttonClickedMap.put("SellStock",()->{
+      List<String> buySellData = this.view.getBuySellData();
+      Map<String, Double> stockMap = this.view.getStockMap();
+      String str = new SellStock(buySellData,stockMap,user).execute();
+      this.view.setBuySellMsg(str);
+    });
+
 
     buttonListener.setButtonClickedActionMap(buttonClickedMap);
     this.view.addActionListener(buttonListener);

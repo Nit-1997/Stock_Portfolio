@@ -22,6 +22,14 @@ public class PortfolioCostBasis {
       return "Empty Date";
     if (!user.dateChecker(date))
       return "Wrong Date Format";
+
+    String portfolioCreationDate = null;
+    try {
+      portfolioCreationDate = user.getPortfolioCreationDate(portfolioName);
+    } catch (Exception e) {
+      return e.getMessage();
+    }
+    if(user.isBeforeDate(date,portfolioCreationDate)) return "Given date before portfolio creation date "+portfolioCreationDate;
     Double value;
     try {
       value = user.getCostBasis(portfolioName, date);

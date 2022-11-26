@@ -23,7 +23,18 @@ public class PortfolioComposition {
       return "Empty Date";
     if (!user.dateChecker(date))
       return "Wrong Date Format";
-    Double value;
+
+    String portfolioCreationDate = null;
+    try {
+      portfolioCreationDate = user.getPortfolioCreationDate(portfolioName);
+    } catch (Exception e) {
+      return e.getMessage();
+    }
+    if(user.isBeforeDate(date,portfolioCreationDate)){
+      System.out.println("here");
+      return "Given date before portfolio creation date "+portfolioCreationDate;
+    }
+
     try {
       this.stockMap = user.getPortfolioSummary(portfolioName, date);
     } catch (Exception e) {

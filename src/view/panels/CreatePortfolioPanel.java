@@ -121,10 +121,10 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
     this.stockInput.setLocation(100, 150);
     this.form.add(stockInput);
 
-    JLabel mno = new JLabel("date of transaction");
+    JLabel mno = new JLabel("<html>date of transaction <br /> (yyyy-MM-dd)</html>");
     mno.setFont(new Font("Arial", Font.PLAIN, 13));
-    mno.setSize(100, 20);
-    mno.setLocation(50, 200);
+    mno.setSize(200, 50);
+    mno.setLocation(20, 180);
     form.add(mno);
 
 
@@ -137,13 +137,13 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
 
     JLabel quantity = new JLabel("Number of stocks");
     quantity.setFont(new Font("Arial", Font.PLAIN, 13));
-    quantity.setSize(100, 20);
-    quantity.setLocation(50, 250);
+    quantity.setSize(150, 20);
+    quantity.setLocation(20, 250);
     form.add(quantity);
 
     this.quantityInput = new JTextField();
     this.quantityInput.setFont(new Font("Arial", Font.PLAIN, 13));
-    this.quantityInput.setSize(190, 20);
+    this.quantityInput.setSize(170, 20);
     this.quantityInput.setLocation(150, 250);
     form.add(this.quantityInput);
 

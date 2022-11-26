@@ -1,5 +1,10 @@
 package controller.gui_controller;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import model.UserFlexInvest;
@@ -28,8 +33,19 @@ public class DCAPortfolioCreation {
 
     String endDate = data.get(2);
     if(endDate.equals("")) endDate=null;
-    else if (!user.dateChecker(endDate) || user.isBeforeDate(endDate,startDate))
-      return "Wrong date format for end Date";
+
+    if(endDate!=null){
+      DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+      sdf.setLenient(false);
+      try{
+        Date date = sdf.parse(endDate);
+        Date firstDate = sdf.parse("2010-01-04");
+        if(date.before(firstDate)) return "End date before 1st Jan 2010";
+      } catch(ParseException e){
+        return "Wrong date format";
+      }
+      if (user.isBeforeDate(endDate,startDate))  return "end Date before start date";
+    }
 
     String amount = data.get(3);
     Double amountDouble;

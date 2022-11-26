@@ -10,6 +10,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -27,13 +29,19 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
 
   JButton costBasisBtn, valueBtn, compositionBtn, buyStockBtn, sellStockBtn, investBtn;
 
-  JButton buyStockBtnMenu;
+  JButton buyStockBtnMenu, sellInterimBtn;
 
   JTextField dateInput;
 
+  JTextField stockInput, quantityInput, commFeeInput;
+
   JLabel confirmationMsg, valueMsg;
 
-  JPanel contentPanel = null;
+  JLabel sellDateCheckerMsg;
+
+  JPanel contentPanel = null, form=null;
+
+  Map<String, Double> stockMap;
 
   public SinglePortfolioDetailPanel(String name){
 
@@ -49,6 +57,9 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
     sellStockBtn.setActionCommand("SellStock");
     investBtn = new JButton("Invest in portfolio");
     investBtn.setActionCommand("Invest");
+
+    this.sellInterimBtn = new JButton("Get Data");
+    this.sellInterimBtn.setActionCommand("Get Composition for Sell");
 
     this.name=name;
     this.setBackground(Color.decode("#B8DEFF"));
@@ -84,7 +95,7 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
     buyStockBtnMenu.addActionListener(e -> this.createBuyView());
     JButton sellStockBtnMenu = new JButton("Sell stocks");
     sellStockBtnMenu.setActionCommand("SellStock");
-//    sellStockBtnMenu.addActionListener(e -> this.datePanel.setVisible(false));
+    sellStockBtnMenu.addActionListener(e -> this.createSellView());
     JButton investBtnMenu = new JButton("Invest in portfolio");
     investBtnMenu.setActionCommand("Invest");
 //    investBtnMenu.addActionListener(e -> this.datePanel.setVisible(false));
@@ -177,24 +188,47 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
 
     JPanel top = new JPanel(new GridLayout(2,1));
     JLabel headerDate = new JLabel("Portfolio creation date (yyyy-MM-dd) : "+this.portfolioCreationDate);
+    headerDate.setFont(new Font("Arial", Font.ITALIC, 20));
     headerDate.setHorizontalAlignment(JLabel.CENTER);
     JLabel stockList = new JLabel("List of Available Stock : NASDAQ 100");
+    stockList.setFont(new Font("Arial", Font.ITALIC, 20));
     stockList.setHorizontalAlignment(JLabel.CENTER);
     top.add(headerDate);
     top.add(stockList);
     top.setBackground(Color.decode("#B8DEFF"));
     this.contentPanel.add(top,BorderLayout.PAGE_START);
 
-    JPanel form = new JPanel(new GridLayout(5,2));
-    form.add(new JLabel("Stock Name"));
-    form.add(new JTextField(10));
-    form.add(new JLabel("Quantity"));
-    form.add(new JTextField(10));
-    form.add(new JLabel("Date"));
-    form.add(new JTextField(10));
-    form.add(new JLabel("Commission Fee"));
-    form.add(new JTextField(10));
+    form = new JPanel();
+    form.setLayout(new GridLayout(5,2));
+    form.setBorder(BorderFactory.createEmptyBorder(5,20,10,20));
+    JLabel stock = new JLabel("Stock Name");
+    stock.setFont(new Font("Arial", Font.PLAIN, 15));
+    stock.setHorizontalAlignment(JLabel.CENTER);
+    form.add(stock);
+    this.stockInput = new JTextField();
+    form.add(this.stockInput);
+    JLabel quantity = new JLabel("Quantity");
+    quantity.setFont(new Font("Arial", Font.PLAIN, 15));
+    quantity.setHorizontalAlignment(JLabel.CENTER);
+    form.add(quantity);
+    this.quantityInput = new JTextField();
+    form.add(this.quantityInput);
+    JLabel date = new JLabel("Date (yyyy-MM-dd)");
+    date.setHorizontalAlignment(JLabel.CENTER);
+    date.setFont(new Font("Arial", Font.PLAIN, 15));
+    form.add(date);
+    this.dateInput = new JTextField();
+    form.add(this.dateInput);
+    JLabel commFee = new JLabel("Commission Fee");
+    commFee.setHorizontalAlignment(JLabel.CENTER);
+    commFee.setFont(new Font("Arial", Font.PLAIN, 15));
+    form.add(commFee);
+    this.commFeeInput = new JTextField();
+    form.add(this.commFeeInput);
     form.add(this.buyStockBtn);
+    this.confirmationMsg = new JLabel("");
+    this.confirmationMsg.setHorizontalAlignment(JLabel.CENTER);
+    form.add(this.confirmationMsg);
     form.setBackground(Color.decode("#B8DEFF"));
 
     this.contentPanel.add(form,BorderLayout.CENTER);
@@ -202,8 +236,83 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
     this.add(this.contentPanel,BorderLayout.CENTER);
     this.revalidate();
     this.repaint();
+  }
+
+  private void createSellView(){
+    if(this.contentPanel!=null) this.remove(this.contentPanel);
+
+    this.contentPanel = new JPanel();
+    this.contentPanel.setLayout(new BorderLayout());
+    this.contentPanel.setBackground(Color.decode("#B8DEFF"));
+
+    JPanel datePanel = new JPanel();
+    datePanel.setBackground(Color.decode("#B8DEFF"));
+
+    JLabel date = new JLabel("Date for sell (yyyy-MM-dd) :");
+    date.setFont(new Font("Arial", Font.PLAIN, 13));
+    date.setHorizontalAlignment(JLabel.CENTER);
+    datePanel.add(date);
+
+    this.dateInput = new JTextField(10);
+    this.dateInput.setFont(new Font("Arial", Font.PLAIN, 13));
+    this.dateInput.setSize(190, 20);
+    this.dateInput.setHorizontalAlignment(JLabel.CENTER);
+    datePanel.add(this.dateInput);
+
+    this.sellInterimBtn.setHorizontalAlignment(JButton.CENTER);
+    datePanel.add(this.sellInterimBtn);
+
+    this.sellDateCheckerMsg = new JLabel("");
+    this.sellDateCheckerMsg.setFont(new Font("Arial", Font.PLAIN, 10));
+    datePanel.add(this.sellDateCheckerMsg);
+
+    this.contentPanel.add(datePanel,BorderLayout.NORTH);
+
+    this.valueMsg = new JLabel("");
+    this.valueMsg.setFont(new Font("Arial", Font.ITALIC, 25));
+    this.valueMsg.setHorizontalAlignment(JLabel.CENTER);
 
 
+    JLabel mapHead = new JLabel("Shares of each Stock");
+    mapHead.setFont(new Font("Arial", Font.PLAIN, 15));
+    mapHead.setHorizontalAlignment(JLabel.CENTER);
+    this.contentPanel.add(this.valueMsg,BorderLayout.LINE_START);
+
+    form = new JPanel();
+    form.setLayout(new GridLayout(4,2));
+    form.setBorder(BorderFactory.createEmptyBorder(5,20,10,20));
+    JLabel stock = new JLabel("Stock Name");
+    stock.setFont(new Font("Arial", Font.PLAIN, 15));
+    stock.setHorizontalAlignment(JLabel.CENTER);
+    form.add(stock);
+    this.stockInput = new JTextField();
+    form.add(this.stockInput);
+    JLabel quantity = new JLabel("Quantity");
+    quantity.setFont(new Font("Arial", Font.PLAIN, 15));
+    quantity.setHorizontalAlignment(JLabel.CENTER);
+    form.add(quantity);
+    this.quantityInput = new JTextField();
+    form.add(this.quantityInput);
+    JLabel commFee = new JLabel("Commission Fee");
+    commFee.setHorizontalAlignment(JLabel.CENTER);
+    commFee.setFont(new Font("Arial", Font.PLAIN, 15));
+    form.add(commFee);
+    this.commFeeInput = new JTextField();
+    form.add(this.commFeeInput);
+
+    form.add(this.sellStockBtn);
+//    this.sellStockBtn.addActionListener(e -> this.sellPreValidation());
+    this.confirmationMsg = new JLabel("");
+    this.confirmationMsg.setHorizontalAlignment(JLabel.CENTER);
+    form.add(this.confirmationMsg);
+    form.setBackground(Color.decode("#B8DEFF"));
+
+    this.form.setVisible(false);
+    this.contentPanel.add(form,BorderLayout.CENTER);
+
+    this.add(this.contentPanel,BorderLayout.CENTER);
+    this.revalidate();
+    this.repaint();
   }
 
   public SimpleEntry<String,String> getNameAndDate(){
@@ -238,6 +347,13 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
 
   public void setStockMap(Map<String, Double> stockMap){
 
+    String str="";
+    if(!dateInput.getText().equals("")) str = "Shares of each stock on asked Date";
+
+    this.stockMap=stockMap;
+
+    this.valueMsg.setVisible(true);
+
     StringBuilder sb = new StringBuilder();
     for(String stock : stockMap.keySet()){
       sb.append("  <tr>\n"
@@ -256,6 +372,7 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
         + "<body>\n"
         + "\n"
         + "\n"
+        +"<h4>"+str+"</h4>"
         + "<table style=\"width:100%\">\n"
         + "  <tr>\n"
         + "    <th>Stock</th>\n"
@@ -272,6 +389,51 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
     if(newHeight>obj.getHeight())  obj.setSize(800,newHeight);
   }
 
+  public Map<String, Double> getStockMap(){
+    return this.stockMap;
+  }
+  public List<String> getBuySellData(){
+    List<String> list = new ArrayList<>();
+
+    list.add(this.name);
+    list.add(this.stockInput.getText().toUpperCase());
+    list.add(this.quantityInput.getText());
+    list.add(this.dateInput.getText());
+    list.add(this.commFeeInput.getText());
+
+    return list;
+  }
+
+  public void setBuySellMessage(String msg){
+    this.confirmationMsg.setText(msg);
+    if(msg.equals("Successful transaction")){
+      this.confirmationMsg.setForeground(Color.BLUE);
+      this.stockInput.setText("");
+      this.quantityInput.setText("");
+      this.dateInput.setText("");
+      this.commFeeInput.setText("");
+    }
+    else this.confirmationMsg.setForeground(Color.RED);
+  }
+
+  public void setSellInterimMessage(String msg){
+    if(msg.equals("Success3")){
+      this.sellDateCheckerMsg.setText("");
+      this.form.setVisible(true);
+      // print form
+    }
+    else{
+      if(msg.contains("Given date before portfolio creation"))
+        msg="<html>Given date before portfolio creation<br />"+msg.substring(msg.indexOf("date 20"))+"</html>";
+      this.sellDateCheckerMsg.setForeground(Color.RED);
+      this.sellDateCheckerMsg.setFont(new Font("Arial", Font.ITALIC, 13));
+      this.sellDateCheckerMsg.setText(msg);
+
+      this.valueMsg.setVisible(false);
+      this.form.setVisible(false);
+    }
+  }
+
   public void setPortfolioCreationDate(String date){
     this.portfolioCreationDate=date;
   }
@@ -285,6 +447,7 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
     this.investBtn.addActionListener(listener);
 
     this.buyStockBtnMenu.addActionListener(listener);
+    this.sellInterimBtn.addActionListener(listener);
   }
   @Override
   public JPanel getJPanel() {

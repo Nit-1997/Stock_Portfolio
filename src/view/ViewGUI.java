@@ -29,8 +29,16 @@ public interface ViewGUI {
 
   void setValue(String type, Double value);
 
+  Map<String, Double> getStockMap();
+
   void setStockMap(Map<String, Double> stockMap);
 
   void setPortfolioCreationDate(String date);
+
+  List<String> getBuySellData();
+
+  void setBuySellMsg(String msg);
+
+  void setSellInterimMessage(String msg);
 
 }

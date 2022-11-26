@@ -93,26 +93,42 @@ public class MainFrameView extends JFrame implements ViewGUI{
 
   @Override
   public SimpleEntry<String,String> getNameAndDate(){
-    SinglePortfolioDetailPanel obj = (SinglePortfolioDetailPanel)this.mainPanel;
-    return obj.getNameAndDate();
+    return ((SinglePortfolioDetailPanel)this.mainPanel).getNameAndDate();
   }
 
   @Override
   public void setValue(String type, Double value){
-    SinglePortfolioDetailPanel obj = (SinglePortfolioDetailPanel)this.mainPanel;
-    obj.setValue(type, value);
+    ((SinglePortfolioDetailPanel)this.mainPanel).setValue(type, value);
   }
 
   @Override
   public void setPortfolioCreationDate(String date){
-    SinglePortfolioDetailPanel obj = (SinglePortfolioDetailPanel)this.mainPanel;
-    obj.setPortfolioCreationDate(date);
+    ((SinglePortfolioDetailPanel)this.mainPanel).setPortfolioCreationDate(date);
   }
 
   @Override
   public void setStockMap(Map<String, Double> stockMap){
-    SinglePortfolioDetailPanel obj = (SinglePortfolioDetailPanel)this.mainPanel;
-    obj.setStockMap(stockMap);
+    ((SinglePortfolioDetailPanel)this.mainPanel).setStockMap(stockMap);
+  }
+
+  @Override
+  public List<String> getBuySellData(){
+    return ((SinglePortfolioDetailPanel)this.mainPanel).getBuySellData();
+  }
+
+  @Override
+  public void setBuySellMsg(String msg){
+    ((SinglePortfolioDetailPanel)this.mainPanel).setBuySellMessage(msg);
+  }
+
+  @Override
+  public void setSellInterimMessage(String msg){
+    ((SinglePortfolioDetailPanel)this.mainPanel).setSellInterimMessage(msg);
+  }
+
+  @Override
+  public Map<String, Double> getStockMap(){
+    return ((SinglePortfolioDetailPanel)this.mainPanel).getStockMap();
   }
 
   @Override
