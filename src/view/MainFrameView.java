@@ -132,6 +132,21 @@ public class MainFrameView extends JFrame implements ViewGUI{
   }
 
   @Override
+  public List<String> getInvestData(){
+    return ((SinglePortfolioDetailPanel)this.mainPanel).getInvestData();
+  }
+
+  @Override
+  public Map<String, Double> getInvestStockMap(){
+    return ((SinglePortfolioDetailPanel)this.mainPanel).getInvestStockMap();
+  }
+
+  @Override
+  public void setInvestMsg(String str){
+    ((SinglePortfolioDetailPanel)this.mainPanel).setInvestMsg(str,str.equals("Success"));
+  }
+
+  @Override
   public void addActionListener(ActionListener listener) {
     this.listener=listener;
     this.mainPanel.addActionListener(listener);

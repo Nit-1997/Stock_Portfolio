@@ -46,16 +46,15 @@ public class SellStock {
     String date = buySellData.get(3);
 
     String commFee = buySellData.get(4);
-    Double commFeeDouble;
-    if (commFee.equals("")) {
-      return "Enter commission fee";
-    }
-    try {
-      commFeeDouble = Double.parseDouble(commFee);
-      if (commFeeDouble < 0)
-        return "Negative Commission Fee";
-    } catch (NumberFormatException e) {
-      return "<html>Wrong Commission<br /> Fee Format</html>";
+    Double commFeeDouble = null;
+    if(commFee.equals("")) commFeeDouble=0.0;
+    if(!commFee.equals("")){
+      try{
+        commFeeDouble = Double.parseDouble(commFee);
+        if(commFeeDouble<0) return "Negative Commission Fee";
+      }catch(NumberFormatException e){
+        return "Wrong Commission Fee Format";
+      }
     }
 
     double quanDouble = quan;

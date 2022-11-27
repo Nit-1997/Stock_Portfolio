@@ -41,22 +41,14 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
 
     this.normalFormSubmitButton = new JButton("Submit");
     this.normalFormSubmitButton.setActionCommand("Normal Portfolio Creation Submit");
-    this.normalFormSubmitButton.setFont(new Font("Arial", Font.PLAIN, 15));
-    this.normalFormSubmitButton.setSize(70, 20);
-    this.normalFormSubmitButton.setLocation(50, 350);
 
 
     this.normalFormAddMoreButton = new JButton("Add more stocks");
     this.normalFormAddMoreButton.setActionCommand("Normal Form Add More Button");
-    this.normalFormAddMoreButton.setFont(new Font("Arial", Font.PLAIN, 15));
-    this.normalFormAddMoreButton.setSize(200, 20);
-    this.normalFormAddMoreButton.setLocation(150, 350);
 
     this.DCAFormSubmitButton = new JButton("Submit");
     this.DCAFormSubmitButton.setActionCommand("DCA Form Submit");
-    this.DCAFormSubmitButton.setFont(new Font("Arial", Font.PLAIN, 15));
-    this.DCAFormSubmitButton.setSize(70, 20);
-    this.DCAFormSubmitButton.setLocation(50, 350);
+
 
     this.setLayout(new BorderLayout());
 
@@ -89,8 +81,9 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
 
   private void printNormalCreationMenu(){
 
-    this.setLayout(new BorderLayout());
     if(this.form!=null)this.remove(this.form);
+
+//    this.setLayout(new BorderLayout());
 
     form = new JPanel();
     form.setLayout(new BorderLayout());
@@ -98,102 +91,102 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
     JLabel title = new JLabel("Normal Portfolio Creation Form");
     title.setFont(new Font("Arial", Font.PLAIN, 15));
     title.setSize(300, 30);
-    title.setLocation(50, 50);
+    title.setLocation(50, 10);
     form.add(title);
 
     JLabel portfolioName = new JLabel("Portfolio Name");
     portfolioName.setFont(new Font("Arial", Font.PLAIN, 13));
     portfolioName.setSize(100, 20);
-    portfolioName.setLocation(50, 100);
+    portfolioName.setLocation(50, 60);
     form.add(portfolioName);
 
     this.portNameInput = new JTextField();
     this.portNameInput.setFont(new Font("Arial", Font.PLAIN, 13));
     this.portNameInput.setSize(190, 20);
-    this.portNameInput.setLocation(140, 100);
+    this.portNameInput.setLocation(140, 60);
     form.add(this.portNameInput);
 
     JLabel stock = new JLabel("Stock");
     stock.setFont(new Font("Arial", Font.PLAIN, 13));
     stock.setSize(100, 20);
-    stock.setLocation(50, 150);
+    stock.setLocation(50, 110);
     form.add(stock);
 
     this.stockInput = new JTextField();
     this.stockInput.setFont(new Font("Arial", Font.PLAIN, 13));
     this.stockInput.setSize(190, 20);
-    this.stockInput.setLocation(100, 150);
+    this.stockInput.setLocation(100, 110);
     this.form.add(stockInput);
 
     JLabel mno = new JLabel("<html>date of transaction <br /> (yyyy-MM-dd)</html>");
     mno.setFont(new Font("Arial", Font.PLAIN, 13));
     mno.setSize(200, 50);
-    mno.setLocation(20, 180);
+    mno.setLocation(20, 140);
     form.add(mno);
 
 
     this.dateInput = new JTextField();
     this.dateInput.setFont(new Font("Arial", Font.PLAIN, 13));
     this.dateInput.setSize(150, 20);
-    this.dateInput.setLocation(150, 200);
+    this.dateInput.setLocation(150, 160);
     form.add(this.dateInput);
 
 
     JLabel quantity = new JLabel("Number of stocks");
     quantity.setFont(new Font("Arial", Font.PLAIN, 13));
     quantity.setSize(150, 20);
-    quantity.setLocation(20, 250);
+    quantity.setLocation(20, 210);
     form.add(quantity);
 
     this.quantityInput = new JTextField();
     this.quantityInput.setFont(new Font("Arial", Font.PLAIN, 13));
     this.quantityInput.setSize(170, 20);
-    this.quantityInput.setLocation(150, 250);
+    this.quantityInput.setLocation(150, 210);
     form.add(this.quantityInput);
 
     JLabel commFee = new JLabel("Commission Fee");
     commFee.setFont(new Font("Arial", Font.PLAIN, 13));
     commFee.setSize(100, 20);
-    commFee.setLocation(50, 300);
+    commFee.setLocation(50, 260);
     form.add(commFee);
 
     this.commFeeInput = new JTextField();
     this.commFeeInput.setFont(new Font("Arial", Font.PLAIN, 13));
     this.commFeeInput.setSize(190, 20);
-    this.commFeeInput.setLocation(150, 300);
+    this.commFeeInput.setLocation(150, 260);
     form.add(this.commFeeInput);
 
     this.tout = new JTextArea("");
     this.tout.setFont(new Font("Arial", Font.PLAIN, 15));
     this.tout.setBackground(Color.CYAN);
     this.tout.setSize(250, 200);
-    this.tout.setLocation(350, 80);
+    this.tout.setLocation(350, 40);
     this.tout.setLineWrap(true);
     this.tout.setEditable(false);
     form.add(this.tout);
 
+
     this.confirmationMsg = new JLabel("");
     this.confirmationMsg.setFont(new Font("Arial", Font.PLAIN, 12));
     this.confirmationMsg.setSize(250, 20);
-    this.confirmationMsg.setLocation(370, 300);
+    this.confirmationMsg.setLocation(370, 260);
     form.add(this.confirmationMsg);
 
+    this.normalFormSubmitButton.setFont(new Font("Arial", Font.PLAIN, 15));
+    this.normalFormSubmitButton.setSize(70, 20);
+    this.normalFormSubmitButton.setLocation(50, 310);
     form.add(this.normalFormSubmitButton);
 
 
+    this.normalFormAddMoreButton.setFont(new Font("Arial", Font.PLAIN, 15));
+    this.normalFormAddMoreButton.setSize(200, 20);
+    this.normalFormAddMoreButton.setLocation(150, 310);
     form.add(this.normalFormAddMoreButton);
 
     JButton resetBtn = new JButton("");
     resetBtn.setFont(new Font("Arial", Font.PLAIN, 15));
     resetBtn.setSize(0, 20);
-    resetBtn.setLocation(260, 350);
-    resetBtn.addActionListener(e->{
-      String def = "";
-      stockInput.setText(def);
-      commFeeInput.setText(def);
-      quantityInput.setText(def);
-      dateInput.setText(def);
-    });
+    resetBtn.setLocation(260, 310);
     form.add(resetBtn);
 
 
@@ -210,7 +203,6 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
 
     this.dcaStockMap = new HashMap<>();
 
-    this.setLayout(new BorderLayout());
     if(this.form!=null)this.remove(this.form);
 
     form = new JPanel();
@@ -219,86 +211,86 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
     JLabel title = new JLabel("Portfolio Creation with Dollar Cost Averaging");
     title.setFont(new Font("Arial", Font.PLAIN, 15));
     title.setSize(300, 30);
-    title.setLocation(50, 50);
+    title.setLocation(50, 10);
     form.add(title);
 
     JLabel portfolioName = new JLabel("Portfolio Name");
     portfolioName.setFont(new Font("Arial", Font.PLAIN, 15));
     portfolioName.setSize(100, 20);
-    portfolioName.setLocation(40, 100);
+    portfolioName.setLocation(40, 60);
     form.add(portfolioName);
 
     this.portNameInput = new JTextField();
     this.portNameInput.setFont(new Font("Arial", Font.PLAIN, 15));
     this.portNameInput.setSize(160, 20);
-    this.portNameInput.setLocation(150, 100);
+    this.portNameInput.setLocation(150, 60);
     form.add(this.portNameInput);
 
     JLabel amount = new JLabel("Amount to be invested($)");
     amount.setFont(new Font("Arial", Font.PLAIN, 15));
     amount.setSize(170, 20);
-    amount.setLocation(320, 100);
+    amount.setLocation(320, 60);
     form.add(amount);
 
     this.amountInput = new JTextField(10);
     this.amountInput.setFont(new Font("Arial", Font.PLAIN, 15));
     this.amountInput.setSize(80, 20);
-    this.amountInput.setLocation(500, 100);
+    this.amountInput.setLocation(500, 60);
     form.add(this.amountInput);
 
     JLabel startDate = new JLabel("Start Date (yyyy-MM-dd)");
     startDate.setFont(new Font("Arial", Font.PLAIN, 15));
     startDate.setSize(170, 20);
-    startDate.setLocation(20, 130);
+    startDate.setLocation(20, 90);
     form.add(startDate);
 
     this.startDateInput = new JTextField(10);
     this.startDateInput.setFont(new Font("Arial", Font.PLAIN, 15));
     this.startDateInput.setSize(100, 20);
-    this.startDateInput.setLocation(200, 130);
+    this.startDateInput.setLocation(200, 90);
     form.add(this.startDateInput);
 
     JLabel endDate = new JLabel("End Date (yyyy-MM-dd)");
     endDate.setFont(new Font("Arial", Font.PLAIN, 15));
     endDate.setSize(170, 20);
-    endDate.setLocation(310, 130);
+    endDate.setLocation(310, 90);
     form.add(endDate);
 
     this.endDateInput = new JTextField(10);
     this.endDateInput.setFont(new Font("Arial", Font.PLAIN, 15));
     this.endDateInput.setSize(100, 20);
-    this.endDateInput.setLocation(480, 130);
+    this.endDateInput.setLocation(480, 90);
     form.add(this.endDateInput);
 
 
     JLabel interval = new JLabel("Interval (in days)");
     interval.setFont(new Font("Arial", Font.PLAIN, 15));
     interval.setSize(130, 20);
-    interval.setLocation(20, 160);
+    interval.setLocation(20, 120);
     form.add(interval);
 
     this.intervalInput = new JTextField(10);
     this.intervalInput.setFont(new Font("Arial", Font.PLAIN, 15));
     this.intervalInput.setSize(80, 20);
-    this.intervalInput.setLocation(150, 160);
+    this.intervalInput.setLocation(150, 120);
     form.add(this.intervalInput);
 
     JLabel commFee = new JLabel("Commission Fee($)");
     commFee.setFont(new Font("Arial", Font.PLAIN, 15));
     commFee.setSize(140, 20);
-    commFee.setLocation(290, 160);
+    commFee.setLocation(290, 120);
     form.add(commFee);
 
     this.commFeeInput = new JTextField(10);
     this.commFeeInput.setFont(new Font("Arial", Font.PLAIN, 15));
     this.commFeeInput.setSize(100, 20);
-    this.commFeeInput.setLocation(430, 160);
+    this.commFeeInput.setLocation(430, 120);
     form.add(this.commFeeInput);
 
     JPanel scrollPanel = new JPanel();
     scrollPanel.setLayout(new BoxLayout(scrollPanel,BoxLayout.Y_AXIS));
     JScrollPane scroll = new JScrollPane(scrollPanel);
-    scroll.setBounds(45,190,440,150);
+    scroll.setBounds(45,150,440,150);
     form.add(scroll);
 
     JPanel temp = new JPanel();
@@ -306,26 +298,26 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
     JLabel stock = new JLabel("Stock");
     stock.setFont(new Font("Arial", Font.PLAIN, 15));
     stock.setSize(50, 20);
-    stock.setLocation(10, 200);
+    stock.setLocation(10, 160);
     temp.add(stock);
 
 
     this.stockInput = new JTextField(10);
     this.stockInput.setFont(new Font("Arial", Font.PLAIN, 15));
     this.stockInput.setSize(100, 20);
-    this.stockInput.setLocation(70, 200);
+    this.stockInput.setLocation(70, 160);
     temp.add(this.stockInput);
 
     JLabel quantity = new JLabel("Weight(%) ");
     quantity.setFont(new Font("Arial", Font.PLAIN, 15));
     quantity.setSize(80, 20);
-    quantity.setLocation(180, 200);
+    quantity.setLocation(180, 160);
     temp.add(quantity);
 
     this.percentageInput = new JTextField(10);
     this.percentageInput.setFont(new Font("Arial", Font.PLAIN, 15));
     this.percentageInput.setSize(100, 20);
-    this.percentageInput.setLocation(270, 200);
+    this.percentageInput.setLocation(270, 160);
     temp.add(this.percentageInput);
 
     scrollPanel.add(temp);
@@ -336,7 +328,7 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
     moreAdd.setLocation(500, 200);
 
 
-    AtomicInteger y = new AtomicInteger(230);
+    AtomicInteger y = new AtomicInteger(190);
     moreAdd.addActionListener(e-> {
           this.printMoreLines(y.get(),scrollPanel,e);
           y.addAndGet(30);
@@ -344,20 +336,21 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
           form.add(moreAdd);
 
           form.add(this.DCAFormSubmitButton);
+          this.DCAFormSubmitButton.setFont(new Font("Arial", Font.PLAIN, 15));
+          this.DCAFormSubmitButton.setSize(70, 20);
+          this.DCAFormSubmitButton.setLocation(50, 310);
 
           this.confirmationMsg = new JLabel("");
           this.confirmationMsg.setFont(new Font("Arial", Font.PLAIN, 15));
           this.confirmationMsg.setSize(250, 20);
-          this.confirmationMsg.setLocation(130, 350);
+          this.confirmationMsg.setLocation(130, 310);
           form.add(this.confirmationMsg);
 
           JButton resetBtn = new JButton("");
           resetBtn.setFont(new Font("Arial", Font.PLAIN, 15));
           resetBtn.setSize(0, 20);
-          resetBtn.setLocation(260, 350);
+          resetBtn.setLocation(260, 310);
           form.add(resetBtn);
-
-
 
           this.add(form,BorderLayout.CENTER);
           this.revalidate();

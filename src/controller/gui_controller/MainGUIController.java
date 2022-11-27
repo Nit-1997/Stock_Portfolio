@@ -30,6 +30,7 @@ public class MainGUIController {
     buttonClickedMap.put("View Portfolios",()->this.view.changePanel(new ListAllPortfoliosPanel(user.getPortfolios())));
     buttonClickedMap.put("Main Menu",()->this.view.changePanel(new MainMenuPanel()));
     buttonClickedMap.put("Exit Button",()->System.exit(0));
+
     buttonClickedMap.put("Normal Portfolio Creation Submit",()->{
       String str = new NormalPortfolioCreationSubmit(this.view.getNormalPortfolioCreationData(),user).execute();
       this.view.printForNormalPortfolioCreation(str);
@@ -106,6 +107,14 @@ public class MainGUIController {
       String str = new SellStock(buySellData,stockMap,user).execute();
       this.view.setBuySellMsg(str);
     });
+
+    buttonClickedMap.put("InvestStock",()->{
+      List<String> investData = this.view.getInvestData();
+      Map<String,Double> stockMap = this.view.getInvestStockMap();
+      String str = new InvestStock(investData,stockMap,user).execute();
+      this.view.setInvestMsg(str);
+    });
+
 
 
     buttonListener.setButtonClickedActionMap(buttonClickedMap);

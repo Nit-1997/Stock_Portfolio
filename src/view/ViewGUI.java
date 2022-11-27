@@ -41,4 +41,10 @@ public interface ViewGUI {
 
   void setSellInterimMessage(String msg);
 
+  List<String> getInvestData();
+
+  Map<String, Double> getInvestStockMap();
+
+  void setInvestMsg(String str);
+
 }

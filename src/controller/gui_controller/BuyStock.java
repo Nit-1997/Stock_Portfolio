@@ -43,14 +43,17 @@ public class BuyStock {
     }
 
     String commFee = buySellData.get(4);
-    Double commFeeDouble;
-    if(commFee.equals("")) return "Please enter commission fee";
-    try{
-      commFeeDouble = Double.parseDouble(commFee);
-      if(commFeeDouble<0) return "Negative Commission Fee";
-    }catch(NumberFormatException e){
-      return "Wrong Commission Fee Format";
+    Double commFeeDouble = null;
+    if(commFee.equals("")) commFeeDouble=0.0;
+    if(!commFee.equals("")){
+      try{
+        commFeeDouble = Double.parseDouble(commFee);
+        if(commFeeDouble<0) return "Negative Commission Fee";
+      }catch(NumberFormatException e){
+        return "Wrong Commission Fee Format";
+      }
     }
+
 
     double quanDouble = quan;
 
