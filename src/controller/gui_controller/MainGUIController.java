@@ -39,6 +39,7 @@ public class MainGUIController {
       this.view.printForNormalPortfolioCreation(str);
     });
     buttonClickedMap.put("DCA Form Submit",()->{
+
       String str = new DCAPortfolioCreation(this.view.getDCAPortfolioCreationData(), this.view.getDCAPortfolioCreationMap(),user).execute();
       this.view.printForDCAPortfolioCreation(str);
     });

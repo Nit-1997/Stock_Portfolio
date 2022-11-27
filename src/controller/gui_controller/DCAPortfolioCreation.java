@@ -80,11 +80,13 @@ public class DCAPortfolioCreation {
     Double sum=0.0;
     for(String stock : map.keySet()){
       if(stock.equals("")) return "Empty Stock";
-      else if(!user.isValidStock(stock)) return "Please enter a valid stock name";
+      else if(!user.isValidStock(stock)) return "Please enter a valid stock name for "+stock;
       sum+=map.get(stock);
     }
 
-    if(sum!=100.0) return "Weights don't add upto 100";
+    if(sum!=100.0){
+      return "Weights don't add upto 100";
+    }
 
     try {
       user.addPortfolio(portfolioName,amountDouble,map,startDate,endDate,intervalInt,commFeeDouble);

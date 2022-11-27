@@ -1,10 +1,12 @@
 package view.panels;
 
+import constants.Constants;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +33,8 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
   JLabel confirmationMsg;
 
   Map<String, Double> dcaStockMap;
+
+  Double sum;
 
 
   public CreatePortfolioPanel(){
@@ -202,6 +206,8 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
 
   private void printDCACreationMenu(){
 
+    this.sum=0.0;
+
     this.dcaStockMap = new HashMap<>();
 
     this.setLayout(new BorderLayout());
@@ -361,7 +367,9 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
   private void printMoreLines(int y, JPanel scrollPane, ActionEvent evt) {
 
     if(!this.inputValidation()) return;
-    System.out.println(this.dcaStockMap);
+
+    this.stockInput.setEditable(false);
+    this.percentageInput.setEditable(false);
 
     this.printForDCAPortfolioCreation("Added",true);
 
@@ -408,6 +416,11 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
       this.printForDCAPortfolioCreation("Empty record",false);
       return false;
     }
+
+    if(!Constants.STOCK_NAMES.contains(stock.toUpperCase())){
+      this.printForDCAPortfolioCreation("Not a valid stock name",false);
+      return false;
+    }
     Double percent;
     try{
       percent = Double.parseDouble(percentage);
@@ -423,8 +436,13 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
       this.printForDCAPortfolioCreation("Percentage -ve or 100+",false);
       return false;
     }
+    if(this.sum+percent>100.0){
+      this.printForDCAPortfolioCreation("Weights sum more than 100",false);
+      return false;
+    }
+    this.sum+=percent;
     if(this.dcaStockMap.containsKey(stock.toUpperCase()))
-      this.dcaStockMap.put(stock.toUpperCase(),this.dcaStockMap.get(stock)+percent);
+      this.dcaStockMap.put(stock.toUpperCase(),this.dcaStockMap.get(stock.toUpperCase())+percent);
     else this.dcaStockMap.put(stock.toUpperCase(),percent);
 
     return true;

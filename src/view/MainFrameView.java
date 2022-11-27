@@ -28,7 +28,7 @@ public class MainFrameView extends JFrame implements ViewGUI{
 
 
     this.setTitle("Stonks!");
-    this.setSize(800,400);
+    this.setSize(800,420);
     this.setLocationRelativeTo(null);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

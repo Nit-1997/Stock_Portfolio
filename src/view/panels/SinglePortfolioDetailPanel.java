@@ -6,18 +6,23 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -33,7 +38,7 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
 
   JTextField dateInput;
 
-  JTextField stockInput, quantityInput, commFeeInput;
+  JTextField stockInput, quantityInput, commFeeInput, amountInput;
 
   JLabel confirmationMsg, valueMsg;
 
@@ -55,8 +60,9 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
     buyStockBtn.setActionCommand("BuyStock");
     sellStockBtn = new JButton("Sell stocks");
     sellStockBtn.setActionCommand("SellStock");
-    investBtn = new JButton("Invest in portfolio");
+    investBtn = new JButton("Invest");
     investBtn.setActionCommand("Invest");
+
 
     this.sellInterimBtn = new JButton("Get Data");
     this.sellInterimBtn.setActionCommand("Get Composition for Sell");
@@ -98,7 +104,7 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
     sellStockBtnMenu.addActionListener(e -> this.createSellView());
     JButton investBtnMenu = new JButton("Invest in portfolio");
     investBtnMenu.setActionCommand("Invest");
-//    investBtnMenu.addActionListener(e -> this.datePanel.setVisible(false));
+    investBtnMenu.addActionListener(e -> this.createInvestView());
 
 
     JPanel buttonPanel = new JPanel();
@@ -190,7 +196,7 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
     JLabel headerDate = new JLabel("Portfolio creation date (yyyy-MM-dd) : "+this.portfolioCreationDate);
     headerDate.setFont(new Font("Arial", Font.ITALIC, 20));
     headerDate.setHorizontalAlignment(JLabel.CENTER);
-    JLabel stockList = new JLabel("List of Available Stock : NASDAQ 100");
+    JLabel stockList = new JLabel("List of Available Stocks : NASDAQ 100");
     stockList.setFont(new Font("Arial", Font.ITALIC, 20));
     stockList.setHorizontalAlignment(JLabel.CENTER);
     top.add(headerDate);
@@ -301,7 +307,7 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
     form.add(this.commFeeInput);
 
     form.add(this.sellStockBtn);
-//    this.sellStockBtn.addActionListener(e -> this.sellPreValidation());
+
     this.confirmationMsg = new JLabel("");
     this.confirmationMsg.setHorizontalAlignment(JLabel.CENTER);
     form.add(this.confirmationMsg);
@@ -313,6 +319,183 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
     this.add(this.contentPanel,BorderLayout.CENTER);
     this.revalidate();
     this.repaint();
+  }
+
+  private void createInvestView(){
+    if(this.contentPanel!=null) this.remove(this.contentPanel);
+
+    this.contentPanel = new JPanel();
+    this.contentPanel.setLayout(new BorderLayout());
+    this.contentPanel.setBackground(Color.decode("#B8DEFF"));
+
+    JPanel top = new JPanel();
+    top.setLayout(new GridBagLayout());
+    GridBagConstraints c = new GridBagConstraints();
+
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.gridx=0;
+    c.gridy=0;
+    c.gridwidth=2;
+    JLabel stockList = new JLabel("List of Available Stocks : NASDAQ 100");
+    stockList.setFont(new Font("Arial", Font.ITALIC, 20));
+    stockList.setHorizontalAlignment(JLabel.CENTER);
+
+    top.add(stockList,c);
+
+    c.gridy=1;
+    c.gridx=1;
+    c.gridwidth=1;
+    JLabel date = new JLabel("Date for investment");
+    date.setFont(new Font("Arial", Font.PLAIN, 15));
+    top.add(date,c);
+
+    c.gridy=1;
+    c.gridx=2;
+    c.gridwidth=1;
+    this.dateInput = new JTextField(10);
+    this.dateInput.setFont(new Font("Arial", Font.PLAIN, 15));
+    top.add(dateInput,c);
+
+    c.gridy=2;
+    c.gridx=1;
+    c.gridwidth=1;
+    JLabel amount = new JLabel("Amount to be invested($)");
+    amount.setFont(new Font("Arial", Font.PLAIN, 15));
+    top.add(amount,c);
+
+    c.gridy=2;
+    c.gridx=2;
+    c.gridwidth=1;
+    this.amountInput = new JTextField(10);
+    this.amountInput.setFont(new Font("Arial", Font.PLAIN, 15));
+    top.add(this.amountInput,c);
+
+    c.gridy=3;
+    c.gridx=1;
+    c.gridwidth=1;
+    JLabel commissionFee = new JLabel("Commission fee");
+    commissionFee.setFont(new Font("Arial", Font.PLAIN, 15));
+    top.add(commissionFee,c);
+
+    c.gridy=3;
+    c.gridx=2;
+    c.gridwidth=1;
+    commFeeInput = new JTextField(10);
+    this.commFeeInput.setFont(new Font("Arial", Font.PLAIN, 15));
+    top.add(commFeeInput,c);
+
+    top.setBackground(Color.decode("#B8DEFF"));
+
+    this.contentPanel.add(top,BorderLayout.PAGE_START);
+
+    this.form = new JPanel();
+    form.setLayout(new BorderLayout());
+
+    JPanel scrollPanel = new JPanel();
+    scrollPanel.setLayout(new BoxLayout(scrollPanel,BoxLayout.Y_AXIS));
+    JScrollPane scroll = new JScrollPane(scrollPanel);
+    scroll.setBounds(45,0,440,140);
+    this.form.add(scroll);
+
+    JPanel temp = new JPanel();
+
+    JLabel stock = new JLabel("Stock");
+    stock.setFont(new Font("Arial", Font.PLAIN, 15));
+    stock.setSize(50, 20);
+    stock.setLocation(10, 50);
+    temp.add(stock);
+
+
+    this.stockInput = new JTextField(10);
+    this.stockInput.setFont(new Font("Arial", Font.PLAIN, 15));
+    this.stockInput.setSize(100, 20);
+    this.stockInput.setLocation(70, 50);
+    temp.add(this.stockInput);
+
+    JLabel quantity = new JLabel("Weight(%) ");
+    quantity.setFont(new Font("Arial", Font.PLAIN, 15));
+    quantity.setSize(80, 20);
+    quantity.setLocation(180, 50);
+    temp.add(quantity);
+
+    this.quantityInput = new JTextField(10);
+    this.quantityInput.setFont(new Font("Arial", Font.PLAIN, 15));
+    this.quantityInput.setSize(100, 20);
+    this.quantityInput.setLocation(270, 50);
+    temp.add(this.quantityInput);
+
+    scrollPanel.add(temp);
+
+    JButton moreAdd = new JButton("Add");
+    moreAdd.setFont(new Font("Arial", Font.PLAIN, 15));
+    moreAdd.setSize(50, 20);
+    moreAdd.setLocation(500, 50);
+
+    AtomicInteger y = new AtomicInteger(80);
+    moreAdd.addActionListener(e-> {
+      this.printMoreLines(y.get(),scrollPanel);
+      y.addAndGet(30);
+    });
+
+    this.form.add(moreAdd);
+
+    this.investBtn.setFont(new Font("Arial", Font.PLAIN, 15));
+    this.investBtn.setSize(70, 20);
+    this.investBtn.setLocation(50, 140);
+
+    this.form.add(this.investBtn);
+
+    this.confirmationMsg = new JLabel("");
+    this.confirmationMsg.setFont(new Font("Arial", Font.PLAIN, 15));
+    this.confirmationMsg.setSize(250, 20);
+    this.confirmationMsg.setLocation(130, 140);
+    form.add(this.confirmationMsg);
+
+    form.setBackground(Color.decode("#B8DEFF"));
+
+    this.contentPanel.add(form,BorderLayout.CENTER);
+
+    this.add(this.contentPanel,BorderLayout.CENTER);
+    this.revalidate();
+    this.repaint();
+  }
+
+  private void printMoreLines(int y, JPanel scrollPane) {
+
+    this.stockInput.setEditable(false);
+    this.quantityInput.setEditable(false);
+
+//    this.printForDCAPortfolioCreation("Added",true);
+
+    JPanel temp = new JPanel();
+
+    JLabel stock = new JLabel("Stock");
+    stock.setFont(new Font("Arial", Font.PLAIN, 15));
+    stock.setSize(50, 20);
+    stock.setLocation(10, y);
+    temp.add(stock);
+
+    this.stockInput = new JTextField(10);
+    this.stockInput.setFont(new Font("Arial", Font.PLAIN, 15));
+    this.stockInput.setSize(100, 20);
+    this.stockInput.setLocation(70, y);
+    temp.add(this.stockInput);
+
+    JLabel quantity = new JLabel("Weight(%) ");
+    quantity.setFont(new Font("Arial", Font.PLAIN, 15));
+    quantity.setSize(80, 20);
+    quantity.setLocation(180, y);
+    temp.add(quantity);
+
+    this.quantityInput = new JTextField(10);
+    this.quantityInput.setFont(new Font("Arial", Font.PLAIN, 15));
+    this.quantityInput.setSize(100, 20);
+    this.quantityInput.setLocation(270, y);
+    temp.add(this.quantityInput);
+
+    scrollPane.add(temp);
+    scrollPane.revalidate();
+    scrollPane.repaint();
   }
 
   public SimpleEntry<String,String> getNameAndDate(){
