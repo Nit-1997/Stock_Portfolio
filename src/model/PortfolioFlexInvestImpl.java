@@ -44,8 +44,8 @@ public class PortfolioFlexInvestImpl extends PortfolioFlexImpl{
 
     this.stockOrders=Utils.updatePortfolioFromDCA(portfolioName,startDate,endDate,weightage,
         interval,amount,commFee,this.stockOrders);
-
-    Utils.saveToFile(this.name, this.stockOrders, "portfolios" + File.separator + "flex");
+    DataSource ds = new DataSourceImpl();
+    ds.saveToFile(this.name, this.stockOrders, "portfolios" + File.separator + "flex");
   }
 
   /**
@@ -55,6 +55,7 @@ public class PortfolioFlexInvestImpl extends PortfolioFlexImpl{
    * @throws Exception while reading/writing data dump
    */
   public PortfolioFlexInvestImpl(String portfolioName) throws Exception {
+    DataSource ds = new DataSourceImpl();
     if (portfolioName == null) {
       throw new IllegalArgumentException("Null arguments to portfolio constructor");
     }
@@ -87,7 +88,7 @@ public class PortfolioFlexInvestImpl extends PortfolioFlexImpl{
 
 
     if (Utils.dataExists(portfolioName+"_DCA", "portfolios" + File.separator + "flex")){
-      File helper = Utils.getFileByName(portfolioName+"_DCA","portfolios" + File.separator + "flex");
+      File helper = ds.getFileByName(portfolioName+"_DCA","portfolios" + File.separator + "flex");
       this.stockOrders=Utils.DCAFileValidator(portfolioName,helper,this.stockOrders);
 
     }

@@ -251,7 +251,7 @@ public class PortfolioFlexImplTest {
     SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> transTuple =
         new SimpleEntry<>(
             "CSCO", dateQtyCommTuple);
-    p.addTransaction(transTuple, LocalDate.now().toString());
+    p.addTransaction(transTuple, "2022-11-2");
     Map<String, SimpleEntry<String, Double>> stateMap = p.getLatestState();
 
     Map<String, SimpleEntry<String, Double>> expected = new HashMap<>();

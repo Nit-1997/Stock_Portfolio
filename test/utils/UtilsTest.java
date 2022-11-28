@@ -24,57 +24,6 @@ import org.junit.Test;
  */
 public class UtilsTest {
 
-  @Test(expected = IOException.class)
-  public void testGetFileByNameInvalidDirectory() throws IOException {
-    File f = Utils.getFileByName("a.csv", "binaryHero");
-  }
-
-  @Test(expected = IOException.class)
-  public void testGetFileByNameInvalidFile() throws IOException {
-    File f = Utils.getFileByName("cutie.csv", "portfolios");
-  }
-
-  @Test(expected = IOException.class)
-  public void testGetFileByNameNullDirectory() throws IOException {
-    File f = Utils.getFileByName("a.csv", null);
-  }
-
-  @Test(expected = IOException.class)
-  public void testGetFileByNameNullFile() throws IOException {
-    File f = Utils.getFileByName(null, "portfolios");
-  }
-
-  @Test
-  public void testGetFileByName() throws IOException {
-    File f = Utils.getFileByName("testFile", "testingArtifacts");
-    assertNotEquals(null, f);
-  }
-
-  @Test(expected = IOException.class)
-  public void testSaveToFileNameNull() throws IOException {
-    List<StockOrder> o = new ArrayList<>();
-    Utils.saveToFile(null, o, "testingArtifacts");
-  }
-
-  @Test(expected = IOException.class)
-  public void testSaveToStockOrdersNull() throws IOException {
-    Utils.saveToFile("nitin", null, "testingArtifacts");
-  }
-
-  @Test
-  public void testSaveToFile() throws Exception {
-    List<StockOrder> o = new ArrayList<>();
-    String ticker = "CSCO";
-    Utils.clearStockDirectory();
-    if (!Utils.dataExists(ticker, "stock_data")) {
-      Utils.loadStockData(ticker, "stock_data");
-    }
-    StockOrder so = new StockOrderImpl(ticker, 20.0);
-    o.add(so);
-    Utils.saveToFile("testing2", o, "testingArtifacts");
-    assertNotNull(so);
-  }
-
   @Test
   public void testLoadStockNamesCorrect() throws IOException {
     Set<String> s = Utils.loadStockNames("testingArtifacts", "stocks_list_correct.csv");
