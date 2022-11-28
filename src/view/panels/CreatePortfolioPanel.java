@@ -164,22 +164,22 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
     form.add(this.tout);
 
 
-    this.confirmationMsg = new JLabel("sjdhcjn");
+    this.confirmationMsg = new JLabel("");
     this.confirmationMsg.setFont(new Font("Arial", Font.PLAIN, 12));
     this.confirmationMsg.setSize(250, 20);
     this.confirmationMsg.setLocation(370, 260);
     form.add(this.confirmationMsg);
 
     this.normalFormSubmitButton.setFont(new Font("Arial", Font.PLAIN, 15));
-    this.normalFormSubmitButton.setSize(70, 20);
+    this.normalFormSubmitButton.setSize(100, 20);
     this.normalFormSubmitButton.setLocation(50, 310);
 
     form.add(this.normalFormSubmitButton);
 
 
     this.normalFormAddMoreButton.setFont(new Font("Arial", Font.PLAIN, 15));
-    this.normalFormAddMoreButton.setSize(130, 20);
-    this.normalFormAddMoreButton.setLocation(150, 310);
+    this.normalFormAddMoreButton.setSize(160, 20);
+    this.normalFormAddMoreButton.setLocation(160, 310);
     form.add(this.normalFormAddMoreButton);
 
     JButton resetBtn = new JButton("");
@@ -325,7 +325,7 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
 
     JButton moreAdd = new JButton("Add");
     moreAdd.setFont(new Font("Arial", Font.PLAIN, 15));
-    moreAdd.setSize(50, 20);
+    moreAdd.setSize(80, 20);
     moreAdd.setLocation(500, 200);
 
 
@@ -338,7 +338,7 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
 
           form.add(this.DCAFormSubmitButton);
           this.DCAFormSubmitButton.setFont(new Font("Arial", Font.PLAIN, 15));
-          this.DCAFormSubmitButton.setSize(70, 20);
+          this.DCAFormSubmitButton.setSize(100, 20);
           this.DCAFormSubmitButton.setLocation(50, 310);
 
           this.confirmationMsg = new JLabel("");
