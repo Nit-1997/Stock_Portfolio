@@ -16,7 +16,7 @@ public class DCAPortfolioCreation {
 
   Map<String, Double> map;
 
-  DCAPortfolioCreation(List<String> data, Map<String, Double> map, UserFlexInvest user){
+  public DCAPortfolioCreation(List<String> data, Map<String, Double> map, UserFlexInvest user){
     this.data=data;
     this.user=user;
     this.map=map;
@@ -29,6 +29,7 @@ public class DCAPortfolioCreation {
     else if(!user.isUniqueName(portfolioName)) return "Please enter a unique portfolio Name";
 
     String startDate = data.get(1);
+    if(startDate.equals("")) return "Empty Start Date";
     if(!user.dateChecker(startDate)) return "Wrong date format for start Date";
 
     String endDate = data.get(2);

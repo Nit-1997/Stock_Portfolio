@@ -1,10 +1,6 @@
-import controller.gui_controller.MainGUIController;
-import javax.swing.text.View;
-import model.PortfolioFlexInvestImpl;
-import model.UserFlexInvest;
+import controller.MainGUIController;
 import model.UserFlexInvestImpl;
 import view.MainFrameView;
-import view.ViewGUI;
 
 
 /**

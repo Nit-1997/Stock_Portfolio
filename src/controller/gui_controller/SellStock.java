@@ -20,44 +20,31 @@ public class SellStock {
   }
 
   public String execute() {
+    if(!FormChecker.formChecker(buySellData,user).equals("Portfolio Successfully Saved")) {
+      return FormChecker.formChecker(buySellData,user);
+    }
+
+
     String portfolioName = buySellData.get(0);
 
     String stock = buySellData.get(1).toUpperCase();
-    if (stock.equals(""))
-      return "Empty Stock";
-    else if (!this.stockMap.containsKey(stock))
-      return "<html>Please enter a valid stock<br /> name from the list</html>";
 
     String quantity = buySellData.get(2);
-    if (quantity.equals(""))
-      return "Empty Quantity";
-    int quan = 0;
-    try {
-      quan = Integer.parseInt(quantity);
-      if (quan < 0)
-        return "Negative quantity passed";
-    } catch (NumberFormatException e) {
-      return "Wrong Quantity Format";
-    }
-    if (this.stockMap.get(stock) < quan) {
-      return "<html>Entered stock number less than <br />existing shares for " + stock + "</html>";
-    }
+    double quanDouble = -Double.parseDouble(quantity);
 
     String date = buySellData.get(3);
 
     String commFee = buySellData.get(4);
-    Double commFeeDouble = null;
-    if(commFee.equals("")) commFeeDouble=0.0;
-    if(!commFee.equals("")){
-      try{
-        commFeeDouble = Double.parseDouble(commFee);
-        if(commFeeDouble<0) return "Negative Commission Fee";
-      }catch(NumberFormatException e){
-        return "Wrong Commission Fee Format";
-      }
+    Double commFeeDouble = Double.parseDouble(commFee);
+
+    if (!this.stockMap.containsKey(stock))
+      return "<html>Please enter a valid stock<br /> name from the list</html>";
+
+    if (this.stockMap.get(stock) < quanDouble) {
+      return "<html>Entered stock number less than <br />existing shares for " + stock + "</html>";
     }
 
-    double quanDouble = -quan;
+
 
     try {
       user.transactionForPortfolio(portfolioName, new SimpleEntry<>(stock,

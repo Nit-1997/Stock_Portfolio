@@ -3,28 +3,26 @@ package controller.gui_controller;
 import java.util.List;
 import model.UserFlexInvest;
 
-public class NormalPortfolioCreationAddMore {
+public class FormChecker {
 
-  List<String> data;
-  UserFlexInvest user;
-  public NormalPortfolioCreationAddMore(List<String> data, UserFlexInvest user){
-    this.data=data;
-    this.user=user;
-  }
-
-  public String execute()  {
+  /**
+   * Check the data in the form.
+   * @param data list of {portfolioName, stock, quantity, date, commFee}
+   * @param user Model Object
+   * @return string message
+   */
+   public static String formChecker(List<String> data, UserFlexInvest user){
 
     String portfolioName = data.get(0);
     if(portfolioName.equals("")) return "Empty Portfolio Name";
-    else if(!user.isUniqueName(portfolioName)) return "Please enter a unique portfolio Name";
+
 
     String stock = data.get(1).toUpperCase();
     if(stock.equals("")) return "Empty Stock";
     else if(!user.isValidStock(stock)) return "Please enter a valid stock name";
 
     String date = data.get(3);
-    System.out.println(date);
-
+    if(date.equals("")) return "Empty Date";
     if(!user.dateChecker(date)) return "Wrong date format";
 
     String quantity = data.get(2);
@@ -33,7 +31,7 @@ public class NormalPortfolioCreationAddMore {
     try{
       quan = Integer.parseInt(quantity);
       if(quan<0) return "Negative quantity passed";
-      if(quan==0) return "Cant buy 0 stocks";
+      if(quan==0) return "Cant buy/sell 0 stocks";
     }catch(NumberFormatException e){
       return "Wrong Quantity Format";
     }
@@ -51,7 +49,7 @@ public class NormalPortfolioCreationAddMore {
     }
 
 
-    return "Stock Added successfully";
+    return "Portfolio Successfully Saved";
   }
 
 }
