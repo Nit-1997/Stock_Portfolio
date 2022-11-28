@@ -201,9 +201,9 @@ public class PortfolioFlexImpl implements PortfolioFlex {
       throw new IllegalArgumentException("cannot sell more than the available stocks");
     }
 
-    if (state.containsKey(ticker) && stockQuanDouble<0 && Utils.compareDates(date, paraDate) < 0) {
-      throw new IllegalArgumentException(" Date before last transaction for selling stock");
-    }
+//    if (state.containsKey(ticker) && stockQuanDouble<0 && Utils.compareDates(date, paraDate) < 0) {
+//      throw new IllegalArgumentException(" Date before last transaction for selling stock");
+//    }
 
     if (!Utils.dataExists(ticker.toUpperCase(), "stock_data")) {
       Utils.loadStockData(ticker.toUpperCase(), "stock_data");
@@ -231,7 +231,7 @@ public class PortfolioFlexImpl implements PortfolioFlex {
     String dateCompare = paraDate.equals(LocalDate.now().toString()) ? state.get(ticker).getKey() : paraDate;
     String date = newEntry.getValue().getKey();
     double stockQuanDouble = newEntry.getValue().getValue().getKey();
-    if (state.containsKey(ticker) && Utils.compareDates(date,dateCompare ) < 0) {
+    if (state.containsKey(ticker) && stockQuanDouble>0 && Utils.compareDates(date,dateCompare ) < 0) {
       throw new IllegalArgumentException(" Date before last transaction for asked stock");
     }
 

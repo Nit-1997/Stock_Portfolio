@@ -33,6 +33,7 @@ public class NormalPortfolioCreationAddMore {
     try{
       quan = Integer.parseInt(quantity);
       if(quan<0) return "Negative quantity passed";
+      if(quan==0) return "Cant buy 0 stocks";
     }catch(NumberFormatException e){
       return "Wrong Quantity Format";
     }

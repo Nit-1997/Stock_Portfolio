@@ -1,16 +1,11 @@
 package view.panels;
 
-import constants.Constants;
 import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.util.AbstractMap.SimpleEntry;
@@ -18,14 +13,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import view.MainFrameView;
@@ -46,11 +37,13 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
 
   JLabel sellDateCheckerMsg;
 
-  JPanel contentPanel = null, form=null;
+  JPanel contentPanel = new JPanel(), form=new JPanel();
 
   Map<String, Double> stockMap;
 
   Double sum;
+
+  InvestPanel obj;
 
   public SinglePortfolioDetailPanel(String name){
 
@@ -70,6 +63,23 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
 
     this.sellInterimBtn = new JButton("Get Data");
     this.sellInterimBtn.setActionCommand("Get Composition for Sell");
+
+    this.dateInput = new JTextField(10);
+    this.confirmationMsg = new JLabel("");
+    this.valueMsg = new JLabel("");
+
+    this.stockInput = new JTextField();
+    this.quantityInput = new JTextField();
+    this.dateInput = new JTextField();
+    this.commFeeInput = new JTextField();
+    this.amountInput = new JTextField();
+
+    this.sellDateCheckerMsg = new JLabel("");
+
+    this.sum = 0.0;
+
+    this.stockMap = new HashMap<>();
+
 
     this.name=name;
     this.setBackground(Color.decode("#B8DEFF"));
@@ -133,56 +143,9 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
     if(this.contentPanel!=null) this.remove(this.contentPanel);
 
     this.contentPanel = new JPanel();
-    this.contentPanel.setLayout(new BorderLayout());
-    this.contentPanel.setBackground(Color.decode("#B8DEFF"));
 
-    JPanel datePanel = new JPanel();
-    datePanel.setLayout(new FlowLayout());
-    datePanel.setBackground(Color.decode("#B8DEFF"));
-
-    JLabel date = new JLabel("Date (yyyy-MM-dd) :");
-    date.setFont(new Font("Arial", Font.PLAIN, 13));
-    date.setHorizontalAlignment(JLabel.CENTER);
-    datePanel.add(date);
-
-    this.dateInput = new JTextField(10);
-    this.dateInput.setFont(new Font("Arial", Font.PLAIN, 13));
-    this.dateInput.setSize(190, 20);
-    this.dateInput.setHorizontalAlignment(JLabel.CENTER);
-    datePanel.add(this.dateInput);
-
-    switch (str){
-      case "value" :
-        datePanel.add(this.valueBtn);
-        break;
-      case "costBasis" :
-        datePanel.add(this.costBasisBtn);
-        break;
-      case "composition" :
-        datePanel.add(this.compositionBtn);
-        break;
-      default:
-        return;
-    }
-
-    this.contentPanel.add(datePanel,BorderLayout.NORTH);
-
-    JPanel message = new JPanel();
-
-    this.confirmationMsg = new JLabel("");
-    this.confirmationMsg.setFont(new Font("Arial", Font.PLAIN, 25));
-    this.confirmationMsg.setHorizontalAlignment(JLabel.CENTER);
-
-    this.valueMsg = new JLabel("");
-    this.valueMsg.setFont(new Font("Arial", Font.ITALIC, 25));
-    this.valueMsg.setHorizontalAlignment(JLabel.CENTER);
-
-    message.add(confirmationMsg);
-    message.add(valueMsg);
-    message.setSize(250,20);
-
-    message.setBackground(Color.decode("#B8DEFF"));
-    this.contentPanel.add(message,BorderLayout.CENTER);
+    new ValuePanel().createSimpleView(str,this.contentPanel,this.dateInput,this.valueBtn,this.costBasisBtn,
+        this.compositionBtn,this.confirmationMsg,this.valueMsg);
 
     this.add(this.contentPanel,BorderLayout.CENTER);
     this.revalidate();
@@ -193,132 +156,24 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
     if(this.contentPanel!=null) this.remove(this.contentPanel);
 
     this.contentPanel = new JPanel();
-    this.contentPanel.setLayout(new BorderLayout());
-    this.contentPanel.setBackground(Color.decode("#B8DEFF"));
+    this.form = new JPanel();
 
-    JPanel top = new JPanel(new GridLayout(2,1));
-    JLabel headerDate = new JLabel("Portfolio creation date (yyyy-MM-dd) : "+this.portfolioCreationDate);
-    headerDate.setFont(new Font("Arial", Font.ITALIC, 20));
-    headerDate.setHorizontalAlignment(JLabel.CENTER);
-    JLabel stockList = new JLabel("List of Available Stocks : NASDAQ 100");
-    stockList.setFont(new Font("Arial", Font.ITALIC, 20));
-    stockList.setHorizontalAlignment(JLabel.CENTER);
-    top.add(headerDate);
-    top.add(stockList);
-    top.setBackground(Color.decode("#B8DEFF"));
-    this.contentPanel.add(top,BorderLayout.PAGE_START);
-
-    form = new JPanel();
-    form.setLayout(new GridLayout(5,2));
-    form.setBorder(BorderFactory.createEmptyBorder(5,20,10,20));
-    JLabel stock = new JLabel("Stock Name");
-    stock.setFont(new Font("Arial", Font.PLAIN, 15));
-    stock.setHorizontalAlignment(JLabel.CENTER);
-    form.add(stock);
-    this.stockInput = new JTextField();
-    form.add(this.stockInput);
-    JLabel quantity = new JLabel("Quantity");
-    quantity.setFont(new Font("Arial", Font.PLAIN, 15));
-    quantity.setHorizontalAlignment(JLabel.CENTER);
-    form.add(quantity);
-    this.quantityInput = new JTextField();
-    form.add(this.quantityInput);
-    JLabel date = new JLabel("Date (yyyy-MM-dd)");
-    date.setHorizontalAlignment(JLabel.CENTER);
-    date.setFont(new Font("Arial", Font.PLAIN, 15));
-    form.add(date);
-    this.dateInput = new JTextField();
-    form.add(this.dateInput);
-    JLabel commFee = new JLabel("Commission Fee");
-    commFee.setHorizontalAlignment(JLabel.CENTER);
-    commFee.setFont(new Font("Arial", Font.PLAIN, 15));
-    form.add(commFee);
-    this.commFeeInput = new JTextField();
-    form.add(this.commFeeInput);
-    form.add(this.buyStockBtn);
-    this.confirmationMsg = new JLabel("");
-    this.confirmationMsg.setHorizontalAlignment(JLabel.CENTER);
-    form.add(this.confirmationMsg);
-    form.setBackground(Color.decode("#B8DEFF"));
-
-    this.contentPanel.add(form,BorderLayout.CENTER);
+    new BuyStockPanel().createBuyView(this.contentPanel,this.portfolioCreationDate,this.form,this.stockInput,
+        this.quantityInput,this.dateInput,this.commFeeInput,this.buyStockBtn,this.confirmationMsg);
 
     this.add(this.contentPanel,BorderLayout.CENTER);
     this.revalidate();
-    this.repaint();
   }
 
   private void createSellView(){
     if(this.contentPanel!=null) this.remove(this.contentPanel);
 
     this.contentPanel = new JPanel();
-    this.contentPanel.setLayout(new BorderLayout());
-    this.contentPanel.setBackground(Color.decode("#B8DEFF"));
-
-    JPanel datePanel = new JPanel();
-    datePanel.setBackground(Color.decode("#B8DEFF"));
-
-    JLabel date = new JLabel("Date for sell (yyyy-MM-dd) :");
-    date.setFont(new Font("Arial", Font.PLAIN, 13));
-    date.setHorizontalAlignment(JLabel.CENTER);
-    datePanel.add(date);
-
-    this.dateInput = new JTextField(10);
-    this.dateInput.setFont(new Font("Arial", Font.PLAIN, 13));
-    this.dateInput.setSize(190, 20);
-    this.dateInput.setHorizontalAlignment(JLabel.CENTER);
-    datePanel.add(this.dateInput);
-
-    this.sellInterimBtn.setHorizontalAlignment(JButton.CENTER);
-    datePanel.add(this.sellInterimBtn);
-
-    this.sellDateCheckerMsg = new JLabel("");
-    this.sellDateCheckerMsg.setFont(new Font("Arial", Font.PLAIN, 10));
-    datePanel.add(this.sellDateCheckerMsg);
-
-    this.contentPanel.add(datePanel,BorderLayout.NORTH);
-
-    this.valueMsg = new JLabel("");
-    this.valueMsg.setFont(new Font("Arial", Font.ITALIC, 25));
-    this.valueMsg.setHorizontalAlignment(JLabel.CENTER);
-
-
-    JLabel mapHead = new JLabel("Shares of each Stock");
-    mapHead.setFont(new Font("Arial", Font.PLAIN, 15));
-    mapHead.setHorizontalAlignment(JLabel.CENTER);
-    this.contentPanel.add(this.valueMsg,BorderLayout.LINE_START);
-
     form = new JPanel();
-    form.setLayout(new GridLayout(4,2));
-    form.setBorder(BorderFactory.createEmptyBorder(5,20,10,20));
-    JLabel stock = new JLabel("Stock Name");
-    stock.setFont(new Font("Arial", Font.PLAIN, 15));
-    stock.setHorizontalAlignment(JLabel.CENTER);
-    form.add(stock);
-    this.stockInput = new JTextField();
-    form.add(this.stockInput);
-    JLabel quantity = new JLabel("Quantity");
-    quantity.setFont(new Font("Arial", Font.PLAIN, 15));
-    quantity.setHorizontalAlignment(JLabel.CENTER);
-    form.add(quantity);
-    this.quantityInput = new JTextField();
-    form.add(this.quantityInput);
-    JLabel commFee = new JLabel("Commission Fee");
-    commFee.setHorizontalAlignment(JLabel.CENTER);
-    commFee.setFont(new Font("Arial", Font.PLAIN, 15));
-    form.add(commFee);
-    this.commFeeInput = new JTextField();
-    form.add(this.commFeeInput);
 
-    form.add(this.sellStockBtn);
-
-    this.confirmationMsg = new JLabel("");
-    this.confirmationMsg.setHorizontalAlignment(JLabel.CENTER);
-    form.add(this.confirmationMsg);
-    form.setBackground(Color.decode("#B8DEFF"));
-
-    this.form.setVisible(false);
-    this.contentPanel.add(form,BorderLayout.CENTER);
+    new SellStockPanel().createSellView(this.contentPanel,this.form,this.stockInput,this.quantityInput
+    ,this.dateInput, this.commFeeInput, this.sellStockBtn,this.confirmationMsg,this.sellInterimBtn,
+        this.sellDateCheckerMsg,this.valueMsg);
 
     this.add(this.contentPanel,BorderLayout.CENTER);
     this.revalidate();
@@ -327,233 +182,22 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
 
   private void createInvestView(){
 
-    this.sum = 0.0;
-
     this.stockMap = new HashMap<>();
-
     if(this.contentPanel!=null) this.remove(this.contentPanel);
 
     this.contentPanel = new JPanel();
-    this.contentPanel.setLayout(new BorderLayout());
-    this.contentPanel.setBackground(Color.decode("#B8DEFF"));
-
-    JPanel top = new JPanel();
-    top.setLayout(new GridBagLayout());
-    GridBagConstraints c = new GridBagConstraints();
-
-    c.fill = GridBagConstraints.HORIZONTAL;
-    c.gridx=0;
-    c.gridy=0;
-    c.gridwidth=2;
-    JLabel stockList = new JLabel("List of Available Stocks : NASDAQ 100");
-    stockList.setFont(new Font("Arial", Font.ITALIC, 20));
-    stockList.setHorizontalAlignment(JLabel.CENTER);
-
-    top.add(stockList,c);
-
-    c.gridy=1;
-    c.gridx=1;
-    c.gridwidth=1;
-    JLabel date = new JLabel("Date for investment (yyyy-MM-dd)");
-    date.setFont(new Font("Arial", Font.PLAIN, 15));
-    top.add(date,c);
-
-    c.gridy=1;
-    c.gridx=2;
-    c.gridwidth=1;
-    this.dateInput = new JTextField(10);
-    this.dateInput.setFont(new Font("Arial", Font.PLAIN, 15));
-    top.add(dateInput,c);
-
-    c.gridy=2;
-    c.gridx=1;
-    c.gridwidth=1;
-    JLabel amount = new JLabel("Amount to be invested($)");
-    amount.setFont(new Font("Arial", Font.PLAIN, 15));
-    top.add(amount,c);
-
-    c.gridy=2;
-    c.gridx=2;
-    c.gridwidth=1;
-    this.amountInput = new JTextField(10);
-    this.amountInput.setFont(new Font("Arial", Font.PLAIN, 15));
-    top.add(this.amountInput,c);
-
-    c.gridy=3;
-    c.gridx=1;
-    c.gridwidth=1;
-    JLabel commissionFee = new JLabel("Commission fee");
-    commissionFee.setFont(new Font("Arial", Font.PLAIN, 15));
-    top.add(commissionFee,c);
-
-    c.gridy=3;
-    c.gridx=2;
-    c.gridwidth=1;
-    commFeeInput = new JTextField(10);
-    this.commFeeInput.setFont(new Font("Arial", Font.PLAIN, 15));
-    top.add(commFeeInput,c);
-
-    top.setBackground(Color.decode("#B8DEFF"));
-
-    this.contentPanel.add(top,BorderLayout.PAGE_START);
-
-    this.form = new JPanel();
-    form.setLayout(new BorderLayout());
-
-    JPanel scrollPanel = new JPanel();
-    scrollPanel.setLayout(new BoxLayout(scrollPanel,BoxLayout.Y_AXIS));
-    JScrollPane scroll = new JScrollPane(scrollPanel);
-    scroll.setBounds(45,0,440,140);
-    this.form.add(scroll);
-
-    JPanel temp = new JPanel();
-
-    JLabel stock = new JLabel("Stock");
-    stock.setFont(new Font("Arial", Font.PLAIN, 15));
-    stock.setSize(50, 20);
-    stock.setLocation(10, 50);
-    temp.add(stock);
-
-
-    this.stockInput = new JTextField(10);
-    this.stockInput.setFont(new Font("Arial", Font.PLAIN, 15));
-    this.stockInput.setSize(100, 20);
-    this.stockInput.setLocation(70, 50);
-    temp.add(this.stockInput);
-
-    JLabel quantity = new JLabel("Weight(%) ");
-    quantity.setFont(new Font("Arial", Font.PLAIN, 15));
-    quantity.setSize(80, 20);
-    quantity.setLocation(180, 50);
-    temp.add(quantity);
-
-    this.quantityInput = new JTextField(10);
-    this.quantityInput.setFont(new Font("Arial", Font.PLAIN, 15));
-    this.quantityInput.setSize(100, 20);
-    this.quantityInput.setLocation(270, 50);
-    temp.add(this.quantityInput);
-
-    scrollPanel.add(temp);
-
-    JButton moreAdd = new JButton("Add");
-    moreAdd.setFont(new Font("Arial", Font.PLAIN, 15));
-    moreAdd.setSize(50, 20);
-    moreAdd.setLocation(500, 50);
-
-    AtomicInteger y = new AtomicInteger(80);
-    moreAdd.addActionListener(e-> {
-      this.printMoreLines(y.get(),scrollPanel);
-      y.addAndGet(30);
-    });
-
-    this.form.add(moreAdd);
-
-    this.investBtn.setFont(new Font("Arial", Font.PLAIN, 15));
-    this.investBtn.setSize(100, 20);
-    this.investBtn.setLocation(50, 140);
-
-    this.form.add(this.investBtn);
-
-    this.confirmationMsg = new JLabel("");
-    this.confirmationMsg.setFont(new Font("Arial", Font.PLAIN, 15));
-    this.confirmationMsg.setSize(350, 20);
-    this.confirmationMsg.setLocation(180, 140);
-    form.add(this.confirmationMsg);
-
-    JButton resetBtn = new JButton("");
-    resetBtn.setFont(new Font("Arial", Font.PLAIN, 15));
-    resetBtn.setSize(0, 20);
-    resetBtn.setLocation(260, 350);
-    resetBtn.setVisible(false);
-    form.add(resetBtn);
-
-    form.setBackground(Color.decode("#B8DEFF"));
-
-    this.contentPanel.add(form,BorderLayout.CENTER);
+        this.form = new JPanel();
+        obj = new InvestPanel();
+        obj.createInvestView(this.contentPanel,this.form,this.dateInput,this.amountInput,
+            this.commFeeInput,  this.stockInput,this.quantityInput,this.investBtn,
+            this.confirmationMsg,this.stockMap);
 
     this.add(this.contentPanel,BorderLayout.CENTER);
     this.revalidate();
     this.repaint();
   }
 
-  private void printMoreLines(int y, JPanel scrollPane) {
 
-    if(!this.inputValidation()) return;
-
-    this.stockInput.setEditable(false);
-    this.quantityInput.setEditable(false);
-
-    this.setInvestMsg("Added", true);
-
-    JPanel temp = new JPanel();
-
-    JLabel stock = new JLabel("Stock");
-    stock.setFont(new Font("Arial", Font.PLAIN, 15));
-    stock.setSize(50, 20);
-    stock.setLocation(10, y);
-    temp.add(stock);
-
-    this.stockInput = new JTextField(10);
-    this.stockInput.setFont(new Font("Arial", Font.PLAIN, 15));
-    this.stockInput.setSize(100, 20);
-    this.stockInput.setLocation(70, y);
-    temp.add(this.stockInput);
-
-    JLabel quantity = new JLabel("Weight(%) ");
-    quantity.setFont(new Font("Arial", Font.PLAIN, 15));
-    quantity.setSize(80, 20);
-    quantity.setLocation(180, y);
-    temp.add(quantity);
-
-    this.quantityInput = new JTextField(10);
-    this.quantityInput.setFont(new Font("Arial", Font.PLAIN, 15));
-    this.quantityInput.setSize(100, 20);
-    this.quantityInput.setLocation(270, y);
-    temp.add(this.quantityInput);
-
-    scrollPane.add(temp);
-    scrollPane.revalidate();
-    scrollPane.repaint();
-  }
-
-  private boolean inputValidation(){
-    String stock = this.stockInput.getText();
-    String percentage = this.quantityInput.getText();
-    if(stock.equals("") || percentage.equals("")){
-      this.setInvestMsg("Empty record",false);
-      return false;
-    }
-
-    if(!Constants.STOCK_NAMES.contains(stock.toUpperCase())){
-      this.setInvestMsg("Not a valid stock name",false);
-      return false;
-    }
-    Double percent;
-    try{
-      percent = Double.parseDouble(percentage);
-    } catch(NumberFormatException e){
-      this.setInvestMsg("Number not in numeric format",false);
-      return false;
-    }
-    if(percent==0){
-      this.setInvestMsg("Percentage 0",false);
-      return false;
-    }
-    if(percent<0 || percent>100){
-      this.setInvestMsg("Percentage -ve or 100+",false);
-      return false;
-    }
-    if(this.sum+percent>100.0){
-      this.setInvestMsg("Weights sum more than 100",false);
-      return false;
-    }
-    this.sum+=percent;
-    if(this.stockMap.containsKey(stock.toUpperCase()))
-      this.stockMap.put(stock.toUpperCase(),this.stockMap.get(stock.toUpperCase())+percent);
-    else this.stockMap.put(stock.toUpperCase(),percent);
-
-    return true;
-  }
 
   public void setInvestMsg(String str, boolean isGood){
     if(str.equals("Success")) this.createInvestView();
@@ -576,7 +220,8 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
   }
 
   public Map<String,Double> getInvestStockMap(){
-    this.inputValidation();
+    obj.inputValidation(this.stockMap,this.confirmationMsg);
+    System.out.println(this.stockMap);
     this.stockMap.remove("");
     return this.stockMap;
   }
@@ -686,7 +331,6 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
     if(msg.equals("Success3")){
       this.sellDateCheckerMsg.setText("");
       this.form.setVisible(true);
-      // print form
     }
     else{
       if(msg.contains("Given date before portfolio creation"))

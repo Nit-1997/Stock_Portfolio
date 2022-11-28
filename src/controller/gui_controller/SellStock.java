@@ -57,11 +57,11 @@ public class SellStock {
       }
     }
 
-    double quanDouble = quan;
+    double quanDouble = -quan;
 
     try {
       user.transactionForPortfolio(portfolioName, new SimpleEntry<>(stock,
-          new SimpleEntry<>(date, new SimpleEntry<>(-quanDouble, commFeeDouble))));
+          new SimpleEntry<>(date, new SimpleEntry<>(quanDouble, commFeeDouble))));
       return "Successful transaction";
     } catch (Exception e) {
       return e.getMessage();

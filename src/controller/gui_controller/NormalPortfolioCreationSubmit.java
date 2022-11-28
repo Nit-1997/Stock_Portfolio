@@ -50,7 +50,7 @@ public class NormalPortfolioCreationSubmit {
     // data in both textArea and in form
     if(!this.formChecker().equals("Portfolio Successfully Saved")) return this.formChecker();
     Map<String, Map<String, SimpleEntry<Double, Double>>> stockMap2 = this.parseExtra();
-    String stock = data.get(1);
+    String stock = data.get(1).toUpperCase();
     String date = data.get(3);
     Double quantity = Double.parseDouble(data.get(2));
     Double commFee = Double.parseDouble(data.get(4));
@@ -82,7 +82,7 @@ public class NormalPortfolioCreationSubmit {
         continue;
       }
       String[] stockData = line.split(",");
-      String stock = stockData[0];
+      String stock = stockData[0].toUpperCase();
       Double stockQuantity = Double.parseDouble(stockData[2]);
       String date = stockData[1];
       Double commFee = Double.parseDouble(stockData[3]);
@@ -125,6 +125,7 @@ public class NormalPortfolioCreationSubmit {
     try{
       quan = Integer.parseInt(quantity);
       if(quan<0) return "Negative quantity passed";
+      if(quan==0) return "Cant buy 0 stocks";
     }catch(NumberFormatException e){
       return "Wrong Quantity Format";
     }

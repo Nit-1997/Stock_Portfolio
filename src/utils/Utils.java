@@ -52,7 +52,7 @@ public class Utils {
       throw new IOException("Cannot find the directory");
     } else {
       if (files.length == 0) {
-        throw new IOException("File does not exist");
+        throw new IOException("File does not exist for the file "+fileName);
       } else {
         return files[0];
       }
@@ -331,7 +331,7 @@ public class Utils {
     myReader.close();
 
     if (res == null) {
-      throw new IOException("Asked stock didn't exist on that date");
+      throw new IOException(ticker +" stock didn't exist on "+date);
     }
     return res;
   }

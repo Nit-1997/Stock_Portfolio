@@ -42,7 +42,7 @@ public class DCAPortfolioCreation {
         Date firstDate = sdf.parse("2010-01-04");
         if(date.before(firstDate)) return "End date before 1st Jan 2010";
       } catch(ParseException e){
-        return "Wrong date format";
+        return "Wrong date format for end date";
       }
       if (user.isBeforeDate(endDate,startDate))  return "end Date before start date";
     }
