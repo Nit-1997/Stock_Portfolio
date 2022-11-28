@@ -685,18 +685,21 @@ public class Utils {
         if(!flag) flag=true;
 
         double specificAmount = amount*weightage.get(ticker)/100;
+        //TODO : change Utils.fetchStockValueByDate to pick from future date, return SimpleEntry<Date,Value> or null
         double price = Double.parseDouble(Utils.fetchStockValueByDate(ticker, start.toString(),
             "stock_data"));
         double qty = specificAmount/price;
 
+        // TODO : change start.toString to the date you will get from file
         StockOrder newOrder = new StockOrderImpl(ticker,price,start.toString(),qty,tempCommFee);
         stockOrders.add(newOrder);
       }
       start=start.plusDays(interval);
     }
     if(endDate!=null && lastDate==LocalDate.parse(endDate)){
-      // do nothing
-      // TODO : delete DCA file if exists (the end date of the file has now passed, no need of DCA file)
+
+      // TODO if(price==null) save the file (start date, interval, endDate, amount, commfee)
+
       if (Utils.dataExists(portfolioName+"_DCA", "portfolios" + File.separator + "flex")){
         Utils.getFileByName(portfolioName+"_DCA","portfolios" + File.separator + "flex").delete();
       }
