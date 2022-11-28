@@ -157,8 +157,6 @@ public class Utils {
    * @throws Exception if directory not found or any issue in API.
    */
   public static void loadStockData(String ticker, String stockDataDir) throws Exception {
-    //    String output = ApiDataFetcher.fetchStockDataBySymbolYahoo(ticker,
-    //        Constants.YAHOO_API_BASE_URL);
     DataSource ds = new DataSourceImpl();
     ApiDataFetcher client = new ApiDataFetcherImpl();
     String output = client.fetchStockDataBySymbolAlphaVantage(ticker);
