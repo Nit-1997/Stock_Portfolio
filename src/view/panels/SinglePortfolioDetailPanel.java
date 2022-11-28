@@ -464,6 +464,7 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
     resetBtn.setFont(new Font("Arial", Font.PLAIN, 15));
     resetBtn.setSize(0, 20);
     resetBtn.setLocation(260, 350);
+    resetBtn.setVisible(false);
     form.add(resetBtn);
 
     form.setBackground(Color.decode("#B8DEFF"));
