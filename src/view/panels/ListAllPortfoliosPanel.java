@@ -23,25 +23,26 @@ public class ListAllPortfoliosPanel extends JPanel implements IPanel{
   Set<String> portfolios;
   public ListAllPortfoliosPanel(Set<String> portfolios){
     this.portfolios=portfolios;
-    this.setBackground(Color.GREEN);
+    this.setBackground(Color.decode("#7AFFA0"));
     this.setLayout(new BorderLayout());
-    JLabel header = new JLabel("List all portfolios");
+    JLabel header = new JLabel("<html>List all portfolios<br /> Select any one to get specific menu</html>");
     header.setFont(new Font("Arial", Font.ITALIC, 20));
     header.setHorizontalAlignment(JLabel.CENTER);
     header.setBorder(BorderFactory.createBevelBorder(1));
     this.add(header,BorderLayout.PAGE_START);
 
     JPanel buttonPanel = new JPanel();
-    buttonPanel.setLayout(new BoxLayout(buttonPanel,BoxLayout.Y_AXIS));
+    buttonPanel.setLayout(new GridLayout(this.portfolios.size()/2+1,2));
     buttonPanel.setBackground(Color.decode("#C9FFB8"));
-
+    buttonPanel.setBorder(BorderFactory.createEmptyBorder(30,100,30,100));
     buttonPanel.setForeground(Color.CYAN);
     JButton[] buttons = new JButton[this.portfolios.size()];
     int i=0;
     for(String portfolio : this.portfolios){
       buttons[i] = new JButton(portfolio);
+      buttons[i].setFont(new Font("Arial", Font.ITALIC, 20));
       buttons[i].setHorizontalAlignment(JButton.CENTER);
-      buttons[i].setSize(100,50);
+      buttons[i].setSize(200,100);
       buttons[i].addActionListener(e -> this.router(portfolio));
       buttonPanel.add(buttons[i]);
       i++;
