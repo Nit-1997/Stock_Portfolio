@@ -333,4 +333,10 @@ public class PortfolioFlexImpl implements PortfolioFlex {
     return Utils.getScaledPerfData(date1, date2, type, this);
   }
 
+  @Override
+  public void addDCAInvestment(Double amount, Map<String, Double> weightage, String startDate,
+      String endDate, int interval, Double commFee) throws Exception {
+
+  }
+
 }

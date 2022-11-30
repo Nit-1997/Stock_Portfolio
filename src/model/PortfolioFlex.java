@@ -78,4 +78,18 @@ public interface PortfolioFlex extends Portfolio {
       throws Exception;
 
 
+  /**
+   * Adds a new DCA Strategy to the existing portfolio.
+   * @param amount amount to be invested.
+   * @param weightage Map of stock vs their percentage.
+   * @param startDate start date of investment.
+   * @param endDate end date of investment.
+   * @param interval interval of investment.
+   * @param commFee commission fee of investment.
+   * @throws Exception if there is any error.
+   */
+  void addDCAInvestment(Double amount, Map<String, Double> weightage,
+      String startDate, String endDate, int interval, Double commFee) throws Exception;
+
+
 }

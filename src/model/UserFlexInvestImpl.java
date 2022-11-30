@@ -53,6 +53,20 @@ public class UserFlexInvestImpl extends UserFlexImpl implements UserFlexInvest{
     }
   }
 
+  @Override
+  public void InvestThroughDCA(String portfolioName, Double amount, Map<String, Double> weightage,
+      String startDate, String endDate, int interval, Double commFee) throws Exception {
+
+    this.loadPortfolio(portfolioName);
+
+    PortfolioFlexInvestImpl obj = ((PortfolioFlexInvestImpl) this.portfolioMap.get(portfolioName));
+
+
+    obj.addDCAInvestment(amount,weightage,startDate,endDate,interval,commFee);
+
+
+  }
+
 
   private String latestTransactionDateForStock(String portfolioName, String ticker){
     Map<String, SimpleEntry<String, Double>> map = this.getPortfolioState(portfolioName);

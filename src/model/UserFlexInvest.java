@@ -33,4 +33,7 @@ public interface UserFlexInvest extends UserFlex{
   void addPortfolio(String portfolioName, Double amount, Map<String, Double> weightage,
       String startDate, String endDate,int interval, Double commFee) throws Exception;
 
+  void InvestThroughDCA(String portfolioName, Double amount, Map<String, Double> weightage,
+      String startDate, String endDate, int interval, Double commFee) throws Exception;
+
 }

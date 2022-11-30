@@ -93,6 +93,15 @@ public class PortfolioFlexInvestImpl extends PortfolioFlexImpl{
     }
   }
 
+  @Override
+  public void addDCAInvestment(Double amount, Map<String, Double> weightage, String startDate,
+      String endDate, int interval, Double commFee) throws Exception {
+
+    this.stockOrders=Utils.updatePortfolioFromDCA(this.name,startDate,endDate,weightage,
+        interval,amount,commFee,this.stockOrders);
+
+  }
+
 
 
 

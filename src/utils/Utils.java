@@ -631,7 +631,7 @@ public class Utils {
       throws IOException {
     Scanner myReader = new Scanner(file);
     String[] data = myReader.nextLine().split(",");
-    if(data.length!=5) throw new IOException("File corrupted");
+    if(data.length!=6) throw new IOException("File corrupted");
     String startDate = data[0];
     String endDate = data[2];
 //    if(!Utils.dateChecker(startDate) || (endDate!=null && !Utils.dateChecker(endDate)) ) throw new IOException("File corrupted");
@@ -700,15 +700,21 @@ public class Utils {
 
       // TODO if(price==null) save the file (start date, interval, endDate, amount, commfee)
 
+      //TODO 2 : now dont delete
+
       if (Utils.dataExists(portfolioName+"_DCA", "portfolios" + File.separator + "flex")){
         Utils.getFileByName(portfolioName+"_DCA","portfolios" + File.separator + "flex").delete();
       }
     }
     else if(lastDate==now){
       File portfolioDCA = Utils.createFileIfNotExists(portfolioName+"_DCA", "portfolios" + File.separator + "flex");
-      FileWriter myWriter = new FileWriter(portfolioDCA);
 
-      myWriter.write(start+","+interval+","+endDate+","+amount+","+commFee+"\n");
+      //TODO 2 : append in the file
+      FileWriter myWriter = new FileWriter(portfolioDCA,true);
+
+
+//      myWriter.write(start+","+interval+","+endDate+","+amount+","+commFee+"\n");
+      myWriter.write(start+","+interval+","+endDate+","+amount+","+commFee+","+weightage.size()+"\n");
       for (String ticker : weightage.keySet()) {
         myWriter.write(ticker+","+weightage.get(ticker)+"\n");
       }
