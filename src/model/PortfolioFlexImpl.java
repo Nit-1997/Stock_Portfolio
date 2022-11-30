@@ -30,6 +30,7 @@ public class PortfolioFlexImpl implements PortfolioFlex {
    */
   public PortfolioFlexImpl(Map<String, Map<String, SimpleEntry<Double, Double>>> stocksMap,
       String name) throws Exception {
+    DataSource ds = new DataSourceImpl();
     if (stocksMap == null || name == null) {
       throw new IllegalArgumentException("Null arguments to portfolio constructor");
     }
@@ -66,7 +67,7 @@ public class PortfolioFlexImpl implements PortfolioFlex {
     }
     this.creationDate = portfolioCreationDate;
 
-    Utils.saveToFile(this.name, this.stockOrders, "portfolios" + File.separator + "flex");
+    ds.saveToFile(this.name, this.stockOrders, "portfolios" + File.separator + "flex");
 
   }
 
@@ -143,7 +144,7 @@ public class PortfolioFlexImpl implements PortfolioFlex {
   public void addTransaction(
       SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newEntry, String date)
       throws Exception {
-
+    DataSource ds = new DataSourceImpl();
     this.addTransactionChecker(newEntry, date);
     this.addTransactionCheckerSpecialized(newEntry, date);
 
@@ -151,12 +152,13 @@ public class PortfolioFlexImpl implements PortfolioFlex {
         newEntry.getValue().getValue().getKey(), newEntry.getValue().getKey(),
         newEntry.getValue().getValue().getValue());
     this.stockOrders.add(newOrder);
-    Utils.saveToFile(this.name, this.stockOrders, "portfolios" + File.separator + "flex");
+    ds.saveToFile(this.name, this.stockOrders, "portfolios" + File.separator + "flex");
   }
 
   @Override
   public void addMultipleTransactions(
       Map<String, SimpleEntry<String, SimpleEntry<Double, Double>>> entryMap) throws Exception {
+    DataSource ds = new DataSourceImpl();
     for(String ticker: entryMap.keySet()){
 
       this.addTransactionChecker(
@@ -176,7 +178,7 @@ public class PortfolioFlexImpl implements PortfolioFlex {
       StockOrder newOrder = new StockOrderImpl(ticker,price,date,qty,commFee);
       this.stockOrders.add(newOrder);
     }
-    Utils.saveToFile(this.name, this.stockOrders, "portfolios" + File.separator + "flex");
+    ds.saveToFile(this.name, this.stockOrders, "portfolios" + File.separator + "flex");
   }
 
   protected void addTransactionChecker(SimpleEntry<String, SimpleEntry<String,

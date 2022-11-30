@@ -51,7 +51,7 @@ public class StockImplTest {
     Stock s = new StockImpl(ticker);
     Double price = s.getPriceOnDate(date);
     assertNotNull(price);
-    assertEquals(44.419998 , price , 0);
+    assertEquals(44.419998 , price , 0.1);
   }
 
   @Test(expected = Exception.class)

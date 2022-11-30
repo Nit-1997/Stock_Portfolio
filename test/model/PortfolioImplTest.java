@@ -72,8 +72,9 @@ public class PortfolioImplTest {
    */
   public static String getCurrentValueOfTickerDate(String ticker, String stockDir, String date)
       throws Exception {
+    DataSource ds = new DataSourceImpl();
     DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    File stockFile = Utils.getFileByName(ticker, stockDir);
+    File stockFile = ds.getFileByName(ticker, stockDir);
 
     Scanner myReader = new Scanner(stockFile);
     int lineNo = 0;
@@ -108,7 +109,8 @@ public class PortfolioImplTest {
    */
   public static String getCurrentValueOfTicker(String ticker, String stockDir) throws Exception {
     Utils.loadStockData(ticker, stockDir);
-    File stockFile = Utils.getFileByName(ticker, stockDir);
+    DataSource ds = new DataSourceImpl();
+    File stockFile = ds.getFileByName(ticker, stockDir);
     Scanner myReader = new Scanner(stockFile);
     int lineNo = 0;
     String out = null;
@@ -268,10 +270,10 @@ public class PortfolioImplTest {
     List<PortfolioDetailedPojo> pojos = p.getCurrentPortfolioDetailed();
     for (PortfolioDetailedPojo pojo : pojos) {
       if (Objects.equals(pojo.getTicker(), "NVDA")) {
-        assertEquals(12.0, pojo.getQty(), 0);
+        assertEquals(13.0, pojo.getQty(), 0);
       }
       if (Objects.equals(pojo.getTicker(), "AAPL")) {
-        assertEquals(10.0, pojo.getQty(), 0);
+        assertEquals(12.0, pojo.getQty(), 0);
       }
     }
   }
@@ -288,10 +290,10 @@ public class PortfolioImplTest {
     assertNotNull(pojos);
     for (PortfolioDetailedPojo pojo : pojos) {
       if (Objects.equals(pojo.getTicker(), "NVDA")) {
-        assertEquals(12.0, pojo.getQty(), 0);
+        assertEquals(13.0, pojo.getQty(), 0);
       }
       if (Objects.equals(pojo.getTicker(), "AAPL")) {
-        assertEquals(10.0, pojo.getQty(), 0);
+        assertEquals(12.0, pojo.getQty(), 0);
       }
     }
   }

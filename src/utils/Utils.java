@@ -23,6 +23,9 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 import model.ApiDataFetcher;
+import model.ApiDataFetcherImpl;
+import model.DataSource;
+import model.DataSourceImpl;
 import model.PortfolioFlex;
 import model.Stock;
 import model.StockOrder;
@@ -33,101 +36,7 @@ import model.StockOrderImpl;
  */
 public class Utils {
 
-  /**
-   * Searches and Returns file inside a particular directory.
-   *
-   * @param fileName name of the file needs to be searched.
-   * @param dirName  directory in which file needs to be searched.
-   * @return File object of that found file.
-   * @throws IOException if the directory doesn't exist or file not found.
-   */
-  public static File getFileByName(String fileName, String dirName) throws IOException {
-    if (fileName == null || dirName == null) {
-      throw new IOException("arguments passed are null");
-    }
-    String fileDirectory = Paths.get(dirName).toAbsolutePath().toString();
-
-    File[] files = new File(fileDirectory).listFiles((f1, name) -> name.equals(fileName + ".csv"));
-    if (files == null) {
-      throw new IOException("Cannot find the directory");
-    } else {
-      if (files.length == 0) {
-        throw new IOException("File does not exist for the file "+fileName);
-      } else {
-        return files[0];
-      }
-    }
-  }
-
-  /**
-   * Saves the current file in the directory.
-   *
-   * @param name    name of the file to be saved.
-   * @param orders  data that needs to be saved.
-   * @param dirName folder in which file will be saved.
-   * @throws IOException if directory doesn't exist or any argument exception.
-   */
-  public static void saveToFile(String name, List<StockOrder> orders, String dirName)
-      throws IOException {
-    if (name == null || orders == null) {
-      throw new IOException("passed null args");
-    }
-    File portfolioFile = createFileIfNotExists(name, dirName);
-    if (dirName.endsWith("flex")) {
-      writePortfolioToFileFlex(portfolioFile, orders);
-    } else {
-      writePortfolioToFile(portfolioFile, orders);
-    }
-  }
-
-
-  private static void writePortfolioToFile(File portfolioFile, List<StockOrder> orders)
-      throws IOException {
-    if (portfolioFile == null || orders == null) {
-      throw new IOException("passed null args");
-    }
-    FileWriter myWriter = new FileWriter(portfolioFile);
-    for (StockOrder order : orders) {
-      myWriter.write("" + order.getStock().getStockTickerName()
-          + "," + order.getStock().getBuyPrice()
-          + "," + order.getQuantity()
-          + "," + order.getStock().getBuyDate() + "\n"
-      );
-    }
-    myWriter.close();
-  }
-
-  private static void writePortfolioToFileFlex(File portfolioFile, List<StockOrder> orders)
-      throws IOException {
-    if (portfolioFile == null || orders == null) {
-      throw new IOException("passed null args");
-    }
-    FileWriter myWriter = new FileWriter(portfolioFile);
-    for (StockOrder order : orders) {
-      myWriter.write("" + order.getStock().getStockTickerName()
-          + "," + order.getStock().getBuyPrice()
-          + "," + order.getQuantity()
-          + "," + order.getStock().getBuyDate()
-          + "," + order.getCommFee() + "\n"
-      );
-    }
-    myWriter.close();
-  }
-
-  private static String getFilePath(String name, String dirName) throws IOException {
-    if (name == null || dirName == null) {
-      throw new IOException("passed null args");
-    }
-    String path = Paths.get(dirName).toAbsolutePath() + File.separator + name + ".csv";
-    return path;
-  }
-
-  public static File createFileIfNotExists(String name, String dirName) throws IOException {
-    String path = getFilePath(name, dirName);
-    return new File(path);
-  }
-
-  /**
+ /**
    * Load names of available stocks from the local file.
    *
    * @param stockRepoName folder where file of stocks is present
@@ -194,7 +103,8 @@ public class Utils {
    */
   public static List<StockOrder> loadPortfolioData(String portfolioName, String dirName)
       throws IOException {
-    File portfolioFile = Utils.getFileByName(portfolioName, dirName);
+    DataSource ds = new DataSourceImpl();
+    File portfolioFile = ds.getFileByName(portfolioName, dirName);
     if (portfolioFile == null) {
       return null;
     }
@@ -233,11 +143,6 @@ public class Utils {
     return parsedFileInput;
   }
 
-  private static void writeStockDataDumpToFile(File stockFile, String data) throws IOException {
-    FileWriter myWriter = new FileWriter(stockFile);
-    myWriter.write(data);
-    myWriter.close();
-  }
 
   /**
    * Fetched data for the stock from the API and loads into local directory.
@@ -247,11 +152,11 @@ public class Utils {
    * @throws Exception if directory not found or any issue in API.
    */
   public static void loadStockData(String ticker, String stockDataDir) throws Exception {
-    //    String output = ApiDataFetcher.fetchStockDataBySymbolYahoo(ticker,
-    //        Constants.YAHOO_API_BASE_URL);
-    String output = ApiDataFetcher.fetchStockDataBySymbolAlphaVantage(ticker);
-    File stockFile = createFileIfNotExists(ticker, stockDataDir);
-    writeStockDataDumpToFile(stockFile, output);
+    DataSource ds = new DataSourceImpl();
+    ApiDataFetcher client = new ApiDataFetcherImpl();
+    String output = client.fetchStockDataBySymbolAlphaVantage(ticker);
+    File stockFile = ds.createFileIfNotExists(ticker, stockDataDir);
+    ds.writeToFile(stockFile, output);
   }
 
   /**
@@ -277,7 +182,8 @@ public class Utils {
    * @throws IOException if file or directory doesn't exist
    */
   public static String fetchCurrentStockValue(String ticker, String stockDir) throws IOException {
-    File stockFile = Utils.getFileByName(ticker, stockDir);
+    DataSource ds = new DataSourceImpl();
+    File stockFile = ds.getFileByName(ticker, stockDir);
     Scanner myReader = new Scanner(stockFile);
     int lineNo = 0;
     String out = null;
@@ -308,7 +214,8 @@ public class Utils {
       throw new IOException("passed null args");
     }
     DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    File stockFile = Utils.getFileByName(ticker, dirName);
+    DataSource ds = new DataSourceImpl();
+    File stockFile = ds.getFileByName(ticker, dirName);
 
     Scanner myReader = new Scanner(stockFile);
     int lineNo = 0;
@@ -628,7 +535,7 @@ public class Utils {
   }
 
   public static List<StockOrder> DCAFileValidator(String portfolioName,File file,List<StockOrder> stockOrders)
-      throws IOException {
+      throws Exception {
     Scanner myReader = new Scanner(file);
     String[] data = myReader.nextLine().split(",");
     if(data.length!=5) throw new IOException("File corrupted");
@@ -670,9 +577,52 @@ public class Utils {
     return stockOrders;
   }
 
+  public static AbstractMap.SimpleEntry<String,Double> fetchStockValueByDateFuture(String ticker ,
+                                                                            String date ,
+                                                                            String dirName) throws Exception{
+
+    if (ticker == null || date == null) {
+      throw new IOException("passed null args");
+    }
+    DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    DataSource ds = new DataSourceImpl();
+    File stockFile = ds.getFileByName(ticker, dirName);
+
+    Scanner myReader = new Scanner(stockFile);
+    int lineNo = 0;
+    String res = null;
+    String prevDateRes = null;
+    String prevDate = null;
+    while (myReader.hasNextLine()) {
+      String input = myReader.nextLine();
+      if (lineNo != 0) {
+        String[] out = input.split(",");
+        if(sdf.parse(date).compareTo(sdf.parse(out[0])) == 0){
+          prevDate = out[0];
+          res = out[4];
+          break;
+        }else if (sdf.parse(date).compareTo(sdf.parse(out[0])) > 0) {
+            res = prevDateRes;
+            break;
+        }
+          prevDateRes = out[4];
+          prevDate = out[0];
+      }
+      lineNo++;
+    }
+    myReader.close();
+
+    if(res == null){
+      return null;
+    }else{
+      return new AbstractMap.SimpleEntry<String, Double>(prevDate,Double.parseDouble(res));
+    }
+  }
+
   public static List<StockOrder> updatePortfolioFromDCA(String portfolioName, String startDate,
       String endDate, Map<String,Double> weightage, int interval,Double amount, Double commFee,
-      List<StockOrder> stockOrders) throws IOException {
+      List<StockOrder> stockOrders) throws Exception {
+    DataSource ds = new DataSourceImpl();
     LocalDate start = LocalDate.parse(startDate);
     LocalDate now = LocalDate.now();
 
@@ -685,34 +635,50 @@ public class Utils {
         if(!flag) flag=true;
 
         double specificAmount = amount*weightage.get(ticker)/100;
-        //TODO : change Utils.fetchStockValueByDate to pick from future date, return SimpleEntry<Date,Value> or null
-        double price = Double.parseDouble(Utils.fetchStockValueByDate(ticker, start.toString(),
-            "stock_data"));
+
+        AbstractMap.SimpleEntry<String , Double> priceObj = Utils.fetchStockValueByDateFuture(ticker ,
+        start.toString() , "stock_data");
+
+        if(priceObj == null){
+          break;
+        }
+        double price = priceObj.getValue();
+
         double qty = specificAmount/price;
 
-        // TODO : change start.toString to the date you will get from file
-        StockOrder newOrder = new StockOrderImpl(ticker,price,start.toString(),qty,tempCommFee);
+        StockOrder newOrder = new StockOrderImpl(ticker,price, priceObj.getKey(),qty,tempCommFee);
         stockOrders.add(newOrder);
       }
       start=start.plusDays(interval);
     }
     if(endDate!=null && lastDate==LocalDate.parse(endDate)){
 
-      // TODO if(price==null) save the file (start date, interval, endDate, amount, commfee)
-
       if (Utils.dataExists(portfolioName+"_DCA", "portfolios" + File.separator + "flex")){
-        Utils.getFileByName(portfolioName+"_DCA","portfolios" + File.separator + "flex").delete();
+        ds.getFileByName(portfolioName+"_DCA","portfolios" + File.separator + "flex").delete();
       }
     }
     else if(lastDate==now){
-      File portfolioDCA = Utils.createFileIfNotExists(portfolioName+"_DCA", "portfolios" + File.separator + "flex");
-      FileWriter myWriter = new FileWriter(portfolioDCA);
+      File portfolioDCA = ds.createFileIfNotExists(portfolioName+"_DCA", "portfolios" + File.separator + "flex");
 
-      myWriter.write(start+","+interval+","+endDate+","+amount+","+commFee+"\n");
+      StringBuilder sb = new StringBuilder();
+
+      sb.append(start)
+              .append(",")
+              .append(interval)
+              .append(",")
+              .append(endDate)
+              .append(",")
+              .append(amount)
+              .append(",")
+              .append(commFee)
+              .append("\n");
       for (String ticker : weightage.keySet()) {
-        myWriter.write(ticker+","+weightage.get(ticker)+"\n");
+        sb.append(ticker)
+                .append(",")
+                .append(weightage.get(ticker))
+                .append("\n");
       }
-      myWriter.close();
+      ds.writeToFile(portfolioDCA,sb.toString());
     }
     return stockOrders;
   }
