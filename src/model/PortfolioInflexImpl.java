@@ -43,6 +43,7 @@ final class PortfolioInflexImpl implements PortfolioInflex {
    * @throws Exception can occur while reading/loading data dump
    */
   public PortfolioInflexImpl(Map<String, Double> stocksMap, String name) throws Exception {
+    DataSource ds = new DataSourceImpl();
     if (stocksMap == null || name == null) {
       throw new IllegalArgumentException("Null arguments to portfolio constructor");
     }
@@ -54,7 +55,7 @@ final class PortfolioInflexImpl implements PortfolioInflex {
       }
       this.stockOrder.add(new StockOrderImpl(key, stocksMap.get(key)));
     }
-    Utils.saveToFile(this.name, this.stockOrder, "portfolios");
+    ds.saveToFile(this.name, this.stockOrder, "portfolios");
   }
 
 

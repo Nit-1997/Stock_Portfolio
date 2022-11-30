@@ -237,7 +237,7 @@ public class UserFlexImplTest {
     assertEquals("2015-01-15", creationDate);
   }
 
-  @Test
+  @Test(expected = IllegalArgumentException.class)
   public void testGetPortfolioCreationDateWrongPortfolioName() throws Exception {
     String creationDate = user.getPortfolioCreationDate(null);
     assertNull(creationDate);
