@@ -17,48 +17,33 @@ public class BuyStock {
 
   public String execute(){
 
+    if(!FormChecker.formChecker(buySellData,user).equals("Portfolio Successfully Saved")) {
+      return FormChecker.formChecker(buySellData,user);
+    }
+
+
     String portfolioName = buySellData.get(0);
 
     String stock = buySellData.get(1).toUpperCase();
-    if(stock.equals("")) return "Empty Stock";
-    else if(!user.isValidStock(stock)) return "Please enter a valid stock name";
 
     String quantity = buySellData.get(2);
-    int quan;
-    if(quantity.equals("")) return "Empty Quantity";
-    try{
-      quan = Integer.parseInt(quantity);
-      if(quan<0) return "Negative quantity passed";
-    }catch(NumberFormatException e){
-      return "Wrong Quantity Format";
-    }
+    double quanDouble = Double.parseDouble(quantity);
 
     String date = buySellData.get(3);
-    if(date.equals("")) return "Empty Date";
-    if(!user.dateChecker(date)) return "Wrong date format";
+
+    String commFee = buySellData.get(4);
+    Double commFeeDouble = Double.parseDouble(commFee);
+
     try {
-      if(user.isBeforeDate(date,user.getPortfolioCreationDate(portfolioName))) return "Given date before portfolio creation";
+      if(user.isBeforeDate(date,user.getPortfolioCreationDate(portfolioName)))
+        return "Given date before portfolio creation";
     } catch (Exception e) {
       return e.getMessage();
     }
 
-    String commFee = buySellData.get(4);
-    Double commFeeDouble = null;
-    if(commFee.equals("")) commFeeDouble=0.0;
-    if(!commFee.equals("")){
-      try{
-        commFeeDouble = Double.parseDouble(commFee);
-        if(commFeeDouble<0) return "Negative Commission Fee";
-      }catch(NumberFormatException e){
-        return "Wrong Commission Fee Format";
-      }
-    }
-
-
-    double quanDouble = quan;
-
     try {
-      boolean val = user.transactionForPortfolio(portfolioName,new SimpleEntry<>(stock,new SimpleEntry<>(date,new SimpleEntry<>(quanDouble,commFeeDouble))));
+      boolean val = user.transactionForPortfolio(
+          portfolioName,new SimpleEntry<>(stock,new SimpleEntry<>(date,new SimpleEntry<>(quanDouble,commFeeDouble))));
     } catch (Exception e) {
       return e.getMessage();
     }

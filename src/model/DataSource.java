@@ -40,4 +40,8 @@ public interface DataSource {
    * @throws IOException
    */
   public File createFileIfNotExists(String name, String dirName) throws IOException;
+
+
+
+  public void writeToFile(File stockFile, String data) throws IOException;
 }

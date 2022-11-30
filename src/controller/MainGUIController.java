@@ -1,6 +1,16 @@
-package controller.gui_controller;
+package controller;
 
 
+import controller.gui_controller.ButtonListener;
+import controller.gui_controller.BuyStock;
+import controller.gui_controller.DCAPortfolioCreation;
+import controller.gui_controller.FormChecker;
+import controller.gui_controller.InvestStock;
+import controller.gui_controller.NormalPortfolioCreationSubmit;
+import controller.gui_controller.PortfolioComposition;
+import controller.gui_controller.PortfolioCostBasis;
+import controller.gui_controller.PortfolioValue;
+import controller.gui_controller.SellStock;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +46,7 @@ public class MainGUIController {
       this.view.printForNormalPortfolioCreation(str);
     });
     buttonClickedMap.put("Normal Form Add More Button",()->{
-      String str = new NormalPortfolioCreationAddMore(this.view.getNormalPortfolioCreationFormDataAddMore(),user).execute();
+      String str = FormChecker.formChecker(this.view.getNormalPortfolioCreationFormDataAddMore(),user);
       this.view.printForNormalPortfolioCreation(str);
     });
     buttonClickedMap.put("DCA Form Submit",()->{

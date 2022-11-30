@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -161,6 +162,26 @@ public class UtilsTest {
   }
 
   @Test
+  public void testFetchStockValueByDateFutureFoundExact() throws Exception{
+    AbstractMap.SimpleEntry<String,Double> res = Utils.fetchStockValueByDateFuture("CSCO","2022-11-25","stock_data");
+    System.out.println(res.getKey());
+    System.out.println(res.getValue());
+  }
+
+  @Test
+  public void testFetchStockValueByDateFutureNotFound() throws Exception{
+    AbstractMap.SimpleEntry<String,Double> res = Utils.fetchStockValueByDateFuture("CSCO","2022-11-27","stock_data");
+    System.out.println(res);
+  }
+
+  @Test
+  public void testFetchStockValueByDateFutureFoundPrev() throws Exception{
+    AbstractMap.SimpleEntry<String,Double> res = Utils.fetchStockValueByDateFuture("CSCO","2022-11-19","stock_data");
+    System.out.println(res);
+  }
+
+
+  @Test
   public void testDateCheckerPositive() {
     assertTrue(Utils.dateChecker("2022-01-01"));
   }
@@ -238,6 +259,7 @@ public class UtilsTest {
     System.out.println(currentDate);
     assertNotNull(currentDate);
   }
+
 
 
 }

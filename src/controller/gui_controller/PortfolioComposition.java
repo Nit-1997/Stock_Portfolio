@@ -19,21 +19,8 @@ public class PortfolioComposition {
 
   public String execute() {
 
-    if (date.equals(""))
-      return "Empty Date";
-    if (!user.dateChecker(date))
-      return "Wrong Date Format";
-
-    String portfolioCreationDate = null;
-    try {
-      portfolioCreationDate = user.getPortfolioCreationDate(portfolioName);
-    } catch (Exception e) {
-      return e.getMessage();
-    }
-    if(user.isBeforeDate(date,portfolioCreationDate)){
-      System.out.println("here");
-      return "Given date before portfolio creation date "+portfolioCreationDate;
-    }
+    String str=DateChecker.checkDate(date,user,portfolioName);
+    if(!str.equals("done")) return str;
 
     try {
       this.stockMap = user.getPortfolioSummary(portfolioName, date);

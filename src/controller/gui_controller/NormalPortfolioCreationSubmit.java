@@ -32,9 +32,9 @@ public class NormalPortfolioCreationSubmit {
     }
 
     //nothing in textArea but in form
-
     if(data.get(5).equals("")){
-      if(!this.formChecker().equals("Portfolio Successfully Saved")) return this.formChecker();
+      if(!FormChecker.formChecker(data,user).equals("Portfolio Successfully Saved")) return FormChecker.formChecker(data,user);
+      if(!user.isUniqueName(portfolioName)) return "Please enter a unique portfolio Name";
       Map<String, Map<String, SimpleEntry<Double, Double>>> stockMap = new HashMap<>();
       Map<String, SimpleEntry<Double,Double>> dateMap = new HashMap<>();
       dateMap.put(data.get(3), new SimpleEntry<>(Double.parseDouble(data.get(2)),Double.parseDouble(data.get(4))));
@@ -48,9 +48,10 @@ public class NormalPortfolioCreationSubmit {
     }
 
     // data in both textArea and in form
-    if(!this.formChecker().equals("Portfolio Successfully Saved")) return this.formChecker();
+    if(!FormChecker.formChecker(data,user).equals("Portfolio Successfully Saved")) return FormChecker.formChecker(data,user);
+    if(!user.isUniqueName(portfolioName)) return "Please enter a unique portfolio Name";
     Map<String, Map<String, SimpleEntry<Double, Double>>> stockMap2 = this.parseExtra();
-    String stock = data.get(1);
+    String stock = data.get(1).toUpperCase();
     String date = data.get(3);
     Double quantity = Double.parseDouble(data.get(2));
     Double commFee = Double.parseDouble(data.get(4));
@@ -82,7 +83,7 @@ public class NormalPortfolioCreationSubmit {
         continue;
       }
       String[] stockData = line.split(",");
-      String stock = stockData[0];
+      String stock = stockData[0].toUpperCase();
       Double stockQuantity = Double.parseDouble(stockData[2]);
       String date = stockData[1];
       Double commFee = Double.parseDouble(stockData[3]);
@@ -107,42 +108,6 @@ public class NormalPortfolioCreationSubmit {
 
 
 
-  private String formChecker(){
 
-
-    String stock = data.get(1).toUpperCase();
-    if(stock.equals("")) return "Empty Stock";
-    else if(!user.isValidStock(stock)) return "Please enter a valid stock name";
-
-    String date = data.get(3);
-
-
-    if(!user.dateChecker(date)) return "Wrong date format";
-
-    String quantity = data.get(2);
-    int quan;
-    if(quantity.equals("")) return "Empty Quantity";
-    try{
-      quan = Integer.parseInt(quantity);
-      if(quan<0) return "Negative quantity passed";
-    }catch(NumberFormatException e){
-      return "Wrong Quantity Format";
-    }
-
-
-
-    String commFee = data.get(4);
-    Double commFeeDouble;
-    if(commFee.equals("")) commFeeDouble=0.0;
-    try{
-      commFeeDouble = Double.parseDouble(commFee);
-      if(commFeeDouble<0) return "Negative Commission Fee";
-    }catch(NumberFormatException e){
-      return "Wrong Commission Fee Format";
-    }
-
-
-    return "Portfolio Successfully Saved";
-  }
 
 }

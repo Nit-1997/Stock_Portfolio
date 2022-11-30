@@ -6,10 +6,10 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class DataSourceImpl implements DataSource{
+public class DataSourceImpl implements DataSource {
 
   @Override
-  public  File getFileByName(String fileName, String dirName) throws IOException {
+  public File getFileByName(String fileName, String dirName) throws IOException {
     if (fileName == null || dirName == null) {
       throw new IOException("arguments passed are null");
     }
@@ -28,7 +28,7 @@ public class DataSourceImpl implements DataSource{
   }
 
   @Override
-  public  void saveToFile(String name, List<StockOrder> orders, String dirName)
+  public void saveToFile(String name, List<StockOrder> orders, String dirName)
           throws IOException {
     if (name == null || orders == null) {
       throw new IOException("passed null args");
@@ -56,36 +56,54 @@ public class DataSourceImpl implements DataSource{
   }
 
 
-  private static void writePortfolioToFile(File portfolioFile, List<StockOrder> orders)
+  private void writePortfolioToFile(File portfolioFile, List<StockOrder> orders)
           throws IOException {
     if (portfolioFile == null || orders == null) {
       throw new IOException("passed null args");
     }
-    FileWriter myWriter = new FileWriter(portfolioFile);
+    StringBuilder sb = new StringBuilder();
     for (StockOrder order : orders) {
-      myWriter.write("" + order.getStock().getStockTickerName()
-              + "," + order.getStock().getBuyPrice()
-              + "," + order.getQuantity()
-              + "," + order.getStock().getBuyDate() + "\n"
-      );
+      sb.append("")
+              .append(order.getStock().getStockTickerName())
+              .append(",")
+              .append(order.getStock().getBuyPrice())
+              .append(",")
+              .append(order.getQuantity())
+              .append(",")
+              .append(order.getStock().getBuyDate())
+              .append("\n");
     }
-    myWriter.close();
+    this.writeToFile(portfolioFile,sb.toString());
   }
 
-  private static void writePortfolioToFileFlex(File portfolioFile, List<StockOrder> orders)
+  private void writePortfolioToFileFlex(File portfolioFile, List<StockOrder> orders)
           throws IOException {
     if (portfolioFile == null || orders == null) {
       throw new IOException("passed null args");
     }
-    FileWriter myWriter = new FileWriter(portfolioFile);
+    StringBuilder sb = new StringBuilder();
     for (StockOrder order : orders) {
-      myWriter.write("" + order.getStock().getStockTickerName()
-              + "," + order.getStock().getBuyPrice()
-              + "," + order.getQuantity()
-              + "," + order.getStock().getBuyDate()
-              + "," + order.getCommFee() + "\n"
-      );
+
+      sb.append("")
+              .append(order.getStock().getStockTickerName())
+              .append(",")
+              .append(order.getStock().getBuyPrice())
+              .append(",")
+              .append(order.getQuantity())
+              .append(",")
+              .append(order.getStock().getBuyDate())
+              .append(",")
+              .append(order.getCommFee())
+              .append("\n");
     }
+    this.writeToFile(portfolioFile,sb.toString());
+  }
+
+
+  @Override
+  public void writeToFile(File stockFile, String data) throws IOException {
+    FileWriter myWriter = new FileWriter(stockFile);
+    myWriter.write(data);
     myWriter.close();
   }
 }
