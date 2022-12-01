@@ -14,7 +14,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import model.DataSource;
@@ -275,13 +277,26 @@ public class UtilsTest {
     return stockOrders;
   }
 
+
+
   @Test
   public void testLoadPortfolioWithDCA() throws Exception {
     List<StockOrder> stockOrders = buildStockOrders();
     DataSource ds = new DataSourceImpl();
     String portfolioName = "dcaTesting";
     File dcaTestingFile =  ds.getFileByName(portfolioName+"_DCA","portfolios" + File.separator + "flex");
+    String dcaContent = "2012-08-10,365,2022-08-10,400,3.0,2\n" +
+            "AMZN,50\n" +
+            "MFST,50\n" +
+            "2012-08-10,365,2022-08-10,400,3.0,2\n" +
+            "IBM,50\n" +
+            "GOOGL,50\n" +
+            "2012-08-10,365,null,400,3.0,2\n" +
+            "IBM,50\n" +
+            "GOOGL,50";
+    ds.writeToFile(dcaTestingFile , dcaContent ,false);
     Utils.loadPortfolioWithDCA("dcaTesting", dcaTestingFile, stockOrders);
+    assertTrue(stockOrders.size() >= 67);
     for(StockOrder s : stockOrders){
       System.out.println(s.getStock().getStockTickerName() +" , "
               + s.getStock().getBuyPrice() + " , "
@@ -290,6 +305,34 @@ public class UtilsTest {
               + s.getCommFee()
       );
     }
+  }
+
+  @Test
+  public void testUpdatePortfolioFromDCA() throws Exception {
+    List<StockOrder> stockOrders = buildStockOrders();
+    String portfolioName = "dcaTesting2";
+    String startDate = "2012-08-10";
+    String endDate = null;
+    int interval = 365;
+    Double amount = 200.0;
+    Double commFee = 5.0;
+    Map<String , Double> weightage = new HashMap<>();
+    weightage.put("AMZN",50.0);
+    weightage.put("GOOGL",50.0);
+
+    Utils.updatePortfolioFromDCA(portfolioName,startDate,endDate,
+            weightage,interval,amount,commFee,stockOrders);
+
+    assertTrue(stockOrders.size() > 3);
+    for(StockOrder s : stockOrders){
+      System.out.println(s.getStock().getStockTickerName() +" , "
+              + s.getStock().getBuyPrice() + " , "
+              + s.getQuantity() + " , "
+              + s.getStock().getBuyDate() + " , "
+              + s.getCommFee()
+      );
+    }
+
   }
 
 

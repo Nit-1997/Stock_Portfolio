@@ -89,7 +89,7 @@ public class PortfolioFlexInvestImpl extends PortfolioFlexImpl{
 
     if (Utils.dataExists(portfolioName+"_DCA", "portfolios" + File.separator + "flex")){
       File helper = ds.getFileByName(portfolioName+"_DCA","portfolios" + File.separator + "flex");
-      this.stockOrders = Utils.loadPortfolioWithDCA(portfolioName , helper , this.stockOrders);
+      Utils.loadPortfolioWithDCA(portfolioName , helper , this.stockOrders);
       //this.stockOrders=Utils.DCAFileValidator(portfolioName,helper,this.stockOrders);
 
     }
