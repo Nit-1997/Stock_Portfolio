@@ -16,6 +16,10 @@ import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import model.DataSource;
+import model.DataSourceImpl;
+import model.PortfolioFlexImpl;
 import model.StockOrder;
 import model.StockOrderImpl;
 import org.junit.Test;
@@ -258,6 +262,34 @@ public class UtilsTest {
     String currentDate = String.valueOf(java.time.LocalDate.now());
     System.out.println(currentDate);
     assertNotNull(currentDate);
+  }
+
+  public List<StockOrder> buildStockOrders(){
+    List<StockOrder> stockOrders = new ArrayList<>();
+    String[] ticker = {"CSCO","GOOGL","AAPL"};
+    String[] dates = {"2019-08-10" , "2018-08-10" ,"2017-08-10"};
+    for(int i=0;i<ticker.length;i++){
+      StockOrder newOrder = new StockOrderImpl(ticker[i], 44.2, dates[i], 10.0, 2.0);
+      stockOrders.add(newOrder);
+    }
+    return stockOrders;
+  }
+
+  @Test
+  public void testLoadPortfolioWithDCA() throws Exception {
+    List<StockOrder> stockOrders = buildStockOrders();
+    DataSource ds = new DataSourceImpl();
+    String portfolioName = "dcaTesting";
+    File dcaTestingFile =  ds.getFileByName(portfolioName+"_DCA","portfolios" + File.separator + "flex");
+    Utils.loadPortfolioWithDCA("dcaTesting", dcaTestingFile, stockOrders);
+    for(StockOrder s : stockOrders){
+      System.out.println(s.getStock().getStockTickerName() +" , "
+              + s.getStock().getBuyPrice() + " , "
+              + s.getQuantity() + " , "
+              + s.getStock().getBuyDate() + " , "
+              + s.getCommFee()
+      );
+    }
   }
 
 
