@@ -3,6 +3,7 @@ package model;
 import java.io.IOException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UserFlexInvestImpl extends UserFlexImpl implements UserFlexInvest{
@@ -94,6 +95,17 @@ public class UserFlexInvestImpl extends UserFlexImpl implements UserFlexInvest{
     } catch (Exception e) {
       throw e;
     }
+  }
+
+  @Override
+  public SimpleEntry<List<String>, List<Double>> getGraphDataGUI(
+      String date1, String date2, String portfolioName) throws Exception {
+    this.loadPortfolio(portfolioName);
+    if (!this.graphDateChecker(date1, date2, portfolioName)) {
+      return null;
+    }
+    SimpleEntry<List<String>, List<Double>> data = this.portfolioMap.get(portfolioName).getPerfDataOverTime(date1, date2);
+    return data;
   }
 
 }

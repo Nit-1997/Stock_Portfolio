@@ -52,7 +52,7 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
     this.dateInput = new JTextField();
     this.quantityInput = new JTextField();
     this.commFeeInput = new JTextField();
-    tout = new JTextArea("");
+    this.tout = new JTextArea("");
     confirmationMsg = new JLabel("");
 
     this.amountInput = new JTextField(10);
@@ -180,11 +180,13 @@ public class CreatePortfolioPanel extends JPanel implements IPanel{
       text=text+"\n"+this.stockInput.getText()+","+this.dateInput.getText()+","+this.quantityInput.getText()+","
           +this.commFeeInput.getText();
       this.tout.setText(text);
+      this.portNameInput.setEditable(false);
     }
 
     if(str.equals("Portfolio Successfully Saved")){
       this.tout.setText("");
       this.portNameInput.setText("");
+      this.portNameInput.setEditable(true);
     }
 
     if(str.equals("Portfolio Successfully Saved") || str.equals("Stock Added successfully")){
