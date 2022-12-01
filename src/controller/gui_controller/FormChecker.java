@@ -13,6 +13,8 @@ public class FormChecker {
    */
    public static String formChecker(List<String> data, UserFlexInvest user){
 
+     System.out.println(data);
+
     String portfolioName = data.get(0);
     if(portfolioName.equals("")) return "Empty Portfolio Name";
 

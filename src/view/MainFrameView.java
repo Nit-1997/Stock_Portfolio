@@ -118,7 +118,7 @@ public class MainFrameView extends JFrame implements ViewGUI{
 
   @Override
   public void setBuySellMsg(String msg){
-    ((SinglePortfolioDetailPanel)this.mainPanel).setBuySellMessage(msg);
+    ((SinglePortfolioDetailPanel)this.mainPanel).setMessage(msg);
   }
 
   @Override
@@ -151,6 +151,21 @@ public class MainFrameView extends JFrame implements ViewGUI{
     this.listener=listener;
     this.mainPanel.addActionListener(listener);
     this.sideBar.addActionListener(listener);
+  }
+
+  @Override
+  public List<String> getGraphData(){
+    return ((SinglePortfolioDetailPanel)this.mainPanel).getGraphData();
+  }
+
+  @Override
+  public void setGraphMsg(String msg){
+    ((SinglePortfolioDetailPanel)this.mainPanel).setMessage(msg);
+  }
+
+  @Override
+  public void startGraph(SimpleEntry<List<String>,List<Double>> data){
+    ((SinglePortfolioDetailPanel)this.mainPanel).startGraph(data.getKey(),data.getValue());
   }
 
 

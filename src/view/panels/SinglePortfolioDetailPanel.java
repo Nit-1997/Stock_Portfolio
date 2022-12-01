@@ -3,6 +3,7 @@ package view.panels;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 
 import java.awt.GridLayout;
@@ -25,11 +26,13 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
 
   String name, portfolioCreationDate;
 
-  JButton costBasisBtn, valueBtn, compositionBtn, buyStockBtn, sellStockBtn, investBtn;
+  JButton costBasisBtn, valueBtn, compositionBtn, buyStockBtn, sellStockBtn, investBtn, launchGraph;
 
   JButton buyStockBtnMenu, sellInterimBtn;
 
   JTextField dateInput;
+
+  JTextField startDateInput, endDateInput;
 
   JTextField stockInput, quantityInput, commFeeInput, amountInput;
 
@@ -80,6 +83,11 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
 
     this.stockMap = new HashMap<>();
 
+    this.launchGraph = new JButton("Launch Graph");
+    this.launchGraph.setActionCommand("Graph Data");
+    this.startDateInput = new JTextField(10);
+    this.endDateInput = new JTextField(10);
+
 
     this.name=name;
     this.setBackground(Color.decode("#B8DEFF"));
@@ -116,15 +124,20 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
     JButton sellStockBtnMenu = new JButton("Sell stocks");
     sellStockBtnMenu.setActionCommand("SellStock");
     sellStockBtnMenu.addActionListener(e -> this.createSellView());
-    JButton investBtnMenu = new JButton("InvestStock in portfolio");
+    JButton investBtnMenu = new JButton("Invest in portfolio");
     investBtnMenu.setActionCommand("InvestStock");
     investBtnMenu.addActionListener(e -> this.createInvestView());
+
+    JButton performanceGraph = new JButton("Performance Graph");
+    performanceGraph.addActionListener(e -> this.createGraphView());
+
+    JButton investDCA = new JButton("Invest through DCA");
 
 
     JPanel buttonPanel = new JPanel();
     buttonPanel.setBorder(BorderFactory.createEmptyBorder(10,20,0,20));
     buttonPanel.setBackground(Color.decode("#B8DEFF"));
-    buttonPanel.setLayout(new GridLayout(2,3));
+    buttonPanel.setLayout(new GridLayout(2,4));
 
     buttonPanel.add(valueBtnMenu);
     buttonPanel.add(costBasisBtnMenu);
@@ -132,6 +145,8 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
     buttonPanel.add(buyStockBtnMenu);
     buttonPanel.add(sellStockBtnMenu);
     buttonPanel.add(investBtnMenu);
+    buttonPanel.add(performanceGraph);
+    buttonPanel.add(investDCA);
 
     top.add(buttonPanel,BorderLayout.CENTER);
 
@@ -198,6 +213,29 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
   }
 
 
+  private void createGraphView(){
+    if(this.contentPanel!=null) this.remove(this.contentPanel);
+
+    this.contentPanel = new JPanel(new BorderLayout());
+
+    JPanel datePanel = new JPanel(new FlowLayout());
+    datePanel.add(new JLabel("Start Date"));
+    datePanel.add(this.startDateInput);
+    datePanel.add(new JLabel("End Date"));
+    datePanel.add(this.endDateInput);
+    datePanel.add(this.launchGraph);
+    datePanel.setBackground(Color.decode("#B8DEFF"));
+
+    this.contentPanel.add(datePanel,BorderLayout.NORTH);
+    this.confirmationMsg.setHorizontalAlignment(JLabel.CENTER);
+    this.contentPanel.add(this.confirmationMsg,BorderLayout.CENTER);
+    this.confirmationMsg.setFont(new Font("Arial", Font.PLAIN, 25));
+    this.contentPanel.setBackground(Color.decode("#B8DEFF"));
+
+    this.add(this.contentPanel,BorderLayout.CENTER);
+    this.revalidate();
+    this.repaint();
+  }
 
   public void setInvestMsg(String str, boolean isGood){
     if(str.equals("Success")) this.createInvestView();
@@ -315,7 +353,7 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
     return list;
   }
 
-  public void setBuySellMessage(String msg){
+  public void setMessage(String msg){
     this.confirmationMsg.setText(msg);
     if(msg.equals("Successful transaction")){
       this.confirmationMsg.setForeground(Color.BLUE);
@@ -323,6 +361,12 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
       this.quantityInput.setText("");
       this.dateInput.setText("");
       this.commFeeInput.setText("");
+    }
+    else if(msg.equals("success")){
+      this.confirmationMsg.setForeground(Color.BLUE);
+      this.confirmationMsg.setText("Launching Performance Graph...");
+      this.startDateInput.setText("");
+      this.endDateInput.setText("");
     }
     else this.confirmationMsg.setForeground(Color.RED);
   }
@@ -347,6 +391,19 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
   public void setPortfolioCreationDate(String date){
     this.portfolioCreationDate=date;
   }
+
+  public List<String> getGraphData(){
+    List<String> list = new ArrayList<>();
+    list.add(this.startDateInput.getText());
+    list.add(this.endDateInput.getText());
+    list.add(this.name);
+    return list;
+  }
+
+  public void startGraph(List<String> labels, List<Double> dataPoints){
+    SwingUtilities.invokeLater(() -> new LineChartExample("Line Chart Example",labels,dataPoints));
+    this.confirmationMsg.setText("");
+  }
   @Override
   public void addActionListener(ActionListener listener) {
     this.valueBtn.addActionListener(listener);
@@ -358,6 +415,8 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
 
     this.buyStockBtnMenu.addActionListener(listener);
     this.sellInterimBtn.addActionListener(listener);
+
+    this.launchGraph.addActionListener(listener);
   }
   @Override
   public JPanel getJPanel() {

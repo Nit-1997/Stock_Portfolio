@@ -1,6 +1,8 @@
 package model;
 
 import java.io.IOException;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.List;
 import java.util.Map;
 
 public interface UserFlexInvest extends UserFlex{
@@ -35,5 +37,16 @@ public interface UserFlexInvest extends UserFlex{
 
   void InvestThroughDCA(String portfolioName, Double amount, Map<String, Double> weightage,
       String startDate, String endDate, int interval, Double commFee) throws Exception;
+
+  /**
+   * Returns the data for plotting the performance graph in GUI.
+   *
+   * @param date1         starting date for graph.
+   * @param date2         ending date for graph.
+   * @param portfolioName name of the portfolio for which graph to be printed.
+   * @return {Labels List, DataPoints List}
+   */
+  SimpleEntry<List<String>, List<Double>> getGraphDataGUI(
+      String date1, String date2, String portfolioName) throws Exception;
 
 }

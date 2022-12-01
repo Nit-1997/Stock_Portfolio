@@ -47,4 +47,10 @@ public interface ViewGUI {
 
   void setInvestMsg(String str);
 
+  List<String> getGraphData();
+
+  void setGraphMsg(String str);
+
+  void startGraph(SimpleEntry<List<String>,List<Double>> data);
+
 }

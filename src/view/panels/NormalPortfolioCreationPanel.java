@@ -36,6 +36,8 @@ public class NormalPortfolioCreationPanel {
     portfolioName.setLocation(50, 60);
     form.add(portfolioName);
 
+    portNameInput.setText("");
+    portNameInput.setEditable(true);
     portNameInput.setFont(new Font("Arial", Font.PLAIN, 13));
     portNameInput.setSize(190, 20);
     portNameInput.setLocation(140, 60);
@@ -47,6 +49,7 @@ public class NormalPortfolioCreationPanel {
     stock.setLocation(50, 110);
     form.add(stock);
 
+    stockInput.setText("");
     stockInput.setFont(new Font("Arial", Font.PLAIN, 13));
     stockInput.setSize(190, 20);
     stockInput.setLocation(100, 110);
@@ -58,6 +61,7 @@ public class NormalPortfolioCreationPanel {
     mno.setLocation(20, 140);
     form.add(mno);
 
+    dateInput.setText("");
     dateInput.setFont(new Font("Arial", Font.PLAIN, 13));
     dateInput.setSize(150, 20);
     dateInput.setLocation(150, 160);
@@ -70,7 +74,7 @@ public class NormalPortfolioCreationPanel {
     quantity.setLocation(20, 210);
     form.add(quantity);
 
-
+    quantityInput.setText("");
     quantityInput.setFont(new Font("Arial", Font.PLAIN, 13));
     quantityInput.setSize(170, 20);
     quantityInput.setLocation(150, 210);
@@ -83,6 +87,7 @@ public class NormalPortfolioCreationPanel {
     form.add(commFee);
 
 
+    commFeeInput.setText("");
     commFeeInput.setFont(new Font("Arial", Font.PLAIN, 13));
     commFeeInput.setSize(190, 20);
     commFeeInput.setLocation(150, 260);

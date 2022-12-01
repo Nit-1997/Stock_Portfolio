@@ -5,6 +5,7 @@ import controller.gui_controller.ButtonListener;
 import controller.gui_controller.BuyStock;
 import controller.gui_controller.DCAPortfolioCreation;
 import controller.gui_controller.FormChecker;
+import controller.gui_controller.GraphData;
 import controller.gui_controller.InvestStock;
 import controller.gui_controller.NormalPortfolioCreationSubmit;
 import controller.gui_controller.PortfolioComposition;
@@ -47,6 +48,7 @@ public class MainGUIController {
     });
     buttonClickedMap.put("Normal Form Add More Button",()->{
       String str = FormChecker.formChecker(this.view.getNormalPortfolioCreationFormDataAddMore(),user);
+      if(str.equals("Portfolio Successfully Saved")) str="Stock Added successfully";
       this.view.printForNormalPortfolioCreation(str);
     });
     buttonClickedMap.put("DCA Form Submit",()->{
@@ -123,6 +125,17 @@ public class MainGUIController {
       Map<String,Double> stockMap = this.view.getInvestStockMap();
       String str = new InvestStock(investData,stockMap,user).execute();
       this.view.setInvestMsg(str);
+    });
+
+    buttonClickedMap.put("Graph Data",()->{
+      List<String> investData = this.view.getGraphData();
+      GraphData obj = new GraphData(investData.get(0),investData.get(1),investData.get(2),user);
+      String str = obj.execute();
+      this.view.setGraphMsg(str);
+      if(str.equals("success")){
+        this.view.startGraph(obj.data);
+      }
+
     });
 
 

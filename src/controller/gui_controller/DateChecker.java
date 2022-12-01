@@ -1,5 +1,6 @@
 package controller.gui_controller;
 
+import java.time.LocalDate;
 import model.UserFlexInvest;
 
 public class DateChecker {
@@ -17,8 +18,11 @@ public class DateChecker {
       return e.getMessage();
     }
     if(user.isBeforeDate(date,portfolioCreationDate)){
-      System.out.println("here");
       return "Given date before portfolio creation date "+portfolioCreationDate;
+    }
+
+    if(LocalDate.parse(date).isAfter(LocalDate.now())) {
+      return "Date after today's date";
     }
 
     return "done";
