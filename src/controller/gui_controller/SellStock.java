@@ -5,25 +5,34 @@ import java.util.List;
 import java.util.Map;
 import model.UserFlexInvest;
 
-public class SellStock {
+/**
+ * Seel stock class.
+ */
+public class SellStock implements GUISubController {
 
   List<String> buySellData;
 
   Map<String, Double> stockMap;
   UserFlexInvest user;
 
-
-  public SellStock(List<String> buySellData, Map<String, Double> stockMap, UserFlexInvest user){
-    this.buySellData=buySellData;
-    this.user=user;
-    this.stockMap=stockMap;
+  /**
+   * Constructor for sell stock.
+   *
+   * @param buySellData data for selling stock.
+   * @param stockMap    map for current stock and quantity.
+   * @param user        model object.
+   */
+  public SellStock(List<String> buySellData, Map<String, Double> stockMap, UserFlexInvest user) {
+    this.buySellData = buySellData;
+    this.user = user;
+    this.stockMap = stockMap;
   }
 
+  @Override
   public String execute() {
-    if(!FormChecker.formChecker(buySellData,user).equals("Portfolio Successfully Saved")) {
-      return FormChecker.formChecker(buySellData,user);
+    if (!FormChecker.formChecker(buySellData, user).equals("Portfolio Successfully Saved")) {
+      return FormChecker.formChecker(buySellData, user);
     }
-
 
     String portfolioName = buySellData.get(0);
 
@@ -37,14 +46,13 @@ public class SellStock {
     String commFee = buySellData.get(4);
     Double commFeeDouble = Double.parseDouble(commFee);
 
-    if (!this.stockMap.containsKey(stock))
+    if (!this.stockMap.containsKey(stock)) {
       return "<html>Please enter a valid stock<br /> name from the list</html>";
+    }
 
     if (this.stockMap.get(stock) < quanDouble) {
       return "<html>Entered stock number less than <br />existing shares for " + stock + "</html>";
     }
-
-
 
     try {
       user.transactionForPortfolio(portfolioName, new SimpleEntry<>(stock,

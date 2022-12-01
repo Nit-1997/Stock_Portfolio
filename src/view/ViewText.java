@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public interface IView {
+/**
+ * Interface for text view.
+ */
+public interface ViewText {
 
   void welcomeNote(PrintStream out);
 
@@ -182,4 +185,7 @@ public interface IView {
       double baseAmount);
 
   void printError(Exception e, PrintStream out);
+
+  void printStarterMenu(PrintStream out);
+
 }

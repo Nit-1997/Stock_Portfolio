@@ -3,7 +3,7 @@ package controller.commands;
 import java.io.PrintStream;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
-import view.IView;
+import view.ViewText;
 
 /**
  * Class to remove stocks for the portfolio while creation of portfolio.
@@ -20,7 +20,7 @@ public class RemoveStocks {
    * @param out       output object.
    */
   public static void addPortfolioRemoveStocks(String ticker, String date, Double stockQuan,
-      Map<String, Map<String, SimpleEntry<Double, Double>>> stocksMap, PrintStream out, IView view) {
+      Map<String, Map<String, SimpleEntry<Double, Double>>> stocksMap, PrintStream out, ViewText view) {
 
     if (!stocksMap.containsKey(ticker) || !stocksMap.get(ticker).containsKey(date)
         || stocksMap.get(ticker).get(date).getKey() < stockQuan) {

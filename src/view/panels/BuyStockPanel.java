@@ -10,23 +10,29 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ * BuyStock Panel.
+ */
 public class BuyStockPanel {
 
-  BuyStockPanel(){
+ /**
+  * Constructor for BuyStock Panel.
+  */
+  BuyStockPanel() {
 
   }
 
-   void createBuyView(JPanel contentPanel, String portfolioCreationDate, JPanel form,
-      JTextField stockInput, JTextField quantityInput, JTextField dateInput, JTextField commFeeInput,
-      JButton buyStockBtn, JLabel confirmationMsg){
-//    if(this.contentPanel!=null) this.remove(this.contentPanel);
+  void createBuyView(JPanel contentPanel, String portfolioCreationDate, JPanel form,
+      JTextField stockInput, JTextField quantityInput, JTextField dateInput,
+      JTextField commFeeInput,
+      JButton buyStockBtn, JLabel confirmationMsg) {
 
-//    this.contentPanel = new JPanel();
     contentPanel.setLayout(new BorderLayout());
     contentPanel.setBackground(Color.decode("#B8DEFF"));
 
-    JPanel top = new JPanel(new GridLayout(2,1));
-    JLabel headerDate = new JLabel("Portfolio creation date (yyyy-MM-dd) : "+portfolioCreationDate);
+    JPanel top = new JPanel(new GridLayout(2, 1));
+    JLabel headerDate = new JLabel(
+        "Portfolio creation date (yyyy-MM-dd) : " + portfolioCreationDate);
     headerDate.setFont(new Font("Arial", Font.ITALIC, 20));
     headerDate.setHorizontalAlignment(JLabel.CENTER);
     JLabel stockList = new JLabel("List of Available Stocks : NASDAQ 100");
@@ -35,10 +41,10 @@ public class BuyStockPanel {
     top.add(headerDate);
     top.add(stockList);
     top.setBackground(Color.decode("#B8DEFF"));
-    contentPanel.add(top,BorderLayout.PAGE_START);
+    contentPanel.add(top, BorderLayout.PAGE_START);
 
-    form.setLayout(new GridLayout(5,2));
-    form.setBorder(BorderFactory.createEmptyBorder(5,20,10,20));
+    form.setLayout(new GridLayout(5, 2));
+    form.setBorder(BorderFactory.createEmptyBorder(5, 20, 10, 20));
 
     JLabel stock = new JLabel("Stock Name");
     stock.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -80,13 +86,8 @@ public class BuyStockPanel {
     form.add(confirmationMsg);
     form.setBackground(Color.decode("#B8DEFF"));
 
-    contentPanel.add(form,BorderLayout.CENTER);
-
-//    this.add(this.contentPanel,BorderLayout.CENTER);
-//    this.revalidate();
-//    this.repaint();
+    contentPanel.add(form, BorderLayout.CENTER);
   }
-
 
 
 }

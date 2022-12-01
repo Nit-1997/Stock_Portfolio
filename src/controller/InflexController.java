@@ -12,7 +12,7 @@ import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
 import model.UserInflex;
-import view.IView;
+import view.ViewText;
 
 /**
  * This class contains the functionalities of the controller of the application and takes input from
@@ -23,7 +23,7 @@ public class InflexController implements CategoryControllerInterface<UserInflex>
   final InputStream in;
   final PrintStream out;
 
-  IView view;
+  ViewText view;
 
   /**
    * Constructs Object of the controller.
@@ -31,7 +31,7 @@ public class InflexController implements CategoryControllerInterface<UserInflex>
    * @param in  Input Object used to take input from user.
    * @param out output object used to print the result.
    */
-  public InflexController(InputStream in, PrintStream out, IView view) {
+  public InflexController(InputStream in, PrintStream out, ViewText view) {
     this.in = in;
     this.out = out;
     this.view = view;

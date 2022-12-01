@@ -10,17 +10,24 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ * Sell stock panel.
+ */
 public class SellStockPanel {
 
-  SellStockPanel(){
+ /**
+  * Sell stock panel constructor.
+  */
+  SellStockPanel() {
 
   }
 
-   void createSellView(JPanel contentPanel, JPanel form,
-      JTextField stockInput, JTextField quantityInput, JTextField dateInput, JTextField commFeeInput,
-      JButton sellStockBtn, JLabel confirmationMsg, JButton sellInterimBtn, JLabel sellDateCheckerMsg,
-      JLabel valueMsg){
-
+  void createSellView(JPanel contentPanel, JPanel form,
+      JTextField stockInput, JTextField quantityInput, JTextField dateInput,
+      JTextField commFeeInput,
+      JButton sellStockBtn, JLabel confirmationMsg, JButton sellInterimBtn,
+      JLabel sellDateCheckerMsg,
+      JLabel valueMsg) {
 
     contentPanel.setLayout(new BorderLayout());
     contentPanel.setBackground(Color.decode("#B8DEFF"));
@@ -47,21 +54,19 @@ public class SellStockPanel {
     sellDateCheckerMsg.setFont(new Font("Arial", Font.PLAIN, 10));
     datePanel.add(sellDateCheckerMsg);
 
-    contentPanel.add(datePanel,BorderLayout.NORTH);
+    contentPanel.add(datePanel, BorderLayout.NORTH);
 
-    valueMsg .setText("");
+    valueMsg.setText("");
     valueMsg.setFont(new Font("Arial", Font.ITALIC, 25));
     valueMsg.setHorizontalAlignment(JLabel.CENTER);
-
 
     JLabel mapHead = new JLabel("Shares of each Stock");
     mapHead.setFont(new Font("Arial", Font.PLAIN, 15));
     mapHead.setHorizontalAlignment(JLabel.CENTER);
-    contentPanel.add(valueMsg,BorderLayout.LINE_START);
+    contentPanel.add(valueMsg, BorderLayout.LINE_START);
 
-//    form = new JPanel();
-    form.setLayout(new GridLayout(4,2));
-    form.setBorder(BorderFactory.createEmptyBorder(5,20,10,20));
+    form.setLayout(new GridLayout(4, 2));
+    form.setBorder(BorderFactory.createEmptyBorder(5, 20, 10, 20));
 
     JLabel stock = new JLabel("Stock Name");
     stock.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -96,11 +101,8 @@ public class SellStockPanel {
     form.setBackground(Color.decode("#B8DEFF"));
 
     form.setVisible(false);
-    contentPanel.add(form,BorderLayout.CENTER);
+    contentPanel.add(form, BorderLayout.CENTER);
 
-//    this.add(this.contentPanel,BorderLayout.CENTER);
-//    this.revalidate();
-//    this.repaint();
   }
 
 }

@@ -4,7 +4,7 @@ import java.io.PrintStream;
 import java.util.Scanner;
 import java.util.Set;
 import model.UserFlex;
-import view.IView;
+import view.ViewText;
 
 
 /**
@@ -19,7 +19,7 @@ public class LoadFlexPortfolio {
    * @param user model object.
    * @param out  output object.
    */
-  public static void loadPortfoliosController(Scanner scan, UserFlex user, PrintStream out, IView view) {
+  public static void loadPortfoliosController(Scanner scan, UserFlex user, PrintStream out, ViewText view) {
     Set<String> portfolioNames = user.getPortfolios();
     if (portfolioNames != null) {
       view.printPortfolios(portfolioNames, out);

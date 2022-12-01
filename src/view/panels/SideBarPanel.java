@@ -2,20 +2,25 @@ package view.panels;
 
 import java.awt.Color;
 import java.awt.GridLayout;
-
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 
-public class SideBarPanel extends JPanel implements IPanel{
+/**
+ * SideBar Panel.
+ */
+public class SideBarPanel extends JPanel implements IPanel {
 
   JButton goToCreatePortfolio;
   JButton goToListAllPortfolio;
   JButton goToMainMenu;
   JButton exit;
 
-  public SideBarPanel(){
+  /**
+   * SideBar Panel constructor.
+   */
+  public SideBarPanel() {
     this.goToCreatePortfolio = new JButton("Create new portfolio");
     this.goToCreatePortfolio.setActionCommand("Create Portfolio");
     this.goToListAllPortfolio = new JButton("List all portfolios");
@@ -31,21 +36,18 @@ public class SideBarPanel extends JPanel implements IPanel{
     this.goToCreatePortfolio.setHorizontalAlignment(JButton.CENTER);
     this.add(goToCreatePortfolio);
 
-
     this.goToListAllPortfolio.setHorizontalAlignment(JButton.CENTER);
     this.add(goToListAllPortfolio);
 
-
     this.goToMainMenu.setHorizontalAlignment(JButton.CENTER);
     this.add(goToMainMenu);
-
 
     this.exit.setHorizontalAlignment(JButton.CENTER);
     this.add(exit);
   }
 
   @Override
-  public JPanel getJPanel(){
+  public JPanel getJPanel() {
     return this;
   }
 

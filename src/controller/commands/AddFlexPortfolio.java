@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 import model.UserFlex;
-import view.IView;
+import view.ViewText;
 
 
 /**
@@ -22,7 +22,7 @@ public class AddFlexPortfolio {
    * @param user model object.
    * @param out  output object.
    */
-  public static void addStocksToPortfolioController(Scanner scan, UserFlex user, PrintStream out, IView view) {
+  public static void addStocksToPortfolioController(Scanner scan, UserFlex user, PrintStream out, ViewText view) {
     view.addPortfolio(out);
     String name = scan.nextLine();
     while (!user.isUniqueName(name)) {

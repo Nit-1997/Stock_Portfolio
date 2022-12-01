@@ -17,8 +17,8 @@ import model.FlexMockModel;
 import model.UserFlex;
 import org.junit.Before;
 import org.junit.Test;
-import view.IView;
-import view.ViewPrint;
+import view.ViewText;
+import view.TextViewImpl;
 
 /**
  * JUnit class for testing FlexController.
@@ -32,7 +32,7 @@ public class FlexControllerTest {
   InputStream in;
   PrintStream out;
 
-  IView view;
+  ViewText view;
 
   @Before
   public void init() {
@@ -40,7 +40,7 @@ public class FlexControllerTest {
     out = new PrintStream(bytes);
     log = new StringBuilder();
     model = new FlexMockModel(log);
-    view = new ViewPrint();
+    view = new TextViewImpl();
   }
 
   @Test

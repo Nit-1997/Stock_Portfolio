@@ -2,18 +2,16 @@ package controller.commands;
 
 import java.io.PrintStream;
 import java.time.LocalDate;
-import java.util.AbstractMap.SimpleEntry;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-import model.UserFlex;
 import model.UserFlexInvest;
-import view.IView;
+import view.ViewText;
 
 public class InvestMoney {
 
   public static void investMoneyInExistingPortfolio(Scanner scan,  PrintStream out, UserFlexInvest user,
-      String portfolioName, IView view) {
+      String portfolioName, ViewText view) {
 
     view.waitLoadMessage(out);
 

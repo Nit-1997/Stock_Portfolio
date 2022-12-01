@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
@@ -20,19 +19,23 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import view.MainFrameView;
+import view.MainFrameGUIView;
 
-public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
+/**
+ * Single portfolio detail panel.
+ */
+public class SinglePortfolioDetailPanel extends JPanel implements IPanel {
 
   String name, portfolioCreationDate;
 
-  JButton costBasisBtn, valueBtn, compositionBtn, buyStockBtn, sellStockBtn, investBtn, launchGraph;
+  JButton costBasisBtn, valueBtn, compositionBtn, buyStockBtn, sellStockBtn, investBtn,
+      launchGraph, investDCAButton;
 
   JButton buyStockBtnMenu, sellInterimBtn;
 
   JTextField dateInput;
 
-  JTextField startDateInput, endDateInput;
+  JTextField startDateInput, endDateInput, intervalInput;
 
   JTextField stockInput, quantityInput, commFeeInput, amountInput;
 
@@ -40,7 +43,7 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
 
   JLabel sellDateCheckerMsg;
 
-  JPanel contentPanel = new JPanel(), form=new JPanel();
+  JPanel contentPanel = new JPanel(), form = new JPanel();
 
   Map<String, Double> stockMap;
 
@@ -48,7 +51,14 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
 
   InvestPanel obj;
 
-  public SinglePortfolioDetailPanel(String name){
+  DCAPortfolioPanel DCAPanelObj;
+
+  /**
+   * Single portfolio panel constructor.
+   *
+   * @param name name of the portfolio.
+   */
+  public SinglePortfolioDetailPanel(String name) {
 
     valueBtn = new JButton("Value");
     valueBtn.setActionCommand("Get Value");
@@ -62,7 +72,6 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
     sellStockBtn.setActionCommand("SellStock");
     investBtn = new JButton("InvestStock");
     investBtn.setActionCommand("InvestStock");
-
 
     this.sellInterimBtn = new JButton("Get Data");
     this.sellInterimBtn.setActionCommand("Get Composition for Sell");
@@ -88,8 +97,11 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
     this.startDateInput = new JTextField(10);
     this.endDateInput = new JTextField(10);
 
+    this.investDCAButton = new JButton("Invest");
+    this.investDCAButton.setActionCommand("Invest DCA");
+    this.intervalInput = new JTextField(10);
 
-    this.name=name;
+    this.name = name;
     this.setBackground(Color.decode("#B8DEFF"));
     this.setLayout(new BorderLayout());
 
@@ -97,21 +109,23 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
 
   }
 
-  public void createTopMenu(){
+  /**
+   * Create top view menu.
+   */
+  public void createTopMenu() {
 
     JPanel top = new JPanel();
     top.setBackground(Color.decode("#B8DEFF"));
     top.setLayout(new BorderLayout());
 
-    JLabel header = new JLabel("For the portfolio "+this.name);
+    JLabel header = new JLabel("For the portfolio " + this.name);
     header.setFont(new Font("Arial", Font.ITALIC, 20));
     header.setHorizontalAlignment(JLabel.CENTER);
     header.setVerticalAlignment(JLabel.NORTH);
-    top.add(header,BorderLayout.NORTH);
-
+    top.add(header, BorderLayout.NORTH);
 
     JButton valueBtnMenu = new JButton("Get Value");
-    valueBtnMenu.setPreferredSize(new Dimension(20,45));
+    valueBtnMenu.setPreferredSize(new Dimension(20, 45));
     valueBtnMenu.addActionListener(e -> this.createSimpleView("value"));
     JButton costBasisBtnMenu = new JButton("Get Cost Basis");
     costBasisBtnMenu.addActionListener(e -> this.createSimpleView("costBasis"));
@@ -132,12 +146,12 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
     performanceGraph.addActionListener(e -> this.createGraphView());
 
     JButton investDCA = new JButton("Invest through DCA");
-
+    investDCA.addActionListener(e -> this.createInvestDCAView());
 
     JPanel buttonPanel = new JPanel();
-    buttonPanel.setBorder(BorderFactory.createEmptyBorder(10,20,0,20));
+    buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
     buttonPanel.setBackground(Color.decode("#B8DEFF"));
-    buttonPanel.setLayout(new GridLayout(2,4));
+    buttonPanel.setLayout(new GridLayout(2, 4));
 
     buttonPanel.add(valueBtnMenu);
     buttonPanel.add(costBasisBtnMenu);
@@ -148,73 +162,87 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
     buttonPanel.add(performanceGraph);
     buttonPanel.add(investDCA);
 
-    top.add(buttonPanel,BorderLayout.CENTER);
+    top.add(buttonPanel, BorderLayout.CENTER);
 
-    this.add(top,BorderLayout.NORTH);
+    this.add(top, BorderLayout.NORTH);
   }
 
-  private void createSimpleView(String str){
+  private void createSimpleView(String str) {
 
-    if(this.contentPanel!=null) this.remove(this.contentPanel);
+    if (this.contentPanel != null) {
+      this.remove(this.contentPanel);
+    }
 
     this.contentPanel = new JPanel();
 
-    new ValuePanel().createSimpleView(str,this.contentPanel,this.dateInput,this.valueBtn,this.costBasisBtn,
-        this.compositionBtn,this.confirmationMsg,this.valueMsg);
+    new ValuePanel().createSimpleView(str, this.contentPanel, this.dateInput, this.valueBtn,
+        this.costBasisBtn,
+        this.compositionBtn, this.confirmationMsg, this.valueMsg);
 
-    this.add(this.contentPanel,BorderLayout.CENTER);
+    this.add(this.contentPanel, BorderLayout.CENTER);
     this.revalidate();
     this.repaint();
   }
 
-  private void createBuyView(){
-    if(this.contentPanel!=null) this.remove(this.contentPanel);
+  private void createBuyView() {
+    if (this.contentPanel != null) {
+      this.remove(this.contentPanel);
+    }
 
     this.contentPanel = new JPanel();
     this.form = new JPanel();
 
-    new BuyStockPanel().createBuyView(this.contentPanel,this.portfolioCreationDate,this.form,this.stockInput,
-        this.quantityInput,this.dateInput,this.commFeeInput,this.buyStockBtn,this.confirmationMsg);
+    new BuyStockPanel().createBuyView(this.contentPanel, this.portfolioCreationDate, this.form,
+        this.stockInput,
+        this.quantityInput, this.dateInput, this.commFeeInput, this.buyStockBtn,
+        this.confirmationMsg);
 
-    this.add(this.contentPanel,BorderLayout.CENTER);
+    this.add(this.contentPanel, BorderLayout.CENTER);
     this.revalidate();
   }
 
-  private void createSellView(){
-    if(this.contentPanel!=null) this.remove(this.contentPanel);
+  private void createSellView() {
+    if (this.contentPanel != null) {
+      this.remove(this.contentPanel);
+    }
 
     this.contentPanel = new JPanel();
     form = new JPanel();
 
-    new SellStockPanel().createSellView(this.contentPanel,this.form,this.stockInput,this.quantityInput
-    ,this.dateInput, this.commFeeInput, this.sellStockBtn,this.confirmationMsg,this.sellInterimBtn,
-        this.sellDateCheckerMsg,this.valueMsg);
+    new SellStockPanel().createSellView(this.contentPanel, this.form, this.stockInput,
+        this.quantityInput
+        , this.dateInput, this.commFeeInput, this.sellStockBtn, this.confirmationMsg,
+        this.sellInterimBtn,
+        this.sellDateCheckerMsg, this.valueMsg);
 
-    this.add(this.contentPanel,BorderLayout.CENTER);
+    this.add(this.contentPanel, BorderLayout.CENTER);
     this.revalidate();
     this.repaint();
   }
 
-  private void createInvestView(){
+  private void createInvestView() {
 
     this.stockMap = new HashMap<>();
-    if(this.contentPanel!=null) this.remove(this.contentPanel);
+    if (this.contentPanel != null) {
+      this.remove(this.contentPanel);
+    }
 
     this.contentPanel = new JPanel();
-        this.form = new JPanel();
-        obj = new InvestPanel();
-        obj.createInvestView(this.contentPanel,this.form,this.dateInput,this.amountInput,
-            this.commFeeInput,  this.stockInput,this.quantityInput,this.investBtn,
-            this.confirmationMsg,this.stockMap);
+    this.form = new JPanel();
+    obj = new InvestPanel();
+    obj.createInvestView(this.contentPanel, this.form, this.dateInput, this.amountInput,
+        this.commFeeInput, this.stockInput, this.quantityInput, this.investBtn,
+        this.confirmationMsg, this.stockMap);
 
-    this.add(this.contentPanel,BorderLayout.CENTER);
+    this.add(this.contentPanel, BorderLayout.CENTER);
     this.revalidate();
     this.repaint();
   }
 
-
-  private void createGraphView(){
-    if(this.contentPanel!=null) this.remove(this.contentPanel);
+  private void createGraphView() {
+    if (this.contentPanel != null) {
+      this.remove(this.contentPanel);
+    }
 
     this.contentPanel = new JPanel(new BorderLayout());
 
@@ -226,27 +254,64 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
     datePanel.add(this.launchGraph);
     datePanel.setBackground(Color.decode("#B8DEFF"));
 
-    this.contentPanel.add(datePanel,BorderLayout.NORTH);
+    this.contentPanel.add(datePanel, BorderLayout.NORTH);
     this.confirmationMsg.setHorizontalAlignment(JLabel.CENTER);
-    this.contentPanel.add(this.confirmationMsg,BorderLayout.CENTER);
+    this.contentPanel.add(this.confirmationMsg, BorderLayout.CENTER);
     this.confirmationMsg.setFont(new Font("Arial", Font.PLAIN, 25));
     this.contentPanel.setBackground(Color.decode("#B8DEFF"));
 
-    this.add(this.contentPanel,BorderLayout.CENTER);
+    this.add(this.contentPanel, BorderLayout.CENTER);
     this.revalidate();
     this.repaint();
   }
 
-  public void setInvestMsg(String str, boolean isGood){
-    if(str.equals("Success")) this.createInvestView();
+  private void createInvestDCAView() {
+
+    this.stockMap = new HashMap<>();
+    this.sum = 0.0;
+
+    if (this.contentPanel != null) {
+      this.remove(this.contentPanel);
+    }
+
+    this.contentPanel = new JPanel();
+
+    this.DCAPanelObj = new DCAPortfolioPanel();
+    this.contentPanel = this.DCAPanelObj.printDCACreationMenu(this.stockMap, this, this.form,
+        null, this.amountInput, this.startDateInput, this.endDateInput,
+        this.intervalInput, this.commFeeInput, this.stockInput, this.quantityInput,
+        this.investDCAButton, this.confirmationMsg);
+
+    this.contentPanel.setBackground(Color.decode("#B8DEFF"));
+    MainFrameGUIView frameObj = (MainFrameGUIView) SwingUtilities.getWindowAncestor(this);
+    int newHeight = this.investDCAButton.getY() + 180;
+    if (newHeight > frameObj.getHeight()) {
+      frameObj.setSize(800, newHeight);
+    }
+    this.add(this.contentPanel, BorderLayout.CENTER);
+
+    this.revalidate();
+    this.repaint();
+  }
+
+  public void setInvestMsg(String str, boolean isGood) {
+    if (str.equals("Success")) {
+      this.createInvestView();
+    }
+    if (str.equals("Invested through DCA")) {
+      this.createInvestDCAView();
+    }
 
     this.confirmationMsg.setText(str);
 
-    if(isGood) this.confirmationMsg.setForeground(Color.GREEN);
-    else this.confirmationMsg.setForeground(Color.RED);
+    if (isGood) {
+      this.confirmationMsg.setForeground(Color.GREEN);
+    } else {
+      this.confirmationMsg.setForeground(Color.RED);
+    }
   }
 
-  public List<String> getInvestData(){
+  public List<String> getInvestData() {
     List<String> list = new ArrayList<>();
 
     list.add(this.name);
@@ -257,61 +322,70 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
     return list;
   }
 
-  public Map<String,Double> getInvestStockMap(){
-    obj.inputValidation(this.stockMap,this.confirmationMsg);
+  public Map<String, Double> getInvestStockMap() {
+    if (obj != null) {
+      obj.inputValidation(this.stockMap, this.confirmationMsg);
+    } else if (this.DCAPanelObj != null) {
+      this.DCAPanelObj.inputValidation(this.stockMap, this.confirmationMsg);
+    }
     System.out.println(this.stockMap);
     this.stockMap.remove("");
     return this.stockMap;
   }
 
-  public SimpleEntry<String,String> getNameAndDate(){
-    return new SimpleEntry<>(this.name,this.dateInput==null?"":this.dateInput.getText());
+  public SimpleEntry<String, String> getNameAndDate() {
+    return new SimpleEntry<>(this.name, this.dateInput == null ? "" : this.dateInput.getText());
   }
-  public void setValue(String msg, Double val){
-    if(msg.equals("Success")){
-      this.confirmationMsg.setText("Value of the Portfolio on "+dateInput.getText()+" was $");
+
+  public void setValue(String msg, Double val) {
+    if (msg.equals("Success")) {
+      this.confirmationMsg.setText("Value of the Portfolio on " + dateInput.getText() + " was $");
       this.valueMsg.setText(new DecimalFormat("0.00").format(val));
       this.confirmationMsg.setForeground(Color.BLACK);
       this.valueMsg.setForeground(Color.BLUE);
       dateInput.setText("");
-    }
-    else if(msg.equals("Success2")){
-      this.confirmationMsg.setText("CostBasis of the Portfolio on "+dateInput.getText()+" was $");
+    } else if (msg.equals("Success2")) {
+      this.confirmationMsg.setText(
+          "CostBasis of the Portfolio on " + dateInput.getText() + " was $");
       this.valueMsg.setText(new DecimalFormat("0.00").format(val));
       this.confirmationMsg.setForeground(Color.BLACK);
       this.valueMsg.setForeground(Color.BLUE);
       dateInput.setText("");
-    }
-    else if(msg.equals("Success3")){
-      this.confirmationMsg.setText("Composition of the Portfolio on "+dateInput.getText()+":");
+    } else if (msg.equals("Success3")) {
+      this.confirmationMsg.setText("Composition of the Portfolio on " + dateInput.getText() + ":");
       this.confirmationMsg.setForeground(Color.BLACK);
       dateInput.setText("");
-    }
-    else{
+    } else {
       this.valueMsg.setText("");
       this.confirmationMsg.setText(msg);
       this.confirmationMsg.setForeground(Color.RED);
     }
   }
 
-  public void setStockMap(Map<String, Double> stockMap){
+  public Map<String, Double> getStockMap() {
+    return this.stockMap;
+  }
 
-    String str="";
-    if(!dateInput.getText().equals("")) str = "Shares of each stock on asked Date";
+  public void setStockMap(Map<String, Double> stockMap) {
 
-    this.stockMap=stockMap;
+    String str = "";
+    if (!dateInput.getText().equals("")) {
+      str = "Shares of each stock on asked Date";
+    }
+
+    this.stockMap = stockMap;
 
     this.valueMsg.setVisible(true);
 
     StringBuilder sb = new StringBuilder();
-    for(String stock : stockMap.keySet()){
+    for (String stock : stockMap.keySet()) {
       sb.append("  <tr>\n"
-          + "    <td>"+stock+"</td>\n"
-          + "    <td>"+new DecimalFormat("0.00").format(stockMap.get(stock))+"</td>\n"
+          + "    <td>" + stock + "</td>\n"
+          + "    <td>" + new DecimalFormat("0.00").format(stockMap.get(stock)) + "</td>\n"
           + "  </tr>\n");
     }
     this.valueMsg.setFont(new Font("Arial", Font.ITALIC, 15));
-    this.valueMsg.setBorder(BorderFactory.createEmptyBorder(0,20,0,20));
+    this.valueMsg.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
     this.valueMsg.setText("<html>\n"
         + "<style>\n"
         + "table, th, td {\n"
@@ -321,27 +395,26 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
         + "<body>\n"
         + "\n"
         + "\n"
-        +"<h4>"+str+"</h4>"
+        + "<h4>" + str + "</h4>"
         + "<table style=\"width:100%\">\n"
         + "  <tr>\n"
         + "    <th>Stock</th>\n"
         + "    <th>Quantity</th>\n"
         + "  </tr>\n"
         + "  <tr>\n"
-        +sb
+        + sb
         + "</table>\n"
         + "</body>\n"
         + "</html>");
 
-    MainFrameView obj = (MainFrameView) SwingUtilities.getWindowAncestor(this);
-    int newHeight = 400+((stockMap.size()-4)*50);
-    if(newHeight>obj.getHeight())  obj.setSize(800,newHeight);
+    MainFrameGUIView obj = (MainFrameGUIView) SwingUtilities.getWindowAncestor(this);
+    int newHeight = 400 + ((stockMap.size() - 4) * 50);
+    if (newHeight > obj.getHeight()) {
+      obj.setSize(800, newHeight);
+    }
   }
 
-  public Map<String, Double> getStockMap(){
-    return this.stockMap;
-  }
-  public List<String> getBuySellData(){
+  public List<String> getBuySellData() {
     List<String> list = new ArrayList<>();
 
     list.add(this.name);
@@ -353,32 +426,33 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
     return list;
   }
 
-  public void setMessage(String msg){
+  public void setMessage(String msg) {
     this.confirmationMsg.setText(msg);
-    if(msg.equals("Successful transaction")){
+    if (msg.equals("Successful transaction")) {
       this.confirmationMsg.setForeground(Color.BLUE);
       this.stockInput.setText("");
       this.quantityInput.setText("");
       this.dateInput.setText("");
       this.commFeeInput.setText("");
-    }
-    else if(msg.equals("success")){
+    } else if (msg.equals("success")) {
       this.confirmationMsg.setForeground(Color.BLUE);
       this.confirmationMsg.setText("Launching Performance Graph...");
       this.startDateInput.setText("");
       this.endDateInput.setText("");
+    } else {
+      this.confirmationMsg.setForeground(Color.RED);
     }
-    else this.confirmationMsg.setForeground(Color.RED);
   }
 
-  public void setSellInterimMessage(String msg){
-    if(msg.equals("Success3")){
+  public void setSellInterimMessage(String msg) {
+    if (msg.equals("Success3")) {
       this.sellDateCheckerMsg.setText("");
       this.form.setVisible(true);
-    }
-    else{
-      if(msg.contains("Given date before portfolio creation"))
-        msg="<html>Given date before portfolio creation<br />"+msg.substring(msg.indexOf("date 20"))+"</html>";
+    } else {
+      if (msg.contains("Given date before portfolio creation")) {
+        msg = "<html>Given date before portfolio creation<br />" + msg.substring(
+            msg.indexOf("date 20")) + "</html>";
+      }
       this.sellDateCheckerMsg.setForeground(Color.RED);
       this.sellDateCheckerMsg.setFont(new Font("Arial", Font.ITALIC, 13));
       this.sellDateCheckerMsg.setText(msg);
@@ -388,11 +462,11 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
     }
   }
 
-  public void setPortfolioCreationDate(String date){
-    this.portfolioCreationDate=date;
+  public void setPortfolioCreationDate(String date) {
+    this.portfolioCreationDate = date;
   }
 
-  public List<String> getGraphData(){
+  public List<String> getGraphData() {
     List<String> list = new ArrayList<>();
     list.add(this.startDateInput.getText());
     list.add(this.endDateInput.getText());
@@ -400,10 +474,22 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
     return list;
   }
 
-  public void startGraph(List<String> labels, List<Double> dataPoints){
-    SwingUtilities.invokeLater(() -> new LineChartExample("Line Chart Example",labels,dataPoints));
+  public void startGraph(List<String> labels, List<Double> dataPoints) {
+    SwingUtilities.invokeLater(() -> new GraphPanel("Line Chart Example", labels, dataPoints));
     this.confirmationMsg.setText("");
   }
+
+  public List<String> getDCAFormData() {
+    List<String> data = new ArrayList<>();
+    data.add(this.name);
+    data.add(this.startDateInput.getText().trim());
+    data.add(this.endDateInput.getText().trim());
+    data.add(this.amountInput.getText().trim());
+    data.add(this.intervalInput.getText().trim());
+    data.add(this.commFeeInput.getText().trim());
+    return data;
+  }
+
   @Override
   public void addActionListener(ActionListener listener) {
     this.valueBtn.addActionListener(listener);
@@ -417,9 +503,12 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel{
     this.sellInterimBtn.addActionListener(listener);
 
     this.launchGraph.addActionListener(listener);
+    this.investDCAButton.addActionListener(listener);
   }
+
   @Override
   public JPanel getJPanel() {
     return this;
   }
+
 }

@@ -9,16 +9,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ * Normal value panel.
+ */
 public class ValuePanel {
 
-  ValuePanel(){
 
-  }
-
-  public void createSimpleView(String str, JPanel contentPanel, JTextField dateInput,
+  void createSimpleView(String str, JPanel contentPanel, JTextField dateInput,
       JButton valueBtn, JButton costBasisBtn, JButton compositionBtn, JLabel confirmationMsg,
       JLabel valueMsg){
-//    contentPanel = new JPanel();
+
     contentPanel.setLayout(new BorderLayout());
     contentPanel.setBackground(Color.decode("#B8DEFF"));
 

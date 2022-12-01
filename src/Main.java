@@ -1,6 +1,5 @@
-import controller.MainGUIController;
-import model.UserFlexInvestImpl;
-import view.MainFrameView;
+import controller.StockController;
+import controller.WelcomeController;
 
 
 /**
@@ -14,15 +13,18 @@ public class Main {
    * @param args standard arguments
    */
   public static void main(String[] args) throws Exception {
-//    StockController controller = new WelcomeController(System.in, System.out);
+//    StockController controller = new TextController(System.in, System.out);
 //    controller.start();
 //    UserFlexInvest user = new UserFlexInvestImpl();
 
-//    ViewGUI obj = new MainFrameView();
+//    ViewGUI obj = new MainFrameGUIView();
 
-    MainGUIController obj = new MainGUIController(new MainFrameView(),new UserFlexInvestImpl());
+//    MainGUIController obj = new MainGUIController(new MainFrameGUIView(),new UserFlexInvestImpl());
 
-//    ViewGUI obj = new MainFrameView();
+    StockController controller = new WelcomeController();
+    controller.start();
+
+//    ViewGUI obj = new MainFrameGUIView();
 //    Map<String, Double> investMap = new HashMap<>();
 //    investMap.put("MSFT",45.0);
 //    investMap.put("AAPL",11.0);

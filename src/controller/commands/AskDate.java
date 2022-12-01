@@ -3,7 +3,7 @@ package controller.commands;
 import java.io.PrintStream;
 import java.util.Scanner;
 import model.UserFlex;
-import view.IView;
+import view.ViewText;
 
 /**
  * Asks date.
@@ -18,7 +18,7 @@ public class AskDate {
    * @param out  output object.
    * @return date.
    */
-  public static String addStocksAskDate(Scanner scan, PrintStream out, UserFlex user, IView view) {
+  public static String addStocksAskDate(Scanner scan, PrintStream out, UserFlex user, ViewText view) {
     view.askDate(out);
     String date = scan.nextLine();
     while (!user.dateChecker(date)) {

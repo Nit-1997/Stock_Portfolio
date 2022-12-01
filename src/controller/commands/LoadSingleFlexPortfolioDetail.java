@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import model.UserFlex;
-import view.IView;
+import view.ViewText;
 
 /**
  * Class for loading and taking input for single portfolio menu.
@@ -19,7 +19,7 @@ public class LoadSingleFlexPortfolioDetail {
    * @param out  output object.
    */
   public static void loadSinglePortfolioDetailController(Scanner scan, UserFlex user,
-      PrintStream out, IView view) {
+      PrintStream out, ViewText view) {
     view.askNameOfPortfolio(out);
     String portfolioName = scan.nextLine();
     while (user.isUniqueName(portfolioName)) {

@@ -3,8 +3,9 @@ package controller;
 
 import controller.gui_controller.ButtonListener;
 import controller.gui_controller.BuyStock;
-import controller.gui_controller.DCAPortfolioCreation;
+import controller.gui_controller.DCAPortfolio;
 import controller.gui_controller.FormChecker;
+import controller.gui_controller.GUISubController;
 import controller.gui_controller.GraphData;
 import controller.gui_controller.InvestStock;
 import controller.gui_controller.NormalPortfolioCreationSubmit;
@@ -22,75 +23,96 @@ import view.panels.CreatePortfolioPanel;
 import view.panels.ListAllPortfoliosPanel;
 import view.panels.MainMenuPanel;
 
-public class MainGUIController {
+/**
+ * Main Controller for GUI.
+ */
+public class MainGUIController implements StockController {
 
   ViewGUI view;
   UserFlexInvest user;
 
-  public MainGUIController(ViewGUI view, UserFlexInvest user){
-    this.view=view;
-    this.user=user;
-    configureButtonListener();
+  /**
+   * Constructor for GUI controller.
+   *
+   * @param view view object.
+   * @param user model object.
+   */
+  public MainGUIController(ViewGUI view, UserFlexInvest user) {
+    this.view = view;
+    this.user = user;
   }
 
   private void configureButtonListener() {
-    Map<String,Runnable> buttonClickedMap = new HashMap<>();
+
+    GUISubController subController;
+    Map<String, Runnable> buttonClickedMap = new HashMap<>();
     ButtonListener buttonListener = new ButtonListener();
 
-    buttonClickedMap.put("Create Portfolio",()->this.view.changePanel(new CreatePortfolioPanel()));
-    buttonClickedMap.put("View Portfolios",()->this.view.changePanel(new ListAllPortfoliosPanel(user.getPortfolios())));
-    buttonClickedMap.put("Main Menu",()->this.view.changePanel(new MainMenuPanel()));
-    buttonClickedMap.put("Exit Button",()->System.exit(0));
+    buttonClickedMap.put("Create Portfolio",
+        () -> this.view.changePanel(new CreatePortfolioPanel()));
+    buttonClickedMap.put("View Portfolios",
+        () -> this.view.changePanel(new ListAllPortfoliosPanel(user.getPortfolios())));
+    buttonClickedMap.put("Main Menu", () -> this.view.changePanel(new MainMenuPanel()));
+    buttonClickedMap.put("Exit Button", () -> System.exit(0));
 
-    buttonClickedMap.put("Normal Portfolio Creation Submit",()->{
-      String str = new NormalPortfolioCreationSubmit(this.view.getNormalPortfolioCreationData(),user).execute();
+    buttonClickedMap.put("Normal Portfolio Creation Submit", () -> {
+      String str = new NormalPortfolioCreationSubmit(this.view.getNormalPortfolioCreationData(),
+          user).execute();
       this.view.printForNormalPortfolioCreation(str);
     });
-    buttonClickedMap.put("Normal Form Add More Button",()->{
-      String str = FormChecker.formChecker(this.view.getNormalPortfolioCreationFormDataAddMore(),user);
-      if(str.equals("Portfolio Successfully Saved")) str="Stock Added successfully";
+    buttonClickedMap.put("Normal Form Add More Button", () -> {
+      String str = FormChecker.formChecker(this.view.getNormalPortfolioCreationFormDataAddMore(),
+          user);
+      if (str.equals("Portfolio Successfully Saved")) {
+        str = "Stock Added successfully";
+      }
       this.view.printForNormalPortfolioCreation(str);
     });
-    buttonClickedMap.put("DCA Form Submit",()->{
+    buttonClickedMap.put("DCA Form Submit", () -> {
 
-      String str = new DCAPortfolioCreation(this.view.getDCAPortfolioCreationData(), this.view.getDCAPortfolioCreationMap(),user).execute();
+      String str = new DCAPortfolio(this.view.getDCAPortfolioCreationData(),
+          this.view.getDCAPortfolioCreationMap(), user, "create").execute();
       this.view.printForDCAPortfolioCreation(str);
     });
-    buttonClickedMap.put("Get Value",()->{
-      SimpleEntry<String,String> nameAndDate = this.view.getNameAndDate();
-      String str = new PortfolioValue(nameAndDate.getKey(), nameAndDate.getValue(),user).execute();
-      Double value=null;
-      if(str.contains("Success")){
-        String msg=str.split(",")[0];
-        value=Double.parseDouble(str.split(",")[1]);
-        str=msg;
+    buttonClickedMap.put("Get Value", () -> {
+      SimpleEntry<String, String> nameAndDate = this.view.getNameAndDate();
+      String str = new PortfolioValue(nameAndDate.getKey(), nameAndDate.getValue(), user).execute();
+      Double value = null;
+      if (str.contains("Success")) {
+        String msg = str.split(",")[0];
+        value = Double.parseDouble(str.split(",")[1]);
+        str = msg;
       }
-      this.view.setValue(str,value);
+      this.view.setValue(str, value);
     });
 
-    buttonClickedMap.put("Get CostBasis",()->{
-      SimpleEntry<String,String> nameAndDate = this.view.getNameAndDate();
-      String str = new PortfolioCostBasis(nameAndDate.getKey(), nameAndDate.getValue(),user).execute();
-      Double value=null;
-      if(str.contains("Success2")){
-        String msg=str.split(",")[0];
-        value=Double.parseDouble(str.split(",")[1]);
-        str=msg;
+    buttonClickedMap.put("Get CostBasis", () -> {
+      SimpleEntry<String, String> nameAndDate = this.view.getNameAndDate();
+      String str = new PortfolioCostBasis(nameAndDate.getKey(), nameAndDate.getValue(),
+          user).execute();
+      Double value = null;
+      if (str.contains("Success2")) {
+        String msg = str.split(",")[0];
+        value = Double.parseDouble(str.split(",")[1]);
+        str = msg;
       }
-      this.view.setValue(str,value);
+      this.view.setValue(str, value);
     });
 
-    buttonClickedMap.put("Get Composition",()->{
-      SimpleEntry<String,String> nameAndDate = this.view.getNameAndDate();
-      PortfolioComposition obj = new PortfolioComposition(nameAndDate.getKey(), nameAndDate.getValue(),user);
+    buttonClickedMap.put("Get Composition", () -> {
+      SimpleEntry<String, String> nameAndDate = this.view.getNameAndDate();
+      GUISubController obj = new PortfolioComposition(nameAndDate.getKey(), nameAndDate.getValue(),
+          user);
       String str = obj.execute();
-      Map<String, Double> stockMap = obj.getStockMap();
-      this.view.setValue(str,null);
-      if(str.equals("Success3"))this.view.setStockMap(stockMap);
+      Map<String, Double> stockMap = ((PortfolioComposition) obj).getStockMap();
+      this.view.setValue(str, null);
+      if (str.equals("Success3")) {
+        this.view.setStockMap(stockMap);
+      }
     });
 
-    buttonClickedMap.put("BuyStock Menu", ()->{
-      SimpleEntry<String,String> nameAndDate = this.view.getNameAndDate();
+    buttonClickedMap.put("BuyStock Menu", () -> {
+      SimpleEntry<String, String> nameAndDate = this.view.getNameAndDate();
       try {
         this.view.setPortfolioCreationDate(user.getPortfolioCreationDate(nameAndDate.getKey()));
       } catch (Exception e) {
@@ -98,52 +120,62 @@ public class MainGUIController {
       }
     });
 
-    buttonClickedMap.put("BuyStock",()->{
+    buttonClickedMap.put("BuyStock", () -> {
       List<String> buySellData = this.view.getBuySellData();
-      String str = new BuyStock(buySellData,user).execute();
+      String str = new BuyStock(buySellData, user).execute();
       this.view.setBuySellMsg(str);
     });
 
-    buttonClickedMap.put("Get Composition for Sell",()->{
-      SimpleEntry<String,String> nameAndDate = this.view.getNameAndDate();
-      PortfolioComposition obj = new PortfolioComposition(nameAndDate.getKey(), nameAndDate.getValue(),user);
+    buttonClickedMap.put("Get Composition for Sell", () -> {
+      SimpleEntry<String, String> nameAndDate = this.view.getNameAndDate();
+      GUISubController obj = new PortfolioComposition(nameAndDate.getKey(), nameAndDate.getValue(),
+          user);
       String str = obj.execute();
-      Map<String, Double> stockMap = obj.getStockMap();
+      Map<String, Double> stockMap = ((PortfolioComposition) obj).getStockMap();
       this.view.setSellInterimMessage(str);
-      if(str.equals("Success3"))this.view.setStockMap(stockMap);
+      if (str.equals("Success3")) {
+        this.view.setStockMap(stockMap);
+      }
     });
 
-    buttonClickedMap.put("SellStock",()->{
+    buttonClickedMap.put("SellStock", () -> {
       List<String> buySellData = this.view.getBuySellData();
       Map<String, Double> stockMap = this.view.getStockMap();
-      String str = new SellStock(buySellData,stockMap,user).execute();
+      String str = new SellStock(buySellData, stockMap, user).execute();
       this.view.setBuySellMsg(str);
     });
 
-    buttonClickedMap.put("InvestStock",()->{
+    buttonClickedMap.put("InvestStock", () -> {
       List<String> investData = this.view.getInvestData();
-      Map<String,Double> stockMap = this.view.getInvestStockMap();
-      String str = new InvestStock(investData,stockMap,user).execute();
+      Map<String, Double> stockMap = this.view.getInvestStockMap();
+      String str = new InvestStock(investData, stockMap, user).execute();
       this.view.setInvestMsg(str);
     });
 
-    buttonClickedMap.put("Graph Data",()->{
+    buttonClickedMap.put("Graph Data", () -> {
       List<String> investData = this.view.getGraphData();
-      GraphData obj = new GraphData(investData.get(0),investData.get(1),investData.get(2),user);
+      GUISubController obj = new GraphData(investData.get(0), investData.get(1), investData.get(2),
+          user);
       String str = obj.execute();
       this.view.setGraphMsg(str);
-      if(str.equals("success")){
-        this.view.startGraph(obj.data);
+      if (str.equals("success")) {
+        this.view.startGraph(((GraphData) obj).data);
       }
-
     });
 
-
+    buttonClickedMap.put("Invest DCA", () -> {
+      String str = new DCAPortfolio(this.view.getDCAInvestmentData(),
+          this.view.getInvestStockMap(), user, "exist").execute();
+      this.view.setInvestMsg(str);
+    });
 
     buttonListener.setButtonClickedActionMap(buttonClickedMap);
     this.view.addActionListener(buttonListener);
   }
 
 
-
+  @Override
+  public void start() {
+    configureButtonListener();
+  }
 }

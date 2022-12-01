@@ -14,8 +14,8 @@ import java.util.Scanner;
 import model.MockModel;
 import org.junit.Before;
 import org.junit.Test;
-import view.IView;
-import view.ViewPrint;
+import view.ViewText;
+import view.TextViewImpl;
 
 /**
  * Junit Class to test StockController.
@@ -29,7 +29,7 @@ public class InflexControllerTest {
   InputStream in;
   PrintStream out;
 
-  IView view;
+  ViewText view;
 
   @Before
   public void init() {
@@ -37,7 +37,7 @@ public class InflexControllerTest {
     out = new PrintStream(bytes);
     log = new StringBuilder();
     model = new MockModel(log);
-    view = new ViewPrint();
+    view = new TextViewImpl();
   }
 
   @Test

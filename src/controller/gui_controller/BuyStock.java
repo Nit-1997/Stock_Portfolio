@@ -4,17 +4,26 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
 import model.UserFlexInvest;
 
-public class BuyStock {
+/**
+ * Buy stock class.
+ */
+public class BuyStock implements GUISubController{
 
   List<String> buySellData;
   UserFlexInvest user;
 
 
+  /**
+   * Constructor for buy stock.
+   * @param buySellData buy sell data.
+   * @param user model object.
+   */
   public BuyStock(List<String> buySellData, UserFlexInvest user){
     this.buySellData=buySellData;
     this.user=user;
   }
 
+  @Override
   public String execute(){
 
     if(!FormChecker.formChecker(buySellData,user).equals("Portfolio Successfully Saved")) {

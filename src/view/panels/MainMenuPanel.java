@@ -1,6 +1,7 @@
 package view.panels;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionListener;
@@ -9,14 +10,20 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class MainMenuPanel extends JPanel implements IPanel{
+/**
+ * Main menu panel.
+ */
+public class MainMenuPanel extends JPanel implements IPanel {
 
 
   public JButton goToCreatePortfolio;
   public JButton goToListAllPortfolio;
   public JButton exit;
 
-  public MainMenuPanel(){
+  /**
+   * Main menu panel constructor.
+   */
+  public MainMenuPanel() {
     this.goToCreatePortfolio = new JButton("Create new portfolio");
     this.goToCreatePortfolio.setActionCommand("Create Portfolio");
     this.goToListAllPortfolio = new JButton("List all portfolios");
@@ -35,21 +42,23 @@ public class MainMenuPanel extends JPanel implements IPanel{
     this.add(header, BorderLayout.NORTH);
 
     JPanel buttonPanel = new JPanel();
-    this.add(buttonPanel,BorderLayout.CENTER);
+    this.add(buttonPanel, BorderLayout.CENTER);
 
     buttonPanel.setLayout(new FlowLayout());
-    buttonPanel.setBorder(BorderFactory.createEmptyBorder(20,0,0,0));
-
+    buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
+    buttonPanel.setBackground(Color.decode("#e1d3ed"));
 
     buttonPanel.add(this.goToCreatePortfolio);
     buttonPanel.add(this.goToListAllPortfolio);
     buttonPanel.add(this.exit);
 
     this.add(buttonPanel);
+
+    this.setBackground(Color.decode("#e1d3ed"));
   }
 
   @Override
-  public JPanel getJPanel(){
+  public JPanel getJPanel() {
     return this;
   }
 
