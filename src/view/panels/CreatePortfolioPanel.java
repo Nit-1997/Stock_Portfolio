@@ -156,7 +156,6 @@ public class CreatePortfolioPanel extends JPanel implements IPanel {
   public Map<String, Double> getDcaStockMap() {
     this.DCAPanelObj.inputValidation(this.dcaStockMap, this.confirmationMsg);
     this.dcaStockMap.remove("");
-    System.out.println(this.dcaStockMap);
     return this.dcaStockMap;
   }
 

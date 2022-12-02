@@ -9,6 +9,23 @@ Mode level changes L
 	2. Individual interfaces for each flexible and inflexible model extends the common interface and contains the specific function definitions.
 	3. Each of the previous UserInflexImpl and new one UserFlexImpl extends the abstractUser to get the common functionalities and implements their individual interfaces, this was all done to reduce code redundancy and common code could be at one place.
 	4. We didn't change any previous logic and only shifted the code from one interface to another.
+
+
+
+Design changes for Assignment 6:
+View Level : 
+	1. Added new interface ViewGui and its implementation : MainFrameGuiView which is different from the text View and provides a new gateway to view through this interface.
+	2. MainFrameGUIView has object of IPanel which has multiple panels implementing this interface and MainFrameGUI call the functions of IPanel to call functions of any implementation
+	These changes were required as the GUI view had totally different functions as opposed to text based view and we have used interface for each class to maintain consistency everywhere.
+
+Controller level : 
+	1. We introduced one more level of controller to check whether user require text based UI or GUI and if user required Text based, it will work as it is and for GUI, there is one MainGUIController that has all the implementations of action listener and MainGUIController has the object of GUISubController which has multiple implementations for each functionality. Through this, we also implemented command design pattern.
+
+Model level : 
+	1. We introduced another interface UserFlexInvest which extends UserFlex interface.
+	2. UserFlexInvestImpl implements this UserFlexInvest interface and extends UserFelxImpl class to get the implementation of UserFlex interface.
+	3. Through this, we did not have to touch any previous code of any interface or class, we extended the class and interface and changed the implementation when and where required, giving new functionalities in new interface.
+	4. PortfolioFlexInvestImpl is the new class which extends PortfolioFlexImpl class and gives new implementation of the constructors and one new function.
 Application has 3 components: 1. Model : contains all the logic part2. Controller : takes input from user and calls appropriate functions in model and view.3. View : prints all the required statements in the text based interface.Helper packages and classes:1. Utils class : this class contains all the function which are happening at file level : reading from a file, saving data in file, check for file and data etc.2. Apifetcher : this class fetches the data from API and parses the data in a particular function based on the stock name3. Constants : this package contains all the fixed values like the printing statements, which remain constants.Controller Design : 
 * WelcomeController delegates the access to individual FlexController or InflexController depending on the user input.* FlexController/InflexController contains the logic to take input from user and display further menu and data based on user’s input* Controller calls the functions of UserFlex/UserInflex Interface which Is the entry point to the model interface.* It sends the data received from model to the view to print it and also print based on user’s print.* Since all methods of view are static, we don’t need to create object of view as of now.* Each Controller has the object of UserImplementation class and interacts with all methods of model through this object only.Model Design : * StockImpl is the lowest level class that Implements Stock interface and has the functionality to get current and historical date value from the local file for a stock. StockImpl has a name, buying date and the buying price of that stock. This class is an immutable class as once a stock is bought, its reference variables shouldn’t be altered.* StockOrderImpl class is a class on top of Stock which contains the object of Stock along-with its quantity of the stock for a portfolio. This class implements StockOrder interface and returns the total value/pnl of that stock in the platform. This class is also immutable because of the same reason as of StockImpl.
 * PortfolioInflexImpl Class represents a portfolio of the user which contains the name and list of stockOrder objects. This class implements PortfolioInflex which contains the functionalities to get value summary, detailedView, Pnl for that portfolio. This class is immutable as once a portfolio is created, it shouldn’t be modified, just be viewed.

@@ -145,7 +145,6 @@ public class DCAPortfolio implements GUISubController {
             commFeeDouble);
       } else if (type.equals("exist")) {
         user.InvestThroughDCA(portfolioName,amountDouble,map,startDate,endDate,intervalInt,commFeeDouble);
-//        System.out.println("successful investment");
       }
     } catch (Exception e) {
       System.out.println(e.getMessage());
