@@ -72,7 +72,7 @@ public interface UserFlex extends User {
    * Determine total money invested in portfolio (all purchases + total transactions*commission fee)
    * till the given date.
    *
-   * @param date date for which getBasis required.
+   * @param date          date for which getBasis required.
    * @param portfolioName name of the portfolio.
    * @return Total Money Invested.
    */
@@ -81,8 +81,8 @@ public interface UserFlex extends User {
   /**
    * Checks the starting and ending dates for the performance graph.
    *
-   * @param date1 starting date.
-   * @param date2 ending date.
+   * @param date1         starting date.
+   * @param date2         ending date.
    * @param portfolioName name of the portfolio.
    * @return true if the range is valid else false.
    */

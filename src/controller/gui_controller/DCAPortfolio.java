@@ -54,6 +54,16 @@ public class DCAPortfolio implements GUISubController {
       return "Wrong date format for start Date";
     }
 
+    if(type.equals("exist")){
+      try {
+        if(user.isBeforeDate(startDate,user.getPortfolioCreationDate(portfolioName))){
+          return "start date before portfolio creation date "+user.getPortfolioCreationDate(portfolioName);
+        }
+      } catch (Exception e) {
+        return e.getMessage();
+      }
+    }
+
     String endDate = data.get(2);
     if (endDate.equals("")) {
       endDate = null;
@@ -134,10 +144,11 @@ public class DCAPortfolio implements GUISubController {
         user.addPortfolio(portfolioName, amountDouble, map, startDate, endDate, intervalInt,
             commFeeDouble);
       } else if (type.equals("exist")) {
-//        user.InvestThroughDCA(portfolioName,amountDouble,map,startDate,endDate,intervalInt,commFeeDouble);
-        System.out.println("successful investment");
+        user.InvestThroughDCA(portfolioName,amountDouble,map,startDate,endDate,intervalInt,commFeeDouble);
+//        System.out.println("successful investment");
       }
     } catch (Exception e) {
+      System.out.println(e.getMessage());
       return e.getMessage();
     }
 

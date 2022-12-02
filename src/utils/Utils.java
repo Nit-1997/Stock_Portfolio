@@ -1,10 +1,8 @@
 package utils;
 
 import constants.Constants;
-
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.text.DateFormat;
@@ -25,14 +23,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
-
 import model.ApiDataFetcher;
 import model.ApiDataFetcherImpl;
 import model.DataSource;
 import model.DataSourceImpl;
 import model.PortfolioFlex;
 import model.PortfolioInvestmentPlanPojo;
-import model.Stock;
 import model.StockOrder;
 import model.StockOrderImpl;
 
@@ -50,10 +46,10 @@ public class Utils {
    * @throws IOException if directory or file not present.
    */
   public static Set<String> loadStockNames(String stockRepoName, String stockFileName)
-          throws IOException {
+      throws IOException {
     String portfolioDirectory = Paths.get(stockRepoName).toAbsolutePath().toString();
     File[] stockFiles = new File(portfolioDirectory).listFiles(
-            (f1, name) -> name.equals(stockFileName));
+        (f1, name) -> name.equals(stockFileName));
     if (stockFiles == null) {
       throw new IOException("Could not find the directory");
     }
@@ -75,7 +71,7 @@ public class Utils {
   }
 
   private static boolean loadPortfolioValidator(String ticker, String date, String price,
-                                                String qty, String type) {
+      String qty, String type) {
     try {
       if (!Constants.STOCK_NAMES.contains(ticker.toUpperCase())) {
         return false;
@@ -107,7 +103,7 @@ public class Utils {
    * @throws IOException if the portfolioName or the dirName are null.
    */
   public static List<StockOrder> loadPortfolioData(String portfolioName, String dirName)
-          throws IOException {
+      throws IOException {
     DataSource ds = new DataSourceImpl();
     File portfolioFile = ds.getFileByName(portfolioName, dirName);
     if (portfolioFile == null) {
@@ -214,7 +210,7 @@ public class Utils {
    * @throws IOException if file or directory doesn't exist
    */
   public static String fetchStockValueByDate(String ticker, String date, String dirName)
-          throws IOException {
+      throws IOException {
     if (ticker == null || date == null) {
       throw new IOException("passed null args");
     }
@@ -261,7 +257,7 @@ public class Utils {
       Date date = sdf.parse(dateStr);
       Date firstDate = sdf.parse("2010-01-04");
       Date currentDate = sdf.parse(
-              DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now()));
+          DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now()));
       if (date.before(firstDate) || date.after(currentDate)) {
         return false;
       }
@@ -302,9 +298,9 @@ public class Utils {
     try {
       initialDate = simpleDateFormat.parse("2010-01-01");
       currentDate = simpleDateFormat
-              .parse(DateTimeFormatter
-                      .ofPattern("yyyy-MM-dd")
-                      .format(LocalDateTime.now()));
+          .parse(DateTimeFormatter
+              .ofPattern("yyyy-MM-dd")
+              .format(LocalDateTime.now()));
     } catch (ParseException e) {
       System.out.println("wrong date");
     }
@@ -464,7 +460,7 @@ public class Utils {
     LocalDate start = LocalDate.parse(date1);
     LocalDate end = LocalDate.parse(date2);
     return !end.isBefore(start) && !start.isBefore(LocalDate.parse(creationDate)) && !end.isAfter(
-            LocalDate.now());
+        LocalDate.now());
   }
 
   /**
@@ -478,7 +474,7 @@ public class Utils {
    * @throws Exception if dates are not valid.
    */
   public static AbstractMap.SimpleEntry<List<String>, List<Double>> getScaledPerfData(String date1,
-                                                                                      String date2, String type, PortfolioFlex p) throws Exception {
+      String date2, String type, PortfolioFlex p) throws Exception {
     List<Double> datapoints = new ArrayList<>();
     List<String> labels = new ArrayList<>();
     LocalDate start = LocalDate.parse(date1);
@@ -494,14 +490,14 @@ public class Utils {
       case "weekly":
         while (!start.isAfter(end)) {
           String week =
-                  start.getMonth().toString().substring(0, 3) + " Week " + (start.getDayOfMonth() / 7
-                          + 1);
+              start.getMonth().toString().substring(0, 3) + " Week " + (start.getDayOfMonth() / 7
+                  + 1);
           labels.add(week);
           datapoints.add(p.getValueOnDate(start.toString()));
           start = start.plusWeeks(1);
         }
         labels.add(
-                end.getMonth().toString().substring(0, 3) + " Week " + (end.getDayOfMonth() / 7 + 1));
+            end.getMonth().toString().substring(0, 3) + " Week " + (end.getDayOfMonth() / 7 + 1));
         datapoints.add(p.getValueOnDate(end.toString()));
         break;
       case "monthly":
@@ -540,8 +536,9 @@ public class Utils {
     return new AbstractMap.SimpleEntry<>(labels, datapoints);
   }
 
-  public static List<StockOrder> DCAFileValidator(String portfolioName, File file, List<StockOrder> stockOrders)
-          throws Exception {
+  public static List<StockOrder> DCAFileValidator(String portfolioName, File file,
+      List<StockOrder> stockOrders)
+      throws Exception {
 
     /*
     1. Remove validation checks, no use
@@ -551,7 +548,9 @@ public class Utils {
         */
     Scanner myReader = new Scanner(file);
     String[] data = myReader.nextLine().split(",");
-    if (data.length != 6) throw new IOException("File corrupted");
+    if (data.length != 6) {
+      throw new IOException("File corrupted");
+    }
     String startDate = data[0];
     String endDate = data[2];
 //    if(!Utils.dateChecker(startDate) || (endDate!=null && !Utils.dateChecker(endDate)) ) throw new IOException("File corrupted");
@@ -569,12 +568,18 @@ public class Utils {
     Double sum = 0.0;
     while (myReader.hasNextLine()) {
       data = myReader.nextLine().split(",");
-      if (data.length != 2) throw new IOException("File corrupted");
-      if (!Constants.STOCK_NAMES.contains(data[0])) throw new IOException("File corrupted");
+      if (data.length != 2) {
+        throw new IOException("File corrupted");
+      }
+      if (!Constants.STOCK_NAMES.contains(data[0])) {
+        throw new IOException("File corrupted");
+      }
       Double percent;
       try {
         percent = Double.parseDouble(data[1]);
-        if (percent < 0) throw new NumberFormatException();
+        if (percent < 0) {
+          throw new NumberFormatException();
+        }
       } catch (NumberFormatException e) {
         throw new IOException("File corrupted");
       }
@@ -582,19 +587,21 @@ public class Utils {
       weightage.put(data[0], percent);
     }
 
-    if (sum != 100.0) throw new IOException("File corrupted");
+    if (sum != 100.0) {
+      throw new IOException("File corrupted");
+    }
 
-    stockOrders = Utils.updatePortfolioFromDCA(portfolioName, startDate, endDate.equals("null") ? null : endDate, weightage,
-            interval, amount, commFee, stockOrders);
+    stockOrders = Utils.updatePortfolioFromDCA(portfolioName, startDate,
+        endDate.equals("null") ? null : endDate, weightage,
+        interval, amount, commFee, stockOrders);
 
     return stockOrders;
   }
 
-  public static AbstractMap.SimpleEntry<String, Double> fetchStockValueByDateFuture(String ticker,
-                                                                                    String date,
-                                                                                    String dirName)
-          throws Exception {
-
+  static AbstractMap.SimpleEntry<String, Double> fetchStockValueByDateFuture(String ticker,
+      String date,
+      String dirName)
+      throws Exception {
 
     if (ticker == null || date == null) {
       throw new IOException("passed null args");
@@ -643,7 +650,8 @@ public class Utils {
    * @return List of investment plans
    * @throws FileNotFoundException if file is missing
    */
-  public static List<PortfolioInvestmentPlanPojo> generatePortfolioInvestmentPojoList(String portfolioName, File portfolioDCAFile) throws FileNotFoundException {
+  private static List<PortfolioInvestmentPlanPojo> generatePortfolioInvestmentPojoList(
+      String portfolioName, File portfolioDCAFile) throws FileNotFoundException {
     List<PortfolioInvestmentPlanPojo> dcaList = new ArrayList<>();
     Scanner myReader = new Scanner(portfolioDCAFile);
     PortfolioInvestmentPlanPojo currentPlan = null;
@@ -689,41 +697,41 @@ public class Utils {
    * @param investmentPlan current investment plan
    * @return parsed entry
    */
-  public static String
+  private static String
   buildDcaEntry(PortfolioInvestmentPlanPojo investmentPlan) {
     StringBuilder sb = new StringBuilder();
 
     sb.append(investmentPlan.start).append(",").append(investmentPlan.interval).append(",")
-            .append(investmentPlan.end).append(",")
-            .append(investmentPlan.amount).append(",")
-            .append(investmentPlan.commFee).append(",")
-            .append(investmentPlan.stockComposition.size())
-            .append("\n");
+        .append(investmentPlan.end).append(",")
+        .append(investmentPlan.amount).append(",")
+        .append(investmentPlan.commFee).append(",")
+        .append(investmentPlan.stockComposition.size())
+        .append("\n");
 
     for (String ticker : investmentPlan.stockComposition.keySet()) {
       sb.append(ticker).append(",").append(investmentPlan.stockComposition.get(ticker))
-              .append("\n");
+          .append("\n");
     }
     return sb.toString();
   }
 
   /**
-   * If the stock orders in the investmentPlan are in executable range.
-   * execute them and send the updated entry for this dca.
+   * If the stock orders in the investmentPlan are in executable range. execute them and send the
+   * updated entry for this dca.
    *
    * @param investmentPlan current investment plan
    * @param stockOrders    stock orders witout dca transactions
    * @return updated dca entry
    * @throws Exception can occur due to IO issues.
    */
-  public static String executeOrdersIfValid(PortfolioInvestmentPlanPojo investmentPlan
-          , List<StockOrder> stockOrders) throws Exception {
+  private static String executeOrdersIfValid(PortfolioInvestmentPlanPojo investmentPlan
+      , List<StockOrder> stockOrders) throws Exception {
     LocalDate start = LocalDate.parse(investmentPlan.start);
     LocalDate now = LocalDate.now();
 
     LocalDate lastDate = (investmentPlan.end == null
-            || LocalDate.parse(investmentPlan.end).isAfter(now))
-            ? now : LocalDate.parse(investmentPlan.end);
+        || LocalDate.parse(investmentPlan.end).isAfter(now))
+        ? now : LocalDate.parse(investmentPlan.end);
 
     AbstractMap.SimpleEntry<String, Double> priceObj = new SimpleEntry<>("", 0.0);
 
@@ -731,17 +739,19 @@ public class Utils {
       boolean flag = false;
       for (String ticker : investmentPlan.stockComposition.keySet()) {
         Double tempCommFee = !flag ? investmentPlan.commFee : 0;
-        if (!flag) flag = true;
+        if (!flag) {
+          flag = true;
+        }
 
         double specificAmount = investmentPlan.amount
-                * investmentPlan.stockComposition.get(ticker) / 100;
+            * investmentPlan.stockComposition.get(ticker) / 100;
 
         if (!Utils.dataExists(ticker, "stock_data")) {
           Utils.loadStockData(ticker, "stock_data");
         }
 
         priceObj = Utils.fetchStockValueByDateFuture(ticker,
-                start.toString(), "stock_data");
+            start.toString(), "stock_data");
 
         if (priceObj == null) {
           break;
@@ -751,7 +761,7 @@ public class Utils {
         double qty = specificAmount / price;
 
         StockOrder newOrder = new StockOrderImpl(ticker,
-                price, priceObj.getKey(), qty, tempCommFee);
+            price, priceObj.getKey(), qty, tempCommFee);
         stockOrders.add(newOrder);
       }
       start = start.plusDays(investmentPlan.interval);
@@ -772,10 +782,8 @@ public class Utils {
 
 
   /**
-   * Should read the DCA file for the portfolio.
-   * generate the StockOrders
-   * execute the ones that need to be executed.
-   * dump it into the file in non appendable mode
+   * Should read the DCA file for the portfolio. generate the StockOrders execute the ones that need
+   * to be executed. dump it into the file in non appendable mode
    *
    * @param portfolioName    portfolio name with enabled DCA.
    * @param portfolioDCAFile dca file to be edited.
@@ -783,10 +791,10 @@ public class Utils {
    * @return List of updated Stock Orders after dca transactions.
    */
   public static List<StockOrder> loadPortfolioWithDCA(String portfolioName, File portfolioDCAFile
-          , List<StockOrder> stockOrders) throws Exception {
+      , List<StockOrder> stockOrders) throws Exception {
     //convert into pojos
     List<PortfolioInvestmentPlanPojo> dcaList = generatePortfolioInvestmentPojoList(portfolioName,
-            portfolioDCAFile);
+        portfolioDCAFile);
     DataSource ds = new DataSourceImpl();
 
     StringBuilder sb = new StringBuilder();
@@ -807,28 +815,29 @@ public class Utils {
   }
 
   public static List<StockOrder> updatePortfolioFromDCA(String portfolioName, String startDate,
-                                                        String endDate, Map<String,
-          Double> weightage, int interval, Double amount, Double commFee,
-                                                        List<StockOrder> stockOrders)
-          throws Exception {
+      String endDate, Map<String,
+      Double> weightage, int interval, Double amount, Double commFee,
+      List<StockOrder> stockOrders)
+      throws Exception {
     DataSource ds = new DataSourceImpl();
     LocalDate start = LocalDate.parse(startDate);
     LocalDate now = LocalDate.now();
 
     LocalDate lastDate = (endDate == null
-            || LocalDate.parse(endDate).isAfter(now)) ? now : LocalDate.parse(endDate);
+        || LocalDate.parse(endDate).isAfter(now)) ? now : LocalDate.parse(endDate);
 
     AbstractMap.SimpleEntry<String, Double> priceObj = new SimpleEntry<>("", 0.0);
     while (start.isBefore(lastDate)) {
       boolean flag = false;
       for (String ticker : weightage.keySet()) {
         Double tempCommFee = !flag ? commFee : 0;
-        if (!flag) flag = true;
+        if (!flag) {
+          flag = true;
+        }
 
         double specificAmount = amount * weightage.get(ticker) / 100;
 
-        priceObj = Utils.fetchStockValueByDateFuture(ticker,
-                start.toString(), "stock_data");
+        priceObj = Utils.fetchStockValueByDateFuture(ticker, start.toString(), "stock_data");
 
         if (priceObj == null) {
           break;
@@ -838,7 +847,7 @@ public class Utils {
         double qty = specificAmount / price;
 
         StockOrder newOrder = new StockOrderImpl(ticker, price,
-                priceObj.getKey(), qty, tempCommFee);
+            priceObj.getKey(), qty, tempCommFee);
         stockOrders.add(newOrder);
       }
       start = start.plusDays(interval);
@@ -847,13 +856,13 @@ public class Utils {
 
       if (priceObj == null) {
         File portfolioDCA = ds.createFileIfNotExists(portfolioName +
-                "_DCA", "portfolios" + File.separator + "flex");
+            "_DCA", "portfolios" + File.separator + "flex");
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append(startDate).append(",").append(interval).append(",").append(endDate).append(",")
-                .append(amount).append(",").append(commFee).append(",").append(weightage.size())
-                .append("\n");
+        sb.append(start).append(",").append(interval).append(",").append(endDate).append(",")
+            .append(amount).append(",").append(commFee).append(",").append(weightage.size())
+            .append("\n");
 
         for (String ticker : weightage.keySet()) {
           sb.append(ticker).append(",").append(weightage.get(ticker)).append("\n");
@@ -864,14 +873,14 @@ public class Utils {
     } else if (lastDate == now) {
 
       File portfolioDCA = ds.createFileIfNotExists(portfolioName
-              + "_DCA", "portfolios"
-              + File.separator + "flex");
+          + "_DCA", "portfolios"
+          + File.separator + "flex");
 
       StringBuilder sb = new StringBuilder();
 
-      sb.append(startDate).append(",").append(interval).append(",").append(endDate).append(",")
-              .append(amount).append(",").append(commFee).append(",").append(weightage.size())
-              .append("\n");
+      sb.append(start).append(",").append(interval).append(",").append(endDate).append(",")
+          .append(amount).append(",").append(commFee).append(",").append(weightage.size())
+          .append("\n");
 
       for (String ticker : weightage.keySet()) {
         sb.append(ticker).append(",").append(weightage.get(ticker)).append("\n");

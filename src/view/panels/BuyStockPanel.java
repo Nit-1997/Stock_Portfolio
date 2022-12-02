@@ -81,7 +81,7 @@ public class BuyStockPanel {
     form.add(buyStockBtn);
 
     confirmationMsg.setText("");
-    confirmationMsg.setFont(new Font("Arial", Font.PLAIN, 15));
+    confirmationMsg.setFont(new Font("Arial", Font.PLAIN, 10));
     confirmationMsg.setHorizontalAlignment(JLabel.CENTER);
     form.add(confirmationMsg);
     form.setBackground(Color.decode("#B8DEFF"));

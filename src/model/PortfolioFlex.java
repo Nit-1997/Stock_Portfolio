@@ -48,7 +48,8 @@ public interface PortfolioFlex extends Portfolio {
   /**
    * Add multiple new transactions to the portfolio.
    *
-   * @param entryMap Stock transaction Map of {Ticker Symbol, Transaction Date, Quantity} to be added
+   * @param entryMap Stock transaction Map of {Ticker Symbol, Transaction Date, Quantity} to be
+   *                 added
    * @throws Exception if arguments are invalid.
    */
   void addMultipleTransactions(
@@ -80,12 +81,13 @@ public interface PortfolioFlex extends Portfolio {
 
   /**
    * Adds a new DCA Strategy to the existing portfolio.
-   * @param amount amount to be invested.
+   *
+   * @param amount    amount to be invested.
    * @param weightage Map of stock vs their percentage.
    * @param startDate start date of investment.
-   * @param endDate end date of investment.
-   * @param interval interval of investment.
-   * @param commFee commission fee of investment.
+   * @param endDate   end date of investment.
+   * @param interval  interval of investment.
+   * @param commFee   commission fee of investment.
    * @throws Exception if there is any error.
    */
   void addDCAInvestment(Double amount, Map<String, Double> weightage,

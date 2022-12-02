@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -244,18 +245,28 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel {
       this.remove(this.contentPanel);
     }
 
+
     this.contentPanel = new JPanel(new BorderLayout());
 
     JPanel datePanel = new JPanel(new FlowLayout());
-    datePanel.add(new JLabel("Start Date"));
-    datePanel.add(this.startDateInput);
-    datePanel.add(new JLabel("End Date"));
-    datePanel.add(this.endDateInput);
+    JPanel insider = new JPanel();
+    insider.setLayout(new BoxLayout(insider,BoxLayout.Y_AXIS));
+    insider.add(new JLabel("Start Date (yyyy-MM-dd)"));
+    insider.add(this.startDateInput);
+    insider.setBackground(Color.decode("#B8DEFF"));
+    datePanel.add(insider);
+    insider = new JPanel();
+    insider.setLayout(new BoxLayout(insider,BoxLayout.Y_AXIS));
+    insider.add(new JLabel("End Date(yyyy-MM-dd)"));
+    insider.add(this.endDateInput);
+    insider.setBackground(Color.decode("#B8DEFF"));
+    datePanel.add(insider);
     datePanel.add(this.launchGraph);
     datePanel.setBackground(Color.decode("#B8DEFF"));
 
     this.contentPanel.add(datePanel, BorderLayout.NORTH);
     this.confirmationMsg.setHorizontalAlignment(JLabel.CENTER);
+    this.confirmationMsg.setText("");
     this.contentPanel.add(this.confirmationMsg, BorderLayout.CENTER);
     this.confirmationMsg.setFont(new Font("Arial", Font.PLAIN, 25));
     this.contentPanel.setBackground(Color.decode("#B8DEFF"));
@@ -328,7 +339,6 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel {
     } else if (this.DCAPanelObj != null) {
       this.DCAPanelObj.inputValidation(this.stockMap, this.confirmationMsg);
     }
-    System.out.println(this.stockMap);
     this.stockMap.remove("");
     return this.stockMap;
   }

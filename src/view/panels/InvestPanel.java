@@ -263,7 +263,7 @@ public class InvestPanel {
     } else {
       stockMap.put(stock.toUpperCase(), percent);
     }
-    System.out.println(stockMap);
+
 
     return true;
   }

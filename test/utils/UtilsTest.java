@@ -18,10 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import model.DataSource;
 import model.DataSourceImpl;
-import model.PortfolioFlexImpl;
 import model.StockOrder;
 import model.StockOrderImpl;
 import org.junit.Test;
@@ -168,21 +166,24 @@ public class UtilsTest {
   }
 
   @Test
-  public void testFetchStockValueByDateFutureFoundExact() throws Exception{
-    AbstractMap.SimpleEntry<String,Double> res = Utils.fetchStockValueByDateFuture("CSCO","2022-11-25","stock_data");
+  public void testFetchStockValueByDateFutureFoundExact() throws Exception {
+    AbstractMap.SimpleEntry<String, Double> res = Utils.fetchStockValueByDateFuture("CSCO",
+        "2022-11-25", "stock_data");
     System.out.println(res.getKey());
     System.out.println(res.getValue());
   }
 
   @Test
-  public void testFetchStockValueByDateFutureNotFound() throws Exception{
-    AbstractMap.SimpleEntry<String,Double> res = Utils.fetchStockValueByDateFuture("CSCO","2022-11-27","stock_data");
+  public void testFetchStockValueByDateFutureNotFound() throws Exception {
+    AbstractMap.SimpleEntry<String, Double> res = Utils.fetchStockValueByDateFuture("CSCO",
+        "2022-11-27", "stock_data");
     System.out.println(res);
   }
 
   @Test
-  public void testFetchStockValueByDateFutureFoundPrev() throws Exception{
-    AbstractMap.SimpleEntry<String,Double> res = Utils.fetchStockValueByDateFuture("CSCO","2022-11-19","stock_data");
+  public void testFetchStockValueByDateFutureFoundPrev() throws Exception {
+    AbstractMap.SimpleEntry<String, Double> res = Utils.fetchStockValueByDateFuture("CSCO",
+        "2022-11-19", "stock_data");
     System.out.println(res);
   }
 
@@ -266,17 +267,17 @@ public class UtilsTest {
     assertNotNull(currentDate);
   }
 
-  public List<StockOrder> buildStockOrders(){
+  public List<StockOrder> buildStockOrders() {
     List<StockOrder> stockOrders = new ArrayList<>();
-    String[] ticker = {"CSCO","GOOGL","AAPL"};
-    String[] dates = {"2019-08-10" , "2018-08-10" ,"2017-08-10"};
-    for(int i=0;i<ticker.length;i++){
-      StockOrder newOrder = new StockOrderImpl(ticker[i], 44.2, dates[i], 10.0, 2.0);
+    String[] ticker = {"CSCO", "GOOGL", "AAPL"};
+    String[] dates = {"2019-08-10", "2018-08-10", "2017-08-10"};
+    for (int i = 0; i < ticker.length; i++) {
+      StockOrder newOrder = new StockOrderImpl(ticker[i], 44.2, dates[i], 10.0,
+          2.0);
       stockOrders.add(newOrder);
     }
     return stockOrders;
   }
-
 
 
   @Test
@@ -284,25 +285,26 @@ public class UtilsTest {
     List<StockOrder> stockOrders = buildStockOrders();
     DataSource ds = new DataSourceImpl();
     String portfolioName = "dcaTesting";
-    File dcaTestingFile =  ds.getFileByName(portfolioName+"_DCA","portfolios" + File.separator + "flex");
+    File dcaTestingFile = ds.getFileByName(portfolioName + "_DCA", "portfolios" +
+        File.separator + "flex");
     String dcaContent = "2012-08-10,365,2022-08-10,400,3.0,2\n" +
-            "AMZN,50\n" +
-            "MFST,50\n" +
-            "2012-08-10,365,2022-08-10,400,3.0,2\n" +
-            "IBM,50\n" +
-            "GOOGL,50\n" +
-            "2012-08-10,365,null,400,3.0,2\n" +
-            "IBM,50\n" +
-            "GOOGL,50";
-    ds.writeToFile(dcaTestingFile , dcaContent ,false);
+        "AMZN,50\n" +
+        "MFST,50\n" +
+        "2012-08-10,365,2022-08-10,400,3.0,2\n" +
+        "IBM,50\n" +
+        "GOOGL,50\n" +
+        "2012-08-10,365,null,400,3.0,2\n" +
+        "IBM,50\n" +
+        "GOOGL,50";
+    ds.writeToFile(dcaTestingFile, dcaContent, false);
     Utils.loadPortfolioWithDCA("dcaTesting", dcaTestingFile, stockOrders);
     assertTrue(stockOrders.size() >= 67);
-    for(StockOrder s : stockOrders){
-      System.out.println(s.getStock().getStockTickerName() +" , "
-              + s.getStock().getBuyPrice() + " , "
-              + s.getQuantity() + " , "
-              + s.getStock().getBuyDate() + " , "
-              + s.getCommFee()
+    for (StockOrder s : stockOrders) {
+      System.out.println(s.getStock().getStockTickerName() + " , "
+          + s.getStock().getBuyPrice() + " , "
+          + s.getQuantity() + " , "
+          + s.getStock().getBuyDate() + " , "
+          + s.getCommFee()
       );
     }
   }
@@ -316,25 +318,24 @@ public class UtilsTest {
     int interval = 365;
     Double amount = 200.0;
     Double commFee = 5.0;
-    Map<String , Double> weightage = new HashMap<>();
-    weightage.put("AMZN",50.0);
-    weightage.put("GOOGL",50.0);
+    Map<String, Double> weightage = new HashMap<>();
+    weightage.put("AMZN", 50.0);
+    weightage.put("GOOGL", 50.0);
 
-    Utils.updatePortfolioFromDCA(portfolioName,startDate,endDate,
-            weightage,interval,amount,commFee,stockOrders);
+    Utils.updatePortfolioFromDCA(portfolioName, startDate, endDate,
+        weightage, interval, amount, commFee, stockOrders);
 
     assertTrue(stockOrders.size() > 3);
-    for(StockOrder s : stockOrders){
-      System.out.println(s.getStock().getStockTickerName() +" , "
-              + s.getStock().getBuyPrice() + " , "
-              + s.getQuantity() + " , "
-              + s.getStock().getBuyDate() + " , "
-              + s.getCommFee()
+    for (StockOrder s : stockOrders) {
+      System.out.println(s.getStock().getStockTickerName() + " , "
+          + s.getStock().getBuyPrice() + " , "
+          + s.getQuantity() + " , "
+          + s.getStock().getBuyDate() + " , "
+          + s.getCommFee()
       );
     }
 
   }
-
 
 
 }

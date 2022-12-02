@@ -2,7 +2,6 @@ package model;
 
 import constants.Constants;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.LocalDate;
@@ -66,14 +65,15 @@ public class UserFlexImpl extends AbstractUser implements UserFlex {
     return this.portfolioMap.keySet();
   }
 
-  protected void loadPortfolio(String name) throws Exception{
+  protected void loadPortfolio(String name) throws Exception {
     if (this.portfolioMap.get(name) == null) {
-      if(Utils.dataExists(name+"_DCA","portfolios" + File.separator + "flex")){
-        this.portfolioMap.put(name, new PortfolioFlexInvestImpl(name));
-      }
-      else{
-        this.portfolioMap.put(name, new PortfolioFlexImpl(name));
-      }
+      this.portfolioMap.put(name, new PortfolioFlexInvestImpl(name));
+//      if(Utils.dataExists(name+"_DCA","portfolios" + File.separator + "flex")){
+//        this.portfolioMap.put(name, new PortfolioFlexInvestImpl(name));
+//      }
+//      else{
+//        this.portfolioMap.put(name, new PortfolioFlexImpl(name));
+//      }
 
     }
   }
@@ -81,21 +81,23 @@ public class UserFlexImpl extends AbstractUser implements UserFlex {
   @Override
   public Double getPortfolioValue(String name, String date) throws Exception {
 
-      if (!Utils.dateChecker(date)) {
-        throw new Exception("wrong arguments");
-      }
+    if (!Utils.dateChecker(date)) {
+      throw new Exception("wrong arguments");
+    }
 
-      this.loadPortfolio(name);
-      if(this.isBeforeDate(date,this.portfolioMap.get(name).getCreationDate())) return 0.0;
-      Double portfolioValue;
-      String currentDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
-      if (date.equals(currentDate)) {
-        portfolioValue = this.portfolioMap.get(name).getCurrentValue();
-      } else {
+    this.loadPortfolio(name);
+    if (this.isBeforeDate(date, this.portfolioMap.get(name).getCreationDate())) {
+      return 0.0;
+    }
+    Double portfolioValue;
+    String currentDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
+    if (date.equals(currentDate)) {
+      portfolioValue = this.portfolioMap.get(name).getCurrentValue();
+    } else {
 
-        portfolioValue = this.portfolioMap.get(name).getValueOnDate(date);
-      }
-      return portfolioValue;
+      portfolioValue = this.portfolioMap.get(name).getValueOnDate(date);
+    }
+    return portfolioValue;
   }
 
 
@@ -125,19 +127,19 @@ public class UserFlexImpl extends AbstractUser implements UserFlex {
 
   @Override
   public Map<String, Double> getPortfolioSummary(String name, String date) throws Exception {
-      if (!Utils.dateChecker(date) || this.isBeforeDate(date,
-          this.getPortfolioCreationDate(name))) {
-        throw new Exception("wrong arguments");
-      }
-      this.loadPortfolio(name);
-      return this.portfolioMap.get(name).getPortfolioSummary(date);
+    if (!Utils.dateChecker(date) || this.isBeforeDate(date,
+        this.getPortfolioCreationDate(name))) {
+      throw new Exception("wrong arguments");
     }
+    this.loadPortfolio(name);
+    return this.portfolioMap.get(name).getPortfolioSummary(date);
+  }
 
   @Override
   public String getPortfolioCreationDate(String portfolioName) throws Exception {
 
-      this.loadPortfolio(portfolioName);
-      return this.portfolioMap.get(portfolioName).getCreationDate();
+    this.loadPortfolio(portfolioName);
+    return this.portfolioMap.get(portfolioName).getCreationDate();
 
   }
 
@@ -173,8 +175,8 @@ public class UserFlexImpl extends AbstractUser implements UserFlex {
 
   @Override
   public Double getCostBasis(String portfolioName, String date) throws Exception {
-      this.loadPortfolio(portfolioName);
-      return this.portfolioMap.get(portfolioName).getCostBasis(date);
+    this.loadPortfolio(portfolioName);
+    return this.portfolioMap.get(portfolioName).getCostBasis(date);
 
   }
 
@@ -186,7 +188,7 @@ public class UserFlexImpl extends AbstractUser implements UserFlex {
 
   @Override
   public SimpleEntry<SimpleEntry<List<String>, List<Integer>>, SimpleEntry<Integer, Double>>
-      getGraphData(
+  getGraphData(
       String date1, String date2, String portfolioName) {
     SimpleEntry<List<String>, List<Double>> data;
     try {

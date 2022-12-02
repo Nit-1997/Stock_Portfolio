@@ -6,9 +6,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class UserFlexInvestImpl extends UserFlexImpl implements UserFlexInvest{
+/**
+ * Class for DCA Strategy flexible portfolio user.
+ */
+public class UserFlexInvestImpl extends UserFlexImpl implements UserFlexInvest {
 
-  public UserFlexInvestImpl(){
+  /**
+   * Constructor for this class.
+   */
+  public UserFlexInvestImpl() {
     super();
   }
 
@@ -17,20 +23,18 @@ public class UserFlexInvestImpl extends UserFlexImpl implements UserFlexInvest{
       Map<String, Double> percentage, String date, Double commFee)
       throws Exception {
     this.loadPortfolio(portfolioName);
-    // TODO : add a new function for addMultipleTransactions and add in one go to portfolio stockOrder List
-    boolean flag=false;
-    Map<String,SimpleEntry<String,SimpleEntry<Double,Double>>> map = new HashMap<>();
-    for(String ticker : percentage.keySet()){
-        if(!flag){
-          flag=true;
-        }
-        else{
-          commFee=0.0;
-        }
-        Double qty = amount*percentage.get(ticker)/100;
-        map.put(ticker,new SimpleEntry<>(date,new SimpleEntry<>(qty,commFee)));
-
+    boolean flag = false;
+    Map<String, SimpleEntry<String, SimpleEntry<Double, Double>>> map = new HashMap<>();
+    for (String ticker : percentage.keySet()) {
+      if (!flag) {
+        flag = true;
+      } else {
+        commFee = 0.0;
       }
+      Double qty = amount * percentage.get(ticker) / 100;
+      map.put(ticker, new SimpleEntry<>(date, new SimpleEntry<>(qty, commFee)));
+
+    }
 
     this.portfolioMap.get(portfolioName).addMultipleTransactions(map);
   }
@@ -38,13 +42,14 @@ public class UserFlexInvestImpl extends UserFlexImpl implements UserFlexInvest{
 
   @Override
   public void addPortfolio(String portfolioName, Double amount, Map<String, Double> weightage,
-      String startDate, String endDate,int interval, Double commFee) throws Exception {
+      String startDate, String endDate, int interval, Double commFee) throws Exception {
     try {
       if (!this.isUniqueName(portfolioName)) {
         throw new IOException("Portfolio with the asked name already exist");
       }
-      this.portfolioMap.put(portfolioName, new PortfolioFlexInvestImpl(portfolioName, amount, weightage,
-          startDate, endDate, interval, commFee));
+      this.portfolioMap.put(portfolioName,
+          new PortfolioFlexInvestImpl(portfolioName, amount, weightage,
+              startDate, endDate, interval, commFee));
     } catch (Exception e) {
       if (e.getMessage().equals("Asked stock didn't exist on that date") || e.getMessage()
           .equals("Portfolio with the asked name already exist")) {
@@ -60,19 +65,17 @@ public class UserFlexInvestImpl extends UserFlexImpl implements UserFlexInvest{
 
     this.loadPortfolio(portfolioName);
 
-    PortfolioFlexInvestImpl obj = ((PortfolioFlexInvestImpl) this.portfolioMap.get(portfolioName));
-
-
-    obj.addDCAInvestment(amount,weightage,startDate,endDate,interval,commFee);
-
-
+    this.portfolioMap.get(portfolioName).
+        addDCAInvestment(amount, weightage, startDate, endDate, interval, commFee);
   }
 
 
-  private String latestTransactionDateForStock(String portfolioName, String ticker){
+  private String latestTransactionDateForStock(String portfolioName, String ticker) {
     Map<String, SimpleEntry<String, Double>> map = this.getPortfolioState(portfolioName);
-    for(String stock : map.keySet()){
-      if(stock.equals(ticker)) return map.get(stock).getKey();
+    for (String stock : map.keySet()) {
+      if (stock.equals(ticker)) {
+        return map.get(stock).getKey();
+      }
     }
     return null;
   }
@@ -85,12 +88,12 @@ public class UserFlexInvestImpl extends UserFlexImpl implements UserFlexInvest{
     Double qty = newStock.getValue().getValue().getKey();
     String date = newStock.getValue().getKey();
     String portfolioCreationDate = this.getPortfolioCreationDate(portfolioName);
-    String tempDate = qty>0 ? portfolioCreationDate : this.latestTransactionDateForStock(portfolioName,
-        newStock.getKey());
+    String tempDate = qty > 0 ? portfolioCreationDate : this.latestTransactionDateForStock
+        (portfolioName, newStock.getKey());
 
     try {
       this.loadPortfolio(portfolioName);
-      this.portfolioMap.get(portfolioName).addTransaction(newStock,tempDate);
+      this.portfolioMap.get(portfolioName).addTransaction(newStock, tempDate);
       return true;
     } catch (Exception e) {
       throw e;
@@ -104,7 +107,8 @@ public class UserFlexInvestImpl extends UserFlexImpl implements UserFlexInvest{
     if (!this.graphDateChecker(date1, date2, portfolioName)) {
       return null;
     }
-    SimpleEntry<List<String>, List<Double>> data = this.portfolioMap.get(portfolioName).getPerfDataOverTime(date1, date2);
+    SimpleEntry<List<String>, List<Double>> data = this.portfolioMap.get(portfolioName).
+        getPerfDataOverTime(date1, date2);
     return data;
   }
 

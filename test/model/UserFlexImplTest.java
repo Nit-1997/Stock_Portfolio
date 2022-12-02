@@ -36,7 +36,7 @@ public class UserFlexImplTest {
 
     assertTrue(file.exists());
 
-    assertEquals(file.list((f1, name) -> name.endsWith(".csv")).length,
+    assertEquals(file.list((f1, name) -> name.endsWith(".csv") && !name.contains("_DCA")).length,
         user.getPortfolios().size());
 
     assertNotNull(Constants.STOCK_NAMES);
@@ -96,7 +96,7 @@ public class UserFlexImplTest {
       portfolioValue = user.getPortfolioValue("flexUserTest2",
           LocalDate.parse(portfolioCreationDate).minusDays(10).toString());
     } catch (Exception e) {
-      portfolioValue=null;
+      portfolioValue = null;
     }
     assertEquals(0.0, portfolioValue, 0.01);
   }
@@ -109,9 +109,9 @@ public class UserFlexImplTest {
       portfolioValue = user.getPortfolioValue("flexUserTest2",
           LocalDate.parse(portfolioCreationDate).plusDays(100).toString());
     } catch (Exception e) {
-      portfolioValue=null;
+      portfolioValue = null;
     }
-    assertEquals(6293.75, portfolioValue, 0.01);
+    assertEquals(7596.55, portfolioValue, 0.01);
   }
 
   @Test
@@ -122,9 +122,9 @@ public class UserFlexImplTest {
       portfolioValue = user.getPortfolioValue("flexUserTest2",
           LocalDate.now().toString());
     } catch (Exception e) {
-      portfolioValue=null;
+      portfolioValue = null;
     }
-    assertEquals(15621.65, portfolioValue, 0.01);
+    assertEquals(27403.28357, portfolioValue, 0.01);
   }
 
   @Test
@@ -135,7 +135,7 @@ public class UserFlexImplTest {
       portfolioValue = user.getPortfolioValue("flexUserTest2",
           LocalDate.now().plusDays(1).toString());
     } catch (Exception e) {
-      portfolioValue=null;
+      portfolioValue = null;
     }
     assertNull(portfolioValue);
   }
@@ -147,7 +147,7 @@ public class UserFlexImplTest {
       portfolioValue = user.getPortfolioValue("svhcjk",
           LocalDate.now().plusDays(1).toString());
     } catch (Exception e) {
-      portfolioValue=null;
+      portfolioValue = null;
     }
     assertNull(portfolioValue);
   }
@@ -172,12 +172,12 @@ public class UserFlexImplTest {
       summary = user.getPortfolioSummary("flexUserTest2",
           LocalDate.parse(portfolioCreationDate).plusDays(100).toString());
     } catch (Exception e) {
-      summary=null;
+      summary = null;
     }
     assertEquals(summary.size(), 2);
     assertTrue(summary.containsKey("AAPL"));
     assertTrue(summary.containsKey("INTU"));
-    assertEquals(summary.get("AAPL"), 25.0, 0.01);
+    assertEquals(summary.get("AAPL"), 35.0, 0.01);
     assertEquals(summary.get("INTU"), 30.0, 0.01);
   }
 
@@ -189,15 +189,15 @@ public class UserFlexImplTest {
       summary = user.getPortfolioSummary("flexUserTest2",
           LocalDate.parse(portfolioCreationDate).plusWeeks(400).toString());
     } catch (Exception e) {
-      summary=null;
+      summary = null;
     }
-    assertEquals(summary.size(), 5);
+    assertEquals(summary.size(), 7);
     assertTrue(summary.containsKey("AAPL"));
     assertTrue(summary.containsKey("INTU"));
     assertTrue(summary.containsKey("AMZN"));
-    assertEquals(summary.get("AAPL"), 8.0, 0.01);
-    assertEquals(summary.get("INTU"), 2.0, 0.01);
-    assertEquals(summary.get("MSFT"), 13.0, 0.01);
+    assertEquals(summary.get("AAPL"), 56.0974, 0.01);
+    assertEquals(summary.get("INTU"), 6.331879, 0.01);
+    assertEquals(summary.get("MSFT"), 19.86088, 0.01);
   }
 
   @Test
@@ -207,7 +207,7 @@ public class UserFlexImplTest {
       summary = user.getPortfolioSummary("flexUserTest2",
           LocalDate.now().plusDays(3).toString());
     } catch (Exception e) {
-      summary=null;
+      summary = null;
     }
     assertNull(summary);
   }
@@ -216,19 +216,18 @@ public class UserFlexImplTest {
   public void testGetCurrentPortfolioSummary() throws Exception {
     Map<String, Double> summary = user.getPortfolioSummary("flexUserTest2",
         LocalDate.now().toString());
-    assertEquals(summary.size(), 5);
+    assertEquals(summary.size(), 7);
     assertTrue(summary.containsKey("AAPL"));
     assertTrue(summary.containsKey("INTU"));
     assertTrue(summary.containsKey("MSFT"));
-    assertEquals(summary.get("AAPL"), 8.0, 0.01);
-    assertEquals(summary.get("INTU"), 11.0, 0.01);
-    assertEquals(summary.get("AMZN"), 46.0, 0.01);
+    assertEquals(summary.get("AAPL"), 56.097, 0.01);
+    assertEquals(summary.get("INTU"), 15.3318, 0.01);
+    assertEquals(summary.get("AMZN"), 51.093, 0.01);
   }
 
-  @Test
+  @Test(expected = Exception.class)
   public void testGetPortfolioSummaryWrongPortfolioName() throws Exception {
     Map<String, Double> summary = user.getPortfolioSummary("kfjdvnc", "2016-01-01");
-    assertNull(summary);
   }
 
   @Test
@@ -257,14 +256,14 @@ public class UserFlexImplTest {
     assertTrue(state.containsKey("AAPL"));
     assertTrue(state.containsKey("INTU"));
     assertTrue(state.containsKey("AMZN"));
-    assertEquals(state.get("AAPL").getKey(), "2017-09-09");
-    assertEquals(state.get("MSFT").getKey(), "2018-12-01");
+    assertEquals(state.get("AAPL").getKey(), "2022-01-01");
+    assertEquals(state.get("MSFT").getKey(), "2022-01-01");
     assertEquals(state.get("META").getKey(), "2021-06-25");
     assertEquals(state.get("AMZN").getKey(), "2019-10-24");
-    assertEquals(state.get("AAPL").getValue(), 8.0, 0.01);
-    assertEquals(state.get("MSFT").getValue(), 13.0, 0.01);
+    assertEquals(state.get("AAPL").getValue(), 56.0974, 0.01);
+    assertEquals(state.get("MSFT").getValue(), 19.8608, 0.01);
     assertEquals(state.get("META").getValue(), 22.0, 0.01);
-    assertEquals(state.get("INTU").getValue(), 11.0, 0.01);
+    assertEquals(state.get("INTU").getValue(), 15.3318, 0.01);
   }
 
   @Test
@@ -289,29 +288,29 @@ public class UserFlexImplTest {
     String portfolioCreationDate = user.getPortfolioCreationDate("flexUserTest2");
     Double cost = user.getCostBasis("flexUserTest2",
         LocalDate.parse(portfolioCreationDate).plusDays(100).toString());
-    assertEquals(9415.7, cost, 0.01);
+    assertEquals(10590.1, cost, 0.01);
 
     cost = user.getCostBasis("flexUserTest2",
         LocalDate.parse(portfolioCreationDate).plusWeeks(100).toString());
-    assertEquals(67319.66, cost, 0.01);
+    assertEquals(69826.75, cost, 0.01);
 
     cost = user.getCostBasis("flexUserTest2",
         LocalDate.parse(portfolioCreationDate).plusWeeks(400).toString());
-    assertEquals(200785.58000000002, cost, 0.01);
+    assertEquals(215897.960, cost, 0.01);
 
     cost = user.getCostBasis("flexUserTest2",
         LocalDate.parse(portfolioCreationDate).plusMonths(13).toString());
-    assertEquals(61957.66, cost, 0.01);
+    assertEquals(64464.75, cost, 0.01);
 
     cost = user.getCostBasis("flexUserTest2",
         LocalDate.parse(portfolioCreationDate).plusYears(4).toString());
-    assertEquals(79140.07, cost, 0.01);
+    assertEquals(90795.21, cost, 0.01);
   }
 
   @Test
   public void testGetCurrentCostBasis() throws Exception {
     Double cost = user.getCostBasis("flexUserTest2", LocalDate.now().toString());
-    assertEquals(204207.73, cost, 0.01);
+    assertEquals(219320.11000, cost, 0.01);
   }
 
   @Test
@@ -370,11 +369,11 @@ public class UserFlexImplTest {
         new SimpleEntry<>("GOOG", new SimpleEntry<>("2017-01-01", new SimpleEntry<>(15.0, -3.8))));
   }
 
-  @Test
+  @Test(expected = Exception.class)
   public void testTransactionForPortfolioBuyOldStock() throws Exception {
     boolean val = user.transactionForPortfolio("flexUserTest",
         new SimpleEntry<>("GOOG", new SimpleEntry<>("2018-01-01", new SimpleEntry<>(15.0, 3.8))));
-    assertTrue(val);
+    //    assertTrue(val);
   }
 
   @Test(expected = Exception.class)
@@ -396,11 +395,11 @@ public class UserFlexImplTest {
             new SimpleEntry<>(15.0, 3.8))));
   }
 
-  @Test
+  @Test(expected = Exception.class)
   public void testTransactionForPortfolioSellStock() throws Exception {
     boolean val = user.transactionForPortfolio("flexUserTest",
         new SimpleEntry<>("GOOG", new SimpleEntry<>("2019-01-01", new SimpleEntry<>(-10.0, 2.9))));
-    assertTrue(val);
+
   }
 
   @Test(expected = Exception.class)

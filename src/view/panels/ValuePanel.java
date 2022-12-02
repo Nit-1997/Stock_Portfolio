@@ -32,6 +32,7 @@ public class ValuePanel {
     datePanel.add(date);
 
     dateInput.setColumns(10);
+    dateInput.setText("");
     dateInput.setFont(new Font("Arial", Font.PLAIN, 13));
     dateInput.setSize(190, 20);
     dateInput.setHorizontalAlignment(JLabel.CENTER);

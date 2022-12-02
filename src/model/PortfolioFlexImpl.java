@@ -20,7 +20,9 @@ public class PortfolioFlexImpl implements PortfolioFlex {
   protected List<StockOrder> stockOrders;
   protected String creationDate;
 
-  protected PortfolioFlexImpl(){}
+  protected PortfolioFlexImpl() {
+  }
+
   /**
    * Creator constructor.
    *
@@ -159,13 +161,12 @@ public class PortfolioFlexImpl implements PortfolioFlex {
   public void addMultipleTransactions(
       Map<String, SimpleEntry<String, SimpleEntry<Double, Double>>> entryMap) throws Exception {
     DataSource ds = new DataSourceImpl();
-    for(String ticker: entryMap.keySet()){
+    for (String ticker : entryMap.keySet()) {
 
       this.addTransactionChecker(
           new SimpleEntry<>(ticker, new SimpleEntry<>(entryMap.get(ticker).getKey(),
               new SimpleEntry<>(entryMap.get(ticker).getValue().getKey(),
                   entryMap.get(ticker).getValue().getValue()))), entryMap.get(ticker).getKey());
-
 
       String date = entryMap.get(ticker).getKey();
       Double amount = entryMap.get(ticker).getValue().getKey();
@@ -173,16 +174,16 @@ public class PortfolioFlexImpl implements PortfolioFlex {
 
       Double price = Double.parseDouble(Utils.fetchStockValueByDate(ticker, date, "stock_data"));
 
-      Double qty = amount/price;
+      Double qty = amount / price;
 
-      StockOrder newOrder = new StockOrderImpl(ticker,price,date,qty,commFee);
+      StockOrder newOrder = new StockOrderImpl(ticker, price, date, qty, commFee);
       this.stockOrders.add(newOrder);
     }
     ds.saveToFile(this.name, this.stockOrders, "portfolios" + File.separator + "flex");
   }
 
   protected void addTransactionChecker(SimpleEntry<String, SimpleEntry<String,
-      SimpleEntry<Double, Double>>> newEntry, String paraDate) throws Exception{
+      SimpleEntry<Double, Double>>> newEntry, String paraDate) throws Exception {
     if (newEntry == null || newEntry.getKey() == null || newEntry.getValue() == null ||
         newEntry.getValue().getKey() == null || newEntry.getValue().getValue() == null ||
         newEntry.getValue().getValue().getKey() == null
@@ -203,10 +204,6 @@ public class PortfolioFlexImpl implements PortfolioFlex {
       throw new IllegalArgumentException("cannot sell more than the available stocks");
     }
 
-//    if (state.containsKey(ticker) && stockQuanDouble<0 && Utils.compareDates(date, paraDate) < 0) {
-//      throw new IllegalArgumentException(" Date before last transaction for selling stock");
-//    }
-
     if (!Utils.dataExists(ticker.toUpperCase(), "stock_data")) {
       Utils.loadStockData(ticker.toUpperCase(), "stock_data");
     }
@@ -226,14 +223,15 @@ public class PortfolioFlexImpl implements PortfolioFlex {
   protected void addTransactionCheckerSpecialized(SimpleEntry<String, SimpleEntry<String,
       SimpleEntry<Double, Double>>> newEntry, String paraDate) throws Exception {
 
-
     String ticker = newEntry.getKey();
     Map<String, SimpleEntry<String, Double>> state = this.getLatestState();
 
-    String dateCompare = paraDate.equals(LocalDate.now().toString()) ? state.get(ticker).getKey() : paraDate;
+    String dateCompare =
+        paraDate.equals(LocalDate.now().toString()) ? state.get(ticker).getKey() : paraDate;
     String date = newEntry.getValue().getKey();
     double stockQuanDouble = newEntry.getValue().getValue().getKey();
-    if (state.containsKey(ticker) && stockQuanDouble>0 && Utils.compareDates(date,dateCompare ) < 0) {
+    if (state.containsKey(ticker) && stockQuanDouble > 0
+        && Utils.compareDates(date, dateCompare) < 0) {
       throw new IllegalArgumentException(" Date before last transaction for asked stock");
     }
 
@@ -251,7 +249,7 @@ public class PortfolioFlexImpl implements PortfolioFlex {
   }
 
   @Override
-  public Double getValueOnDate(String date) throws Exception  {
+  public Double getValueOnDate(String date) throws Exception {
     double totalVal = 0;
     Map<String, Double> summary = this.getPortfolioSummary(date);
     for (String ticker : summary.keySet()) {
@@ -263,7 +261,7 @@ public class PortfolioFlexImpl implements PortfolioFlex {
   }
 
   @Override
-  public Map<String, Double> getPortfolioSummary(String date)  throws Exception {
+  public Map<String, Double> getPortfolioSummary(String date) throws Exception {
     Map<String, Double> stateMap = new HashMap<>();
 
     for (StockOrder s : this.stockOrders) {

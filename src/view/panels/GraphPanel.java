@@ -35,7 +35,7 @@ public class GraphPanel extends JFrame {
     DefaultCategoryDataset dataset = createDataset(labels, dataPoints);
 
     JFreeChart chart = ChartFactory.createLineChart("Portfolio Performance",
-        "Date", "Value of Portfolio", dataset,
+        "Date", "Value of Portfolio($)", dataset,
         PlotOrientation.VERTICAL, true, true, false);
     chart.getCategoryPlot().getDomainAxis().setCategoryLabelPositions(CategoryLabelPositions.UP_45);
 

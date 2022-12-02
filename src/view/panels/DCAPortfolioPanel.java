@@ -291,8 +291,6 @@ public class DCAPortfolioPanel {
       dcaStockMap.put(stock.toUpperCase(), percent);
     }
 
-    System.out.println(dcaStockMap);
-
     return true;
   }
 

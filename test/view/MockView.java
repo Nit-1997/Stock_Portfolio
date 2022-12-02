@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Map;
 import view.panels.IPanel;
 
+/**
+ * Mock view for controller testing.
+ */
 public class MockView implements ViewGUI{
 
   @Override

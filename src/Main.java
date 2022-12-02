@@ -24,6 +24,7 @@ public class Main {
     StockController controller = new WelcomeController();
     controller.start();
 
+
 //    ViewGUI obj = new MainFrameGUIView();
 //    Map<String, Double> investMap = new HashMap<>();
 //    investMap.put("MSFT",45.0);
