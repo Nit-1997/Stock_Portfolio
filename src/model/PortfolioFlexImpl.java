@@ -174,15 +174,15 @@ public class PortfolioFlexImpl implements PortfolioFlex {
       this.addTransactionChecker(
               new SimpleEntry<>(ticker, new SimpleEntry<>(entryMap.get(ticker).getKey(),
                       new SimpleEntry<>(entryMap.get(ticker).getValue().getKey(),
-                              entryMap.get(ticker).getValue().getValue())))
-              , entryMap.get(ticker).getKey());
+                              entryMap.get(ticker).getValue().getValue()))),
+              entryMap.get(ticker).getKey());
 
       String date = entryMap.get(ticker).getKey();
       Double amount = entryMap.get(ticker).getValue().getKey();
       Double commFee = entryMap.get(ticker).getValue().getValue();
 
-      Double price = Double.parseDouble(Utils.fetchStockValueByDate(ticker
-              , date, "stock_data"));
+      Double price = Double.parseDouble(Utils.fetchStockValueByDate(ticker,
+              date, "stock_data"));
 
       Double qty = amount / price;
 

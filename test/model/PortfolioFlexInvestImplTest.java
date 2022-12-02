@@ -83,31 +83,14 @@ public class PortfolioFlexInvestImplTest {
     p = new PortfolioFlexInvestImpl(portfolioName, pojo.amount,
             pojo.stockComposition, pojo.start, pojo.end, pojo.interval, pojo.commFee);
 
-    String[] dates = {
-            "2010-08-10",
-            "2011-08-10",
-            "2012-08-10",
-            "2013-08-10",
-            "2014-08-10",
-            "2015-08-10",
-            "2016-08-10",
-            "2017-08-10",
-            "2018-08-10",
-            "2019-08-10",
-    };
+    String[] dates = {"2010-08-10", "2011-08-10", "2012-08-10",
+            "2013-08-10", "2014-08-10", "2015-08-10",
+            "2016-08-10", "2017-08-10", "2018-08-10",
+            "2019-08-10"};
 
-    double[] expectedCostBasis = {
-            0.0,
-            0.0,
-            22.0,
-            22.0,
-            44.0,
-            88.0,
-            110.0,
-            132.0,
-            154.0,
-            176.0
-    };
+    double[] expectedCostBasis = {0.0,
+            0.0, 22.0, 22.0, 44.0, 88.0,
+            110.0, 132.0, 154.0, 176.0};
     int i = 0;
     for (String date : dates) {
       double costBasis = p.getCostBasis(date);
@@ -122,31 +105,14 @@ public class PortfolioFlexInvestImplTest {
     //create the portfolio with DCA strategy
     p = new PortfolioFlexInvestImpl(portfolioName, pojo.amount,
             pojo.stockComposition, pojo.start, pojo.end, pojo.interval, pojo.commFee);
-    String[] dates = {
-            "2010-08-10",
-            "2011-08-10",
-            "2012-08-10",
-            "2013-08-10",
-            "2014-08-10",
-            "2015-08-10",
-            "2016-08-10",
-            "2017-08-10",
-            "2018-08-10",
-            "2019-08-10",
-    };
+    String[] dates = {"2010-08-10", "2011-08-10", "2012-08-10",
+            "2013-08-10", "2014-08-10", "2015-08-10",
+            "2016-08-10", "2017-08-10", "2018-08-10",
+            "2019-08-10"};
 
-    double[] expectedValues = {
-            0.0,
-            0.0,
-            20.0,
-            27.62,
-            48.06,
-            115.12,
-            170.02,
-            216.28,
-            405.81,
-            435.73
-    };
+    double[] expectedValues = {0.0, 0.0, 20.0, 27.62,
+            48.06, 115.12, 170.02, 216.28, 405.81,
+            435.73};
     int i = 0;
     for (String date : dates) {
       double value = p.getValueOnDate(date);
@@ -161,11 +127,9 @@ public class PortfolioFlexInvestImplTest {
     //create the portfolio with DCA strategy
     p = new PortfolioFlexInvestImpl(portfolioName, pojo.amount,
             pojo.stockComposition, pojo.start, pojo.end, pojo.interval, pojo.commFee);
-    String[] dates = {
-            "2010-08-10",
+    String[] dates = {"2010-08-10",
             "2011-08-10",
-            "2012-08-10",
-    };
+            "2012-08-10"};
 
     int i = 0;
     for (String date : dates) {

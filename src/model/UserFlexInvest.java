@@ -36,7 +36,8 @@ public interface UserFlexInvest extends UserFlex {
    * @throws Exception if there is any error.
    */
   void addPortfolio(String portfolioName, Double amount, Map<String, Double> weightage,
-                    String startDate, String endDate, int interval, Double commFee) throws Exception;
+                    String startDate, String endDate, int interval, Double commFee)
+          throws Exception;
 
   /**
    * Applying DCA strategy on existing portfolio.

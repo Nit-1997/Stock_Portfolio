@@ -19,7 +19,7 @@ public class FlexInvestMockModel extends FlexMockModel implements UserFlexInvest
 
   @Override
   public void investMoney(String portfolioName, Double amount, Map<String, Double> percentage,
-      String date, Double commFee) throws Exception {
+                          String date, Double commFee) throws Exception {
     log.append(portfolioName + " " + amount + " " + date + " " + commFee + "\n");
     for (String stock : percentage.keySet()) {
       log.append(stock + " " + percentage.get(stock) + "\n");
@@ -28,9 +28,10 @@ public class FlexInvestMockModel extends FlexMockModel implements UserFlexInvest
 
   @Override
   public void addPortfolio(String portfolioName, Double amount, Map<String, Double> weightage,
-      String startDate, String endDate, int interval, Double commFee) throws Exception {
+                           String startDate, String endDate, int interval, Double commFee)
+          throws Exception {
     log.append(portfolioName + " " + amount + " " + startDate + " " + endDate + " " + interval + " "
-        + commFee + "\n");
+            + commFee + "\n");
     for (String stock : weightage.keySet()) {
       log.append(stock + " " + weightage.get(stock) + "\n");
     }
@@ -38,17 +39,19 @@ public class FlexInvestMockModel extends FlexMockModel implements UserFlexInvest
 
   @Override
   public void investThroughDCA(String portfolioName, Double amount, Map<String, Double> weightage,
-                               String startDate, String endDate, int interval, Double commFee) throws Exception {
+                               String startDate, String endDate, int interval, Double commFee)
+          throws Exception {
     log.append(portfolioName + " " + amount + " " + startDate + " " + endDate + " " + interval + " "
-        + commFee + "\n");
+            + commFee + "\n");
     for (String stock : weightage.keySet()) {
       log.append(stock + " " + weightage.get(stock) + "\n");
     }
   }
 
   @Override
-  public SimpleEntry<List<String>, List<Double>> getGraphDataGUI(String date1, String date2,
-      String portfolioName) throws Exception {
+  public SimpleEntry<List<String>, List<Double>> getGraphDataGUI(String date1,
+                                                                 String date2,
+                                                                 String portfolioName) {
     log.append(portfolioName + " " + date1 + " " + date2);
     List<String> labels = new ArrayList<>();
     labels.add("label1");

@@ -25,7 +25,8 @@ public class PortfolioFlexInvestImpl extends PortfolioFlexImpl {
    * @throws Exception if there is any error.
    */
   public PortfolioFlexInvestImpl(String portfolioName, Double amount, Map<String, Double> weightage,
-                                 String startDate, String endDate, Integer interval, Double commFee) throws Exception {
+                                 String startDate, String endDate, Integer interval, Double commFee)
+          throws Exception {
     this.name = portfolioName;
     this.creationDate = startDate;
 
@@ -75,8 +76,8 @@ public class PortfolioFlexInvestImpl extends PortfolioFlexImpl {
     }
     String portfolioCreationDate = null;
     for (StockOrder s : this.stockOrders) {
-      if (!Utils.dataExists(s.getStock().getStockTickerName().toUpperCase()
-              , "stock_data")) {
+      if (!Utils.dataExists(s.getStock().getStockTickerName().toUpperCase(),
+              "stock_data")) {
         Utils.loadStockData(s.getStock().getStockTickerName().toUpperCase(),
                 "stock_data");
       }
