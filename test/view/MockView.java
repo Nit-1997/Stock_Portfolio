@@ -9,7 +9,7 @@ import view.panels.IPanel;
 /**
  * Mock view for controller testing.
  */
-public class MockView implements ViewGUI{
+public class MockView implements ViewGUI {
 
   @Override
   public void addActionListener(ActionListener listener) {

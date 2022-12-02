@@ -104,7 +104,8 @@ public class UserFlexImpl extends AbstractUser implements UserFlex {
 
   @Override
   public boolean addPortfolio(String name,
-                              Map<String, Map<String, SimpleEntry<Double, Double>>> stocksMap) throws Exception {
+                              Map<String, Map<String, SimpleEntry<Double, Double>>> stocksMap)
+          throws Exception {
     try {
       if (!this.isUniqueName(name)) {
         throw new IOException("Portfolio with the asked name already exist");
@@ -160,7 +161,8 @@ public class UserFlexImpl extends AbstractUser implements UserFlex {
 
   @Override
   public boolean transactionForPortfolio(String portfolioName,
-                                         SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newStock)
+                                         SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double,
+                                                 Double>>> newStock)
           throws Exception {
     this.loadPortfolio(portfolioName);
     this.portfolioMap.get(portfolioName).addTransaction(newStock, LocalDate.now().toString());
@@ -183,7 +185,7 @@ public class UserFlexImpl extends AbstractUser implements UserFlex {
 
   @Override
   public SimpleEntry<SimpleEntry<List<String>, List<Integer>>, SimpleEntry<Integer, Double>>
-  getGraphData(String date1, String date2, String portfolioName) {
+      getGraphData(String date1, String date2, String portfolioName) {
     SimpleEntry<List<String>, List<Double>> data;
     try {
       this.loadPortfolio(portfolioName);

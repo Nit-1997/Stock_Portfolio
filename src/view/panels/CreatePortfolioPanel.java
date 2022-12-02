@@ -23,7 +23,7 @@ public class CreatePortfolioPanel extends JPanel implements IPanel {
   JPanel form = null;
 
   JButton normalFormSubmitButton;
-  JButton DCAFormSubmitButton;
+  JButton dcaFormSubmitButton;
   JButton normalFormAddMoreButton;
 
   JTextField portNameInput;
@@ -59,8 +59,8 @@ public class CreatePortfolioPanel extends JPanel implements IPanel {
     this.normalFormAddMoreButton = new JButton("Add more stocks");
     this.normalFormAddMoreButton.setActionCommand("Normal Form Add More Button");
 
-    this.DCAFormSubmitButton = new JButton("Submit");
-    this.DCAFormSubmitButton.setActionCommand("DCA Form Submit");
+    this.dcaFormSubmitButton = new JButton("Submit");
+    this.dcaFormSubmitButton.setActionCommand("DCA Form Submit");
 
     this.portNameInput = new JTextField();
     this.stockInput = new JTextField(10);
@@ -119,7 +119,7 @@ public class CreatePortfolioPanel extends JPanel implements IPanel {
       form = this.dcaPortfolioPanel.printDCACreationMenu(this.dcaStockMap, null, this.form,
           this.portNameInput, this.amountInput, this.startDateInput, this.endDateInput,
           this.intervalInput,
-          this.commFeeInput, this.stockInput, this.percentageInput, this.DCAFormSubmitButton,
+          this.commFeeInput, this.stockInput, this.percentageInput, this.dcaFormSubmitButton,
           this.confirmationMsg);
 
       this.add(form, BorderLayout.CENTER);
@@ -172,7 +172,7 @@ public class CreatePortfolioPanel extends JPanel implements IPanel {
   @Override
   public void addActionListener(ActionListener listener) {
     normalFormSubmitButton.addActionListener(listener);
-    DCAFormSubmitButton.addActionListener(listener);
+    dcaFormSubmitButton.addActionListener(listener);
     normalFormAddMoreButton.addActionListener(listener);
   }
 
@@ -186,7 +186,7 @@ public class CreatePortfolioPanel extends JPanel implements IPanel {
       form = this.dcaPortfolioPanel.printDCACreationMenu(this.dcaStockMap, null, this.form,
           this.portNameInput, this.amountInput, this.startDateInput, this.endDateInput,
           this.intervalInput,
-          this.commFeeInput, this.stockInput, this.percentageInput, this.DCAFormSubmitButton,
+          this.commFeeInput, this.stockInput, this.percentageInput, this.dcaFormSubmitButton,
           this.confirmationMsg);
 
       this.add(form, BorderLayout.CENTER);

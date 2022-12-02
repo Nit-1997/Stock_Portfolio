@@ -50,8 +50,8 @@ public class Utils {
   public static Set<String> loadStockNames(String stockRepoName, String stockFileName)
           throws IOException {
     String portfolioDirectory = Paths.get(stockRepoName).toAbsolutePath().toString();
-    File[] stockFiles = new File(portfolioDirectory).listFiles(
-            (f1, name) -> name.equals(stockFileName));
+    File[] stockFiles = new File(portfolioDirectory)
+            .listFiles((f1, name) -> name.equals(stockFileName));
     if (stockFiles == null) {
       throw new IOException("Could not find the directory");
     }
@@ -477,7 +477,11 @@ public class Utils {
    * @throws Exception if dates are not valid.
    */
   public static AbstractMap.SimpleEntry<List<String>, List<Double>> getScaledPerfData(String date1,
-                                                                                      String date2, String type, PortfolioFlex p) throws Exception {
+                                                                                      String date2,
+                                                                                      String type,
+                                                                                      PortfolioFlex
+                                                                                              p)
+          throws Exception {
     List<Double> datapoints = new ArrayList<>();
     List<String> labels = new ArrayList<>();
     LocalDate start = LocalDate.parse(date1);
@@ -493,14 +497,16 @@ public class Utils {
       case "weekly":
         while (!start.isAfter(end)) {
           String week =
-                  start.getMonth().toString().substring(0, 3) + " Week " + (start.getDayOfMonth() / 7
+                  start.getMonth().toString().substring(0, 3)
+                          + " Week " + (start.getDayOfMonth() / 7
                           + 1);
           labels.add(week);
           datapoints.add(p.getValueOnDate(start.toString()));
           start = start.plusWeeks(1);
         }
         labels.add(
-                end.getMonth().toString().substring(0, 3) + " Week " + (end.getDayOfMonth() / 7 + 1));
+                end.getMonth().toString().substring(0, 3)
+                        + " Week " + (end.getDayOfMonth() / 7 + 1));
         datapoints.add(p.getValueOnDate(end.toString()));
         break;
       case "monthly":

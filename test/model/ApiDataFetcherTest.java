@@ -59,8 +59,21 @@ public class ApiDataFetcherTest {
 
   @Test
   public void testAlphaVantageApiHighFrequency() throws Exception {
-    String[] tickers = {"AAPL", "CSCO", "AAPL", "CSCO", "AAPL", "CSCO", "AAPL", "CSCO", "AAPL",
-        "CSCO", "AAPL", "CSCO"};
+
+    String[] tickers = {
+        "AAPL",
+        "CSCO",
+        "AAPL",
+        "CSCO",
+        "AAPL",
+        "CSCO",
+        "AAPL",
+        "CSCO",
+        "AAPL",
+        "CSCO",
+        "AAPL",
+        "CSCO"};
+
     for (String ticker : tickers) {
       String data = client.fetchStockDataBySymbolAlphaVantage(ticker);
       assertNotEquals(0, data.length());
