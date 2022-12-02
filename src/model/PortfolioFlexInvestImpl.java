@@ -40,9 +40,8 @@ public class PortfolioFlexInvestImpl extends PortfolioFlexImpl {
       }
     }
 
-
-    Utils.updatePortfolioFromDCA(portfolioName,startDate,endDate,weightage,
-        interval,amount,commFee,this.stockOrders);
+    Utils.updatePortfolioFromDCA(portfolioName, startDate, endDate, weightage,
+        interval, amount, commFee, this.stockOrders);
 
     DataSource ds = new DataSourceImpl();
     if (this.stockOrders.size() != 0) {
@@ -75,8 +74,10 @@ public class PortfolioFlexInvestImpl extends PortfolioFlexImpl {
     }
     String portfolioCreationDate = null;
     for (StockOrder s : this.stockOrders) {
-      if (!Utils.dataExists(s.getStock().getStockTickerName().toUpperCase(), "stock_data")) {
-        Utils.loadStockData(s.getStock().getStockTickerName().toUpperCase(), "stock_data");
+      if (!Utils.dataExists(s.getStock().getStockTickerName().toUpperCase(), "stock_data"))
+      {
+        Utils.loadStockData(s.getStock().getStockTickerName().toUpperCase(),
+            "stock_data");
       }
       if (portfolioCreationDate == null) {
         portfolioCreationDate = s.getStock().getBuyDate();
@@ -89,11 +90,11 @@ public class PortfolioFlexInvestImpl extends PortfolioFlexImpl {
     }
     this.creationDate = portfolioCreationDate;
 
-
-
-    if (Utils.dataExists(portfolioName+"_DCA", "portfolios" + File.separator + "flex")){
-      File helper = ds.getFileByName(portfolioName+"_DCA","portfolios" + File.separator + "flex");
-      Utils.loadPortfolioWithDCA(helper , this.stockOrders);
+    if (Utils.dataExists(portfolioName + "_DCA", "portfolios" + File.separator +
+        "flex")) {
+      File helper = ds.getFileByName(portfolioName + "_DCA",
+          "portfolios" + File.separator + "flex");
+      Utils.loadPortfolioWithDCA(helper, this.stockOrders);
     }
   }
 
@@ -101,10 +102,8 @@ public class PortfolioFlexInvestImpl extends PortfolioFlexImpl {
   public void addDCAInvestment(Double amount, Map<String, Double> weightage, String startDate,
       String endDate, int interval, Double commFee) throws Exception {
 
-
-    Utils.updatePortfolioFromDCA(this.name,startDate,endDate,weightage,
-        interval,amount,commFee,this.stockOrders);
-
+    this.stockOrders = Utils.updatePortfolioFromDCA(this.name, startDate, endDate, weightage,
+        interval, amount, commFee, this.stockOrders);
 
     new DataSourceImpl().saveToFile(this.name, this.stockOrders,
         "portfolios" + File.separator + "flex");

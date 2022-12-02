@@ -96,6 +96,7 @@ public class SellStockPanel {
 
     confirmationMsg.setFont(new Font("Arial", Font.PLAIN, 10));
     confirmationMsg.setText("");
+    confirmationMsg.setSize(300, 20);
     confirmationMsg.setHorizontalAlignment(JLabel.CENTER);
     form.add(confirmationMsg);
     form.setBackground(Color.decode("#B8DEFF"));
