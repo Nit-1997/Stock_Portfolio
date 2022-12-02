@@ -715,12 +715,14 @@ public class Utils {
     if (investmentPlan.end != null && lastDate == LocalDate.parse(investmentPlan.end)) {
       if (priceObj == null) {
         // did not find data
-        // update the stringBuilder and return
+        // update the stringBuilder and
+        investmentPlan.start=start.toString();
         return buildDcaEntry(investmentPlan);
       } else {
         return null;
       }
     } else if (lastDate == now) {
+      investmentPlan.start=start.toString();
       return buildDcaEntry(investmentPlan);
     }
     return null;
@@ -814,12 +816,12 @@ public class Utils {
     }
     if (endDate != null && lastDate == LocalDate.parse(endDate)) {
       if (priceObj == null) {
-        dcaUpdateHelper(true, ds, portfolioName, startDate, endDate,
+        dcaUpdateHelper(true, ds, portfolioName, start.toString(), endDate,
                 amount, commFee, interval, weightage);
 
       }
     } else if (lastDate == now) {
-      dcaUpdateHelper(true, ds, portfolioName, startDate, endDate,
+      dcaUpdateHelper(true, ds, portfolioName, start.toString(), endDate,
               amount, commFee, interval, weightage);
     }
     return stockOrders;

@@ -42,6 +42,9 @@ public class PortfolioInvestmentPlanPojo {
     this.stockComposition = stockComposition;
   }
 
+  /**
+   * Default Constructor.
+   */
   public PortfolioInvestmentPlanPojo(){
 
   }

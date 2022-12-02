@@ -190,7 +190,7 @@ public class DCAPortfolioPanel {
 
     confirmationMsg.setText("");
     confirmationMsg.setFont(new Font("Arial", Font.PLAIN, 15));
-    confirmationMsg.setSize(250, 20);
+    confirmationMsg.setSize(400, 20);
     confirmationMsg.setLocation(170, 310);
     form.add(confirmationMsg);
 

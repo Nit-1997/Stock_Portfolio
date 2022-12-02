@@ -108,9 +108,10 @@ public class FlexInvestControllerTest {
 
     String str = new DCAPortfolio(data, map, model, "exist").execute();
     assertEquals("Invested through DCA", str);
-    assertEquals("checking the date 2015-01-012016-01-01"
-        + " is before date 2015-01-01Name of ticker is Stock1Name of ticker is Stock2Name of ticker"
-        + " is Stock3controllerTest 100.0 2015-01-01 2016-01-01 30 2.9\n"
+    assertEquals("checking the date 2015-01-01get portfolio creation date for "
+        + "controllerTest2015-01-01 is before date 2011-02-152016-01-01 is before date "
+        + "2015-01-01Name of ticker is Stock1Name of ticker is Stock2Name of ticker is "
+        + "Stock3controllerTest 100.0 2015-01-01 2016-01-01 30 2.9\n"
         + "Stock1 50.0\n"
         + "Stock2 20.0\n"
         + "Stock3 30.0\n", this.log.toString());
