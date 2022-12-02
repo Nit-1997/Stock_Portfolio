@@ -1,22 +1,21 @@
 package model;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
+import org.junit.Before;
+import org.junit.Test;
 import utils.Utils;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Junit tests for portfolioFlexInvestImpl.
  */
 public class PortfolioFlexInvestImplTest {
+
   String portfolioName = "investImplTesting";
   PortfolioFlex p;
 
@@ -26,13 +25,13 @@ public class PortfolioFlexInvestImplTest {
     if (Utils.dataExists(portfolioName, "portfolios" + File.separator + "flex")) {
       //delete
       ds.getFileByName(portfolioName, "portfolios"
-              + File.separator + "flex").delete();
+          + File.separator + "flex").delete();
     }
     if (Utils.dataExists(portfolioName + "_DCA", "portfolios"
-            + File.separator + "flex")) {
+        + File.separator + "flex")) {
       //delete
       ds.getFileByName(portfolioName + "_DCA", "portfolios"
-              + File.separator + "flex").delete();
+          + File.separator + "flex").delete();
     }
   }
 
@@ -55,12 +54,12 @@ public class PortfolioFlexInvestImplTest {
     PortfolioInvestmentPlanPojo pojo = buildPojo();
     //create the portfolio with DCA strategy
     p = new PortfolioFlexInvestImpl(portfolioName, pojo.amount,
-            pojo.stockComposition, pojo.start, pojo.end, pojo.interval, pojo.commFee);
+        pojo.stockComposition, pojo.start, pojo.end, pojo.interval, pojo.commFee);
     //check if portfolio file got created
     assertTrue(Utils.dataExists(portfolioName, "portfolios" + File.separator + "flex"));
     //check if dca file got created
     assertTrue(Utils.dataExists(portfolioName + "_DCA", "portfolios"
-            + File.separator + "flex"));
+        + File.separator + "flex"));
   }
 
   @Test
@@ -68,7 +67,7 @@ public class PortfolioFlexInvestImplTest {
     PortfolioInvestmentPlanPojo pojo = buildPojo();
     //create the portfolio with DCA strategy
     p = new PortfolioFlexInvestImpl(portfolioName, pojo.amount,
-            pojo.stockComposition, pojo.start, pojo.end, pojo.interval, pojo.commFee);
+        pojo.stockComposition, pojo.start, pojo.end, pojo.interval, pojo.commFee);
 
     double costBasis = p.getCostBasis("2014-08-10");
 
@@ -81,32 +80,32 @@ public class PortfolioFlexInvestImplTest {
     PortfolioInvestmentPlanPojo pojo = buildPojo();
     //create the portfolio with DCA strategy
     p = new PortfolioFlexInvestImpl(portfolioName, pojo.amount,
-            pojo.stockComposition, pojo.start, pojo.end, pojo.interval, pojo.commFee);
+        pojo.stockComposition, pojo.start, pojo.end, pojo.interval, pojo.commFee);
 
     String[] dates = {
-            "2010-08-10",
-            "2011-08-10",
-            "2012-08-10",
-            "2013-08-10",
-            "2014-08-10",
-            "2015-08-10",
-            "2016-08-10",
-            "2017-08-10",
-            "2018-08-10",
-            "2019-08-10",
+        "2010-08-10",
+        "2011-08-10",
+        "2012-08-10",
+        "2013-08-10",
+        "2014-08-10",
+        "2015-08-10",
+        "2016-08-10",
+        "2017-08-10",
+        "2018-08-10",
+        "2019-08-10",
     };
 
     double[] expectedCostBasis = {
-            0.0,
-            0.0,
-            22.0,
-            22.0,
-            44.0,
-            88.0,
-            110.0,
-            132.0,
-            154.0,
-            176.0
+        0.0,
+        0.0,
+        22.0,
+        22.0,
+        44.0,
+        88.0,
+        110.0,
+        132.0,
+        154.0,
+        176.0
     };
     int i = 0;
     for (String date : dates) {
@@ -121,31 +120,31 @@ public class PortfolioFlexInvestImplTest {
     PortfolioInvestmentPlanPojo pojo = buildPojo();
     //create the portfolio with DCA strategy
     p = new PortfolioFlexInvestImpl(portfolioName, pojo.amount,
-            pojo.stockComposition, pojo.start, pojo.end, pojo.interval, pojo.commFee);
+        pojo.stockComposition, pojo.start, pojo.end, pojo.interval, pojo.commFee);
     String[] dates = {
-            "2010-08-10",
-            "2011-08-10",
-            "2012-08-10",
-            "2013-08-10",
-            "2014-08-10",
-            "2015-08-10",
-            "2016-08-10",
-            "2017-08-10",
-            "2018-08-10",
-            "2019-08-10",
+        "2010-08-10",
+        "2011-08-10",
+        "2012-08-10",
+        "2013-08-10",
+        "2014-08-10",
+        "2015-08-10",
+        "2016-08-10",
+        "2017-08-10",
+        "2018-08-10",
+        "2019-08-10",
     };
 
     double[] expectedValues = {
-            0.0,
-            0.0,
-            20.0,
-            27.62,
-            48.06,
-            115.12,
-            170.02,
-            216.28,
-            405.81,
-            435.73
+        0.0,
+        0.0,
+        20.0,
+        27.62,
+        48.06,
+        115.12,
+        170.02,
+        216.28,
+        405.81,
+        435.73
     };
     int i = 0;
     for (String date : dates) {
@@ -160,11 +159,11 @@ public class PortfolioFlexInvestImplTest {
     PortfolioInvestmentPlanPojo pojo = buildPojo();
     //create the portfolio with DCA strategy
     p = new PortfolioFlexInvestImpl(portfolioName, pojo.amount,
-            pojo.stockComposition, pojo.start, pojo.end, pojo.interval, pojo.commFee);
+        pojo.stockComposition, pojo.start, pojo.end, pojo.interval, pojo.commFee);
     String[] dates = {
-            "2010-08-10",
-            "2011-08-10",
-            "2012-08-10",
+        "2010-08-10",
+        "2011-08-10",
+        "2012-08-10",
     };
 
     int i = 0;
