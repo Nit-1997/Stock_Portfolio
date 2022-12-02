@@ -158,7 +158,7 @@ public class UtilsTest {
     assertNotEquals("-1", v);
   }
 
-  @Test
+  @Test(expected = Exception.class)
   public void testStockValueByDateInvalidDate() throws Exception {
     Utils.loadStockData("CSCO", "stock_data");
     String v = Utils.fetchStockValueByDate("CSCO", "202cx-10-28", "stock_data");
@@ -175,6 +175,9 @@ public class UtilsTest {
 
   @Test
   public void testFetchStockValueByDateFutureNotFound() throws Exception {
+    if (!Utils.dataExists("CSCO", "stock_data")) {
+      Utils.loadStockData("CSCO", "stock_data");
+    }
     AbstractMap.SimpleEntry<String, Double> res = Utils.fetchStockValueByDateFuture("CSCO",
         "2022-11-27", "stock_data");
     System.out.println(res);

@@ -65,6 +65,7 @@ public class Utils {
     }
     myReader.close();
     if (parsedStocks.size() != Constants.TOTAL_HANDLED_STOCKS) {
+      System.out.println(parsedStocks.size());
       throw new IOException("Stock Name file corrupted");
     }
     return parsedStocks;
