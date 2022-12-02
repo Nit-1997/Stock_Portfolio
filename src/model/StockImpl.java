@@ -3,6 +3,7 @@ package model;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
 import utils.Utils;
 
 /**
@@ -28,7 +29,14 @@ class StockImpl implements Stock {
     this.buyDate = date;
   }
 
-  public StockImpl(String ticker , String date) throws IOException {
+  /**
+   * Constructor to create object of stock.
+   *
+   * @param ticker ticker symbol
+   * @param date   date
+   * @throws IOException during IO operations
+   */
+  public StockImpl(String ticker, String date) throws IOException {
     if (ticker == null || date == null) {
       throw new IOException("Arguments cannot be Null");
     }

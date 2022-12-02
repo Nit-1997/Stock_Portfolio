@@ -54,5 +54,9 @@ public interface StockOrder {
    */
   double getQuantity();
 
+  /**
+   * Used to fetch the commision fee for the stock order.
+   * @return commision fee
+   */
   Double getCommFee();
 }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import utils.Utils;
 
 /**
@@ -31,7 +32,7 @@ public class PortfolioFlexImpl implements PortfolioFlex {
    * @throws Exception while reading/writing data dump
    */
   public PortfolioFlexImpl(Map<String, Map<String, SimpleEntry<Double, Double>>> stocksMap,
-      String name) throws Exception {
+                           String name) throws Exception {
     DataSource ds = new DataSourceImpl();
     if (stocksMap == null || name == null) {
       throw new IllegalArgumentException("Null arguments to portfolio constructor");
@@ -51,8 +52,8 @@ public class PortfolioFlexImpl implements PortfolioFlex {
       }
       for (String k : stocksMap.get(key).keySet()) {
         if (k == null || stocksMap.get(key).get(k) == null
-            || stocksMap.get(key).get(k).getKey() == null ||
-            stocksMap.get(key).get(k).getValue() == null) {
+                || stocksMap.get(key).get(k).getKey() == null ||
+                stocksMap.get(key).get(k).getValue() == null) {
           throw new IllegalArgumentException("Null arguments to portfolio constructor");
         }
         if (portfolioCreationDate == null) {
@@ -64,7 +65,7 @@ public class PortfolioFlexImpl implements PortfolioFlex {
           }
         }
         this.stockOrders.add(new StockOrderImpl(key, stocksMap.get(key).get(k).getKey(), k,
-            stocksMap.get(key).get(k).getValue()));
+                stocksMap.get(key).get(k).getValue()));
       }
     }
     this.creationDate = portfolioCreationDate;
@@ -84,7 +85,7 @@ public class PortfolioFlexImpl implements PortfolioFlex {
       throw new IllegalArgumentException("Null arguments to portfolio constructor");
     }
     List<StockOrder> tempStockOrders = Utils.loadPortfolioData(portfolioName,
-        "portfolios" + File.separator + "flex");
+            "portfolios" + File.separator + "flex");
     if (tempStockOrders == null || !Utils.flexPortfolioValidator(tempStockOrders)) {
       this.stockOrders = null;
     } else {
@@ -144,29 +145,29 @@ public class PortfolioFlexImpl implements PortfolioFlex {
 
   @Override
   public void addTransaction(
-      SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newEntry, String date)
-      throws Exception {
+          SimpleEntry<String, SimpleEntry<String, SimpleEntry<Double, Double>>> newEntry, String date)
+          throws Exception {
     DataSource ds = new DataSourceImpl();
     this.addTransactionChecker(newEntry, date);
     this.addTransactionCheckerSpecialized(newEntry, date);
 
     StockOrder newOrder = new StockOrderImpl(newEntry.getKey(),
-        newEntry.getValue().getValue().getKey(), newEntry.getValue().getKey(),
-        newEntry.getValue().getValue().getValue());
+            newEntry.getValue().getValue().getKey(), newEntry.getValue().getKey(),
+            newEntry.getValue().getValue().getValue());
     this.stockOrders.add(newOrder);
     ds.saveToFile(this.name, this.stockOrders, "portfolios" + File.separator + "flex");
   }
 
   @Override
   public void addMultipleTransactions(
-      Map<String, SimpleEntry<String, SimpleEntry<Double, Double>>> entryMap) throws Exception {
+          Map<String, SimpleEntry<String, SimpleEntry<Double, Double>>> entryMap) throws Exception {
     DataSource ds = new DataSourceImpl();
     for (String ticker : entryMap.keySet()) {
 
       this.addTransactionChecker(
-          new SimpleEntry<>(ticker, new SimpleEntry<>(entryMap.get(ticker).getKey(),
-              new SimpleEntry<>(entryMap.get(ticker).getValue().getKey(),
-                  entryMap.get(ticker).getValue().getValue()))), entryMap.get(ticker).getKey());
+              new SimpleEntry<>(ticker, new SimpleEntry<>(entryMap.get(ticker).getKey(),
+                      new SimpleEntry<>(entryMap.get(ticker).getValue().getKey(),
+                              entryMap.get(ticker).getValue().getValue()))), entryMap.get(ticker).getKey());
 
       String date = entryMap.get(ticker).getKey();
       Double amount = entryMap.get(ticker).getValue().getKey();
@@ -183,11 +184,11 @@ public class PortfolioFlexImpl implements PortfolioFlex {
   }
 
   protected void addTransactionChecker(SimpleEntry<String, SimpleEntry<String,
-      SimpleEntry<Double, Double>>> newEntry, String paraDate) throws Exception {
+          SimpleEntry<Double, Double>>> newEntry, String paraDate) throws Exception {
     if (newEntry == null || newEntry.getKey() == null || newEntry.getValue() == null ||
-        newEntry.getValue().getKey() == null || newEntry.getValue().getValue() == null ||
-        newEntry.getValue().getValue().getKey() == null
-        || newEntry.getValue().getValue().getValue() == null) {
+            newEntry.getValue().getKey() == null || newEntry.getValue().getValue() == null ||
+            newEntry.getValue().getValue().getKey() == null
+            || newEntry.getValue().getValue().getValue() == null) {
       throw new IllegalArgumentException("Null Args passed");
     }
     String ticker = newEntry.getKey();
@@ -221,17 +222,17 @@ public class PortfolioFlexImpl implements PortfolioFlex {
   }
 
   protected void addTransactionCheckerSpecialized(SimpleEntry<String, SimpleEntry<String,
-      SimpleEntry<Double, Double>>> newEntry, String paraDate) throws Exception {
+          SimpleEntry<Double, Double>>> newEntry, String paraDate) throws Exception {
 
     String ticker = newEntry.getKey();
     Map<String, SimpleEntry<String, Double>> state = this.getLatestState();
 
     String dateCompare =
-        paraDate.equals(LocalDate.now().toString()) ? state.get(ticker).getKey() : paraDate;
+            paraDate.equals(LocalDate.now().toString()) ? state.get(ticker).getKey() : paraDate;
     String date = newEntry.getValue().getKey();
     double stockQuanDouble = newEntry.getValue().getValue().getKey();
     if (state.containsKey(ticker) && stockQuanDouble > 0
-        && Utils.compareDates(date, dateCompare) < 0) {
+            && Utils.compareDates(date, dateCompare) < 0) {
       throw new IllegalArgumentException(" Date before last transaction for asked stock");
     }
 
@@ -254,8 +255,8 @@ public class PortfolioFlexImpl implements PortfolioFlex {
     Map<String, Double> summary = this.getPortfolioSummary(date);
     for (String ticker : summary.keySet()) {
       totalVal +=
-          Double.parseDouble(Utils.fetchStockValueByDate(ticker, date, "stock_data")) * summary.get(
-              ticker);
+              Double.parseDouble(Utils.fetchStockValueByDate(ticker, date, "stock_data")) * summary.get(
+                      ticker);
     }
     return totalVal;
   }
@@ -309,7 +310,7 @@ public class PortfolioFlexImpl implements PortfolioFlex {
 
   @Override
   public SimpleEntry<List<String>, List<Double>> getPerfDataOverTime(String date1, String date2)
-      throws Exception {
+          throws Exception {
     if (!Utils.datesValidationForGraph(date1, date2, this.getCreationDate())) {
       return null;
     }
@@ -335,7 +336,7 @@ public class PortfolioFlexImpl implements PortfolioFlex {
 
   @Override
   public void addDCAInvestment(Double amount, Map<String, Double> weightage, String startDate,
-      String endDate, int interval, Double commFee) throws Exception {
+                               String endDate, int interval, Double commFee) throws Exception {
 
   }
 

@@ -4,8 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -15,10 +13,13 @@ import utils.Utils;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-
+/**
+ * Junit tests for portfolioFlexInvestImpl
+ */
 public class PortfolioFlexInvestImplTest {
   String portfolioName = "investImplTesting";
   PortfolioFlex p;
+
   @Before
   public void init() throws Exception {
     DataSource ds = new DataSourceImpl();
@@ -27,7 +28,8 @@ public class PortfolioFlexInvestImplTest {
       ds.getFileByName(portfolioName, "portfolios"
               + File.separator + "flex").delete();
     }
-    if (Utils.dataExists(portfolioName + "_DCA", "portfolios" + File.separator + "flex")) {
+    if (Utils.dataExists(portfolioName + "_DCA", "portfolios"
+            + File.separator + "flex")) {
       //delete
       ds.getFileByName(portfolioName + "_DCA", "portfolios"
               + File.separator + "flex").delete();
@@ -57,7 +59,8 @@ public class PortfolioFlexInvestImplTest {
     //check if portfolio file got created
     assertTrue(Utils.dataExists(portfolioName, "portfolios" + File.separator + "flex"));
     //check if dca file got created
-    assertTrue(Utils.dataExists(portfolioName + "_DCA", "portfolios" + File.separator + "flex"));
+    assertTrue(Utils.dataExists(portfolioName + "_DCA", "portfolios"
+            + File.separator + "flex"));
   }
 
   @Test
@@ -69,7 +72,7 @@ public class PortfolioFlexInvestImplTest {
 
     double costBasis = p.getCostBasis("2014-08-10");
 
-    assertEquals(44.0 , costBasis , 0);
+    assertEquals(44.0, costBasis, 0);
   }
 
 
@@ -106,9 +109,9 @@ public class PortfolioFlexInvestImplTest {
             176.0
     };
     int i = 0;
-    for( String date : dates){
+    for (String date : dates) {
       double costBasis = p.getCostBasis(date);
-      assertEquals(expectedCostBasis[i] , costBasis , 0);
+      assertEquals(expectedCostBasis[i], costBasis, 0);
       i++;
     }
   }
@@ -133,21 +136,21 @@ public class PortfolioFlexInvestImplTest {
     };
 
     double[] expectedValues = {
-            0.0 ,
-            0.0 ,
-            20.0 ,
-            27.62 ,
-            48.06 ,
-            115.12 ,
-            170.02 ,
-            216.28 ,
-            405.81 ,
+            0.0,
+            0.0,
+            20.0,
+            27.62,
+            48.06,
+            115.12,
+            170.02,
+            216.28,
+            405.81,
             435.73
     };
     int i = 0;
-    for( String date : dates){
+    for (String date : dates) {
       double value = p.getValueOnDate(date);
-      assertEquals(expectedValues[i] , value , 0.1);
+      assertEquals(expectedValues[i], value, 0.1);
       i++;
     }
   }
@@ -166,22 +169,24 @@ public class PortfolioFlexInvestImplTest {
 
 
     int i = 0;
-    for( String date : dates){
-      Map<String , Double> summary = p.getPortfolioSummary(date);
-      switch (i){
-        case 0 : {
-           assertTrue(summary.isEmpty());
-        };
-        case 1 : {
-           assertTrue(summary.isEmpty());
-        };
+    for (String date : dates) {
+      Map<String, Double> summary = p.getPortfolioSummary(date);
+      switch (i) {
+        case 0: {
+          assertTrue(summary.isEmpty());
+        }
+        ;
+        case 1: {
+          assertTrue(summary.isEmpty());
+        }
+        ;
         case 2: {
-          for(String key : summary.keySet()){
-            if(Objects.equals(key, "CSCO")){
-               assertEquals(0.57 , summary.get(key) , 0.1);
+          for (String key : summary.keySet()) {
+            if (Objects.equals(key, "CSCO")) {
+              assertEquals(0.57, summary.get(key), 0.1);
             }
-            if(Objects.equals(key, "AMZN")){
-              assertEquals(0.04 , summary.get(key) , 0.1);
+            if (Objects.equals(key, "AMZN")) {
+              assertEquals(0.04, summary.get(key), 0.1);
             }
           }
         }

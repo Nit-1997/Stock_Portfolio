@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 import utils.Utils;
 
+/**
+ * Implementation of portfolioFlex to create flexible portfolios.
+ */
 public class PortfolioFlexInvestImpl extends PortfolioFlexImpl {
 
   /**
