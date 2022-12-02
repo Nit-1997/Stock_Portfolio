@@ -1,4 +1,4 @@
-package view;
+package view.panels;
 
 
 import java.awt.BorderLayout;
@@ -7,6 +7,7 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JFrame;
+import view.ViewGUI;
 import view.panels.CreatePortfolioPanel;
 import view.panels.IPanel;
 import view.panels.MainMenuPanel;

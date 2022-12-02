@@ -19,7 +19,8 @@ public class AskDate {
    * @param view view object.
    * @return date.
    */
-  public static String addStocksAskDate(Scanner scan, PrintStream out, UserFlex user, ViewText view) {
+  public static String addStocksAskDate(Scanner scan, PrintStream out, UserFlex user,
+      ViewText view) {
     view.askDate(out);
     String date = scan.nextLine();
     while (!user.dateChecker(date)) {

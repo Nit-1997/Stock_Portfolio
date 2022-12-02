@@ -1,7 +1,5 @@
 package view;
 
-import static org.junit.Assert.*;
-
 import java.awt.event.ActionListener;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
@@ -15,12 +13,12 @@ public class MockView implements ViewGUI{
 
   @Override
   public void addActionListener(ActionListener listener) {
-
+      // only for constructor testing.
   }
 
   @Override
   public void changePanel(IPanel panel) {
-
+    // only for constructor testing.
   }
 
   @Override
@@ -30,7 +28,7 @@ public class MockView implements ViewGUI{
 
   @Override
   public void printForNormalPortfolioCreation(String str) {
-
+    // only for constructor testing.
   }
 
   @Override
@@ -50,7 +48,7 @@ public class MockView implements ViewGUI{
 
   @Override
   public void printForDCAPortfolioCreation(String str) {
-
+    // only for constructor testing.
   }
 
   @Override
@@ -60,7 +58,7 @@ public class MockView implements ViewGUI{
 
   @Override
   public void setValue(String type, Double value) {
-
+    // only for constructor testing.
   }
 
   @Override
@@ -70,12 +68,12 @@ public class MockView implements ViewGUI{
 
   @Override
   public void setStockMap(Map<String, Double> stockMap) {
-
+    // only for constructor testing.
   }
 
   @Override
   public void setPortfolioCreationDate(String date) {
-
+    // only for constructor testing.
   }
 
   @Override
@@ -85,12 +83,12 @@ public class MockView implements ViewGUI{
 
   @Override
   public void setBuySellMsg(String msg) {
-
+    // only for constructor testing.
   }
 
   @Override
   public void setSellInterimMessage(String msg) {
-
+    // only for constructor testing.
   }
 
   @Override
@@ -105,7 +103,7 @@ public class MockView implements ViewGUI{
 
   @Override
   public void setInvestMsg(String str) {
-
+    // only for constructor testing.
   }
 
   @Override
@@ -115,12 +113,12 @@ public class MockView implements ViewGUI{
 
   @Override
   public void setGraphMsg(String str) {
-
+    // only for constructor testing.
   }
 
   @Override
   public void startGraph(SimpleEntry<List<String>, List<Double>> data) {
-
+    // only for constructor testing.
   }
 
   @Override

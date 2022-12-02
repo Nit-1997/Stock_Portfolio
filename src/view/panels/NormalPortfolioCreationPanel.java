@@ -14,12 +14,6 @@ import javax.swing.JTextField;
  */
 public class NormalPortfolioCreationPanel {
 
-  /**
-   * Normal portfolioCreation panel.
-   */
-  NormalPortfolioCreationPanel() {
-
-  }
 
   JPanel printNormalCreationMenu(JPanel form, JTextField portNameInput,
       JTextField stockInput, JTextField dateInput, JTextField quantityInput,

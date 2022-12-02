@@ -11,7 +11,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import view.MainFrameGUIView;
 
 /**
  * Listing all portfolios panel.
@@ -66,7 +65,7 @@ public class ListAllPortfoliosPanel extends JPanel implements IPanel {
 
   @Override
   public void addActionListener(ActionListener listener) {
-
+    // no tasks
   }
 
 

@@ -22,11 +22,21 @@ public class CreatePortfolioPanel extends JPanel implements IPanel {
 
   JPanel form = null;
 
-  JButton normalFormSubmitButton, DCAFormSubmitButton, normalFormAddMoreButton;
+  JButton normalFormSubmitButton;
+  JButton DCAFormSubmitButton;
+  JButton normalFormAddMoreButton;
 
-  JTextField portNameInput, dateInput, stockInput, quantityInput, commFeeInput;
+  JTextField portNameInput;
+  JTextField dateInput;
+  JTextField stockInput;
+  JTextField quantityInput;
+  JTextField commFeeInput;
 
-  JTextField startDateInput, endDateInput, amountInput, percentageInput, intervalInput;
+  JTextField startDateInput;
+  JTextField endDateInput;
+  JTextField amountInput;
+  JTextField percentageInput;
+  JTextField intervalInput;
   JTextArea tout;
 
   JLabel confirmationMsg;
@@ -35,7 +45,7 @@ public class CreatePortfolioPanel extends JPanel implements IPanel {
 
   Double sum;
 
-  DCAPortfolioPanel DCAPanelObj;
+  DCAPortfolioPanel dcaPortfolioPanel;
 
 
   /**
@@ -105,8 +115,8 @@ public class CreatePortfolioPanel extends JPanel implements IPanel {
         this.remove(this.form);
       }
 
-      this.DCAPanelObj = new DCAPortfolioPanel();
-      form = this.DCAPanelObj.printDCACreationMenu(this.dcaStockMap, null, this.form,
+      this.dcaPortfolioPanel = new DCAPortfolioPanel();
+      form = this.dcaPortfolioPanel.printDCACreationMenu(this.dcaStockMap, null, this.form,
           this.portNameInput, this.amountInput, this.startDateInput, this.endDateInput,
           this.intervalInput,
           this.commFeeInput, this.stockInput, this.percentageInput, this.DCAFormSubmitButton,
@@ -128,7 +138,7 @@ public class CreatePortfolioPanel extends JPanel implements IPanel {
   }
 
 
-  public List<String> getNormalFormData() {
+  List<String> getNormalFormData() {
     List<String> data = new ArrayList<>();
     data.add(this.portNameInput.getText().trim());
     data.add(this.stockInput.getText().trim());
@@ -138,11 +148,11 @@ public class CreatePortfolioPanel extends JPanel implements IPanel {
     return data;
   }
 
-  public String getAreaText() {
+  String getAreaText() {
     return this.tout.getText();
   }
 
-  public List<String> getDCAFormData() {
+  List<String> getDCAFormData() {
     List<String> data = new ArrayList<>();
     data.add(this.portNameInput.getText().trim());
     data.add(this.startDateInput.getText().trim());
@@ -153,8 +163,8 @@ public class CreatePortfolioPanel extends JPanel implements IPanel {
     return data;
   }
 
-  public Map<String, Double> getDcaStockMap() {
-    this.DCAPanelObj.inputValidation(this.dcaStockMap, this.confirmationMsg);
+  Map<String, Double> getDcaStockMap() {
+    this.dcaPortfolioPanel.inputValidation(this.dcaStockMap, this.confirmationMsg);
     this.dcaStockMap.remove("");
     return this.dcaStockMap;
   }
@@ -166,14 +176,14 @@ public class CreatePortfolioPanel extends JPanel implements IPanel {
     normalFormAddMoreButton.addActionListener(listener);
   }
 
-  public void printForDCAPortfolioCreation(String str, boolean isGood) {
+  void printForDCAPortfolioCreation(String str, boolean isGood) {
     if (str.equals("Portfolio Successfully Saved")) {
       if (this.form != null) {
         this.remove(this.form);
       }
       this.dcaStockMap = new HashMap<>();
-      this.DCAPanelObj = new DCAPortfolioPanel();
-      form = this.DCAPanelObj.printDCACreationMenu(this.dcaStockMap, null, this.form,
+      this.dcaPortfolioPanel = new DCAPortfolioPanel();
+      form = this.dcaPortfolioPanel.printDCACreationMenu(this.dcaStockMap, null, this.form,
           this.portNameInput, this.amountInput, this.startDateInput, this.endDateInput,
           this.intervalInput,
           this.commFeeInput, this.stockInput, this.percentageInput, this.DCAFormSubmitButton,
@@ -190,7 +200,7 @@ public class CreatePortfolioPanel extends JPanel implements IPanel {
     this.confirmationMsg.setText(str);
   }
 
-  public void printForNormalPortfolioCreation(String str) {
+  void printForNormalPortfolioCreation(String str) {
     this.confirmationMsg.setText(str);
 
     if (str.equals("Stock Added successfully")) {

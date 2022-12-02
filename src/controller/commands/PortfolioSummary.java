@@ -18,7 +18,7 @@ public class PortfolioSummary {
    * @param user          model object.
    * @param out           output object.
    * @param portfolioName name of the portfolio.
-   * @param view view object.
+   * @param view          view object.
    */
   public static void getPortfolioSummary(Scanner scan, PrintStream out, UserFlex user,
       String portfolioName, ViewText view) {
@@ -31,9 +31,9 @@ public class PortfolioSummary {
     try {
       stockMap = user.getPortfolioSummary(portfolioName, date);
     } catch (Exception e) {
-      stockMap=null;
+      stockMap = null;
     }
-    if(stockMap==null){
+    if (stockMap == null) {
       view.printInCompatiblePortfolio(out);
       return;
     }

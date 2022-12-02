@@ -15,13 +15,6 @@ import javax.swing.JTextField;
  */
 public class SellStockPanel {
 
- /**
-  * Sell stock panel constructor.
-  */
-  SellStockPanel() {
-
-  }
-
   void createSellView(JPanel contentPanel, JPanel form,
       JTextField stockInput, JTextField quantityInput, JTextField dateInput,
       JTextField commFeeInput,

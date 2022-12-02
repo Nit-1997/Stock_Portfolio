@@ -308,7 +308,7 @@ public class InflexController implements CategoryControllerInterface<UserInflex>
           try {
             portfolioValue = user.getPortfolioValue(name, date);
           } catch (Exception e) {
-            portfolioValue=null;
+            portfolioValue = null;
           }
           Double portfolioPerformance = user.getPortfolioPnL(name, date);
           if (portfolioValue == null || portfolioPerformance == null) {
@@ -324,7 +324,7 @@ public class InflexController implements CategoryControllerInterface<UserInflex>
           try {
             portfolioValue = user.getPortfolioValue(name, date);
           } catch (Exception e) {
-            portfolioValue=null;
+            portfolioValue = null;
           }
           if (portfolioValue == null) {
             this.view.printInCompatiblePortfolio(this.out);
@@ -352,7 +352,7 @@ public class InflexController implements CategoryControllerInterface<UserInflex>
           try {
             portfolioValue = user.getPortfolioValue(name, date);
           } catch (Exception e) {
-            portfolioValue=null;
+            portfolioValue = null;
           }
           portfolioPerformance = user.getPortfolioPnL(name, date);
           this.view.printPortfolioDetail(detailedMap, portfolioValue, this.out);
@@ -373,7 +373,7 @@ public class InflexController implements CategoryControllerInterface<UserInflex>
           try {
             portfolioValue = user.getPortfolioValue(name, date);
           } catch (Exception e) {
-            portfolioValue=null;
+            portfolioValue = null;
           }
           if (portfolioValue == null) {
             this.view.printInCompatiblePortfolio(this.out);

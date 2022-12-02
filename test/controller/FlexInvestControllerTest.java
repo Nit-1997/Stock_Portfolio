@@ -2,9 +2,9 @@ package controller;
 
 import static org.junit.Assert.assertEquals;
 
-import controller.gui_controller.DCAPortfolio;
-import controller.gui_controller.GraphData;
-import controller.gui_controller.InvestStock;
+import controller.guicontroller.DCAPortfolio;
+import controller.guicontroller.GraphData;
+import controller.guicontroller.InvestStock;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;

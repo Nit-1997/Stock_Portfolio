@@ -1,18 +1,18 @@
 package controller;
 
 
-import controller.gui_controller.ButtonListener;
-import controller.gui_controller.BuyStock;
-import controller.gui_controller.DCAPortfolio;
-import controller.gui_controller.FormChecker;
-import controller.gui_controller.GUISubController;
-import controller.gui_controller.GraphData;
-import controller.gui_controller.InvestStock;
-import controller.gui_controller.NormalPortfolioCreationSubmit;
-import controller.gui_controller.PortfolioComposition;
-import controller.gui_controller.PortfolioCostBasis;
-import controller.gui_controller.PortfolioValue;
-import controller.gui_controller.SellStock;
+import controller.guicontroller.ButtonListener;
+import controller.guicontroller.BuyStock;
+import controller.guicontroller.DCAPortfolio;
+import controller.guicontroller.FormChecker;
+import controller.guicontroller.GUISubController;
+import controller.guicontroller.GraphData;
+import controller.guicontroller.InvestStock;
+import controller.guicontroller.NormalPortfolioCreationSubmit;
+import controller.guicontroller.PortfolioComposition;
+import controller.guicontroller.PortfolioCostBasis;
+import controller.guicontroller.PortfolioValue;
+import controller.guicontroller.SellStock;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.HashMap;
 import java.util.List;

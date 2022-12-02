@@ -1,4 +1,4 @@
-package controller.gui_controller;
+package controller.guicontroller;
 
 import java.util.List;
 import model.UserFlexInvest;

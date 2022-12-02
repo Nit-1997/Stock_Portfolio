@@ -1,4 +1,4 @@
-package controller.gui_controller;
+package controller.guicontroller;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -54,10 +54,11 @@ public class DCAPortfolio implements GUISubController {
       return "Wrong date format for start Date";
     }
 
-    if(type.equals("exist")){
+    if (type.equals("exist")) {
       try {
-        if(user.isBeforeDate(startDate,user.getPortfolioCreationDate(portfolioName))){
-          return "start date before portfolio creation date "+user.getPortfolioCreationDate(portfolioName);
+        if (user.isBeforeDate(startDate, user.getPortfolioCreationDate(portfolioName))) {
+          return "start date before portfolio creation date " + user.getPortfolioCreationDate(
+              portfolioName);
         }
       } catch (Exception e) {
         return e.getMessage();
@@ -144,7 +145,8 @@ public class DCAPortfolio implements GUISubController {
         user.addPortfolio(portfolioName, amountDouble, map, startDate, endDate, intervalInt,
             commFeeDouble);
       } else if (type.equals("exist")) {
-        user.InvestThroughDCA(portfolioName,amountDouble,map,startDate,endDate,intervalInt,commFeeDouble);
+        user.InvestThroughDCA(portfolioName, amountDouble, map, startDate, endDate, intervalInt,
+            commFeeDouble);
       }
     } catch (Exception e) {
       System.out.println(e.getMessage());

@@ -22,7 +22,8 @@ public class InvestPanel {
 
   Double sum;
 
-  JTextField stockInput, quantityInput;
+  JTextField stockInput;
+  JTextField quantityInput;
 
   /**
    * Constructor.

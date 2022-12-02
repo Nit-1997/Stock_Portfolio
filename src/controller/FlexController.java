@@ -22,14 +22,14 @@ public class FlexController implements CategoryControllerInterface<UserFlex> {
   /**
    * Constructs Object of the controller.
    *
-   * @param in  Input Object used to take input from user.
-   * @param out output object used to print the result.
+   * @param in   Input Object used to take input from user.
+   * @param out  output object used to print the result.
    * @param view view object.
    */
   public FlexController(InputStream in, PrintStream out, ViewText view) {
     this.in = in;
     this.out = out;
-    this.view=view;
+    this.view = view;
   }
 
   @Override
@@ -49,10 +49,10 @@ public class FlexController implements CategoryControllerInterface<UserFlex> {
       option = scan.nextLine();
       switch (option) {
         case "1":
-          AddFlexPortfolio.addStocksToPortfolioController(scan, user, this.out,this.view);
+          AddFlexPortfolio.addStocksToPortfolioController(scan, user, this.out, this.view);
           break;
         case "2":
-          LoadFlexPortfolio.loadPortfoliosController(scan, user, this.out,this.view);
+          LoadFlexPortfolio.loadPortfoliosController(scan, user, this.out, this.view);
           break;
         case "0":
           this.view.flexPortfolioExitMsg(this.out);

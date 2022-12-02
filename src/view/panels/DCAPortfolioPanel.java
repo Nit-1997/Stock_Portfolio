@@ -23,7 +23,8 @@ public class DCAPortfolioPanel {
 
   Double sum;
 
-  JTextField stockInput, percentageInput;
+  JTextField stockInput;
+  JTextField percentageInput;
 
   /**
    * DCAPortfolioPanel constructor.
@@ -37,7 +38,7 @@ public class DCAPortfolioPanel {
   JPanel printDCACreationMenu(Map<String, Double> dcaStockMap, SinglePortfolioDetailPanel main,
       JPanel form, JTextField portNameInput, JTextField amountInput, JTextField startDateInput,
       JTextField endDateInput, JTextField intervalInput, JTextField commFeeInput,
-      JTextField stockInput, JTextField percentageInput, JButton DCAFormSubmitButton,
+      JTextField stockInput, JTextField percentageInput, JButton dcaFormSubmitButton,
       JLabel confirmationMsg) {
 
     this.stockInput = stockInput;
@@ -183,10 +184,10 @@ public class DCAPortfolioPanel {
     });
     form.add(moreAdd);
 
-    form.add(DCAFormSubmitButton);
-    DCAFormSubmitButton.setFont(new Font("Arial", Font.PLAIN, 15));
-    DCAFormSubmitButton.setSize(100, 20);
-    DCAFormSubmitButton.setLocation(50, 310);
+    form.add(dcaFormSubmitButton);
+    dcaFormSubmitButton.setFont(new Font("Arial", Font.PLAIN, 15));
+    dcaFormSubmitButton.setSize(100, 20);
+    dcaFormSubmitButton.setLocation(50, 310);
 
     confirmationMsg.setText("");
     confirmationMsg.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -294,7 +295,7 @@ public class DCAPortfolioPanel {
     return true;
   }
 
-  public void printForDCAPortfolioCreation(JLabel confirmationMsg, String str, boolean isGood) {
+  void printForDCAPortfolioCreation(JLabel confirmationMsg, String str, boolean isGood) {
     if (isGood) {
       confirmationMsg.setForeground(Color.GREEN);
     } else {

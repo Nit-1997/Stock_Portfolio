@@ -23,7 +23,8 @@ public class AddFlexPortfolio {
    * @param out  output object.
    * @param view view object.
    */
-  public static void addStocksToPortfolioController(Scanner scan, UserFlex user, PrintStream out, ViewText view) {
+  public static void addStocksToPortfolioController(Scanner scan, UserFlex user, PrintStream out,
+      ViewText view) {
     view.addPortfolio(out);
     String name = scan.nextLine();
     while (!user.isUniqueName(name)) {
@@ -105,7 +106,8 @@ public class AddFlexPortfolio {
             break;
           }
 
-          RemoveStocks.addPortfolioRemoveStocks(ticker, date, stockQuanDouble, stocksMap, out, view);
+          RemoveStocks.addPortfolioRemoveStocks(ticker, date, stockQuanDouble,
+              stocksMap, out, view);
 
           confirmation = scan.nextLine();
           while (!confirmation.equals("y") && !confirmation.equals("Y") && !confirmation.equals("n")

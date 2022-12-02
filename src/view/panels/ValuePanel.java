@@ -17,7 +17,7 @@ public class ValuePanel {
 
   void createSimpleView(String str, JPanel contentPanel, JTextField dateInput,
       JButton valueBtn, JButton costBasisBtn, JButton compositionBtn, JLabel confirmationMsg,
-      JLabel valueMsg){
+      JLabel valueMsg) {
 
     contentPanel.setLayout(new BorderLayout());
     contentPanel.setBackground(Color.decode("#B8DEFF"));
@@ -38,7 +38,7 @@ public class ValuePanel {
     dateInput.setHorizontalAlignment(JLabel.CENTER);
     datePanel.add(dateInput);
 
-    switch (str){
+    switch (str) {
       case "value" :
         datePanel.add(valueBtn);
         break;

@@ -20,31 +20,45 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import view.MainFrameGUIView;
 
 /**
  * Single portfolio detail panel.
  */
 public class SinglePortfolioDetailPanel extends JPanel implements IPanel {
 
-  String name, portfolioCreationDate;
+  String name;
+  String portfolioCreationDate;
 
-  JButton costBasisBtn, valueBtn, compositionBtn, buyStockBtn, sellStockBtn, investBtn,
-      launchGraph, investDCAButton;
+  JButton costBasisBtn;
+  JButton valueBtn;
+  JButton compositionBtn;
+  JButton buyStockBtn;
+  JButton sellStockBtn;
+  JButton investBtn;
+  JButton launchGraph;
+  JButton investDCAButton;
 
-  JButton buyStockBtnMenu, sellInterimBtn;
+  JButton buyStockBtnMenu;
+  JButton sellInterimBtn;
 
   JTextField dateInput;
 
-  JTextField startDateInput, endDateInput, intervalInput;
+  JTextField startDateInput;
+  JTextField endDateInput;
+  JTextField intervalInput;
 
-  JTextField stockInput, quantityInput, commFeeInput, amountInput;
+  JTextField stockInput;
+  JTextField quantityInput;
+  JTextField commFeeInput;
+  JTextField amountInput;
 
-  JLabel confirmationMsg, valueMsg;
+  JLabel confirmationMsg;
+  JLabel valueMsg;
 
   JLabel sellDateCheckerMsg;
 
-  JPanel contentPanel = new JPanel(), form = new JPanel();
+  JPanel contentPanel = new JPanel();
+  JPanel form = new JPanel();
 
   Map<String, Double> stockMap;
 
@@ -52,7 +66,7 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel {
 
   InvestPanel obj;
 
-  DCAPortfolioPanel DCAPanelObj;
+  DCAPortfolioPanel dcaPanelObj;
 
   /**
    * Single portfolio panel constructor.
@@ -287,8 +301,8 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel {
 
     this.contentPanel = new JPanel();
 
-    this.DCAPanelObj = new DCAPortfolioPanel();
-    this.contentPanel = this.DCAPanelObj.printDCACreationMenu(this.stockMap, this, this.form,
+    this.dcaPanelObj = new DCAPortfolioPanel();
+    this.contentPanel = this.dcaPanelObj.printDCACreationMenu(this.stockMap, this, this.form,
         null, this.amountInput, this.startDateInput, this.endDateInput,
         this.intervalInput, this.commFeeInput, this.stockInput, this.quantityInput,
         this.investDCAButton, this.confirmationMsg);
@@ -305,7 +319,7 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel {
     this.repaint();
   }
 
-  public void setInvestMsg(String str, boolean isGood) {
+  void setInvestMsg(String str, boolean isGood) {
     if (str.equals("Success")) {
       this.createInvestView();
     }
@@ -322,7 +336,7 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel {
     }
   }
 
-  public List<String> getInvestData() {
+  List<String> getInvestData() {
     List<String> list = new ArrayList<>();
 
     list.add(this.name);
@@ -333,21 +347,21 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel {
     return list;
   }
 
-  public Map<String, Double> getInvestStockMap() {
+  Map<String, Double> getInvestStockMap() {
     if (obj != null) {
       obj.inputValidation(this.stockMap, this.confirmationMsg);
-    } else if (this.DCAPanelObj != null) {
-      this.DCAPanelObj.inputValidation(this.stockMap, this.confirmationMsg);
+    } else if (this.dcaPanelObj != null) {
+      this.dcaPanelObj.inputValidation(this.stockMap, this.confirmationMsg);
     }
     this.stockMap.remove("");
     return this.stockMap;
   }
 
-  public SimpleEntry<String, String> getNameAndDate() {
+  SimpleEntry<String, String> getNameAndDate() {
     return new SimpleEntry<>(this.name, this.dateInput == null ? "" : this.dateInput.getText());
   }
 
-  public void setValue(String msg, Double val) {
+  void setValue(String msg, Double val) {
     if (msg.equals("Success")) {
       this.confirmationMsg.setText("Value of the Portfolio on " + dateInput.getText() + " was $");
       this.valueMsg.setText(new DecimalFormat("0.00").format(val));
@@ -372,11 +386,11 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel {
     }
   }
 
-  public Map<String, Double> getStockMap() {
+  Map<String, Double> getStockMap() {
     return this.stockMap;
   }
 
-  public void setStockMap(Map<String, Double> stockMap) {
+  void setStockMap(Map<String, Double> stockMap) {
 
     String str = "";
     if (!dateInput.getText().equals("")) {
@@ -424,7 +438,7 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel {
     }
   }
 
-  public List<String> getBuySellData() {
+  List<String> getBuySellData() {
     List<String> list = new ArrayList<>();
 
     list.add(this.name);
@@ -436,7 +450,7 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel {
     return list;
   }
 
-  public void setMessage(String msg) {
+  void setMessage(String msg) {
     this.confirmationMsg.setText(msg);
     if (msg.equals("Successful transaction")) {
       this.confirmationMsg.setForeground(Color.BLUE);
@@ -454,7 +468,7 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel {
     }
   }
 
-  public void setSellInterimMessage(String msg) {
+  void setSellInterimMessage(String msg) {
     if (msg.equals("Success3")) {
       this.sellDateCheckerMsg.setText("");
       this.form.setVisible(true);
@@ -472,11 +486,11 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel {
     }
   }
 
-  public void setPortfolioCreationDate(String date) {
+  void setPortfolioCreationDate(String date) {
     this.portfolioCreationDate = date;
   }
 
-  public List<String> getGraphData() {
+  List<String> getGraphData() {
     List<String> list = new ArrayList<>();
     list.add(this.startDateInput.getText());
     list.add(this.endDateInput.getText());
@@ -484,12 +498,12 @@ public class SinglePortfolioDetailPanel extends JPanel implements IPanel {
     return list;
   }
 
-  public void startGraph(List<String> labels, List<Double> dataPoints) {
+  void startGraph(List<String> labels, List<Double> dataPoints) {
     SwingUtilities.invokeLater(() -> new GraphPanel("Line Chart Example", labels, dataPoints));
     this.confirmationMsg.setText("");
   }
 
-  public List<String> getDCAFormData() {
+  List<String> getDCAFormData() {
     List<String> data = new ArrayList<>();
     data.add(this.name);
     data.add(this.startDateInput.getText().trim());

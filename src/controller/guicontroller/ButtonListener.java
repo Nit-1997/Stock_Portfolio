@@ -1,4 +1,4 @@
-package controller.gui_controller;
+package controller.guicontroller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,12 +10,6 @@ import java.util.Map;
 public class ButtonListener implements ActionListener {
 
   Map<String, Runnable> buttonClickedActions;
-
-  /**
-   * Empty default constructor
-   */
-  public ButtonListener() {
-  }
 
   /**
    * Set the map for key typed events. Key typed events in Java Swing are characters.

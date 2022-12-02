@@ -1,4 +1,4 @@
-package controller.gui_controller;
+package controller.guicontroller;
 
 /**
  * Common interface for all GUI Sub controllers.

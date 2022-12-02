@@ -19,7 +19,8 @@ public class AskTicker {
    * @param view view object.
    * @return a valid ticker name
    */
-  public static String addStocksAskTicker(Scanner scan, UserFlex user, PrintStream out, ViewText view) {
+  public static String addStocksAskTicker(Scanner scan, UserFlex user, PrintStream out,
+      ViewText view) {
     view.askTickerSymbol(out);
     String ticker;
     do {

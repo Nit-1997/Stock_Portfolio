@@ -15,13 +15,6 @@ import javax.swing.JTextField;
  */
 public class BuyStockPanel {
 
- /**
-  * Constructor for BuyStock Panel.
-  */
-  BuyStockPanel() {
-
-  }
-
   void createBuyView(JPanel contentPanel, String portfolioCreationDate, JPanel form,
       JTextField stockInput, JTextField quantityInput, JTextField dateInput,
       JTextField commFeeInput,

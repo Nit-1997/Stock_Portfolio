@@ -1,4 +1,4 @@
-package controller.gui_controller;
+package controller.guicontroller;
 
 import model.UserFlexInvest;
 
@@ -14,9 +14,10 @@ public class PortfolioCostBasis implements GUISubController {
 
   /**
    * Constructor for portfolio cost basis.
+   *
    * @param portfolioName portfolio name.
-   * @param date date for cost basis.
-   * @param user model object.
+   * @param date          date for cost basis.
+   * @param user          model object.
    */
   public PortfolioCostBasis(String portfolioName, String date, UserFlexInvest user) {
     this.portfolioName = portfolioName;
@@ -27,8 +28,10 @@ public class PortfolioCostBasis implements GUISubController {
   @Override
   public String execute() {
 
-    String str=DateChecker.checkDate(date,user,portfolioName);
-    if(!str.equals("done")) return str;
+    String str = DateChecker.checkDate(date, user, portfolioName);
+    if (!str.equals("done")) {
+      return str;
+    }
 
     Double value;
     try {
@@ -36,7 +39,7 @@ public class PortfolioCostBasis implements GUISubController {
     } catch (Exception e) {
       return e.getMessage();
     }
-    return "Success2,"+value;
+    return "Success2," + value;
   }
 
 }

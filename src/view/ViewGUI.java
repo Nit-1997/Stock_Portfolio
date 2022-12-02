@@ -48,7 +48,7 @@ public interface ViewGUI {
   List<String> getDCAPortfolioCreationData();
 
   /**
-   * Get DCA portfolio creation stockMap;
+   * Get DCA portfolio creation stockMap.
    * @return Map of stock vs weightage.
    */
   Map<String, Double> getDCAPortfolioCreationMap();
@@ -109,7 +109,7 @@ public interface ViewGUI {
   void setSellInterimMessage(String msg);
 
   /**
-   * Get the data for investment in portfolio
+   * Get the data for investment in portfolio.
    * @return list of portfolio name, date, amount, commissionFee.
    */
   List<String> getInvestData();

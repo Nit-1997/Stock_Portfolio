@@ -23,7 +23,8 @@ public class PerformanceGraph {
    * @param portfolioName name of the portfolio.
    * @param view view object.
    */
-  public static void plotGraph(Scanner scan, PrintStream out, UserFlex user, String portfolioName, ViewText view) {
+  public static void plotGraph(Scanner scan, PrintStream out, UserFlex user, String portfolioName,
+      ViewText view) {
     view.waitLoadMessage(out);
     String creationDate;
     try {

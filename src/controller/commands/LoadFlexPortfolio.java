@@ -20,7 +20,8 @@ public class LoadFlexPortfolio {
    * @param out  output object.
    * @param view view object.
    */
-  public static void loadPortfoliosController(Scanner scan, UserFlex user, PrintStream out, ViewText view) {
+  public static void loadPortfoliosController(Scanner scan, UserFlex user, PrintStream out,
+      ViewText view) {
     Set<String> portfolioNames = user.getPortfolios();
     if (portfolioNames != null) {
       view.printPortfolios(portfolioNames, out);

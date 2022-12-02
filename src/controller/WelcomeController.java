@@ -2,7 +2,7 @@ package controller;
 
 import java.util.Scanner;
 import model.UserFlexInvestImpl;
-import view.MainFrameGUIView;
+import view.panels.MainFrameGUIView;
 import view.TextViewImpl;
 import view.ViewText;
 
@@ -40,7 +40,8 @@ public class WelcomeController implements StockController {
       } else {
         System.out.print("Kindly enter again your choice : ");
       }
-    } while (!choice.equals("1") && !choice.equals("2"));
+    }
+    while (!choice.equals("1") && !choice.equals("2"));
 
     controller.start();
 

@@ -21,7 +21,8 @@ public class RemoveStocks {
    * @param view view object.
    */
   public static void addPortfolioRemoveStocks(String ticker, String date, Double stockQuan,
-      Map<String, Map<String, SimpleEntry<Double, Double>>> stocksMap, PrintStream out, ViewText view) {
+      Map<String, Map<String, SimpleEntry<Double, Double>>> stocksMap, PrintStream out,
+      ViewText view) {
 
     if (!stocksMap.containsKey(ticker) || !stocksMap.get(ticker).containsKey(date)
         || stocksMap.get(ticker).get(date).getKey() < stockQuan) {

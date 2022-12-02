@@ -1,4 +1,4 @@
-package controller.gui_controller;
+package controller.guicontroller;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
@@ -7,7 +7,7 @@ import model.UserFlexInvest;
 /**
  * Buy stock class.
  */
-public class BuyStock implements GUISubController{
+public class BuyStock implements GUISubController {
 
   List<String> buySellData;
   UserFlexInvest user;
@@ -15,21 +15,21 @@ public class BuyStock implements GUISubController{
 
   /**
    * Constructor for buy stock.
+   *
    * @param buySellData buy sell data.
-   * @param user model object.
+   * @param user        model object.
    */
-  public BuyStock(List<String> buySellData, UserFlexInvest user){
-    this.buySellData=buySellData;
-    this.user=user;
+  public BuyStock(List<String> buySellData, UserFlexInvest user) {
+    this.buySellData = buySellData;
+    this.user = user;
   }
 
   @Override
-  public String execute(){
+  public String execute() {
 
-    if(!FormChecker.formChecker(buySellData,user).equals("Portfolio Successfully Saved")) {
-      return FormChecker.formChecker(buySellData,user);
+    if (!FormChecker.formChecker(buySellData, user).equals("Portfolio Successfully Saved")) {
+      return FormChecker.formChecker(buySellData, user);
     }
-
 
     String portfolioName = buySellData.get(0);
 
@@ -44,15 +44,17 @@ public class BuyStock implements GUISubController{
     Double commFeeDouble = Double.parseDouble(commFee);
 
     try {
-      if(user.isBeforeDate(date,user.getPortfolioCreationDate(portfolioName)))
+      if (user.isBeforeDate(date, user.getPortfolioCreationDate(portfolioName))) {
         return "Given date before portfolio creation";
+      }
     } catch (Exception e) {
       return e.getMessage();
     }
 
     try {
       boolean val = user.transactionForPortfolio(
-          portfolioName,new SimpleEntry<>(stock,new SimpleEntry<>(date,new SimpleEntry<>(quanDouble,commFeeDouble))));
+          portfolioName, new SimpleEntry<>(stock, new SimpleEntry<>(date,
+              new SimpleEntry<>(quanDouble, commFeeDouble))));
     } catch (Exception e) {
       return e.getMessage();
     }

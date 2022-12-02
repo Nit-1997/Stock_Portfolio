@@ -16,7 +16,7 @@ public class PortfolioValue {
    * @param user          model object.
    * @param out           output object.
    * @param date          date for which value is required.
-   * @param view view object.
+   * @param view          view object.
    */
   public static void getPortfolioValue(String portfolioName, String date, PrintStream out,
       UserFlex user, ViewText view) {
@@ -35,10 +35,10 @@ public class PortfolioValue {
     if (user.isBeforeDate(date, creationDate)) {
       portfolioValue = 0.0;
     } else {
-      try{
+      try {
         portfolioValue = user.getPortfolioValue(portfolioName, date);
-      }catch(Exception e){
-        portfolioValue=null;
+      } catch (Exception e) {
+        portfolioValue = null;
       }
 
     }
