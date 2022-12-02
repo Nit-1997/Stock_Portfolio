@@ -24,6 +24,13 @@ public class DateChecker {
       return "Wrong Date Format";
     }
 
+    LocalDate dateFormat;
+    try{
+      dateFormat = LocalDate.parse(date);
+    } catch(Exception e) {
+      return "Wrong Date Format";
+    }
+
     String portfolioCreationDate = null;
     try {
       portfolioCreationDate = user.getPortfolioCreationDate(portfolioName);
@@ -34,7 +41,7 @@ public class DateChecker {
       return "Given date before portfolio creation date " + portfolioCreationDate;
     }
 
-    if (LocalDate.parse(date).isAfter(LocalDate.now())) {
+    if (dateFormat.isAfter(LocalDate.now())) {
       return "Date after today's date";
     }
 
