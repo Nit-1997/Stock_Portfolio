@@ -53,7 +53,7 @@ jfreechart-1.0.1.jar
 Documentation
 https://www.jfree.org/jfreechart/
 
-Please make sure you have these 2 jars configured in your project to run the application.
+These jars are preconfigured.
 
 
 
