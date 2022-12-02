@@ -236,8 +236,8 @@ public class PortfolioFlexImpl implements PortfolioFlex {
     String ticker = newEntry.getKey();
     Map<String, SimpleEntry<String, Double>> state = this.getLatestState();
 
-    String dateCompare =
-            paraDate.equals(LocalDate.now().toString()) ? state.get(ticker).getKey() : paraDate;
+    String dateCompare = paraDate.equals(LocalDate.now().toString()) && state.containsKey(ticker)
+                ? state.get(ticker).getKey() : paraDate;
     String date = newEntry.getValue().getKey();
     double stockQuanDouble = newEntry.getValue().getValue().getKey();
     if (state.containsKey(ticker) && stockQuanDouble > 0

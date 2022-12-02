@@ -8,11 +8,6 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.JFrame;
 import view.ViewGUI;
-import view.panels.CreatePortfolioPanel;
-import view.panels.IPanel;
-import view.panels.MainMenuPanel;
-import view.panels.SideBarPanel;
-import view.panels.SinglePortfolioDetailPanel;
 
 /**
  * Main GUI View class.
@@ -60,96 +55,139 @@ public class MainFrameGUIView extends JFrame implements ViewGUI {
 
   @Override
   public List<String> getNormalPortfolioCreationData() {
-    CreatePortfolioPanel obj = (CreatePortfolioPanel) this.mainPanel;
-    List<String> data = obj.getNormalFormData();
-    data.add(obj.getAreaText());
-    return data;
+    if (this.mainPanel instanceof CreatePortfolioPanel) {
+      CreatePortfolioPanel obj = (CreatePortfolioPanel) this.mainPanel;
+      List<String> data = obj.getNormalFormData();
+      data.add(obj.getAreaText());
+      return data;
+    }
+    return null;
   }
 
   @Override
   public List<String> getNormalPortfolioCreationFormDataAddMore() {
-    CreatePortfolioPanel obj = (CreatePortfolioPanel) this.mainPanel;
-    return obj.getNormalFormData();
+    if (this.mainPanel instanceof CreatePortfolioPanel) {
+      CreatePortfolioPanel obj = (CreatePortfolioPanel) this.mainPanel;
+      return obj.getNormalFormData();
+    }
+    return null;
   }
 
   @Override
   public List<String> getDCAPortfolioCreationData() {
-    CreatePortfolioPanel obj = (CreatePortfolioPanel) this.mainPanel;
-    return obj.getDCAFormData();
+    if (this.mainPanel instanceof CreatePortfolioPanel) {
+      CreatePortfolioPanel obj = (CreatePortfolioPanel) this.mainPanel;
+      return obj.getDCAFormData();
+    }
+    return null;
   }
 
   @Override
   public Map<String, Double> getDCAPortfolioCreationMap() {
-    CreatePortfolioPanel obj = (CreatePortfolioPanel) this.mainPanel;
-    return obj.getDcaStockMap();
+    if (this.mainPanel instanceof CreatePortfolioPanel) {
+      CreatePortfolioPanel obj = (CreatePortfolioPanel) this.mainPanel;
+      return obj.getDcaStockMap();
+    }
+    return null;
   }
 
   @Override
   public void printForNormalPortfolioCreation(String str) {
-    CreatePortfolioPanel obj = (CreatePortfolioPanel) this.mainPanel;
-    obj.printForNormalPortfolioCreation(str);
+    if (this.mainPanel instanceof CreatePortfolioPanel) {
+      CreatePortfolioPanel obj = (CreatePortfolioPanel) this.mainPanel;
+      obj.printForNormalPortfolioCreation(str);
+    }
   }
 
   @Override
   public void printForDCAPortfolioCreation(String str) {
-    CreatePortfolioPanel obj = (CreatePortfolioPanel) this.mainPanel;
-    obj.printForDCAPortfolioCreation(str, str.equals("Portfolio Successfully Saved"));
+    if (this.mainPanel instanceof CreatePortfolioPanel) {
+      CreatePortfolioPanel obj = (CreatePortfolioPanel) this.mainPanel;
+      obj.printForDCAPortfolioCreation(str, str.equals("Portfolio Successfully Saved"));
+    }
   }
 
   @Override
   public SimpleEntry<String, String> getNameAndDate() {
-    return ((SinglePortfolioDetailPanel) this.mainPanel).getNameAndDate();
+    if (this.mainPanel instanceof SinglePortfolioDetailPanel) {
+      return ((SinglePortfolioDetailPanel) this.mainPanel).getNameAndDate();
+    }
+    return null;
   }
 
   @Override
   public void setValue(String type, Double value) {
-    ((SinglePortfolioDetailPanel) this.mainPanel).setValue(type, value);
+    if (this.mainPanel instanceof SinglePortfolioDetailPanel) {
+      ((SinglePortfolioDetailPanel) this.mainPanel).setValue(type, value);
+    }
   }
 
   @Override
   public void setPortfolioCreationDate(String date) {
-    ((SinglePortfolioDetailPanel) this.mainPanel).setPortfolioCreationDate(date);
+    if (this.mainPanel instanceof SinglePortfolioDetailPanel) {
+      ((SinglePortfolioDetailPanel) this.mainPanel).setPortfolioCreationDate(date);
+    }
   }
 
   @Override
   public List<String> getBuySellData() {
-    return ((SinglePortfolioDetailPanel) this.mainPanel).getBuySellData();
+    if (this.mainPanel instanceof SinglePortfolioDetailPanel) {
+      return ((SinglePortfolioDetailPanel) this.mainPanel).getBuySellData();
+    }
+    return null;
   }
 
   @Override
   public void setBuySellMsg(String msg) {
-    ((SinglePortfolioDetailPanel) this.mainPanel).setMessage(msg);
+    if (this.mainPanel instanceof SinglePortfolioDetailPanel) {
+      ((SinglePortfolioDetailPanel) this.mainPanel).setMessage(msg);
+    }
   }
 
   @Override
   public void setSellInterimMessage(String msg) {
-    ((SinglePortfolioDetailPanel) this.mainPanel).setSellInterimMessage(msg);
+    if (this.mainPanel instanceof SinglePortfolioDetailPanel) {
+      ((SinglePortfolioDetailPanel) this.mainPanel).setSellInterimMessage(msg);
+    }
   }
 
   @Override
   public Map<String, Double> getStockMap() {
-    return ((SinglePortfolioDetailPanel) this.mainPanel).getStockMap();
+    if (this.mainPanel instanceof SinglePortfolioDetailPanel) {
+      return ((SinglePortfolioDetailPanel) this.mainPanel).getStockMap();
+    }
+    return null;
   }
 
   @Override
   public void setStockMap(Map<String, Double> stockMap) {
-    ((SinglePortfolioDetailPanel) this.mainPanel).setStockMap(stockMap);
+    if (this.mainPanel instanceof SinglePortfolioDetailPanel) {
+      ((SinglePortfolioDetailPanel) this.mainPanel).setStockMap(stockMap);
+    }
   }
 
   @Override
   public List<String> getInvestData() {
-    return ((SinglePortfolioDetailPanel) this.mainPanel).getInvestData();
+    if (this.mainPanel instanceof SinglePortfolioDetailPanel) {
+      return ((SinglePortfolioDetailPanel) this.mainPanel).getInvestData();
+    }
+    return null;
   }
 
   @Override
   public Map<String, Double> getInvestStockMap() {
-    return ((SinglePortfolioDetailPanel) this.mainPanel).getInvestStockMap();
+    if (this.mainPanel instanceof SinglePortfolioDetailPanel) {
+      return ((SinglePortfolioDetailPanel) this.mainPanel).getInvestStockMap();
+    }
+    return null;
   }
 
   @Override
   public void setInvestMsg(String str) {
-    ((SinglePortfolioDetailPanel) this.mainPanel).setInvestMsg(str,
-        str.equals("Success") || str.equals("Invested through DCA"));
+    if (this.mainPanel instanceof SinglePortfolioDetailPanel) {
+      ((SinglePortfolioDetailPanel) this.mainPanel).setInvestMsg(str,
+          str.equals("Success") || str.equals("Invested through DCA"));
+    }
   }
 
   @Override
@@ -161,22 +199,32 @@ public class MainFrameGUIView extends JFrame implements ViewGUI {
 
   @Override
   public List<String> getGraphData() {
-    return ((SinglePortfolioDetailPanel) this.mainPanel).getGraphData();
+    if (this.mainPanel instanceof SinglePortfolioDetailPanel) {
+      return ((SinglePortfolioDetailPanel) this.mainPanel).getGraphData();
+    }
+    return null;
   }
 
   @Override
   public void setGraphMsg(String msg) {
-    ((SinglePortfolioDetailPanel) this.mainPanel).setMessage(msg);
+    if (this.mainPanel instanceof SinglePortfolioDetailPanel) {
+      ((SinglePortfolioDetailPanel) this.mainPanel).setMessage(msg);
+    }
   }
 
   @Override
   public void startGraph(SimpleEntry<List<String>, List<Double>> data) {
-    ((SinglePortfolioDetailPanel) this.mainPanel).startGraph(data.getKey(), data.getValue());
+    if (this.mainPanel instanceof SinglePortfolioDetailPanel) {
+      ((SinglePortfolioDetailPanel) this.mainPanel).startGraph(data.getKey(), data.getValue());
+    }
   }
 
   @Override
   public List<String> getDCAInvestmentData() {
-    return ((SinglePortfolioDetailPanel) this.mainPanel).getDCAFormData();
+    if (this.mainPanel instanceof SinglePortfolioDetailPanel) {
+      return ((SinglePortfolioDetailPanel) this.mainPanel).getDCAFormData();
+    }
+    return null;
   }
 
 
