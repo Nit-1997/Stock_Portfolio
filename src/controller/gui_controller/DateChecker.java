@@ -3,13 +3,26 @@ package controller.gui_controller;
 import java.time.LocalDate;
 import model.UserFlexInvest;
 
+/**
+ * Helper class for checking date.
+ */
 public class DateChecker {
 
-  public static String checkDate(String date, UserFlexInvest user, String portfolioName){
-    if (date.equals(""))
+  /**
+   * Checks the date.
+   *
+   * @param date          date to be checked.
+   * @param user          model object.
+   * @param portfolioName portfolio name.
+   * @return boolean if date is correct.
+   */
+  public static String checkDate(String date, UserFlexInvest user, String portfolioName) {
+    if (date.equals("")) {
       return "Empty Date";
-    if (!user.dateChecker(date))
+    }
+    if (!user.dateChecker(date)) {
       return "Wrong Date Format";
+    }
 
     String portfolioCreationDate = null;
     try {
@@ -17,11 +30,11 @@ public class DateChecker {
     } catch (Exception e) {
       return e.getMessage();
     }
-    if(user.isBeforeDate(date,portfolioCreationDate)){
-      return "Given date before portfolio creation date "+portfolioCreationDate;
+    if (user.isBeforeDate(date, portfolioCreationDate)) {
+      return "Given date before portfolio creation date " + portfolioCreationDate;
     }
 
-    if(LocalDate.parse(date).isAfter(LocalDate.now())) {
+    if (LocalDate.parse(date).isAfter(LocalDate.now())) {
       return "Date after today's date";
     }
 

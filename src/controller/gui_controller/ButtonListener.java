@@ -4,6 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
 
+/**
+ * Class where all the action listeners are executed.
+ */
 public class ButtonListener implements ActionListener {
 
   Map<String, Runnable> buttonClickedActions;

@@ -9,17 +9,23 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+/**
+ * Normal portfolio Creation panel.
+ */
 public class NormalPortfolioCreationPanel {
 
-  NormalPortfolioCreationPanel(){
+  /**
+   * Normal portfolioCreation panel.
+   */
+  NormalPortfolioCreationPanel() {
 
   }
 
-  JPanel printNormalCreationMenu( JPanel form, JTextField portNameInput,
-      JTextField stockInput, JTextField dateInput, JTextField quantityInput, JTextField commFeeInput,
-      JTextArea tout, JLabel confirmationMsg, JButton normalFormSubmitButton, JButton normalFormAddMoreButton){
-
-//    if(form!=null)main.remove(form);
+  JPanel printNormalCreationMenu(JPanel form, JTextField portNameInput,
+      JTextField stockInput, JTextField dateInput, JTextField quantityInput,
+      JTextField commFeeInput,
+      JTextArea tout, JLabel confirmationMsg, JButton normalFormSubmitButton,
+      JButton normalFormAddMoreButton) {
 
     form = new JPanel();
     form.setLayout(new BorderLayout());
@@ -67,7 +73,6 @@ public class NormalPortfolioCreationPanel {
     dateInput.setLocation(150, 160);
     form.add(dateInput);
 
-
     JLabel quantity = new JLabel("Number of stocks");
     quantity.setFont(new Font("Arial", Font.PLAIN, 13));
     quantity.setSize(150, 20);
@@ -86,13 +91,11 @@ public class NormalPortfolioCreationPanel {
     commFee.setLocation(50, 260);
     form.add(commFee);
 
-
     commFeeInput.setText("");
     commFeeInput.setFont(new Font("Arial", Font.PLAIN, 13));
     commFeeInput.setSize(190, 20);
     commFeeInput.setLocation(150, 260);
     form.add(commFeeInput);
-
 
     tout.setText("");
     tout.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -102,7 +105,6 @@ public class NormalPortfolioCreationPanel {
     tout.setLineWrap(true);
     tout.setEditable(false);
     form.add(tout);
-
 
     confirmationMsg.setText("");
     confirmationMsg.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -115,7 +117,6 @@ public class NormalPortfolioCreationPanel {
     normalFormSubmitButton.setLocation(50, 310);
 
     form.add(normalFormSubmitButton);
-
 
     normalFormAddMoreButton.setFont(new Font("Arial", Font.PLAIN, 15));
     normalFormAddMoreButton.setSize(160, 20);
@@ -130,10 +131,6 @@ public class NormalPortfolioCreationPanel {
     resetBtn.setVisible(false);
     form.add(resetBtn);
 
-
-
-//    main.add(form, BorderLayout.CENTER);
-//    main.revalidate();
     return form;
 
   }

@@ -7,7 +7,7 @@ import java.io.PrintStream;
 import java.util.Objects;
 import java.util.Scanner;
 import model.UserFlex;
-import view.IView;
+import view.ViewText;
 
 /**
  * Controller class for flexible portfolio model.
@@ -17,7 +17,7 @@ public class FlexController implements CategoryControllerInterface<UserFlex> {
   final InputStream in;
   final PrintStream out;
 
-  IView view;
+  ViewText view;
 
   /**
    * Constructs Object of the controller.
@@ -25,7 +25,7 @@ public class FlexController implements CategoryControllerInterface<UserFlex> {
    * @param in  Input Object used to take input from user.
    * @param out output object used to print the result.
    */
-  public FlexController(InputStream in, PrintStream out, IView view) {
+  public FlexController(InputStream in, PrintStream out, ViewText view) {
     this.in = in;
     this.out = out;
     this.view=view;

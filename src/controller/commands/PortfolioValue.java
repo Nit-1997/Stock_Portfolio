@@ -2,7 +2,7 @@ package controller.commands;
 
 import java.io.PrintStream;
 import model.UserFlex;
-import view.IView;
+import view.ViewText;
 
 /**
  * Class for value of the portfolio.
@@ -18,7 +18,7 @@ public class PortfolioValue {
    * @param date          date for which value is required.
    */
   public static void getPortfolioValue(String portfolioName, String date, PrintStream out,
-      UserFlex user, IView view) {
+      UserFlex user, ViewText view) {
     view.waitLoadMessage(out);
     Double portfolioValue;
     String creationDate;

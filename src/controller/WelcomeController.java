@@ -1,71 +1,50 @@
 package controller;
 
-import java.io.InputStream;
-import java.io.PrintStream;
 import java.util.Scanner;
-import model.UserFlexImpl;
-import model.UserInflexImpl;
-import view.IView;
-import view.ViewPrint;
+import model.UserFlexInvestImpl;
+import view.MainFrameGUIView;
+import view.TextViewImpl;
+import view.ViewText;
 
 /**
- * Starting class for the application.
+ * Starting parent controller for the application.
  */
 public class WelcomeController implements StockController {
 
-  final InputStream in;
-  final PrintStream out;
-  final IView view;
+  final ViewText view;
 
   /**
-   * Constructs Object of the controller.
-   *
-   * @param in  Input Object used to take input from user.
-   * @param out output object used to print the result.
+   * Constructor for the controller.
    */
-  public WelcomeController(InputStream in, PrintStream out) {
-    this.in = in;
-    this.out = out;
-    view = new ViewPrint();
+  public WelcomeController() {
+    view = new TextViewImpl();
   }
 
   @Override
   public void start() {
-    
-    Scanner scan = new Scanner(this.in);
-    view.welcomeNote(this.out);
 
-    boolean comingFromDefault = true;
+    this.view.printStarterMenu(System.out);
 
-    view.welcomeMenu(this.out);
+    Scanner scan;
+    String choice;
 
-    String option;
-    while (true) {
-      if (!comingFromDefault) {
-        System.out.println();
-        view.welcomeNote(this.out);
-        view.welcomeMenu(this.out);
+    StockController controller = null;
+
+    do {
+      scan = new Scanner(System.in);
+      choice = scan.nextLine();
+      if (choice.equals("1")) {
+        controller = new TextController(System.in, System.out, this.view);
+      } else if (choice.equals("2")) {
+        controller = new MainGUIController(new MainFrameGUIView(), new UserFlexInvestImpl());
+      } else {
+        System.out.print("Kindly enter again your choice : ");
       }
-      comingFromDefault = false;
-      CategoryControllerInterface obj;
-      option = scan.nextLine();
-      switch (option) {
-        case "1":
-          obj = new FlexController(System.in, System.out,view);
-          obj.start(new UserFlexImpl());
-          break;
-        case "2":
-          obj = new InflexController(System.in, System.out,view);
-          obj.start(new UserInflexImpl());
-          break;
-        case "0":
-          new UserInflexImpl().cleanStockDirectory();
-          view.exitNote(this.out);
-          return;
-        default:
-          view.errorNote(this.out);
-          comingFromDefault = true;
-      }
-    }
+    } while (!choice.equals("1") && !choice.equals("2"));
+
+    controller.start();
+
   }
+
+
 }

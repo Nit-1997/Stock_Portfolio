@@ -5,7 +5,7 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
 import java.util.Scanner;
 import model.UserFlex;
-import view.IView;
+import view.ViewText;
 
 /**
  * Class for selling stock.
@@ -21,7 +21,7 @@ public class SellStock {
    * @param portfolioName name of the portfolio.
    */
   public static void sellStockFromPortfolio(String portfolioName, Scanner scan, UserFlex user,
-      PrintStream out, IView view) {
+      PrintStream out, ViewText view) {
 
     view.waitLoadMessage(out);
     Map<String, SimpleEntry<String, Double>> portfolioState = user.getPortfolioState(portfolioName);

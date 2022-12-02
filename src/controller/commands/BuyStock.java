@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 import model.UserFlex;
-import view.IView;
+import view.ViewText;
 
 /**
  * Class for buying stocks.
@@ -20,7 +20,7 @@ public class BuyStock {
    * @param portfolioName name of the portfolio.
    */
   public static void buyStockToPortfolio(String portfolioName, Scanner scan, UserFlex user,
-      PrintStream out, IView view) {
+      PrintStream out, ViewText view) {
     view.waitLoadMessage(out);
     String portfolioCreationDate = null;
     try {

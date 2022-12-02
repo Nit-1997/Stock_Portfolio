@@ -3,7 +3,7 @@ package controller.commands;
 import java.io.PrintStream;
 import java.util.Scanner;
 import model.UserFlex;
-import view.IView;
+import view.ViewText;
 
 /**
  * Calculates cost basis for portfolio.
@@ -19,7 +19,7 @@ public class CostBasis {
    * @param portfolioName name of the portfolio.
    */
   public static void calculateCostBasis(Scanner scan, PrintStream out, UserFlex user,
-      String portfolioName, IView view) {
+      String portfolioName, ViewText view) {
     view.waitLoadMessage(out);
     String creationDate = null;
     try {

@@ -6,7 +6,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.BoxLayout;
@@ -16,29 +15,32 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+/**
+ * Investment in existing portfolio panel.
+ */
 public class InvestPanel {
 
   Double sum;
 
   JTextField stockInput, quantityInput;
 
-  InvestPanel(){
-    this.sum=0.0;
+  /**
+   * Constructor.
+   */
+  InvestPanel() {
+    this.sum = 0.0;
   }
-  void createInvestView(JPanel contentPanel,JPanel form, JTextField dateInput,
-      JTextField amountInput,  JTextField commFeeInput, JTextField stockInput,
-      JTextField quantityInput, JButton investBtn, JLabel confirmationMsg, Map<String, Double> stockMap){
 
-    this.stockInput=stockInput;
-    this.quantityInput=quantityInput;
+  void createInvestView(JPanel contentPanel, JPanel form, JTextField dateInput,
+      JTextField amountInput, JTextField commFeeInput, JTextField stockInput,
+      JTextField quantityInput, JButton investBtn, JLabel confirmationMsg,
+      Map<String, Double> stockMap) {
+
+    this.stockInput = stockInput;
+    this.quantityInput = quantityInput;
 
     this.sum = 0.0;
 
-//    this.stockMap = new HashMap<>();
-
-//    if(this.contentPanel!=null) this.remove(this.contentPanel);
-
-//    this.contentPanel = new JPanel();
     contentPanel.setLayout(new BorderLayout());
     contentPanel.setBackground(Color.decode("#B8DEFF"));
 
@@ -47,71 +49,70 @@ public class InvestPanel {
     GridBagConstraints c = new GridBagConstraints();
 
     c.fill = GridBagConstraints.HORIZONTAL;
-    c.gridx=0;
-    c.gridy=0;
-    c.gridwidth=2;
+    c.gridx = 0;
+    c.gridy = 0;
+    c.gridwidth = 2;
     JLabel stockList = new JLabel("List of Available Stocks : NASDAQ 100");
     stockList.setFont(new Font("Arial", Font.ITALIC, 20));
     stockList.setHorizontalAlignment(JLabel.CENTER);
 
-    top.add(stockList,c);
+    top.add(stockList, c);
 
-    c.gridy=1;
-    c.gridx=1;
-    c.gridwidth=1;
+    c.gridy = 1;
+    c.gridx = 1;
+    c.gridwidth = 1;
     JLabel date = new JLabel("Date for investment (yyyy-MM-dd)");
     date.setFont(new Font("Arial", Font.PLAIN, 15));
-    top.add(date,c);
+    top.add(date, c);
 
-    c.gridy=1;
-    c.gridx=2;
-    c.gridwidth=1;
+    c.gridy = 1;
+    c.gridx = 2;
+    c.gridwidth = 1;
     dateInput.setText("");
     dateInput.setColumns(10);
     dateInput.setFont(new Font("Arial", Font.PLAIN, 15));
-    top.add(dateInput,c);
+    top.add(dateInput, c);
 
-    c.gridy=2;
-    c.gridx=1;
-    c.gridwidth=1;
+    c.gridy = 2;
+    c.gridx = 1;
+    c.gridwidth = 1;
     JLabel amount = new JLabel("Amount to be invested($)");
     amount.setFont(new Font("Arial", Font.PLAIN, 15));
-    top.add(amount,c);
+    top.add(amount, c);
 
-    c.gridy=2;
-    c.gridx=2;
-    c.gridwidth=1;
+    c.gridy = 2;
+    c.gridx = 2;
+    c.gridwidth = 1;
     amountInput.setText("");
     amountInput.setColumns(10);
     amountInput.setFont(new Font("Arial", Font.PLAIN, 15));
-    top.add(amountInput,c);
+    top.add(amountInput, c);
 
-    c.gridy=3;
-    c.gridx=1;
-    c.gridwidth=1;
+    c.gridy = 3;
+    c.gridx = 1;
+    c.gridwidth = 1;
     JLabel commissionFee = new JLabel("Commission fee");
     commissionFee.setFont(new Font("Arial", Font.PLAIN, 15));
-    top.add(commissionFee,c);
+    top.add(commissionFee, c);
 
-    c.gridy=3;
-    c.gridx=2;
-    c.gridwidth=1;
+    c.gridy = 3;
+    c.gridx = 2;
+    c.gridwidth = 1;
     commFeeInput.setText("");
     commFeeInput.setColumns(10);
     commFeeInput.setFont(new Font("Arial", Font.PLAIN, 15));
-    top.add(commFeeInput,c);
+    top.add(commFeeInput, c);
 
     top.setBackground(Color.decode("#B8DEFF"));
 
-    contentPanel.add(top,BorderLayout.PAGE_START);
+    contentPanel.add(top, BorderLayout.PAGE_START);
 
-//    this.form = new JPanel();
     form.setLayout(new BorderLayout());
 
     JPanel scrollPanel = new JPanel();
-    scrollPanel.setLayout(new BoxLayout(scrollPanel,BoxLayout.Y_AXIS));
+    scrollPanel.setLayout(new BoxLayout(scrollPanel, BoxLayout.Y_AXIS));
     JScrollPane scroll = new JScrollPane(scrollPanel);
-    scroll.setBounds(45,0,440,140);
+    scroll.setBounds(45, 0, 440, 140);
     form.add(scroll);
 
     JPanel temp = new JPanel();
@@ -121,7 +122,6 @@ public class InvestPanel {
     stock.setSize(50, 20);
     stock.setLocation(10, 50);
     temp.add(stock);
-
 
     this.stockInput.setEditable(true);
     this.stockInput = new JTextField(10);
@@ -151,8 +151,8 @@ public class InvestPanel {
     moreAdd.setLocation(500, 50);
 
     AtomicInteger y = new AtomicInteger(80);
-    moreAdd.addActionListener(e-> {
-      this.printMoreLines(stockMap,confirmationMsg,y.get(),scrollPanel);
+    moreAdd.addActionListener(e -> {
+      this.printMoreLines(stockMap, confirmationMsg, y.get(), scrollPanel);
       y.addAndGet(30);
     });
 
@@ -179,22 +179,21 @@ public class InvestPanel {
 
     form.setBackground(Color.decode("#B8DEFF"));
 
-    contentPanel.add(form,BorderLayout.CENTER);
+    contentPanel.add(form, BorderLayout.CENTER);
 
-//    this.add(this.contentPanel,BorderLayout.CENTER);
-//    this.revalidate();
-//    this.repaint();
   }
 
-  private void printMoreLines(Map<String, Double> stockMap,JLabel confirmationMsg,int y,
+  private void printMoreLines(Map<String, Double> stockMap, JLabel confirmationMsg, int y,
       JPanel scrollPane) {
 
-    if(!this.inputValidation(stockMap, confirmationMsg)) return;
+    if (!this.inputValidation(stockMap, confirmationMsg)) {
+      return;
+    }
 
     this.stockInput.setEditable(false);
     this.quantityInput.setEditable(false);
 
-    this.setInvestMsg("Added", confirmationMsg,true);
+    this.setInvestMsg("Added", confirmationMsg, true);
 
     JPanel temp = new JPanel();
 
@@ -227,53 +226,62 @@ public class InvestPanel {
     scrollPane.repaint();
   }
 
-  boolean inputValidation(Map<String, Double> stockMap,JLabel confirmationMsg){
+  boolean inputValidation(Map<String, Double> stockMap, JLabel confirmationMsg) {
     String stock = this.stockInput.getText();
     String percentage = this.quantityInput.getText();
-    if(stock.equals("") || percentage.equals("")){
-      this.setInvestMsg("Empty record",confirmationMsg,false);
+    if (stock.equals("") || percentage.equals("")) {
+      this.setInvestMsg("Empty record", confirmationMsg, false);
       return false;
     }
 
-    if(!Constants.STOCK_NAMES.contains(stock.toUpperCase())){
-      this.setInvestMsg("Not a valid stock name",confirmationMsg,false);
+    if (!Constants.STOCK_NAMES.contains(stock.toUpperCase())) {
+      this.setInvestMsg("Not a valid stock name", confirmationMsg, false);
       return false;
     }
     Double percent;
-    try{
+    try {
       percent = Double.parseDouble(percentage);
-    } catch(NumberFormatException e){
-      this.setInvestMsg("Number not in numeric format",confirmationMsg,false);
+    } catch (NumberFormatException e) {
+      this.setInvestMsg("Number not in numeric format", confirmationMsg, false);
       return false;
     }
-    if(percent==0){
-      this.setInvestMsg("Percentage 0",confirmationMsg,false);
+    if (percent == 0) {
+      this.setInvestMsg("Percentage 0", confirmationMsg, false);
       return false;
     }
-    if(percent<0 || percent>100){
-      this.setInvestMsg("Percentage -ve or 100+",confirmationMsg,false);
+    if (percent < 0 || percent > 100) {
+      this.setInvestMsg("Percentage -ve or 100+", confirmationMsg, false);
       return false;
     }
-    if(this.sum+percent>100.0){
-      this.setInvestMsg("Weights sum more than 100",confirmationMsg,false);
+    if (this.sum + percent > 100.0) {
+      this.setInvestMsg("Weights sum more than 100", confirmationMsg, false);
       return false;
     }
-    this.sum+=percent;
-    if(stockMap.containsKey(stock.toUpperCase()))
-      stockMap.put(stock.toUpperCase(),stockMap.get(stock.toUpperCase())+percent);
-    else stockMap.put(stock.toUpperCase(),percent);
+    this.sum += percent;
+    if (stockMap.containsKey(stock.toUpperCase())) {
+      stockMap.put(stock.toUpperCase(), stockMap.get(stock.toUpperCase()) + percent);
+    } else {
+      stockMap.put(stock.toUpperCase(), percent);
+    }
     System.out.println(stockMap);
 
     return true;
   }
 
-  public void setInvestMsg(String str,JLabel confirmationMsg, boolean isGood){
-
-
+  /**
+   * Sets the investment msg.
+   * @param str type.
+   * @param confirmationMsg confirmation message.
+   * @param isGood positive or negative message.
+   */
+  public void setInvestMsg(String str, JLabel confirmationMsg, boolean isGood) {
     confirmationMsg.setText(str);
 
-    if(isGood) confirmationMsg.setForeground(Color.GREEN);
-    else confirmationMsg.setForeground(Color.RED);
+    if (isGood) {
+      confirmationMsg.setForeground(Color.GREEN);
+    } else {
+      confirmationMsg.setForeground(Color.RED);
+    }
   }
 
 }

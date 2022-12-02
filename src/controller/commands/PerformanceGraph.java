@@ -7,7 +7,7 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
 import java.util.Scanner;
 import model.UserFlex;
-import view.IView;
+import view.ViewText;
 
 /**
  * Class for printing performance graph.
@@ -22,7 +22,7 @@ public class PerformanceGraph {
    * @param out           output object.
    * @param portfolioName name of the portfolio.
    */
-  public static void plotGraph(Scanner scan, PrintStream out, UserFlex user, String portfolioName, IView view) {
+  public static void plotGraph(Scanner scan, PrintStream out, UserFlex user, String portfolioName, ViewText view) {
     view.waitLoadMessage(out);
     String creationDate;
     try {

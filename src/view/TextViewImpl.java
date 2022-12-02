@@ -12,7 +12,7 @@ import java.util.Set;
 /**
  * This is the view class that contains all the printing function for the application.
  */
-public class ViewPrint implements IView {
+public class TextViewImpl implements ViewText {
 
   @Override
   public void welcomeNote(PrintStream out) {
@@ -407,6 +407,14 @@ public class ViewPrint implements IView {
   @Override
   public void printError(Exception e, PrintStream out) {
     out.println("\n" + e.getMessage().substring(e.getMessage().indexOf(": ") + 1));
+  }
+
+  @Override
+  public void printStarterMenu(PrintStream out) {
+    out.println("Please enter the type of view");
+    out.println("1. text based view");
+    out.println("2. GUI based view");
+    out.print("3. Your choice: ");
   }
 
 }
