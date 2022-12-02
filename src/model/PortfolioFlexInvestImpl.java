@@ -37,8 +37,10 @@ public class PortfolioFlexInvestImpl extends PortfolioFlexImpl {
       }
     }
 
-    this.stockOrders = Utils.updatePortfolioFromDCA(portfolioName, startDate, endDate, weightage,
-        interval, amount, commFee, this.stockOrders);
+
+    Utils.updatePortfolioFromDCA(portfolioName,startDate,endDate,weightage,
+        interval,amount,commFee,this.stockOrders);
+
     DataSource ds = new DataSourceImpl();
     if (this.stockOrders.size() != 0) {
       ds.saveToFile(this.name, this.stockOrders, "portfolios" + File.separator + "flex");
@@ -84,13 +86,11 @@ public class PortfolioFlexInvestImpl extends PortfolioFlexImpl {
     }
     this.creationDate = portfolioCreationDate;
 
-    if (Utils.dataExists(portfolioName + "_DCA", "portfolios" + File.separator
-        + "flex")) {
-      File helper = ds.getFileByName(portfolioName + "_DCA",
-          "portfolios" + File.separator + "flex");
-      Utils.loadPortfolioWithDCA(portfolioName, helper, this.stockOrders);
-      //this.stockOrders=Utils.DCAFileValidator(portfolioName,helper,this.stockOrders);
 
+
+    if (Utils.dataExists(portfolioName+"_DCA", "portfolios" + File.separator + "flex")){
+      File helper = ds.getFileByName(portfolioName+"_DCA","portfolios" + File.separator + "flex");
+      Utils.loadPortfolioWithDCA(helper , this.stockOrders);
     }
   }
 
@@ -98,14 +98,10 @@ public class PortfolioFlexInvestImpl extends PortfolioFlexImpl {
   public void addDCAInvestment(Double amount, Map<String, Double> weightage, String startDate,
       String endDate, int interval, Double commFee) throws Exception {
 
-    for (String ticker : weightage.keySet()) {
-      if (!Utils.dataExists(ticker, "stock_data")) {
-        Utils.loadStockData(ticker, "stock_data");
-      }
-    }
 
-    this.stockOrders = Utils.updatePortfolioFromDCA(this.name, startDate, endDate, weightage,
-        interval, amount, commFee, this.stockOrders);
+    Utils.updatePortfolioFromDCA(this.name,startDate,endDate,weightage,
+        interval,amount,commFee,this.stockOrders);
+
 
     new DataSourceImpl().saveToFile(this.name, this.stockOrders,
         "portfolios" + File.separator + "flex");

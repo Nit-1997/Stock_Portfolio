@@ -33,14 +33,14 @@ public interface DataSource {
 
 
   /**
+   * Function to create a file if it does not exist.
    *
-   * @param name
-   * @param dirName
-   * @return
-   * @throws IOException
+   * @param name    name of the file
+   * @param dirName directory name
+   * @return file
+   * @throws IOException while reading/writing
    */
   public File createFileIfNotExists(String name, String dirName) throws IOException;
-
 
 
   public void writeToFile(File stockFile, String data, boolean isAppendable) throws IOException;

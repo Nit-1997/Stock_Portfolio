@@ -288,16 +288,18 @@ public class UtilsTest {
     File dcaTestingFile = ds.getFileByName(portfolioName + "_DCA", "portfolios" +
         File.separator + "flex");
     String dcaContent = "2012-08-10,365,2022-08-10,400,3.0,2\n" +
-        "AMZN,50\n" +
-        "MFST,50\n" +
-        "2012-08-10,365,2022-08-10,400,3.0,2\n" +
-        "IBM,50\n" +
-        "GOOGL,50\n" +
-        "2012-08-10,365,null,400,3.0,2\n" +
-        "IBM,50\n" +
-        "GOOGL,50";
-    ds.writeToFile(dcaTestingFile, dcaContent, false);
-    Utils.loadPortfolioWithDCA("dcaTesting", dcaTestingFile, stockOrders);
+
+            "AMZN,50\n" +
+            "MFST,50\n" +
+            "2012-08-10,365,2022-08-10,400,3.0,2\n" +
+            "IBM,50\n" +
+            "GOOGL,50\n" +
+            "2012-08-10,365,null,400,3.0,2\n" +
+            "IBM,50\n" +
+            "GOOGL,50";
+    ds.writeToFile(dcaTestingFile , dcaContent ,false);
+    Utils.loadPortfolioWithDCA( dcaTestingFile, stockOrders);
+
     assertTrue(stockOrders.size() >= 67);
     for (StockOrder s : stockOrders) {
       System.out.println(s.getStock().getStockTickerName() + " , "
