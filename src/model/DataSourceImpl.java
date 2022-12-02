@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
 
+/**
+ * Implementation of data source with file handling capabilities.
+ */
 public class DataSourceImpl implements DataSource {
 
   @Override
@@ -73,7 +76,7 @@ public class DataSourceImpl implements DataSource {
               .append(order.getStock().getBuyDate())
               .append("\n");
     }
-    this.writeToFile(portfolioFile,sb.toString(),false);
+    this.writeToFile(portfolioFile, sb.toString(), false);
   }
 
   private void writePortfolioToFileFlex(File portfolioFile, List<StockOrder> orders)
@@ -96,14 +99,14 @@ public class DataSourceImpl implements DataSource {
               .append(order.getCommFee())
               .append("\n");
     }
-    this.writeToFile(portfolioFile,sb.toString(),false);
+    this.writeToFile(portfolioFile, sb.toString(), false);
   }
 
 
   @Override
   public void writeToFile(File stockFile, String data, boolean isAppendable) throws IOException {
 
-    FileWriter myWriter = new FileWriter(stockFile,isAppendable);
+    FileWriter myWriter = new FileWriter(stockFile, isAppendable);
     myWriter.write(data);
     myWriter.close();
   }

@@ -295,7 +295,7 @@ public class UtilsTest {
             "IBM,50\n" +
             "GOOGL,50";
     ds.writeToFile(dcaTestingFile , dcaContent ,false);
-    Utils.loadPortfolioWithDCA("dcaTesting", dcaTestingFile, stockOrders);
+    Utils.loadPortfolioWithDCA( dcaTestingFile, stockOrders);
     assertTrue(stockOrders.size() >= 67);
     for(StockOrder s : stockOrders){
       System.out.println(s.getStock().getStockTickerName() +" , "
