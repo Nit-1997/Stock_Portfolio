@@ -1,11 +1,13 @@
 package model;
 
 import constants.Constants;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedList;
+
 import utils.Utils;
 
 /**
@@ -13,11 +15,11 @@ import utils.Utils;
  * As part of this implementation we are using yahoo's finance api. as yahoo api does not rate limit
  * users after 5 requests
  */
-public class ApiDataFetcherImpl  implements  ApiDataFetcher{
+public class ApiDataFetcherImpl implements ApiDataFetcher {
 
 
   @Override
-  public  String fetchStockDataBySymbolYahoo(String ticker, String baseUrl) throws
+  public String fetchStockDataBySymbolYahoo(String ticker, String baseUrl) throws
           RuntimeException {
     if (ticker == null || baseUrl == null) {
       throw new IllegalArgumentException("passed null args");
@@ -68,7 +70,7 @@ public class ApiDataFetcherImpl  implements  ApiDataFetcher{
 
 
   @Override
-  public  String fetchStockDataBySymbolAlphaVantage(String ticker) throws Exception {
+  public String fetchStockDataBySymbolAlphaVantage(String ticker) throws Exception {
     URL url = null;
     try {
       url = new URL(Constants.GET_DAILY_DATA_TIME_SERIES_API

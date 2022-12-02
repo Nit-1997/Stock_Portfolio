@@ -41,6 +41,22 @@ For the tests to work properly your folder structure should look like this (test
 1.) In order to run the tests we require testingArtifacts and portfolios/flex/flexUserTest2.csv folder at the root level to dump all the testing data.
 2.) You can go to the test and then run all tests and that should trigger the Junit for all the tests.
 
+=========================================================
+External dependencies required to run the application
+=========================================================
+
+jcommon-1.0.0.jar
+Documentation
+https://www.jfree.org/jcommon/
+
+jfreechart-1.0.1.jar
+Documentation
+https://www.jfree.org/jfreechart/
+
+Please make sure you have these 2 jars configured in your project to run the application.
+
+
+
 ===============================================
 Getting Started
 ===============================================
@@ -176,11 +192,86 @@ How to query portfolios:-
         - Enter Valid end date
         - Graph gets generated as per the appropriate scale
 
+===============
+How to use GUI
+===============
+
+- In the command line Select 2 to open the GUI
+
+----------------
+create portfolio
+----------------
+Select create new portfolio button on top left pane or the main menu.
+select create normal portfolio button
+Enter the requried details , put stock details , click add more stocks
+The previously added stocks will be displayed in the blue box.
+Hit submit to create the portfolio.
+
+------------------------------------
+create portfolio with a DCA strategy
+------------------------------------
+Select create new portfolio button on top left pane or the main menu.
+select create normal portfolio button
+Enter the requried details , endDate is optional if you do not add it then the DCA strategy is ongoing.
+Add stock vs weight for each stock and make sure your weights add upto 100.
+Hit submit to create the portfolio using this DCA strategy.
+
+-----------------
+List portfolios
+-----------------
+Click the list portfolio button on the left pane.
+Select the portfolio you want to work with from the menu.
+Select the desired feature from the menu.
+
+------------
+Get value
+------------
+asks you the date and fetches the value on that date for this portfolio.
+
+----------------
+Get cost basis
+----------------
+asks you the date and fetches the value on that date for this portfolio.
+
+----------------
+Get Composition
+----------------
+asks you the date and fetches the composition on that date for this portfolio.
+
+-----------------
+Purchase stocks
+-----------------
+asks stock name , qty , date , commision fee
+hit purchase stocks to add it to the portfolio.
+
+-------------
+Sell stocks
+-------------
+asks you the date and fetches the composition on that date for this portfolio.
+now add the stock name , qty , commision fee and hit sell stocks to make the transaction.
+
+--------------------
+Invest in portfolio
+--------------------
+asks you date of investment , amount to be invested , commision fee and stock compostion that you want based on weights.
+Hit invest to make the transaction.
+Hit invest to create the DCA plan on existing portfolio.
+
+------------------
+Performance Graph
+------------------
+asks you start and end date for plot and plots the graph (Note: start date should be after portfolio creation date)
+Invest in portfolio through DCA plan on existing portfolio
+Enter the requried details , endDate is optional if you do not add it then the DCA strategy is ongoing.
+Add stock vs weight for each stock and make sure your weights add upto 100.
+Hit invest to create the DCA plan on existing portfolio.
+
+
 ==========================================
 Program Limitations
 ==========================================
 
-- Our application only supports data till 1st January 2000.
+- Our application only supports data from 1st January 2010 - till current date
 
 - Our application only supports 100 ticker symbols from NASDAQ 100 as specified in the stock_list.csv file namely :-
 

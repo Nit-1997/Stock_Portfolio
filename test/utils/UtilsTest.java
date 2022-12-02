@@ -8,6 +8,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import constants.Constants;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -18,10 +19,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import model.DataSource;
 import model.DataSourceImpl;
 import model.StockOrder;
 import model.StockOrderImpl;
+
 import org.junit.Test;
 
 /**
@@ -38,7 +41,7 @@ public class UtilsTest {
   @Test(expected = IOException.class)
   public void testLoadStockNamesEmpty() throws IOException {
     Set<String> s = Utils.loadStockNames("testingArtifacts",
-        "stocks_list.csv");
+            "stocks_list.csv");
   }
 
   @Test(expected = IOException.class)
@@ -54,99 +57,99 @@ public class UtilsTest {
   @Test
   public void testLoadPortfolioDataWorking() throws Exception {
     Constants.STOCK_NAMES = Utils.loadStockNames("testingArtifacts",
-        "stocks_list_correct.csv");
+            "stocks_list_correct.csv");
     List<StockOrder> s = Utils.loadPortfolioData("tech_working",
-        "testingArtifacts");
+            "testingArtifacts");
     assertEquals(2, s.size());
   }
 
   @Test
   public void testLoadPortfolioIncorrectTicker() throws Exception {
     Constants.STOCK_NAMES = Utils.loadStockNames("testingArtifacts",
-        "stocks_list_correct.csv");
+            "stocks_list_correct.csv");
     List<StockOrder> s = Utils.loadPortfolioData("error_incorrect_ticker",
-        "testingArtifacts");
+            "testingArtifacts");
     assertNull(s);
   }
 
   @Test
   public void testLoadPortfolioLessCols() throws Exception {
     Constants.STOCK_NAMES = Utils.loadStockNames("testingArtifacts",
-        "stocks_list_correct.csv");
+            "stocks_list_correct.csv");
     List<StockOrder> s = Utils.loadPortfolioData("error_less_column",
-        "testingArtifacts");
+            "testingArtifacts");
     assertNull(s);
   }
 
   @Test
   public void testLoadPortfolioQtyFractional() throws Exception {
     Constants.STOCK_NAMES = Utils.loadStockNames("testingArtifacts",
-        "stocks_list_correct.csv");
+            "stocks_list_correct.csv");
     List<StockOrder> s = Utils.loadPortfolioData("error_quantity_fractional",
-        "testingArtifacts");
+            "testingArtifacts");
     assertNull(s);
   }
 
   @Test
   public void testLoadPortfolioQtyNegative() throws Exception {
     Constants.STOCK_NAMES = Utils.loadStockNames("testingArtifacts",
-        "stocks_list_correct.csv");
+            "stocks_list_correct.csv");
     List<StockOrder> s = Utils.loadPortfolioData("error_quantity_negative",
-        "testingArtifacts");
+            "testingArtifacts");
     assertNull(s);
   }
 
   @Test
   public void testLoadPortfolioQtyInvalid() throws Exception {
     Constants.STOCK_NAMES = Utils.loadStockNames("testingArtifacts",
-        "stocks_list_correct.csv");
+            "stocks_list_correct.csv");
     List<StockOrder> s = Utils.loadPortfolioData("error_quantity_Invalid",
-        "testingArtifacts");
+            "testingArtifacts");
     assertNull(s);
   }
 
   @Test
   public void testLoadPortfolioIncorrectBuyPrice() throws Exception {
     Constants.STOCK_NAMES = Utils.loadStockNames("testingArtifacts",
-        "stocks_list_correct.csv");
+            "stocks_list_correct.csv");
     List<StockOrder> s = Utils.loadPortfolioData("incorrect_buyPrice",
-        "testingArtifacts");
+            "testingArtifacts");
     assertNull(s);
   }
 
   @Test
   public void testLoadPortfolioNegativeBuyPrice() throws Exception {
     Constants.STOCK_NAMES = Utils.loadStockNames("testingArtifacts",
-        "stocks_list_correct.csv");
+            "stocks_list_correct.csv");
     List<StockOrder> s = Utils.loadPortfolioData("negative_buyPrice",
-        "testingArtifacts");
+            "testingArtifacts");
     assertNull(s);
   }
 
   @Test
   public void testLoadPortfolioInvalidDate() throws Exception {
     Constants.STOCK_NAMES = Utils.loadStockNames("testingArtifacts",
-        "stocks_list_correct.csv");
+            "stocks_list_correct.csv");
     List<StockOrder> s = Utils.loadPortfolioData("invalid_date",
-        "testingArtifacts");
+            "testingArtifacts");
     assertNull(s);
   }
 
   @Test
   public void testLoadPortfolioDateBeforeData() throws Exception {
     Constants.STOCK_NAMES = Utils.loadStockNames("testingArtifacts",
-        "stocks_list_correct.csv");
+            "stocks_list_correct.csv");
     List<StockOrder> s = Utils.loadPortfolioData("date_before_data",
-        "testingArtifacts");
+            "testingArtifacts");
     assertNull(s);
   }
 
   @Test
   public void testLoadPortfolioDateAfterData() throws Exception {
     Constants.STOCK_NAMES = Utils.loadStockNames("testingArtifacts",
-        "stocks_list_correct.csv");
+            "stocks_list_correct.csv");
     List<StockOrder> s = Utils.loadPortfolioData("date_after_data",
-        "testingArtifacts");
+            "testingArtifacts");
     assertNull(s);
   }
 
@@ -154,7 +157,7 @@ public class UtilsTest {
   public void testStockValueByDateValidTicker() throws Exception {
     Utils.loadStockData("CSCO", "stock_data");
     String v = Utils.fetchStockValueByDate("CSCO", "2022-10-28",
-        "stock_data");
+            "stock_data");
     assertNotEquals("-1", v);
   }
 
@@ -167,8 +170,11 @@ public class UtilsTest {
 
   @Test
   public void testFetchStockValueByDateFutureFoundExact() throws Exception {
+    if (!Utils.dataExists("CSCO", "stock_data")) {
+      Utils.loadStockData("CSCO", "stock_data");
+    }
     AbstractMap.SimpleEntry<String, Double> res = Utils.fetchStockValueByDateFuture("CSCO",
-        "2022-11-25", "stock_data");
+            "2022-11-25", "stock_data");
     System.out.println(res.getKey());
     System.out.println(res.getValue());
   }
@@ -179,14 +185,17 @@ public class UtilsTest {
       Utils.loadStockData("CSCO", "stock_data");
     }
     AbstractMap.SimpleEntry<String, Double> res = Utils.fetchStockValueByDateFuture("CSCO",
-        "2022-11-27", "stock_data");
+            "2022-11-27", "stock_data");
     System.out.println(res);
   }
 
   @Test
   public void testFetchStockValueByDateFutureFoundPrev() throws Exception {
+    if (!Utils.dataExists("CSCO", "stock_data")) {
+      Utils.loadStockData("CSCO", "stock_data");
+    }
     AbstractMap.SimpleEntry<String, Double> res = Utils.fetchStockValueByDateFuture("CSCO",
-        "2022-11-19", "stock_data");
+            "2022-11-19", "stock_data");
     System.out.println(res);
   }
 
@@ -276,7 +285,7 @@ public class UtilsTest {
     String[] dates = {"2019-08-10", "2018-08-10", "2017-08-10"};
     for (int i = 0; i < ticker.length; i++) {
       StockOrder newOrder = new StockOrderImpl(ticker[i], 44.2, dates[i], 10.0,
-          2.0);
+              2.0);
       stockOrders.add(newOrder);
     }
     return stockOrders;
@@ -289,7 +298,7 @@ public class UtilsTest {
     DataSource ds = new DataSourceImpl();
     String portfolioName = "dcaTesting";
     File dcaTestingFile = ds.getFileByName(portfolioName + "_DCA", "portfolios" +
-        File.separator + "flex");
+            File.separator + "flex");
     String dcaContent = "2012-08-10,365,2022-08-10,400,3.0,2\n" +
 
             "AMZN,50\n" +
@@ -300,16 +309,16 @@ public class UtilsTest {
             "2012-08-10,365,null,400,3.0,2\n" +
             "IBM,50\n" +
             "GOOGL,50";
-    ds.writeToFile(dcaTestingFile , dcaContent ,false);
-    Utils.loadPortfolioWithDCA( dcaTestingFile, stockOrders);
+    ds.writeToFile(dcaTestingFile, dcaContent, false);
+    Utils.loadPortfolioWithDCA(dcaTestingFile, stockOrders);
 
     assertTrue(stockOrders.size() >= 67);
     for (StockOrder s : stockOrders) {
       System.out.println(s.getStock().getStockTickerName() + " , "
-          + s.getStock().getBuyPrice() + " , "
-          + s.getQuantity() + " , "
-          + s.getStock().getBuyDate() + " , "
-          + s.getCommFee()
+              + s.getStock().getBuyPrice() + " , "
+              + s.getQuantity() + " , "
+              + s.getStock().getBuyDate() + " , "
+              + s.getCommFee()
       );
     }
   }
@@ -328,15 +337,15 @@ public class UtilsTest {
     weightage.put("GOOGL", 50.0);
 
     Utils.updatePortfolioFromDCA(portfolioName, startDate, endDate,
-        weightage, interval, amount, commFee, stockOrders);
+            weightage, interval, amount, commFee, stockOrders);
 
     assertTrue(stockOrders.size() > 3);
     for (StockOrder s : stockOrders) {
       System.out.println(s.getStock().getStockTickerName() + " , "
-          + s.getStock().getBuyPrice() + " , "
-          + s.getQuantity() + " , "
-          + s.getStock().getBuyDate() + " , "
-          + s.getCommFee()
+              + s.getStock().getBuyPrice() + " , "
+              + s.getQuantity() + " , "
+              + s.getStock().getBuyDate() + " , "
+              + s.getCommFee()
       );
     }
 

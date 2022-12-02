@@ -43,5 +43,13 @@ public interface DataSource {
   public File createFileIfNotExists(String name, String dirName) throws IOException;
 
 
+  /**
+   * Function to write data dump to a file
+   *
+   * @param stockFile    file
+   * @param data         data
+   * @param isAppendable is file appendable
+   * @throws IOException can occur during IO operations.
+   */
   public void writeToFile(File stockFile, String data, boolean isAppendable) throws IOException;
 }
