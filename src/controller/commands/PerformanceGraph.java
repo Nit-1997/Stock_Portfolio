@@ -21,6 +21,7 @@ public class PerformanceGraph {
    * @param user          model object.
    * @param out           output object.
    * @param portfolioName name of the portfolio.
+   * @param view view object.
    */
   public static void plotGraph(Scanner scan, PrintStream out, UserFlex user, String portfolioName, ViewText view) {
     view.waitLoadMessage(out);

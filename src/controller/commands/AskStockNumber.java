@@ -15,6 +15,7 @@ public class AskStockNumber {
    *
    * @param scan input object
    * @param out output object.
+   * @param view view object.
    * @return a valid stock number
    */
   public static Double addStocksAskStockNumber(Scanner scan, PrintStream out, ViewText view) {

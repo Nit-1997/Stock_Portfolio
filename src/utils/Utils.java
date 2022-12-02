@@ -736,6 +736,7 @@ public class Utils {
    * @param portfolioDCAFile dca file to be edited.
    * @param stockOrders      list of stock orders
    * @return List of updated Stock Orders after dca transactions.
+   * @throws Exception  if there is any error.
    */
 
   public static List<StockOrder> loadPortfolioWithDCA(File portfolioDCAFile

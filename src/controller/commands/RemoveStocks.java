@@ -18,6 +18,7 @@ public class RemoveStocks {
    * @param stockQuan number of stocks.
    * @param stocksMap current portfolio
    * @param out       output object.
+   * @param view view object.
    */
   public static void addPortfolioRemoveStocks(String ticker, String date, Double stockQuan,
       Map<String, Map<String, SimpleEntry<Double, Double>>> stocksMap, PrintStream out, ViewText view) {

@@ -30,6 +30,7 @@ public class InflexController implements CategoryControllerInterface<UserInflex>
    *
    * @param in  Input Object used to take input from user.
    * @param out output object used to print the result.
+   * @param view view object.
    */
   public InflexController(InputStream in, PrintStream out, ViewText view) {
     this.in = in;

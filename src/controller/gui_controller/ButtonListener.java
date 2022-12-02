@@ -18,7 +18,9 @@ public class ButtonListener implements ActionListener {
   }
 
   /**
-   * Set the map for key typed events. Key typed events in Java Swing are characters
+   * Set the map for key typed events. Key typed events in Java Swing are characters.
+   *
+   * @param map  Map of Action Command vs the runnable object.
    */
 
   public void setButtonClickedActionMap(Map<String, Runnable> map) {

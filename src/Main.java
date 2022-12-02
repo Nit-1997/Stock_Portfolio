@@ -12,7 +12,7 @@ public class Main {
    *
    * @param args standard arguments
    */
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
 
     StockController controller = new WelcomeController();
     controller.start();

@@ -21,7 +21,7 @@ public class PortfolioFlexInvestImpl extends PortfolioFlexImpl {
    * @param endDate       end date of investment.
    * @param interval      interval of investment.
    * @param commFee       commission fee of each investment.
-   * @throws Exception
+   * @throws Exception  if there is any error.
    */
   public PortfolioFlexInvestImpl(String portfolioName, Double amount, Map<String, Double> weightage,
       String startDate, String endDate, Integer interval, Double commFee) throws Exception {

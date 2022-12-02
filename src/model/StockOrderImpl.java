@@ -31,6 +31,8 @@ final public class StockOrderImpl implements StockOrder {
    *
    * @param ticker ticker symbol of the stock
    * @param qty    quantity of the stock
+   * @param date date for stock.
+   * @param commFee commission fee.
    * @throws IOException can occur while loading/ reading data dump
    */
   public StockOrderImpl(String ticker, Double qty, String date, Double commFee) throws IOException {
@@ -44,7 +46,9 @@ final public class StockOrderImpl implements StockOrder {
    *
    * @param ticker ticker symbol of the stock
    * @param qty    quantity of the stock
-   * @throws IOException can occur while loading/ reading data dump
+   * @param buyPrice price of stock on that date.
+   * @param date date of stock.
+   * @param commFee commission fee.
    */
   public StockOrderImpl(String ticker, Double buyPrice, String date, Double qty, Double commFee) {
     this.stock = new StockImpl(ticker, buyPrice, date);

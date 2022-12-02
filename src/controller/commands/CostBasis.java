@@ -15,7 +15,8 @@ public class CostBasis {
    *
    * @param scan          input object.
    * @param user          model object.
-   * @param out           output object.
+   * @param out           output object
+   * @param view view object..
    * @param portfolioName name of the portfolio.
    */
   public static void calculateCostBasis(Scanner scan, PrintStream out, UserFlex user,

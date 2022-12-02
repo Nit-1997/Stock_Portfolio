@@ -39,6 +39,7 @@ public interface PortfolioFlex extends Portfolio {
    * Add a new stock transaction to the portfolio.
    *
    * @param newEntry Stock transaction {Ticker Symbol, Transaction Date, Quantity} to be added
+   * @param date date of entry.
    * @throws Exception if arguments are invalid.
    */
   void addTransaction(

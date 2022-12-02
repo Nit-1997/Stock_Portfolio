@@ -17,6 +17,7 @@ public class BuyStock {
    * @param scan input object.
    * @param user model object.
    * @param out output object.
+   * @param view view object.
    * @param portfolioName name of the portfolio.
    */
   public static void buyStockToPortfolio(String portfolioName, Scanner scan, UserFlex user,

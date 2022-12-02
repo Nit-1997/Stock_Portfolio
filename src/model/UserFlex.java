@@ -25,7 +25,8 @@ public interface UserFlex extends User {
    *
    * @param name name of the portfolio
    * @param date date for which portfolio summary is required.
-   * @return {ticker_symbl , qty}
+   * @return {ticker_symbol , qty}
+   * @throws Exception  if there is any error.
    */
   Map<String, Double> getPortfolioSummary(String name, String date) throws Exception;
 
@@ -34,6 +35,8 @@ public interface UserFlex extends User {
    *
    * @param name name of the portfolio
    * @return portfolio creation date
+   * @throws Exception  if there is any error.
+   *
    */
   String getPortfolioCreationDate(String name) throws Exception;
 
@@ -75,6 +78,7 @@ public interface UserFlex extends User {
    * @param date          date for which getBasis required.
    * @param portfolioName name of the portfolio.
    * @return Total Money Invested.
+   * @throws Exception  if there is any error.
    */
   Double getCostBasis(String portfolioName, String date) throws Exception;
 

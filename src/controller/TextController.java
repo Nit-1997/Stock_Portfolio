@@ -21,6 +21,7 @@ public class TextController implements StockController {
    *
    * @param in  Input Object used to take input from user.
    * @param out output object used to print the result.
+   * @param view view object.
    */
   public TextController(InputStream in, PrintStream out, ViewText view) {
     this.in = in;

@@ -16,6 +16,7 @@ public class PortfolioValue {
    * @param user          model object.
    * @param out           output object.
    * @param date          date for which value is required.
+   * @param view view object.
    */
   public static void getPortfolioValue(String portfolioName, String date, PrintStream out,
       UserFlex user, ViewText view) {

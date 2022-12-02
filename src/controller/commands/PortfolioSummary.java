@@ -18,6 +18,7 @@ public class PortfolioSummary {
    * @param user          model object.
    * @param out           output object.
    * @param portfolioName name of the portfolio.
+   * @param view view object.
    */
   public static void getPortfolioSummary(Scanner scan, PrintStream out, UserFlex user,
       String portfolioName, ViewText view) {

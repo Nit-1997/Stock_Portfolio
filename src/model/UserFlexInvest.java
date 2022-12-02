@@ -18,8 +18,7 @@ public interface UserFlexInvest extends UserFlex {
    * @param percentage    map of {stock,percentage} to be purchased from the amount.
    * @param date          date on which investment done.
    * @param commFee       commission fee for this investment.
-   * @return true if investment done successfully.
-   * @throws Exception
+   * @throws Exception  if there is any error.
    */
   void investMoney(String portfolioName, Double amount, Map<String, Double> percentage,
       String date, Double commFee) throws Exception;
@@ -34,6 +33,7 @@ public interface UserFlexInvest extends UserFlex {
    * @param endDate       end date of investment.
    * @param interval      interval of investment.
    * @param commFee       commission fee for each investment.
+   * @throws Exception  if there is any error.
    */
   void addPortfolio(String portfolioName, Double amount, Map<String, Double> weightage,
       String startDate, String endDate, int interval, Double commFee) throws Exception;
@@ -60,6 +60,7 @@ public interface UserFlexInvest extends UserFlex {
    * @param date2         ending date for graph.
    * @param portfolioName name of the portfolio for which graph to be printed.
    * @return {Labels List, DataPoints List}
+   * @throws Exception  if there is any error.
    */
   SimpleEntry<List<String>, List<Double>> getGraphDataGUI(
       String date1, String date2, String portfolioName) throws Exception;

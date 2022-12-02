@@ -17,6 +17,7 @@ public class LoadSingleFlexPortfolioDetail {
    * @param scan input object.
    * @param user model object.
    * @param out  output object.
+   * @param view view object.
    */
   public static void loadSinglePortfolioDetailController(Scanner scan, UserFlex user,
       PrintStream out, ViewText view) {

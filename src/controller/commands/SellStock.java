@@ -19,6 +19,7 @@ public class SellStock {
    * @param user          model object.
    * @param out           output object.
    * @param portfolioName name of the portfolio.
+   * @param view view object.
    */
   public static void sellStockFromPortfolio(String portfolioName, Scanner scan, UserFlex user,
       PrintStream out, ViewText view) {

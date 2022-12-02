@@ -14,6 +14,7 @@ public class AskCommissionFees {
    *
    * @param scan input object.
    * @param out  output object.
+   * @param view view object.
    * @return commission fee.
    */
   public static Double askCommissionFees(Scanner scan, PrintStream out, ViewText view) {

@@ -21,6 +21,7 @@ public class AddFlexPortfolio {
    * @param scan input object.
    * @param user model object.
    * @param out  output object.
+   * @param view view object.
    */
   public static void addStocksToPortfolioController(Scanner scan, UserFlex user, PrintStream out, ViewText view) {
     view.addPortfolio(out);
