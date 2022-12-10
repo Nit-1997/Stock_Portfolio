@@ -1,115 +1,69 @@
 package model;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
-import utils.Utils;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Implementation of the Stock interface. Used to store the data for each stock
+ * Implementation of a stock.
  */
-class StockImpl implements Stock {
-
-  private final String ticker;
-  private final double buyPrice;
-  private final String buyDate;
+public class StockImpl implements Stock {
+  private String ticker;
+  private Map<LocalDate, double[]> data;
+  private String[] keys;
 
   /**
-   * Constructor to create object of stock. This is used while fetching the data for already created
-   * stock
+   * Construct a new StockImpl.
    *
-   * @param ticker   ticker symbol of the stock
-   * @param buyPrice buy price of the stock
-   * @param date     date of purchase
+   * @param ticker Ticker for this stock.
+   * @param keys   String description of the values being stored by this stockImpl.
+   *               Represents the labels open, close, volume etc.
+   * @param values Values for this stock as list, seperated into lists by date.
+   * @throws IllegalArgumentException If the keys does not contain a date, throw an exception.
    */
-  public StockImpl(String ticker, double buyPrice, String date) {
+  public StockImpl(String ticker, String[] keys, String[][] values)
+          throws IllegalArgumentException {
     this.ticker = ticker;
-    this.buyPrice = buyPrice;
-    this.buyDate = date;
-  }
-
-  /**
-   * Constructor to create object of stock.
-   *
-   * @param ticker ticker symbol
-   * @param date   date
-   * @throws IOException during IO operations
-   */
-  public StockImpl(String ticker, String date) throws IOException {
-    if (ticker == null || date == null) {
-      throw new IOException("Arguments cannot be Null");
+    this.keys = keys;
+    boolean hasDate = Arrays.stream(keys).anyMatch("timestamp"::equals);
+    if (!hasDate) {
+      throw new IllegalArgumentException("Keys must contain a timestamp!");
     }
-    this.ticker = ticker;
-    this.buyDate = date;
-    this.buyPrice = this.getPriceOnDate(date);
-  }
 
-  /**
-   * Constructor to create object of stock. This is used when creating the portfolio for the first
-   * time
-   *
-   * @param ticker ticker symbol for the given stock
-   * @throws IOException can occur while reading/loading data dump
-   */
-  public StockImpl(String ticker) throws IOException {
-    this.ticker = ticker;
-    this.buyPrice = this.getCurrentPrice();
-    this.buyDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
+    this.data = new HashMap<>();
+
+    try {
+      for (String[] entry : values) {
+        LocalDate date = LocalDate.parse(entry[0]);
+        double[] dataEntry = Arrays.stream(Arrays
+                        .copyOfRange(entry, 1, entry.length))
+                .mapToDouble(Double::parseDouble)//Go to doubles.
+                .toArray();
+        data.put(date, dataEntry);
+      }
+    } catch (DateTimeParseException e) {
+      throw new IllegalArgumentException("Date in wrong format! Use YYYY-MM-DD");
+    }
   }
 
   @Override
-  public Double getCurrentPrice() throws IOException {
-    String res = Utils.fetchCurrentStockValue(this.ticker, "stock_data");
-    if (res == null) {
-      return null;
-    }
-    return Double.parseDouble(res);
-  }
-
-  @Override
-  public String getStockTickerName() {
+  public String getTicker() {
     return this.ticker;
   }
 
   @Override
-  public Double getPnL() throws IOException {
-    Double currPrice = this.getCurrentPrice();
-    if (currPrice == null) {
-      return null;
+  public Map<String, Double> getValue(LocalDate date) throws IllegalArgumentException {
+    Map<String, Double> values = new HashMap<>();
+    double[] dateValues = this.data.get(date);
+    if (dateValues == null) {
+      throw new IllegalArgumentException("Date not found");
     }
-    return currPrice - this.buyPrice;
-  }
 
-  @Override
-  public Double getPnLByDate(String date) throws IOException {
-    Double priceOnGivenDate = this.getPriceOnDate(date);
-    if (priceOnGivenDate == null) {
-      return null;
+    for (int index = 1; index < keys.length; ++index) {
+      values.put(keys[index], dateValues[index - 1]);
     }
-    return priceOnGivenDate - this.buyPrice;
-  }
-
-
-  @Override
-  public double getBuyPrice() {
-    return this.buyPrice;
-  }
-
-  @Override
-  public Double getPriceOnDate(String date) throws IOException {
-    if (date == null) {
-      throw new IllegalArgumentException("passed null args");
-    }
-    String res = Utils.fetchStockValueByDate(this.ticker, date, "stock_data");
-    if (res == null) {
-      return null;
-    }
-    return Double.parseDouble(res);
-  }
-
-  @Override
-  public String getBuyDate() {
-    return this.buyDate;
+    return values;
   }
 }

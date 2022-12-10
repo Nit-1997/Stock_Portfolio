@@ -1,31 +1,84 @@
 package model;
 
-import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Map;
 
 /**
- * Interface to specify Portfolio specs.
- * spec includes the name ,{stock , qty} map while creating the portfolio,
- * or just name while fetching already created portfolio
+ * Interface that represents a portfolio.
  */
 public interface Portfolio {
+  /**
+   * Get the portfolio name.
+   *
+   * @return String portfolio name.
+   */
+  String getPortName();
 
   /**
-   * Gets the current Price of the entire Portfolio.
+   * Get the map of tickers to number of stocks owned at a date.
    *
-   * @return currentPrice of Portfolio
-   * @throws IOException if asked date is invalid or no data for this date.
+   * @param date Date to get the ticker map for.
+   * @return Map of tickers to stocks.
    */
-  public Double getCurrentValue() throws Exception;
-
+  Map<String, Double> getTickerMap(LocalDate date);
 
   /**
-   * Fetches the value of the Portfolio for a particular date.
+   * Get the number of shares for a stock.
    *
-   * @param date for which portfolio value needs to be fetched.
-   * @return total Initial Buy value.
-   * @throws IOException if there is no value on this date or date is invalid.
+   * @param ticker Ticker to look for.
+   * @param date   Date to get the shares for.
+   * @return Number of shares for that stock.
+   * @throws IllegalArgumentException If the date is invalid. For inflexible portfolios, this
+   *                                  must be today, and will return most recent data.
    */
-  public Double getValueOnDate(String date) throws Exception;
+  Double getShares(String ticker, LocalDate date) throws IllegalArgumentException;
 
+  /**
+   * Get the number of different stocks.
+   *
+   * @return Number of tickers in portfolio.
+   */
+  int getNumStocks();
+
+  /**
+   * Get the closing values of the stocks at a specific date.
+   *
+   * @param date Date to get values for.
+   * @return Map of tickers to closing values.
+   * @throws IllegalArgumentException If we don't have data for this date.
+   */
+  Map<String, Double> getValues(LocalDate date) throws IllegalArgumentException;
+
+  /**
+   * Get the cost basis for the portfolio. For inflexible, will be same as value.
+   *
+   * @param date Date to get cost basis at.
+   * @return Cost basis at the date.
+   * @throws IllegalArgumentException If the date is invalid for inflexible portfolios.
+   */
+  double getCostBasis(LocalDate date) throws IllegalArgumentException;
+
+  /**
+   * Get the overall value for the portfolio.
+   *
+   * @param date Date to evaluate at.
+   * @return Value of the portfolio.
+   * @throws IllegalArgumentException If we don't have data for this date.
+   */
+  double getPortValue(LocalDate date) throws IllegalArgumentException;
+
+  /**
+   * Get the string representation of this portfolio.
+   *
+   * @return String of portfolio. For JSON.
+   */
+  @Override
+  String toString();
+
+  /**
+   * Is this portfolio flexible. You tell me.
+   *
+   * @return Flexible or not.
+   */
+  boolean isFlexible();
 }
-
