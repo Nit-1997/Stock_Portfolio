@@ -3,9 +3,9 @@
     <output-path>$PROJECT_DIR$/out/artifacts/Assignment4_jar</output-path>
     <root id="archive" name="Assignment4.jar">
       <element id="module-output" name="Assignment4" />
-      <element id="extracted-dir" path="$USER_HOME$/Downloads/jcommon-1.0.0.jar" path-in-jar="/" />
       <element id="library" level="project" name="Java EE 6-Java EE 6" />
       <element id="extracted-dir" path="$USER_HOME$/Downloads/jfreechart-1.0.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/jcommon-1.0.0.jar" path-in-jar="/" />
       <element id="file-copy" path="$USER_HOME$/Downloads/jcommon-1.0.0.jar" />
       <element id="file-copy" path="$USER_HOME$/Downloads/jfreechart-1.0.1.jar" />
     </root>
