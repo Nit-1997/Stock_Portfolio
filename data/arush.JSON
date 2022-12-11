@@ -30,7 +30,7 @@
 	commission: 1.0
 	}
 	{
-	ticker: GOOG,
+	ticker: GOOGL,
 	stocks: 28,
 	date: 2018-12-12,
 	commission: 1.0

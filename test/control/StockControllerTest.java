@@ -3,6 +3,7 @@ package control;
 import control.terminal.StockController;
 import control.terminal.TerminalController;
 
+import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -591,6 +592,17 @@ public class StockControllerTest {
     public FileHandler getFileHandler() {
       commands.add("getFileHandler");
       return new StockIO();
+    }
+
+    @Override
+    public Set<String> getStocksOnDate(String portfolioName, LocalDate date) {
+      return null;
+    }
+
+    @Override
+    public void reBalance(Map<String, Double> stockMap, String portfolioName, LocalDate date)
+        throws Exception {
+
     }
   }
   /*

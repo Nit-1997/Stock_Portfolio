@@ -1,5 +1,6 @@
 package control.gui;
 
+import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -467,6 +468,17 @@ public class ControllerTest {
     public FileHandler getFileHandler() {
       commands.add("getFileHandler");
       return new StockIO();
+    }
+
+    @Override
+    public Set<String> getStocksOnDate(String portfolioName, LocalDate date) {
+      return null;
+    }
+
+    @Override
+    public void reBalance(Map<String, Double> stockMap, String portfolioName, LocalDate date)
+        throws Exception {
+
     }
   }
 
