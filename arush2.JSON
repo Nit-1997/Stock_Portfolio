@@ -1,0 +1,26 @@
+{
+	{
+	ticker: AAPL,
+	stocks: 10.0,
+	date: 2018-02-16,
+	commission: 1.1
+	}
+	{
+	ticker: GOOG,
+	stocks: 19.0,
+	date: 2018-05-24,
+	commission: 1.9
+	}
+	{
+	ticker: TSLA,
+	stocks: 23.0,
+	date: 2018-06-15,
+	commission: 2.3
+	}
+	{
+	ticker: PYPL,
+	stocks: 29.0,
+	date: 2018-09-12,
+	commission: 2.9
+	}
+}

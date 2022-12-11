@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="res1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../CodeWalk5/ass/res/assignment.zip!/" />
+      <root url="jar://$PROJECT_DIR$/../CodeWalk5/ass/res/HTML documentation.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
