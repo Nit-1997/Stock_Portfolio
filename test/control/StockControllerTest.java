@@ -778,6 +778,46 @@ public class StockControllerTest {
     public void showIndividualStocksFlex(String[] info) {
       out.println("showIndividualStocksFlex(" + info + ")");
     }
+
+    @Override
+    public void emptyPortfolioReBalance() {
+      out.println("emptyPortfolioReBalance");
+    }
+
+    @Override
+    public void printAvailableStockReBalance(Set<String> stockNames) {
+      out.println("printAvailableStockReBalance");
+    }
+
+    @Override
+    public void percentageErrorIntegerFormatReBalance() {
+      out.println("percentageErrorIntegerFormatReBalance");
+    }
+
+    @Override
+    public void percentageErrorOutRangeReBalance() {
+      out.println("percentageErrorOutRangeReBalance");
+    }
+
+    @Override
+    public void reBalanceConfirmation() {
+      out.println("reBalanceConfirmation");
+    }
+
+    @Override
+    public void reBalanceErrorMsg(Exception e) {
+      out.println("reBalanceErrorMsg");
+    }
+
+    @Override
+    public void percentageHeaderReBalance() {
+      out.println("percentageHeaderReBalance");
+    }
+
+    @Override
+    public void askPercentageReBalance(String stock) {
+      out.println("askPercentageReBalance");
+    }
   }
 
 
