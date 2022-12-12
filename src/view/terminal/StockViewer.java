@@ -1,6 +1,7 @@
 package view.terminal;
 
 import java.io.PrintStream;
+import java.util.Set;
 
 /**
  * Implemented stock viewer class, outputs the stock information.
@@ -283,5 +284,45 @@ public class StockViewer implements StockView {
    */
   private String controlSequence(String code) {
     return "\033[" + code;
+  }
+
+  @Override
+  public void emptyPortfolioReBalance(){
+    out.println("No stocks in portfolio on that date, kindly enter again");
+  }
+
+  @Override
+  public void printAvailableStockReBalance(Set<String> stockNames) {
+    out.println("Available stocks : "+stockNames);
+  }
+
+  @Override
+  public void percentageErrorIntegerFormatReBalance(){
+    out.print("kindly enter percentage in integer format : ");
+  }
+
+  @Override
+  public void percentageErrorOutRangeReBalance() {
+    out.print("kindly enter percentage in 0 - 100 range : ");
+  }
+
+  @Override
+  public void reBalanceConfirmation(){
+    out.println("Portfolio rebalanced");
+  }
+
+  @Override
+  public void reBalanceErrorMsg(Exception e){
+    out.println(e.getMessage());
+  }
+
+  @Override
+  public void percentageHeaderReBalance(){
+    out.println("Enter percentages : ");
+  }
+
+  @Override
+  public void askPercentageReBalance(String stock){
+    out.print(stock+" : ");
   }
 }

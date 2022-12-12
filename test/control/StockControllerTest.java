@@ -596,13 +596,13 @@ public class StockControllerTest {
 
     @Override
     public Set<String> getStocksOnDate(String portfolioName, LocalDate date) {
+      commands.add("Portfolio Name: "+portfolioName+" date : "+date);
       return null;
     }
 
     @Override
-    public void reBalance(Map<String, Double> stockMap, String portfolioName, LocalDate date)
-        throws Exception {
-
+    public void reBalance(Map<String, Double> stockMap, String portfolioName, LocalDate date) {
+      commands.add("StockMap : "+stockMap+" Portfolio Name : "+portfolioName+" Date : "+date);
     }
   }
   /*
