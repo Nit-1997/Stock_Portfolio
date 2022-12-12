@@ -3,6 +3,7 @@ package control;
 import control.terminal.StockController;
 import control.terminal.TerminalController;
 
+import java.util.HashSet;
 import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
@@ -447,6 +448,57 @@ public class StockControllerTest {
 
   }
 
+  @Test
+  public void testReBalance() {
+    this.output = new PrintStream(this.outStream);
+
+
+    String inputString = "L\narush.JSON\narush\nR\narush\n2018-11-16\n20\n20\n20\n20\n20\nQ\n";
+    this.input = new ByteArrayInputStream(inputString.getBytes());
+
+    this.model = new MockModel();
+
+    this.controller = new TerminalController(this.model, this.input, this.view);
+    this.controller.gogogadget();
+    String viewExpected = "showMainMenu\n"
+        + "loadFileData\n"
+        + "PromptPortName\n"
+        + "loadingData\n"
+        + "showMainMenu\n"
+        + "enterNamePort\n"
+        + "printPortfolios(arush)\n"
+        + "promptDate\n"
+        + "printAvailableStockReBalance\n"
+        + "percentageHeaderReBalance\n"
+        + "askPercentageReBalance\n"
+        + "askPercentageReBalance\n"
+        + "askPercentageReBalance\n"
+        + "askPercentageReBalance\n"
+        + "askPercentageReBalance\n"
+        + "reBalanceConfirmation\n"
+        + "showMainMenu\n"
+        + "clearScreen\n"
+        + "quit\n";
+    String viewOutput = outStream.toString();
+    assertEquals(viewExpected, viewOutput);
+
+    String modelOutput = String.join(",", ((MockModel) model).commands.toArray(new String[0]));
+    String modelExpected = "getFileHandler,newFlexiblePortfolio(arush)\n"
+        + ",addStock(arush, AAPL, 2016-01-01, 1.0)\n"
+        + ",addStock(arush, META, 2017-03-03, 1.0)\n"
+        + ",addStock(arush, MSFT, 2017-10-10, 1.0)\n"
+        + ",addStock(arush, TSLA, 2016-06-06, 1.0)\n"
+        + ",addStock(arush, PYPL, 2018-02-02, 1.0)\n"
+        + ",getPorftolios\n"
+        + ",getPorftolios\n"
+        + ",isFlexible(arush)\n"
+        + ",getValues(arush, 2018-11-16)\n"
+        + ",Portfolio Name: arush date : 2018-11-16,StockMap : {A=20.0, B=20.0, C=20.0, D=20.0,"
+        + " E=20.0} Portfolio Name : arush Date : 2018-11-16";
+    assertEquals(modelExpected, modelOutput);
+
+  }
+
 
   /*
    * ------------------------- Mock Model --------------------------------------
@@ -597,7 +649,13 @@ public class StockControllerTest {
     @Override
     public Set<String> getStocksOnDate(String portfolioName, LocalDate date) {
       commands.add("Portfolio Name: "+portfolioName+" date : "+date);
-      return null;
+      Set<String> stocks = new HashSet<>();
+      stocks.add("A");
+      stocks.add("B");
+      stocks.add("C");
+      stocks.add("D");
+      stocks.add("E");
+      return stocks;
     }
 
     @Override

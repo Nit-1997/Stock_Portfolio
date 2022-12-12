@@ -82,4 +82,9 @@ public interface StockController {
    */
   double getCommission();
 
+  /**
+   * ReBalances the portfolio.
+   */
+  void reBalance();
+
 }

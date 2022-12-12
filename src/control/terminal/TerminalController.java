@@ -120,6 +120,7 @@ public class TerminalController implements StockController {
     }
   }
 
+  @Override
   public void reBalance() {
     if (model.getPortfolios().size() == 0) {
       view.showError(new String[]{"You must create a portfolio before viewing"});
