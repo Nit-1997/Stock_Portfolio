@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -262,7 +263,7 @@ public class Controller implements Features {
 
     for (int i = 0; i < tickers.length; i++) {
 
-      System.out.println(tickers[i]);
+//      System.out.println(tickers[i]);
     }
 
 
@@ -304,6 +305,8 @@ public class Controller implements Features {
 
         }
       }
+
+
       view.showOutput("Successfully Loaded Data");
     } catch (Exception e) {
       view.showError(e.getMessage());
@@ -393,7 +396,23 @@ public class Controller implements Features {
 
   @Override
   public Set<String> getStockNamesForReBalancing(String portfolioName, LocalDate date) {
-    return model.getStocksOnDate(portfolioName,date);
+    Set<String> stockList;
+    try{
+      stockList = model.getStocksOnDate(portfolioName,date);
+    }catch (IllegalArgumentException e){
+      return null;
+    }
+    return  stockList;
+  }
+
+  @Override
+  public String reBalance(Map<String, Double> stockMap, String portfolioName, LocalDate date){
+    try{
+      model.reBalance(stockMap,portfolioName,date);
+    } catch(Exception e){
+      return e.getMessage();
+    }
+    return "Portfolio ReBalanced";
   }
 
 

@@ -434,7 +434,7 @@ public class ModelImpl implements Model {
 
 
   @Override
-  public Set<String> getStocksOnDate(String portfolioName, LocalDate date) {
+  public Set<String> getStocksOnDate(String portfolioName, LocalDate date) throws IllegalArgumentException {
     return this.getTickerMap(portfolioName, date).keySet();
   }
 
@@ -469,7 +469,7 @@ public class ModelImpl implements Model {
       if (remainderAmount != 0) {
         FlexiblePortfolio.Transaction trans = new FlexiblePortfolio.Transaction(ticker, date,
             remainderAmount, 0.0);
-        trans.updateTransaction(remainderAmount);
+        trans.updateTransaction(stockPrice.get(ticker));
         transactions.add(trans);
       }
     }

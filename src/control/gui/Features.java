@@ -3,6 +3,7 @@ package control.gui;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import java.util.Map;
 import java.util.Set;
 import view.gui.IView;
 
@@ -148,4 +149,14 @@ public interface Features {
    * @return list of stock names.
    */
   Set<String> getStockNamesForReBalancing(String portfolioName, LocalDate date);
+
+  /**
+   *
+   * reBalances the portfolio on a give date.
+   * @param stockMap Map of ticker symbol vs the percentage
+   * @param portfolioName name of the portfolio.
+   * @param date date for reBalance.
+   * @return confirmation message.
+   */
+  String reBalance(Map<String, Double> stockMap, String portfolioName, LocalDate date);
 }

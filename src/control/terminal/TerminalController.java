@@ -156,14 +156,24 @@ public class TerminalController implements StockController {
 
     Map<String, Double> stockMap = new HashMap<>();
 
+    System.out.println("Available stocks : "+stockNames);
+
     System.out.println("Enter percentages : ");
     for(String stock : stockNames){
       System.out.print(stock+" : ");
       String weight = in.nextLine();
-      while(!checkValidInteger(weight)){
-        System.out.print("kindly enter percentage in integer format : ");
-        weight = in.nextLine();
-        if(checkValidInteger(weight)) break;
+      while(!checkValidInteger(weight) || Integer.parseInt(weight)<0 || Integer.parseInt(weight)>100){
+        if(!checkValidInteger(weight)){
+          System.out.print("kindly enter percentage in integer format : ");
+          weight = in.nextLine();
+        }
+        else if(Integer.parseInt(weight)<0 || Integer.parseInt(weight)>100) {
+          System.out.print("kindly enter percentage in 0 - 100 range : ");
+          weight = in.nextLine();
+        }
+        else{
+          break;
+        }
       }
       stockMap.put(stock,Double.parseDouble(weight));
     }
