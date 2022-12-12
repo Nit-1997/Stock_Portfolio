@@ -1,6 +1,6 @@
 {
 	{
-	ticker: aapl,
+	ticker: AAPL,
 	stocks: 10,
 	date: 2016-01-01,
 	commission: 1.0
@@ -27,12 +27,6 @@
 	ticker: PYPL,
 	stocks: 18,
 	date: 2018-02-02,
-	commission: 1.0
-	}
-	{
-	ticker: GOOGL,
-	stocks: 28,
-	date: 2018-12-12,
 	commission: 1.0
 	}
 }

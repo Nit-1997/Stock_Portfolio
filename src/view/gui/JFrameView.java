@@ -1,5 +1,6 @@
 package view.gui;
 
+import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.CardLayout;
@@ -16,8 +17,12 @@ import java.util.ArrayList;
 
 import control.gui.Features;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -54,7 +59,7 @@ public class JFrameView extends JFrame implements IView {
 
   private JButton loadStocksForReBalance;
 
-  private JButton reBalanceBtn;
+  private JButton reBalanceBtn = new JButton("");
 
   private GridBagConstraints gridBagConstraintForLabel;
   private GridBagConstraints gridBagConstraintForTextField;
@@ -80,6 +85,8 @@ public class JFrameView extends JFrame implements IView {
   private JTextField dateSell;
   private JTextField sharesSell;
   private JTextField dateViewPort;
+
+  private JTextField dateForReBalance;
   private JTextField filePath;
   private JTextField commissionBuy;
   private JTextField comissionSell;
@@ -105,6 +112,12 @@ public class JFrameView extends JFrame implements IView {
   private JComboBox portfolioSelector = new JComboBox();
 
   private Set<String> stocksList = new HashSet<>();
+
+  private Map<String, Double> stockMap = new HashMap<>();
+
+  private JLabel reBalanceConfirmationMsg = new JLabel();
+
+  private JPanel reBalanceMenu;
 
   /**
    * New JFrameView, set up main screen and display.
@@ -247,14 +260,14 @@ public class JFrameView extends JFrame implements IView {
 
 
     tabbedPane.addTab("Rebalance",null,reBalancePane,"ReBalance the portfolio");
-    dateViewPort = new JTextField();
-    JTextField[] fieldListReBalance = {dateViewPort};
+    this.dateForReBalance = new JTextField();
+    JTextField[] fieldListReBalance = {this.dateForReBalance};
     String[] labelsReBalance = {"Date(YYYY-MM-DD)"};
     for (int i = 0; i < labelsReBalance.length; i++) {
       addInputs(fieldListReBalance[i], labelsReBalance[i], 0, i, reBalancePane);
     }
-    loadStocksForReBalance = new JButton("Enter");
-    addConfirmButtons(loadStocksForReBalance,0,1,reBalancePane);
+    this.loadStocksForReBalance = new JButton("Enter");
+    addConfirmButtons(this.loadStocksForReBalance,0,1,reBalancePane);
 
 
     tabbedPane.addTab("View Portfolio", null, viewPortfolioPane,
@@ -486,10 +499,18 @@ public class JFrameView extends JFrame implements IView {
 
   @Override
   public void checkViewInputs(Features features) {
-    boolean dateCheck = features.checkDate(dateViewPort.getText());
+    boolean dateCheck = features.checkDate(this.dateViewPort.getText());
     if (!dateCheck) {
       highlightFunction(dateViewPort);
     }
+  }
+
+  private boolean checkViewInputs2(Features features) {
+    boolean dateCheck = features.checkDate(this.dateForReBalance.getText());
+    if (!dateCheck) {
+      highlightFunction(this.dateForReBalance);
+    }
+    return dateCheck;
   }
 
   private void highlightFunction(JTextField field) {
@@ -579,6 +600,87 @@ public class JFrameView extends JFrame implements IView {
 
   }
 
+  private void reBalanceCaller(Features features){
+    if(this.reBalanceMenu!=null) this.reBalancePane.remove(this.reBalanceMenu);
+    this.reBalanceConfirmationMsg.setText("");
+
+    if(this.dateForReBalance.getText().equals("")){
+      this.showOutput("Please enter some date");
+      return;
+    }
+
+    if(!checkViewInputs2(features)) return;
+
+    this.stocksList = features.getStockNamesForReBalancing((String)portfolioSelector.getSelectedItem(),
+        LocalDate.parse(this.dateForReBalance.getText()));
+
+    if(this.stocksList==null){
+      this.showOutput("Invalid date! " + this.dateForReBalance.getText() +
+          "must not be a weekend, or in the future.");
+    }
+    else if(this.stocksList.size()==0) this.showOutput("No stocks in portfolio on this date.");
+    else{
+      this.reBalanceMenu = new JPanel();
+      reBalanceMenu.setLayout(new BoxLayout(reBalanceMenu,BoxLayout.Y_AXIS));
+      reBalanceMenu.add(new JLabel("Please enter percentages for each stock"));
+
+      Map<JLabel,JTextField> tempStockMap = new HashMap<>();
+      for(String stock : this.stocksList) tempStockMap.put(new JLabel(stock),new JTextField(10));
+      for(JLabel stock : tempStockMap.keySet()){
+        JPanel tab = new JPanel(new FlowLayout());
+        tab.add(stock);
+        tab.add(tempStockMap.get(stock));
+        reBalanceMenu.add(tab);
+      }
+      this.reBalanceBtn = new JButton("ReBalance");
+      reBalanceBtn.addActionListener(e -> this.reBalancePortfolio((String)portfolioSelector.getSelectedItem(),
+          LocalDate.parse(this.dateForReBalance.getText()),tempStockMap, features));
+      reBalanceMenu.add(reBalanceBtn);
+
+      reBalanceMenu.add(this.reBalanceConfirmationMsg);
+
+      this.reBalancePane.add(reBalanceMenu,BorderLayout.CENTER);
+
+      this.reBalancePane.revalidate();
+      this.reBalancePane.repaint();
+    }
+  }
+
+  private void reBalancePortfolio(String portfolioName, LocalDate date,Map<JLabel,JTextField> tempStockMap,
+      Features features){
+    int sum=0;
+
+    for(JLabel stock : tempStockMap.keySet()){
+      String percentage = tempStockMap.get(stock).getText();
+      if(percentage.equals("")){
+        this.reBalanceConfirmationMsg.setText("empty percentage for "+stock.getText());
+        return;
+      }
+      int percentInt;
+      try{
+        percentInt = Integer.parseInt(percentage);
+      } catch(Exception e) {
+        this.reBalanceConfirmationMsg.setText("percentage for "+stock.getText()+" not in integer format");
+        return;
+      }
+      if(percentInt<0 || percentInt>=100){
+        this.reBalanceConfirmationMsg.setText("percentage for "+stock.getText()+" less than 0 or greater than 100");
+        return;
+      }
+      sum+=percentInt;
+    }
+    if(sum!=100){
+      this.reBalanceConfirmationMsg.setText("total sum of percentages not equal to 100");
+      return;
+    }
+
+    this.stockMap = new HashMap<>();
+    for(JLabel stock : tempStockMap.keySet()){
+      this.stockMap.put(stock.getText(),Double.parseDouble(tempStockMap.get(stock).getText()));
+    }
+    this.reBalanceConfirmationMsg.setText(features.reBalance(this.stockMap,portfolioName,date));
+  }
+
   @Override
   public void addFeatures(Features features) {
     newPortfolio.addActionListener(evt -> features.newFlexiblePortInit());
@@ -586,15 +688,7 @@ public class JFrameView extends JFrame implements IView {
     viewPortConfirm.addActionListener(evt -> features.viewPortfolio((String)
             portfolioSelector.getSelectedItem(), dateViewPort.getText()));
 
-    loadStocksForReBalance.addActionListener(evt -> checkViewInputs(features));
-    loadStocksForReBalance.addActionListener(evt -> {
-      this.stocksList = features.getStockNamesForReBalancing((String)portfolioSelector.getSelectedItem(),
-          LocalDate.parse(dateViewPort.getText()));
-      if(this.stocksList.size()==0) this.showOutput("Given date before portfolio creation Date");
-      else{
-        this.showOutput(""+this.stocksList);
-      }
-    });
+    this.loadStocksForReBalance.addActionListener(evt -> this.reBalanceCaller(features));
 
     buyStockConfirm.addActionListener(evt -> checkBuyInputs(features));
     buyStockConfirm.addActionListener(evt -> features.buyStock((String)

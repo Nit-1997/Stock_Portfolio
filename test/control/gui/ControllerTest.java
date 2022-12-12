@@ -1,5 +1,6 @@
 package control.gui;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Before;
@@ -322,7 +323,26 @@ public class ControllerTest {
     List<String> actual2 = ((MockGui) this.view).commands;
     assertEquals(actual, expected);
     assertEquals(actual2, expected2);
+  }
 
+  @Test
+  public void reBalance() {
+
+    this.controller.reBalance(new HashMap<>(),"arush",LocalDate.parse("2018-11-16"));
+
+    String actual = (((MockModel) this.model).commands).toString();
+
+    assertEquals( "[StockMap : {} Portfolio Name : arush Date : 2018-11-16]",actual);
+
+    Set<String> stockNames = this.controller.getStockNamesForReBalancing("arush",
+        LocalDate.parse("2018-11-16"));
+
+    actual = (((MockModel) this.model).commands).toString();
+
+    assertEquals("[StockMap : {} Portfolio Name : arush Date : 2018-11-16, Portfolio Name:"
+        + " arush date : 2018-11-16]",actual);
+
+    assertEquals(stockNames.size(),5);
   }
 
   // ------------------------ Mock Model ------------------------------------------------------
@@ -476,14 +496,22 @@ public class ControllerTest {
     //TODO complete it
     @Override
     public Set<String> getStocksOnDate(String portfolioName, LocalDate date) {
-      return null;
+      commands.add("Portfolio Name: "+portfolioName+" date : "+date);
+      Set<String> stocks = new HashSet<>();
+      stocks.add("A");
+      stocks.add("B");
+      stocks.add("C");
+      stocks.add("D");
+      stocks.add("E");
+      return stocks;
     }
 
 
     //TODO complete it
     @Override
-    public void reBalance(Map<String, Double> stockMap, String portfolioName, LocalDate date) throws Exception {
-
+    public void reBalance(Map<String, Double> stockMap, String portfolioName, LocalDate date)
+        throws Exception {
+      commands.add("StockMap : "+stockMap+" Portfolio Name : "+portfolioName+" Date : "+date);
     }
   }
 

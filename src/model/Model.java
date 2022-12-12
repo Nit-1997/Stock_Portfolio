@@ -238,14 +238,15 @@ public interface Model {
    * @param portfolioName name of the portfolio.
    * @param date Date for reBalancing.
    * @return list of stock names.
+   * @throws IllegalArgumentException if the date is weekend or in the future.
    */
-  Set<String> getStocksOnDate(String portfolioName, LocalDate date);
+  Set<String> getStocksOnDate(String portfolioName, LocalDate date) throws IllegalArgumentException;
 
   /**
    * rebalances the portfolio on a give date.
    * @param stockMap Map of ticker symbol vs the percentage
-   * @param portfolioName
-   * @param date
+   * @param portfolioName name of the portfolio.
+   * @param date date for reBalance.
    * @throws Exception if there is any error.
    */
   void reBalance(Map<String, Double> stockMap, String portfolioName, LocalDate date) throws Exception;

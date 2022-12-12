@@ -1,5 +1,7 @@
 package view.terminal;
 
+import java.util.Set;
+
 /**
  * View interface for the stock project.
  */
@@ -192,4 +194,48 @@ public interface StockView {
    * @param info takes in the info containing ticker, date, shares, commission
    */
   void showIndividualStocksFlex(String[]info);
+
+
+  /**
+   * Print the error if the portfolio was empty when reBalancing was called.
+   */
+  void emptyPortfolioReBalance();
+
+  /**
+   * Print all the stocks available in a portfolio.
+   * @param stockNames set of all stocks available in a portfolio.
+   */
+  void printAvailableStockReBalance(Set<String> stockNames);
+
+  /**
+   * Print error if percentage for stocks entered is not in integer format.
+   */
+  void percentageErrorIntegerFormatReBalance();
+
+  /**
+   * Print error if percentage for stocks entered is below 0 or more than 100.
+   */
+  void percentageErrorOutRangeReBalance();
+
+  /**
+   * Confirmation message that portfolio is rebalanced.
+   */
+  void reBalanceConfirmation();
+
+  /**
+   * Print error message while reBalancing portfolio.
+   * @param e exception to be printed.
+   */
+  void reBalanceErrorMsg(Exception e);
+
+  /**
+   * Prints header before asking percentages for each stock.
+   */
+  void percentageHeaderReBalance();
+
+  /**
+   * asks percentage for each Stock.
+   * @param stock stock name.
+   */
+  void askPercentageReBalance(String stock);
 }

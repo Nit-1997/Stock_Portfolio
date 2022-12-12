@@ -120,6 +120,7 @@ public class  TerminalController implements StockController {
     }
   }
 
+  @Override
   public void reBalance() {
     if (model.getPortfolios().size() == 0) {
       view.showError(new String[]{"You must create a portfolio before viewing"});
@@ -149,30 +150,39 @@ public class  TerminalController implements StockController {
     Set<String> stockNames = model.getStocksOnDate(portChoice,date);
 
     while(stockNames.size()==0){
-      System.out.println("No stocks in portfolio on that date, kindly enter again");
+      view.emptyPortfolioReBalance();
       date = gatherDate(portChoice);
       stockNames = model.getStocksOnDate(portChoice,date);
     }
 
     Map<String, Double> stockMap = new HashMap<>();
 
-    System.out.println("Enter percentages : ");
+    view.printAvailableStockReBalance(stockNames);
+    view.percentageHeaderReBalance();
     for(String stock : stockNames){
-      System.out.print(stock+" : ");
+      view.askPercentageReBalance(stock);
       String weight = in.nextLine();
-      while(!checkValidInteger(weight)){
-        System.out.print("kindly enter percentage in integer format : ");
-        weight = in.nextLine();
-        if(checkValidInteger(weight)) break;
+      while(!checkValidInteger(weight) || Integer.parseInt(weight)<0 || Integer.parseInt(weight)>100) {
+        if(!checkValidInteger(weight)){
+          view.percentageErrorIntegerFormatReBalance();
+          weight = in.nextLine();
+        }
+        else if(Integer.parseInt(weight)<0 || Integer.parseInt(weight)>100) {
+          view.percentageErrorOutRangeReBalance();
+          weight = in.nextLine();
+        }
+        else{
+          break;
+        }
       }
       stockMap.put(stock,Double.parseDouble(weight));
     }
 
     try {
       model.reBalance(stockMap,portChoice,date);
-      System.out.println("Portfolio rebalanced");
+      view.reBalanceConfirmation();
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+      view.reBalanceErrorMsg(e);
     }
   }
 
