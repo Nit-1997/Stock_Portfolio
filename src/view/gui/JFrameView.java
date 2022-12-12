@@ -11,10 +11,13 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import control.gui.Features;
 
+import java.util.HashSet;
+import java.util.Set;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -48,6 +51,10 @@ public class JFrameView extends JFrame implements IView {
   private JButton newPercentage;
   private JButton dollarCostConfirm;
   private JButton addPercentageCost;
+
+  private JButton loadStocksForReBalance;
+
+  private JButton reBalanceBtn;
 
   private GridBagConstraints gridBagConstraintForLabel;
   private GridBagConstraints gridBagConstraintForTextField;
@@ -96,6 +103,8 @@ public class JFrameView extends JFrame implements IView {
   JPanel loadFilePane = new JPanel();
 
   private JComboBox portfolioSelector = new JComboBox();
+
+  private Set<String> stocksList = new HashSet<>();
 
   /**
    * New JFrameView, set up main screen and display.
@@ -238,6 +247,14 @@ public class JFrameView extends JFrame implements IView {
 
 
     tabbedPane.addTab("Rebalance",null,reBalancePane,"ReBalance the portfolio");
+    dateViewPort = new JTextField();
+    JTextField[] fieldListReBalance = {dateViewPort};
+    String[] labelsReBalance = {"Date(YYYY-MM-DD)"};
+    for (int i = 0; i < labelsReBalance.length; i++) {
+      addInputs(fieldListReBalance[i], labelsReBalance[i], 0, i, reBalancePane);
+    }
+    loadStocksForReBalance = new JButton("Enter");
+    addConfirmButtons(loadStocksForReBalance,0,1,reBalancePane);
 
 
     tabbedPane.addTab("View Portfolio", null, viewPortfolioPane,
@@ -568,6 +585,16 @@ public class JFrameView extends JFrame implements IView {
     viewPortConfirm.addActionListener(evt -> checkViewInputs(features));
     viewPortConfirm.addActionListener(evt -> features.viewPortfolio((String)
             portfolioSelector.getSelectedItem(), dateViewPort.getText()));
+
+    loadStocksForReBalance.addActionListener(evt -> checkViewInputs(features));
+    loadStocksForReBalance.addActionListener(evt -> {
+      this.stocksList = features.getStockNamesForReBalancing((String)portfolioSelector.getSelectedItem(),
+          LocalDate.parse(dateViewPort.getText()));
+      if(this.stocksList.size()==0) this.showOutput("Given date before portfolio creation Date");
+      else{
+        this.showOutput(""+this.stocksList);
+      }
+    });
 
     buyStockConfirm.addActionListener(evt -> checkBuyInputs(features));
     buyStockConfirm.addActionListener(evt -> features.buyStock((String)

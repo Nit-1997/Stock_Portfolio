@@ -1,0 +1,8 @@
+{
+	{
+	ticker: csco,
+	stocks: 22.0,
+	date: 2022-02-01,
+	commission: 2.0
+	}
+}

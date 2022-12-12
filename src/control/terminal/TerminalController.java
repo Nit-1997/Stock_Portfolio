@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Used for running the stock program in a terminal.
  */
-public class TerminalController implements StockController {
+public class  TerminalController implements StockController {
   private final Scanner in;
   private final StockView view;
 

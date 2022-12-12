@@ -3,6 +3,8 @@ package control;
 import control.terminal.StockController;
 import control.terminal.TerminalController;
 
+import java.util.Set;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -594,6 +596,7 @@ public class StockControllerTest {
       return new StockIO();
     }
 
+
     //TODO rebalancing
     @Override
     public Set<String> getStocksOnDate(String portfolioName, LocalDate date) {
@@ -603,7 +606,6 @@ public class StockControllerTest {
     //TODO rebalancing
     @Override
     public void reBalance(Map<String, Double> stockMap, String portfolioName, LocalDate date) throws Exception {
-
     }
   }
   /*
