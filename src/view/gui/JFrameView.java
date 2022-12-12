@@ -600,6 +600,52 @@ public class JFrameView extends JFrame implements IView {
 
   }
 
+  private void reBalanceCaller(Features features){
+    if(this.reBalanceMenu!=null) this.reBalancePane.remove(this.reBalanceMenu);
+    this.reBalanceConfirmationMsg.setText("");
+
+    if(this.dateForReBalance.getText().equals("")){
+      this.showOutput("Please enter some date");
+      return;
+    }
+
+    if(!checkViewInputs2(features)) return;
+
+    this.stocksList = features.getStockNamesForReBalancing((String)portfolioSelector.getSelectedItem(),
+        LocalDate.parse(this.dateForReBalance.getText()));
+
+    if(this.stocksList==null){
+      this.showOutput("Invalid date! " + this.dateForReBalance.getText() +
+          "must not be a weekend, or in the future.");
+    }
+    else if(this.stocksList.size()==0) this.showOutput("No stocks in portfolio on this date.");
+    else{
+      this.reBalanceMenu = new JPanel();
+      reBalanceMenu.setLayout(new BoxLayout(reBalanceMenu,BoxLayout.Y_AXIS));
+      reBalanceMenu.add(new JLabel("Please enter percentages for each stock"));
+
+      Map<JLabel,JTextField> tempStockMap = new HashMap<>();
+      for(String stock : this.stocksList) tempStockMap.put(new JLabel(stock),new JTextField(10));
+      for(JLabel stock : tempStockMap.keySet()){
+        JPanel tab = new JPanel(new FlowLayout());
+        tab.add(stock);
+        tab.add(tempStockMap.get(stock));
+        reBalanceMenu.add(tab);
+      }
+      this.reBalanceBtn = new JButton("ReBalance");
+      reBalanceBtn.addActionListener(e -> this.reBalancePortfolio((String)portfolioSelector.getSelectedItem(),
+          LocalDate.parse(this.dateForReBalance.getText()),tempStockMap, features));
+      reBalanceMenu.add(reBalanceBtn);
+
+      reBalanceMenu.add(this.reBalanceConfirmationMsg);
+
+      this.reBalancePane.add(reBalanceMenu,BorderLayout.CENTER);
+
+      this.reBalancePane.revalidate();
+      this.reBalancePane.repaint();
+    }
+  }
+
   private void reBalancePortfolio(String portfolioName, LocalDate date,Map<JLabel,JTextField> tempStockMap,
       Features features){
     int sum=0;
@@ -642,51 +688,7 @@ public class JFrameView extends JFrame implements IView {
     viewPortConfirm.addActionListener(evt -> features.viewPortfolio((String)
             portfolioSelector.getSelectedItem(), dateViewPort.getText()));
 
-    this.loadStocksForReBalance.addActionListener(evt -> {
-      if(this.reBalanceMenu!=null) this.reBalancePane.remove(this.reBalanceMenu);
-      this.reBalanceConfirmationMsg.setText("");
-
-      if(this.dateForReBalance.getText().equals("")){
-        this.showOutput("Please enter some date");
-        return;
-      }
-
-      if(!checkViewInputs2(features)) return;
-
-      this.stocksList = features.getStockNamesForReBalancing((String)portfolioSelector.getSelectedItem(),
-          LocalDate.parse(this.dateForReBalance.getText()));
-
-      if(this.stocksList==null){
-        this.showOutput("Invalid date! " + this.dateForReBalance.getText() +
-            "must not be a weekend, or in the future.");
-      }
-      else if(this.stocksList.size()==0) this.showOutput("No stocks in portfolio on this date.");
-      else{
-        this.reBalanceMenu = new JPanel();
-        reBalanceMenu.setLayout(new BoxLayout(reBalanceMenu,BoxLayout.Y_AXIS));
-        reBalanceMenu.add(new JLabel("Please enter percentages for each stock"));
-
-        Map<JLabel,JTextField> tempStockMap = new HashMap<>();
-        for(String stock : this.stocksList) tempStockMap.put(new JLabel(stock),new JTextField(10));
-        for(JLabel stock : tempStockMap.keySet()){
-          JPanel tab = new JPanel(new FlowLayout());
-          tab.add(stock);
-          tab.add(tempStockMap.get(stock));
-          reBalanceMenu.add(tab);
-        }
-        this.reBalanceBtn = new JButton("ReBalance");
-        reBalanceBtn.addActionListener(e -> this.reBalancePortfolio((String)portfolioSelector.getSelectedItem(),
-            LocalDate.parse(this.dateForReBalance.getText()),tempStockMap, features));
-        reBalanceMenu.add(reBalanceBtn);
-
-        reBalanceMenu.add(this.reBalanceConfirmationMsg);
-
-        this.reBalancePane.add(reBalanceMenu,BorderLayout.CENTER);
-
-        this.reBalancePane.revalidate();
-        this.reBalancePane.repaint();
-      }
-    });
+    this.loadStocksForReBalance.addActionListener(evt -> this.reBalanceCaller(features));
 
     buyStockConfirm.addActionListener(evt -> checkBuyInputs(features));
     buyStockConfirm.addActionListener(evt -> features.buyStock((String)
