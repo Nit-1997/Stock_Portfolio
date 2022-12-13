@@ -53,8 +53,9 @@ For GUI View, edit Configuration and add ```GUI``` in program arguments.
 
 #NOTE : Restrictions from Parent codebase
 
-- We were not able to save rebalanced changes after application termination as the parent code does persist portfolios for weighted transactions (fractional shares).
-- If the date entered for rebalancing is a weekend , due to parent code restrictions we are throwing invalid date as they do not handle any operation on weekend.
+- We were not able to save rebalanced changes after application termination as the parent code does not persist portfolios for weighted transactions (fractional shares).
+- If the date entered for rebalancing is a weekend or in future, due to parent code restrictions we are throwing invalid date as they do not handle any operation on weekend.
+- In GUI, portfolio name should not be same as the name of loaded file, otherwise it will rewrite existing portfolio.
 
 <hr>
 
