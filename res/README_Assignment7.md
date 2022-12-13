@@ -51,6 +51,11 @@ For GUI View, edit Configuration and add ```GUI``` in program arguments.
      - ```reBalance``` : which checks the weights are in correct format and then calls the rebalance function of features which in turn calls model's rebalance function.
 
 
+#NOTE : Restrictions from Parent codebase
+
+- We were not able to save rebalanced changes after application termination as the parent code does persist portfolios for weighted transactions (fractional shares).
+- If the date entered for rebalancing is a weekend , due to parent code restrictions we are throwing invalid date as they do not handle any operation on weekend.
+
 <hr>
 
 <h5>Contributors:</h5> 
