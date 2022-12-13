@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="received_code:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/received_code_jar</output-path>
+    <root id="archive" name="received_code.jar">
+      <element id="module-output" name="received_code" />
+    </root>
+  </artifact>
+</component>
