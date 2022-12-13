@@ -27,6 +27,7 @@ Model :
    - Added 2 new functions getStocksOnDate and reBalance in the Model interface.
    - Added their implementation in ModelImpl class.
    - Added tests for modelImpl for rebalancing scenarios.
+   - Made changes to old code also to load portfolio, earlier, while adding transaction to portfolio, it used to add stock quanity in double and save it as double and while retrieving, it only used to retrive data when stock numbers are in integer, so we changed the logic to persist transaction to portfolio by changing datatype in portfolio(Flexible portfolio, line 151).
 
 Controller
    - for terminal controller
