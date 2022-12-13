@@ -1,5 +1,5 @@
 ## Design Critique
-- GUI code could have been modularized , so that we could abstract the common code for panels that is currently being repreated. one suggestion would be to create different classes for each different panel and a different helper class to validate user, so that it is easy to traverse through the main GUI view class and add new component.
+- GUI code could have been modularized , so that we could abstract the common code for panels that is currently being repeated. one suggestion would be to create different classes for each different panel and a different helper class to validate user, so that it is easy to traverse through the main GUI view class and add new component.
 - Lot of processing post file reads / write is happening in the controller invalidating the MVC principles , this could have been avoided by restricting parsing/processing to model which helps when we change the type of view from text to GUI etc.
 - We observed a lot of typecasting done in the codebase to find the portfolio type i.e flexible or inflexible. A better approach would have been to create 2 model gateways one for flexible portfolios , one for inflexible portfolios and use composition to abstract common code into abstract classes and keep code specific to that portfolio type implementation in it's own class. This would have cleaned up the flow and isolated the code for different portfolio types in their own modules satifying the Open for extention and closed for modification principles.
 
@@ -10,7 +10,7 @@
 - Handling of value on weekend. Application does not give ```value of portfolio``` on a weekend , which should not be the case. Not allowing Buying/Selling on a weekend is justified but the value of a portfolio on a Saturday would be the same as value of the portfolio on Friday, so as a User I should be able to see it.
 -  Command line UI is not intuitive to use. Could have distinguished inflexible and flexible portfolios into their own menus with their specific features. For ex : right now if you try some features of a flexible portfolios on inflexible ones they are not valid but it shows in the UI which confuses the User. This also leads to some unexpected crashes. Also there is no option to exit or go back to previous menu in the command line UI.
 - While taking inputs for creating portfolios , the user is asked to give tickers as inputs and ```D``` is the command to stop taking inputs. This becomes an issue if I want to create a portfolio which has ```Dominion Energy Inc``` whose ticker symbol is ```D```, Rather than using a char like ```D``` we could have used something like an Integer or some char that does not correspond to an actual Ticker symbol.
-- Some of the methods like getPerformance() in the model are too long, they could have been broken down into smaller chunks.
+- Some methods like getPerformance() in the model are too long, they could have been broken down into smaller chunks.
 
 
 ## Documentation Critique
@@ -19,10 +19,10 @@
 
 ## Design/Code Strength
 
-- Good Isolation of file handling operations into an interface, makes it extensible for adding futher capabilities.
-- Used Structural Design pattern like ```Fascade``` to make their model contain only publicily available methods accessible to the controller.
-- Codebase is using ```composition technique``` in multiple places to resuse existing code which helps reduce redundance.
-- There is an attempt to use ```callback design pattern```  in the GUI controller which is great , Although for complex feature implementation there could have been seperate class to make the code more manageable but the idea of using a callback design pattern for this usecase is great.
+- Good Isolation of file handling operations into an interface, makes it extensible for adding further capabilities.
+- Used Structural Design pattern like ```Fascade``` to make their model contain only publicly available methods accessible to the controller.
+- Codebase is using ```composition technique``` in multiple places to reuse existing code which helps reduce redundancy.
+- There is an attempt to use ```callback design pattern```  in the GUI controller which is great , Although for complex feature implementation there could have been separate class to make the code more manageable but the idea of using a callback design pattern for this use-case is great.
 - Codebase's gui controller is independent of the view as there is no use of ActionListeners in the Gui controller making it independent of the swing dependencies.
 
 ## Design/Code limitations
