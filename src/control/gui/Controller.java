@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 import model.Model;
 import view.gui.IView;
 
+
 /**
  * Implements the features for callback from the view, and initializes the view when started.
  */

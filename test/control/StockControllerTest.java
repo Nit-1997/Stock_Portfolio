@@ -5,6 +5,7 @@ import control.terminal.TerminalController;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import model.FileHandler;
 import model.Model;
@@ -646,6 +648,8 @@ public class StockControllerTest {
       return new StockIO();
     }
 
+
+    //TODO rebalancing
     @Override
     public Set<String> getStocksOnDate(String portfolioName, LocalDate date) {
       commands.add("Portfolio Name: "+portfolioName+" date : "+date);
@@ -658,6 +662,7 @@ public class StockControllerTest {
       return stocks;
     }
 
+    //TODO rebalancing
     @Override
     public void reBalance(Map<String, Double> stockMap, String portfolioName, LocalDate date) {
       commands.add("StockMap : "+stockMap+" Portfolio Name : "+portfolioName+" Date : "+date);

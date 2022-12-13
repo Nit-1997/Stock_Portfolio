@@ -2,6 +2,7 @@ package control.gui;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,6 +12,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import model.FileHandler;
 import model.Model;
@@ -490,6 +492,8 @@ public class ControllerTest {
       return new StockIO();
     }
 
+
+    //TODO complete it
     @Override
     public Set<String> getStocksOnDate(String portfolioName, LocalDate date) {
       commands.add("Portfolio Name: "+portfolioName+" date : "+date);
@@ -502,6 +506,8 @@ public class ControllerTest {
       return stocks;
     }
 
+
+    //TODO complete it
     @Override
     public void reBalance(Map<String, Double> stockMap, String portfolioName, LocalDate date)
         throws Exception {

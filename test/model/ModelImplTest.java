@@ -558,4 +558,172 @@ public class ModelImplTest {
     assertEquals(1643.72, this.model.getPortValue("Test2", LocalDate.parse("2022-10-12")), 0.001);
   }
 
+
+
+  @Test
+  public void testReBalanceForNormalPurchase() throws Exception {
+    Map<String , Double> reBalanceData = new HashMap<>();
+    reBalanceData.put("CSCO",25.0);
+    reBalanceData.put("GOOGL",25.0);
+    reBalanceData.put("AMZN",25.0);
+    reBalanceData.put("AAPL",25.0);
+
+    String portfolioName = "testingReBalance";
+    String date = "2022-12-09";
+    LocalDate parsedDate = LocalDate.parse(date);
+
+
+    model.newFlexiblePortfolio(portfolioName);
+    model.addStock(portfolioName, "CSCO", 13, LocalDate.parse("2022-07-14"), 2.0);
+    model.addStock(portfolioName, "GOOGL", 130, LocalDate.parse("2022-09-14"), 2.0);
+    model.addStock(portfolioName, "AMZN", 100, LocalDate.parse("2022-09-14"), 2.0);
+    model.addStock(portfolioName, "AAPL", 80, LocalDate.parse("2022-10-14"), 2.0);
+
+    Map<String,Double> pre = model.getTickerMap(portfolioName,parsedDate);
+
+    System.out.println("**************************");
+    System.out.println("PRE");
+    System.out.println("**************************");
+    for(String ticker : pre.keySet()){
+      System.out.println(ticker+" : "+pre.get(ticker));
+    }
+
+
+    double beforeReBalance = model.getPortValue(portfolioName,parsedDate);
+
+    model.reBalance(reBalanceData,portfolioName,parsedDate);
+
+    pre = model.getTickerMap(portfolioName,parsedDate);
+
+    System.out.println("**************************");
+    System.out.println("POST");
+    System.out.println("**************************");
+    for(String ticker : pre.keySet()){
+      System.out.println(ticker+" : "+pre.get(ticker));
+    }
+    double afterReBalance = model.getPortValue(portfolioName,parsedDate);
+    assertEquals(beforeReBalance , afterReBalance,0.1);
+  }
+
+  @Test
+  public void testReBalanceForDCA() throws Exception {
+    Map<String , Double> reBalanceData = new HashMap<>();
+    reBalanceData.put("CSCO",25.0);
+    reBalanceData.put("GOOGL",25.0);
+    reBalanceData.put("AMZN",25.0);
+    reBalanceData.put("AAPL",25.0);
+    String portfolioName = "testingReBalance";
+    String date = "2022-12-09";
+    LocalDate parsedDate = LocalDate.parse(date);
+    LocalDate dcaDate = LocalDate.parse("2012-12-09");
+    double amount = 1000.0;
+    double comm = 2.0;
+    model.newFlexiblePortfolio(portfolioName);
+    model.newDollarCostAverageStrategy(portfolioName , reBalanceData ,dcaDate,100, amount , comm);
+
+    Map<String,Double> pre = model.getTickerMap(portfolioName,parsedDate);
+
+    System.out.println("**************************");
+    System.out.println("PRE");
+    System.out.println("**************************");
+    for(String ticker : pre.keySet()){
+      System.out.println(ticker+" : "+pre.get(ticker));
+    }
+
+
+    double beforeReBalance = model.getPortValue(portfolioName,parsedDate);
+
+    model.reBalance(reBalanceData,portfolioName,parsedDate);
+
+    pre = model.getTickerMap(portfolioName,parsedDate);
+
+    System.out.println("**************************");
+    System.out.println("POST");
+    System.out.println("**************************");
+    for(String ticker : pre.keySet()){
+      System.out.println(ticker+" : "+pre.get(ticker));
+    }
+    double afterReBalance = model.getPortValue(portfolioName,parsedDate);
+    assertEquals(beforeReBalance , afterReBalance,0.1);
+  }
+
+  @Test
+  public void testReBalanceForWeightedPurchase() throws Exception {
+    Map<String , Double> reBalanceData = new HashMap<>();
+    reBalanceData.put("CSCO",25.0);
+    reBalanceData.put("GOOGL",25.0);
+    reBalanceData.put("AMZN",25.0);
+    reBalanceData.put("AAPL",25.0);
+    String portfolioName = "testingReBalance";
+    String date = "2022-12-09";
+    LocalDate parsedDate = LocalDate.parse(date);
+    LocalDate dcaDate = LocalDate.parse("2015-12-09");
+    double amount = 1000.0;
+    double comm = 2.0;
+    model.newFlexiblePortfolio(portfolioName);
+    model.newFixedAmountStrategy(portfolioName , reBalanceData ,dcaDate, amount , comm);
+
+    Map<String,Double> pre = model.getTickerMap(portfolioName,parsedDate);
+
+    System.out.println("**************************");
+    System.out.println("PRE");
+    System.out.println("**************************");
+    for(String ticker : pre.keySet()){
+      System.out.println(ticker+" : "+pre.get(ticker));
+    }
+
+
+    double beforeReBalance = model.getPortValue(portfolioName,parsedDate);
+
+    model.reBalance(reBalanceData,portfolioName,parsedDate);
+
+    pre = model.getTickerMap(portfolioName,parsedDate);
+
+    System.out.println("**************************");
+    System.out.println("POST");
+    System.out.println("**************************");
+    for(String ticker : pre.keySet()){
+      System.out.println(ticker+" : "+pre.get(ticker));
+    }
+    double afterReBalance = model.getPortValue(portfolioName,parsedDate);
+    assertEquals(beforeReBalance , afterReBalance,0.1);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testReBalanceError() throws Exception {
+    Map<String , Double> reBalanceData = new HashMap<>();
+    reBalanceData.put("CSCO",70.0);
+    reBalanceData.put("GOOGL",25.0);
+    reBalanceData.put("AMZN",25.0);
+    reBalanceData.put("AAPL",25.0);
+    String portfolioName = "testingReBalance";
+    String date = "2022-12-09";
+    LocalDate parsedDate = LocalDate.parse(date);
+    model.reBalance(reBalanceData,portfolioName,parsedDate);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testReBalanceForInvalidStockComposition() throws Exception {
+    Map<String , Double> reBalanceData = new HashMap<>();
+    reBalanceData.put("CSCO",70.0);
+    reBalanceData.put("GOOGL",25.0);
+    reBalanceData.put("AMZN",25.0);
+    reBalanceData.put("AAPL",25.0);
+
+    String portfolioName = "testingReBalance";
+    String date = "2022-12-09";
+    LocalDate parsedDate = LocalDate.parse(date);
+
+
+    model.newFlexiblePortfolio(portfolioName);
+    model.addStock(portfolioName, "CSCO", 13, LocalDate.parse("2022-07-14"), 2.0);
+    model.addStock(portfolioName, "GOOGL", 130, LocalDate.parse("2022-09-14"), 2.0);
+    model.addStock(portfolioName, "AMZN", 100, LocalDate.parse("2022-09-14"), 2.0);
+    model.addStock(portfolioName, "AAPL", 80, LocalDate.parse("2022-10-14"), 2.0);
+
+    double beforeReBalance = model.getPortValue(portfolioName,parsedDate);
+
+    model.reBalance(reBalanceData,portfolioName,parsedDate);
+  }
+
 }
