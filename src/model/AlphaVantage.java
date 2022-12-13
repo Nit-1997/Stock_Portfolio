@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import model.StockAPI;
-
 /**
  * Handles the alphavantage API for getting stock info.
  */
@@ -37,10 +35,10 @@ public class AlphaVantage implements StockAPI {
       which you are welcome to use.
        */
       url = new URL("https://www.alphavantage"
-              + ".co/query?function=TIME_SERIES_DAILY"
-              + "&outputsize=full"
-              + "&symbol"
-              + "=" + stockSymbol + "&apikey=" + apiKey + "&datatype=csv");
+          + ".co/query?function=TIME_SERIES_DAILY"
+          + "&outputsize=full"
+          + "&symbol"
+          + "=" + stockSymbol + "&apikey=" + apiKey + "&datatype=csv");
     } catch (MalformedURLException e) {
       throw new RuntimeException("the alphavantage API has either changed or no longer works");
     }

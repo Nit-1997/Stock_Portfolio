@@ -4,10 +4,11 @@ import java.time.LocalDate;
 
 
 /**
- * Interface for the controller of the stock program.
- * Defines the methods available for use with the controller.
+ * Interface for the controller of the stock program. Defines the methods available for use with the
+ * controller.
  */
 public interface StockController {
+
   /**
    * Starts the controller.
    */
@@ -37,8 +38,8 @@ public interface StockController {
   void newPortfolio();
 
   /**
-   * Method that returns the number of shares and prompts the user to enter how many
-   * they would like to buy.
+   * Method that returns the number of shares and prompts the user to enter how many they would like
+   * to buy.
    *
    * @return returns an int number of shares for the new stock
    */

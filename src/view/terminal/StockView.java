@@ -115,7 +115,8 @@ public interface StockView {
 
   /**
    * Prints the performance graph.
-   * @param date takes in a local date as a string.
+   *
+   * @param date      takes in a local date as a string.
    * @param astericks amount of asterisks based on the scale
    */
   void printGraph(String date, String astericks);
@@ -143,6 +144,7 @@ public interface StockView {
 
   /**
    * Prints the stocks to sell.
+   *
    * @param ticker user enters in a ticker.
    * @param shares user enters in amount of shares.
    */
@@ -156,6 +158,7 @@ public interface StockView {
 
   /**
    * Prints all the possible portfolios.
+   *
    * @param portfolioName prints the name of the portfolios
    */
   void printPortfolios(String portfolioName);
@@ -177,23 +180,26 @@ public interface StockView {
 
   /**
    * Prints the graph scale at the bottom of the performance graph.
+   *
    * @param scale the number to scale
    */
   void printGraphScale(String scale);
 
   /**
    * Prints the title of graph for X portfolio and between dates.
+   *
    * @param portfolioName Takes in portfolio name.
-   * @param startDate Takes in the start date for the performance.
-   * @param endDate Takes in the end date for the performance.
+   * @param startDate     Takes in the start date for the performance.
+   * @param endDate       Takes in the end date for the performance.
    */
   void printGraphTitle(String portfolioName, String startDate, String endDate);
 
   /**
    * Shows the individual stocks for a Flexible Portfolio.
+   *
    * @param info takes in the info containing ticker, date, shares, commission
    */
-  void showIndividualStocksFlex(String[]info);
+  void showIndividualStocksFlex(String[] info);
 
 
   /**
@@ -203,6 +209,7 @@ public interface StockView {
 
   /**
    * Print all the stocks available in a portfolio.
+   *
    * @param stockNames set of all stocks available in a portfolio.
    */
   void printAvailableStockReBalance(Set<String> stockNames);
@@ -224,6 +231,7 @@ public interface StockView {
 
   /**
    * Print error message while reBalancing portfolio.
+   *
    * @param e exception to be printed.
    */
   void reBalanceErrorMsg(Exception e);
@@ -235,6 +243,7 @@ public interface StockView {
 
   /**
    * asks percentage for each Stock.
+   *
    * @param stock stock name.
    */
   void askPercentageReBalance(String stock);

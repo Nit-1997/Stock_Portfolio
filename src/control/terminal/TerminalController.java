@@ -1,9 +1,5 @@
 package control.terminal;
 
-import java.util.Set;
-import model.Model;
-import view.terminal.StockView;
-
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -14,12 +10,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import model.Model;
+import view.terminal.StockView;
 
 /**
  * Used for running the stock program in a terminal.
  */
-public class  TerminalController implements StockController {
+public class TerminalController implements StockController {
+
   private final Scanner in;
   private final StockView view;
 
@@ -28,8 +28,7 @@ public class  TerminalController implements StockController {
 
 
   /**
-   * Create a bew TerminalController for running the program in a terminal.
-   * .
+   * Create a bew TerminalController for running the program in a terminal. .
    *
    * @param in   InputStream to take user input.
    * @param view StockView to output the program.
@@ -97,7 +96,7 @@ public class  TerminalController implements StockController {
           break;
         default:
           view.showError(new String[]{"Command not recognized: "
-                  + command, "Press any key to continue"});
+              + command, "Press any key to continue"});
           command = in.nextLine();
           break;
 
@@ -135,7 +134,6 @@ public class  TerminalController implements StockController {
     String portChoice = "";
     while (true) {
       try {
-
         portChoice = in.nextLine();
         model.isFlexible(portChoice);
         break;
@@ -147,39 +145,38 @@ public class  TerminalController implements StockController {
 
     LocalDate date = gatherDate(portChoice);
 
-    Set<String> stockNames = model.getStocksOnDate(portChoice,date);
+    Set<String> stockNames = model.getStocksOnDate(portChoice, date);
 
-    while(stockNames.size()==0){
+    while (stockNames.size() == 0) {
       view.emptyPortfolioReBalance();
       date = gatherDate(portChoice);
-      stockNames = model.getStocksOnDate(portChoice,date);
+      stockNames = model.getStocksOnDate(portChoice, date);
     }
 
     Map<String, Double> stockMap = new HashMap<>();
 
     view.printAvailableStockReBalance(stockNames);
     view.percentageHeaderReBalance();
-    for(String stock : stockNames){
+    for (String stock : stockNames) {
       view.askPercentageReBalance(stock);
       String weight = in.nextLine();
-      while(!checkValidInteger(weight) || Integer.parseInt(weight)<0 || Integer.parseInt(weight)>100) {
-        if(!checkValidInteger(weight)){
+      while (!checkValidInteger(weight) || Integer.parseInt(weight) < 0
+          || Integer.parseInt(weight) > 100) {
+        if (!checkValidInteger(weight)) {
           view.percentageErrorIntegerFormatReBalance();
           weight = in.nextLine();
-        }
-        else if(Integer.parseInt(weight)<0 || Integer.parseInt(weight)>100) {
+        } else if (Integer.parseInt(weight) < 0 || Integer.parseInt(weight) > 100) {
           view.percentageErrorOutRangeReBalance();
           weight = in.nextLine();
-        }
-        else{
+        } else {
           break;
         }
       }
-      stockMap.put(stock,Double.parseDouble(weight));
+      stockMap.put(stock, Double.parseDouble(weight));
     }
 
     try {
-      model.reBalance(stockMap,portChoice,date);
+      model.reBalance(stockMap, portChoice, date);
       view.reBalanceConfirmation();
     } catch (Exception e) {
       view.reBalanceErrorMsg(e);
@@ -197,7 +194,7 @@ public class  TerminalController implements StockController {
     view.promptWhichPort();
 
     for (Map.Entry<String, Boolean> entry : map.entrySet()) {
-        view.printPortfolios(entry.getKey());
+      view.printPortfolios(entry.getKey());
     }
 
     String portName = in.nextLine();
@@ -225,13 +222,13 @@ public class  TerminalController implements StockController {
     try {
       Map<String, Double> map1;
       //50,000 > 1000*50
-      map1 = model.getPerformance(portName,startFin,endFin);
+      map1 = model.getPerformance(portName, startFin, endFin);
       double maxValue = Collections.max(map1.values());
       int scale = 1000;
-      while ((int)maxValue > scale*50) {
-        scale*=10;
+      while ((int) maxValue > scale * 50) {
+        scale *= 10;
       }
-      view.printGraphTitle(portName,startDate,endDate);
+      view.printGraphTitle(portName, startDate, endDate);
       for (Map.Entry<String, Double> entry : map1.entrySet()) {
         String asterisks = "";
         int scaled = (int) Math.round(entry.getValue() / scale);
@@ -247,7 +244,7 @@ public class  TerminalController implements StockController {
       }
       view.printGraphScale(String.valueOf(scale));
     } catch (Exception e) {
-      view.showError(new String[] {e.getMessage()});
+      view.showError(new String[]{e.getMessage()});
     }
 
   }
@@ -264,7 +261,7 @@ public class  TerminalController implements StockController {
 
         break;
       } catch (Exception e) {
-        view.showError(new String[] {"Please enter a valid double"});
+        view.showError(new String[]{"Please enter a valid double"});
       }
 
     }
@@ -279,7 +276,7 @@ public class  TerminalController implements StockController {
     view.promptWhichPort();
     String tickerN = "";
     for (Map.Entry<String, Boolean> entry : map.entrySet()) {
-      if (entry.getValue() == true) {
+      if (entry.getValue()) {
 
         view.printPortfolios(entry.getKey());
       }
@@ -297,20 +294,19 @@ public class  TerminalController implements StockController {
       }
     }
 
-
     while (true) {
       view.promptBuyStock();
       tickerN = in.nextLine();
 
-          if (!model.validTicker(tickerN)) {
+      if (!model.validTicker(tickerN)) {
 //            System.out.println(!model.validTicker(tickerN));
 //            System.out.println(tickerN);
-            view.showError(new String[] {"Invalid Ticker"});
-          } else {
-          //view.showError(new String[]{"Invalid Ticker please try again"});
-          break;
-        }
+        view.showError(new String[]{"Invalid Ticker"});
+      } else {
+        //view.showError(new String[]{"Invalid Ticker please try again"});
+        break;
       }
+    }
 
     LocalDate date;
 
@@ -321,14 +317,14 @@ public class  TerminalController implements StockController {
         String dateIn = in.nextLine();
         date = LocalDate.parse(dateIn);
 
-        model.addStock(portName,tickerN,gatherShares(),date,getCommission());
+        model.addStock(portName, tickerN, gatherShares(), date, getCommission());
         break;
       } catch (Exception e) {
         view.showError(new String[]{e.getMessage()});
       }
     }
     //model.addStock(portName,tickerN,gatherShares(),date,getCommission());
-    model.getFileHandler().writeFile(portName, model.toString(portName),".JSON");
+    model.getFileHandler().writeFile(portName, model.toString(portName), ".JSON");
     //System.out.println("Stock Successfully bought");
   }
 
@@ -339,14 +335,13 @@ public class  TerminalController implements StockController {
 
     int count;
     for (Map.Entry<String, Boolean> entry : map.entrySet()) {
-      if (entry.getValue() == true) {
+      if (entry.getValue()) {
         view.printPortfolios(entry.getKey());
       }
     }
     //Error handling for no Portfolio
 
-
-    String portName ="";
+    String portName = "";
     while (true) {
       try {
 
@@ -359,16 +354,15 @@ public class  TerminalController implements StockController {
       }
     }
 
-
     String tickerN = "";
     while (true) {
-        view.promptSellStock();
-        tickerN = in.nextLine();
-        if (!model.validTicker(tickerN)) {
-          view.showError(new String[]{"Invalid Ticker please try again"});
-        } else {
-          break;
-        }
+      view.promptSellStock();
+      tickerN = in.nextLine();
+      if (!model.validTicker(tickerN)) {
+        view.showError(new String[]{"Invalid Ticker please try again"});
+      } else {
+        break;
+      }
     }
 
     LocalDate date = null;
@@ -380,19 +374,18 @@ public class  TerminalController implements StockController {
 
         date = LocalDate.parse(dateIn);
 
-        model.sellStock(portName,tickerN,gatherShares(),date,getCommission());
+        model.sellStock(portName, tickerN, gatherShares(), date, getCommission());
         break;
       } catch (Exception e) {
         view.showError(new String[]{e.getMessage()});
       }
     }
-    model.getFileHandler().writeFile(portName, model.toString(portName),".JSON");
+    model.getFileHandler().writeFile(portName, model.toString(portName), ".JSON");
   }
 
 
   @Override
   public void loadFileData() {
-
 
     String global;
     String globalOutput = "";
@@ -418,14 +411,14 @@ public class  TerminalController implements StockController {
     String[] ticker2 = globalOutput.split("\n");
 
     boolean flex = false;
-    for (int i = 0; i < ticker2.length; i ++){
+    for (int i = 0; i < ticker2.length; i++) {
 
       if (ticker2[i].contains("commission")) {
         flex = true;
 
+        break;
       }
     }
-
 
     if (!flex) {
       view.promptPortName();
@@ -455,7 +448,8 @@ public class  TerminalController implements StockController {
           if (finalShares2 > 0) {
             //DO NOTHING
           } else {
-            view.showError(new String[]{"You must enter a valid number of shares please try again"});
+            view.showError(
+                new String[]{"You must enter a valid number of shares please try again"});
           }
           //port.addStock(finalTicker, dataOut, finalShares2);
           //model.newInflexiblePortfolio(portfolioName,);
@@ -492,19 +486,24 @@ public class  TerminalController implements StockController {
       for (int i = 0; i < finOutput.length; i++) {
 
         if (finOutput[i][0].contains("ticker") || finOutput[i][0].contains("stocks")
-                || finOutput[i][0].contains("date") || finOutput[i][0].contains("commission")) {
+            || finOutput[i][0].contains("date") || finOutput[i][0].contains("commission")) {
           if (finOutput[i][0].contains("ticker")) {
 
-            finalTicker = finOutput[i][1].replace(",", "").replace(" ", "").replace("\r", "").replace("\"","");
+            finalTicker = finOutput[i][1].replace(",", "").replace(" ", "").replace("\r", "")
+                .replace("\"", "");
 
           } else if (finOutput[i][0].contains("stocks")) {
-            finalShares = finOutput[i][1].replace(",", "").replace(" ", "").replace("\r", "").replace("\"","");
+            finalShares = finOutput[i][1].replace(",", "").replace(" ", "").replace("\r", "")
+                .replace("\"", "");
           } else if (finOutput[i][0].contains("date")) {
-            finalDate = finOutput[i][1].replace(",", "").replace(" ", "").replace("\r", "").replace("\"","");
+            finalDate = finOutput[i][1].replace(",", "").replace(" ", "").replace("\r", "")
+                .replace("\"", "");
           } else if (finOutput[i][0].contains("commission")) {
-            finalCommission  = finOutput[i][1].replace(",", "").replace(" ", "").replace("\r", "").replace("\"","");
+            finalCommission = finOutput[i][1].replace(",", "").replace(" ", "").replace("\r", "")
+                .replace("\"", "");
             try {
-              model.addStock(portfolioName, finalTicker, Integer.valueOf(finalShares), LocalDate.parse(finalDate), Double.parseDouble(finalCommission));
+              model.addStock(portfolioName, finalTicker, Integer.valueOf(finalShares),
+                  LocalDate.parse(finalDate), Double.parseDouble(finalCommission));
             } catch (Exception e) {
               System.out.println(e.getMessage());
             }
@@ -542,11 +541,7 @@ public class  TerminalController implements StockController {
     String portfolioName = in.nextLine();
     model.newFlexiblePortfolio(portfolioName);
 
-
-
-
-
-        //Create Map of tickers to shares within the controller
+    //Create Map of tickers to shares within the controller
         /*while (true) {
           if (!model.validTicker(tickerN)) {
 
@@ -557,11 +552,9 @@ public class  TerminalController implements StockController {
             break;
           }
         }*/
-        //view.loadingData();
+    //view.loadingData();
 
-
-    }
-
+  }
 
 
   @Override
@@ -598,17 +591,16 @@ public class  TerminalController implements StockController {
       }
     }
 
-        try {
-          model.newInflexiblePortfolio(portfolioName,tickerMap);
-        } catch (IllegalArgumentException e) {
-          view.showError(new String[]{"\n Invalid Ticker Please enter a valid ticker"});
-        }
-    model.getFileHandler().writeFile(portfolioName, model.toString(portfolioName),".JSON");
+    try {
+      model.newInflexiblePortfolio(portfolioName, tickerMap);
+    } catch (IllegalArgumentException e) {
+      view.showError(new String[]{"\n Invalid Ticker Please enter a valid ticker"});
+    }
+    model.getFileHandler().writeFile(portfolioName, model.toString(portfolioName), ".JSON");
     //model.getFileHandler().writeFile(portfolioName, model.toString(), ".JSON");
     view.portfolioCreationConfirmation(portfolioName);
 
   }
-
 
 
   @Override
@@ -649,7 +641,7 @@ public class  TerminalController implements StockController {
       }*/
       Map<String, Boolean> map = model.getPortfolios();
       for (Map.Entry<String, Boolean> entry : map.entrySet()) {
-          view.printPortfolios(entry.getKey());
+        view.printPortfolios(entry.getKey());
       }
       String portChoice = "";
       while (true) {
@@ -687,9 +679,14 @@ public class  TerminalController implements StockController {
           view.showPortfolio(portChoice, totValue, dateIn);
           for (Map.Entry<String, Double> entry : map1.entrySet()) {
             if (!model.isFlexible(portChoice)) {
-              view.showIndividualStocks(new String[]{entry.getKey(), String.valueOf(map2.get(entry.getKey())), String.valueOf(entry.getValue())});
+              view.showIndividualStocks(
+                  new String[]{entry.getKey(), String.valueOf(map2.get(entry.getKey())),
+                      String.valueOf(entry.getValue())});
             } else {
-              view.showIndividualStocksFlex(new String[]{entry.getKey(), String.valueOf(map2.get(entry.getKey())), String.valueOf(entry.getValue()), String.valueOf(model.getCostBasis(portChoice,date))});
+              view.showIndividualStocksFlex(
+                  new String[]{entry.getKey(), String.valueOf(map2.get(entry.getKey())),
+                      String.valueOf(entry.getValue()),
+                      String.valueOf(model.getCostBasis(portChoice, date))});
             }
           }
           //view.showIndividualStocks(new String[] {model.getValues(portChoice,date)});
@@ -731,7 +728,7 @@ public class  TerminalController implements StockController {
         //Date date = dateFormat.parse(dateIn);
         date = LocalDate.parse(dateIn);
         //ret = tempPort.getValues(date);
-        ret = model.getValues(portName,date);
+        ret = model.getValues(portName, date);
         break;
 
       } catch (Exception e) {
@@ -752,7 +749,6 @@ public class  TerminalController implements StockController {
     return date;
 
   }
-
 
   //CALLED HERE
   /*private boolean checkTickDuplicate(String s, Portfolio port) {

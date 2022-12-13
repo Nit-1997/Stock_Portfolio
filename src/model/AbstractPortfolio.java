@@ -1,5 +1,8 @@
 package model;
 
+import static java.time.DayOfWeek.SATURDAY;
+import static java.time.DayOfWeek.SUNDAY;
+
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -10,14 +13,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static java.time.DayOfWeek.SATURDAY;
-import static java.time.DayOfWeek.SUNDAY;
-
 /**
- * Abstract representation of a portfolio.
- * Has both flexible and inflexible extensions.
+ * Abstract representation of a portfolio. Has both flexible and inflexible extensions.
  */
 public abstract class AbstractPortfolio implements Portfolio {
+
   protected String portfolioName;
   protected Map<String, Stock> stocks;
 
@@ -62,8 +62,7 @@ public abstract class AbstractPortfolio implements Portfolio {
   }
 
   /**
-   * Update our cached data for a given stock.
-   * Calls the API, and updates the stocks map.
+   * Update our cached data for a given stock. Calls the API, and updates the stocks map.
    *
    * @param ticker Ticker to update.
    * @throws IllegalArgumentException Stock not found, or API has changed.
@@ -79,7 +78,7 @@ public abstract class AbstractPortfolio implements Portfolio {
       }
 
       LocalDate yesterday = LocalDate.parse(
-              formatter.format(LocalDate.now(ZoneId.systemDefault()).minusDays(daysToSub)));
+          formatter.format(LocalDate.now(ZoneId.systemDefault()).minusDays(daysToSub)));
       this.stocks.get(ticker).getValue(yesterday);
       // If this goes through, we have the most recent data already so no need to call the API
       return;
@@ -108,8 +107,8 @@ public abstract class AbstractPortfolio implements Portfolio {
    */
   protected boolean validDate(LocalDate date) {
     return !(date.getDayOfWeek().equals(SUNDAY) ||
-            date.getDayOfWeek().equals(SATURDAY) ||
-            date.isAfter(LocalDate.now(ZoneId.systemDefault())));
+        date.getDayOfWeek().equals(SATURDAY) ||
+        date.isAfter(LocalDate.now(ZoneId.systemDefault())));
   }
 
   /**
@@ -120,7 +119,7 @@ public abstract class AbstractPortfolio implements Portfolio {
    */
   protected boolean isWeekend(LocalDate date) {
     return !(date.getDayOfWeek().equals(SUNDAY) ||
-            date.getDayOfWeek().equals(SATURDAY));
+        date.getDayOfWeek().equals(SATURDAY));
   }
 
 

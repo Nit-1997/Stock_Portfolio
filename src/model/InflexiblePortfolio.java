@@ -9,6 +9,7 @@ import java.util.Map;
  * Representation of a portfolio.
  */
 public class InflexiblePortfolio extends AbstractPortfolio {
+
   protected Map<String, Double> tickers;
 
   /**

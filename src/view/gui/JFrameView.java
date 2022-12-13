@@ -1,37 +1,34 @@
 package view.gui;
 
-import java.awt.FlowLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
+import control.gui.Features;
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.event.KeyEvent;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.BorderLayout;
-import java.awt.Color;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-
-import control.gui.Features;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicReference;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JButton;
-import javax.swing.JTextField;
-import javax.swing.JPanel;
-import javax.swing.JComboBox;
-import javax.swing.JTabbedPane;
 import javax.swing.JOptionPane;
-import javax.swing.JFileChooser;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
@@ -41,9 +38,17 @@ import javax.swing.text.Highlighter;
  */
 public class JFrameView extends JFrame implements IView {
 
+  final CardLayout card = new CardLayout();
+  final JPanel gui = new JPanel(card);
+  JPanel reBalancePane = new JPanel();
+  JPanel portPerformance = new JPanel();
+  JPanel buyStockPane = new JPanel();
+  JPanel sellStockPane = new JPanel();
+  JPanel strategiesPane = new JPanel();
+  JPanel dollarCostPane = new JPanel();
+  JPanel viewPortfolioPane = new JPanel();
+  JPanel loadFilePane = new JPanel();
   private JFrame frame;
-
-
   private JButton enterPortName;
   private JButton newPortfolio;
   private JButton viewPortConfirm;
@@ -56,26 +61,16 @@ public class JFrameView extends JFrame implements IView {
   private JButton newPercentage;
   private JButton dollarCostConfirm;
   private JButton addPercentageCost;
-
   private JButton loadStocksForReBalance;
-
   private JButton reBalanceBtn = new JButton("");
-
   private GridBagConstraints gridBagConstraintForLabel;
   private GridBagConstraints gridBagConstraintForTextField;
   private GridBagConstraints forButton;
-
-
   private ArrayList<JTextField> labelTickers = new ArrayList<JTextField>();
   private ArrayList<JTextField> percentageInputs = new ArrayList<JTextField>();
-
   private ArrayList<JTextField> costlabelTickers = new ArrayList<JTextField>();
   private ArrayList<JTextField> costpercentageInputs = new ArrayList<JTextField>();
-
   private String fileName = "";
-  final CardLayout card = new CardLayout();
-  final JPanel gui = new JPanel(card);
-
   private JTextField startDatePer;
   private JTextField endDatePer;
   private JTextField tickerBuy;
@@ -85,7 +80,6 @@ public class JFrameView extends JFrame implements IView {
   private JTextField dateSell;
   private JTextField sharesSell;
   private JTextField dateViewPort;
-
   private JTextField dateForReBalance;
   private JTextField filePath;
   private JTextField commissionBuy;
@@ -98,17 +92,6 @@ public class JFrameView extends JFrame implements IView {
   private JTextField costCommission;
   private JTextField costShares;
   private JTextField endDateCost;
-
-  JPanel reBalancePane = new JPanel();
-  JPanel portPerformance = new JPanel();
-  JPanel buyStockPane = new JPanel();
-  JPanel sellStockPane = new JPanel();
-  JPanel strategiesPane = new JPanel();
-
-  JPanel dollarCostPane = new JPanel();
-  JPanel viewPortfolioPane = new JPanel();
-  JPanel loadFilePane = new JPanel();
-
   private JComboBox portfolioSelector = new JComboBox();
 
   private Set<String> stocksList = new HashSet<>();
@@ -137,9 +120,8 @@ public class JFrameView extends JFrame implements IView {
     gridBagConstraintForTextField = new GridBagConstraints();
     forButton = new GridBagConstraints();
 
-
     tabbedPane.addTab("Performance", null, portPerformance,
-            "Shows performance of the selected portfolio");
+        "Shows performance of the selected portfolio");
     tabbedPane.setMnemonicAt(0, KeyEvent.VK_1); // Shortcut to go to this tab
     String[] labels = {"Start Date (YYYY-MM-DD): ", "End Date (YYYY-MM-DD): "};
 
@@ -153,13 +135,10 @@ public class JFrameView extends JFrame implements IView {
     //performanceConfirm.setText("Enter");
     addConfirmButtons(performanceConfirm, 0, labels.length + 1, portPerformance);
 
-
-
     int numPairs = labels.length;
 
-
     tabbedPane.addTab("Buy Stock", null, buyStockPane,
-            "Add stock to this portfolio");
+        "Add stock to this portfolio");
     tabbedPane.setMnemonicAt(1, KeyEvent.VK_2); // Shortcut to go to this tab
     //JTextField tickerBuy = null, dateBuy = null, shareBuy = null;
     //tickerBuy = new JTextField();
@@ -176,9 +155,8 @@ public class JFrameView extends JFrame implements IView {
     buyStockConfirm = new JButton("Enter");
     addConfirmButtons(buyStockConfirm, 1, labels.length + 1, buyStockPane);
 
-
     tabbedPane.addTab("Sell Stock", null, sellStockPane,
-            "Sell stock from this portfolio");
+        "Sell stock from this portfolio");
     tabbedPane.setMnemonicAt(2, KeyEvent.VK_3); // Shortcut to go to this tab
     //JTextField stockTickerSell = null, dateSell = null, sharesSell = null;
 
@@ -197,7 +175,7 @@ public class JFrameView extends JFrame implements IView {
 
     strategiesPane.setLayout(new GridBagLayout());
     tabbedPane.addTab("Fixed Amount Strategy", null, strategiesPane,
-            "Create a new Fixed Amount investment strategy");
+        "Create a new Fixed Amount investment strategy");
     tabbedPane.setMnemonicAt(3, KeyEvent.VK_4); // Shortcut to go to this tab
 
     dateFixedStrat = new JTextField();
@@ -221,12 +199,11 @@ public class JFrameView extends JFrame implements IView {
     addConfirmButtons(strategyConfirm, xPos + 1, 0, strategiesPane);
     addConfirmButtons(newPercentage, x2Pos + 2, 0, strategiesPane);
 
-
     //costDate, costInterval, costCommission, costShares
 
     dollarCostPane.setLayout(new GridBagLayout());
     tabbedPane.addTab("Dollar Cost Strategy", null, dollarCostPane,
-            "Create a new Dollar Cost investment strategy");
+        "Create a new Dollar Cost investment strategy");
     tabbedPane.setMnemonicAt(3, KeyEvent.VK_4); // Shortcut to go to this tab
 
     costDate = new JTextField();
@@ -239,7 +216,6 @@ public class JFrameView extends JFrame implements IView {
     costCommission.setMinimumSize(new Dimension(60, 20));
     endDateCost = new JTextField();
     endDateCost.setMinimumSize(new Dimension(60, 20));
-
 
     JTextField[] fieldList7 = {costDate, costInterval, costCommission, costShares, endDateCost};
     String[] labels7 = {"Start Date (YYYY-MM-DD): ", "Interval to invest", "Commission: ",
@@ -258,8 +234,7 @@ public class JFrameView extends JFrame implements IView {
     addConfirmButtons(dollarCostConfirm, xCostPos + 1, 0, dollarCostPane);
     addConfirmButtons(addPercentageCost, x2CostPos + 2, 0, dollarCostPane);
 
-
-    tabbedPane.addTab("Rebalance",null,reBalancePane,"ReBalance the portfolio");
+    tabbedPane.addTab("Rebalance", null, reBalancePane, "ReBalance the portfolio");
     this.dateForReBalance = new JTextField();
     JTextField[] fieldListReBalance = {this.dateForReBalance};
     String[] labelsReBalance = {"Date(YYYY-MM-DD)"};
@@ -267,11 +242,10 @@ public class JFrameView extends JFrame implements IView {
       addInputs(fieldListReBalance[i], labelsReBalance[i], 0, i, reBalancePane);
     }
     this.loadStocksForReBalance = new JButton("Enter");
-    addConfirmButtons(this.loadStocksForReBalance,0,1,reBalancePane);
-
+    addConfirmButtons(this.loadStocksForReBalance, 0, 1, reBalancePane);
 
     tabbedPane.addTab("View Portfolio", null, viewPortfolioPane,
-            "Create a new investment strategy");
+        "Create a new investment strategy");
     //JTextField dateViewPort = null;
     dateViewPort = new JTextField();
     JTextField[] fieldList2 = {dateViewPort};
@@ -282,9 +256,8 @@ public class JFrameView extends JFrame implements IView {
     viewPortConfirm = new JButton("Enter");
     addConfirmButtons(viewPortConfirm, 0, 1, viewPortfolioPane);
 
-
     tabbedPane.addTab("Load Data from File", null, loadFilePane,
-            "Load local files to a portfolio");
+        "Load local files to a portfolio");
     tabbedPane.setMnemonicAt(1, KeyEvent.VK_2); // Shortcut to go to this tab
     //JTextField tickerBuy = null, dateBuy = null, shareBuy = null;
     //tickerBuy = new JTextField();
@@ -309,7 +282,6 @@ public class JFrameView extends JFrame implements IView {
     newPortfolio.setActionCommand("New Portfolio");
     portPane.add(newPortfolio, BorderLayout.EAST);
 
-
     enterPortName = new JButton("Enter");
     enterPortName.setActionCommand("Enter Portfolio Button");
 
@@ -323,7 +295,7 @@ public class JFrameView extends JFrame implements IView {
   }
 
   private void addInputs(JTextField textField, String labelText, int xPos, int yPos,
-                         Container containingPanel) {
+      Container containingPanel) {
 
     //textField = new JTextField();
 
@@ -334,7 +306,6 @@ public class JFrameView extends JFrame implements IView {
     gridBagConstraintForLabel.fill = GridBagConstraints.BOTH;
 
     gridBagConstraintForLabel.insets = new Insets(0, 0, 5, 5);
-
 
     gridBagConstraintForLabel.gridx = xPos;
     gridBagConstraintForLabel.gridy = yPos;
@@ -353,8 +324,7 @@ public class JFrameView extends JFrame implements IView {
   }
 
   private void addInputs(JTextField textField, String labelText, int xPos, int yPos, int xLabelPos,
-                         int yLabelPos, Container containingPanel) {
-
+      int yLabelPos, Container containingPanel) {
 
     //textField = new JTextField();
 
@@ -365,7 +335,6 @@ public class JFrameView extends JFrame implements IView {
     gridBagConstraintForLabel.fill = GridBagConstraints.NONE;
 
     gridBagConstraintForLabel.insets = new Insets(0, 0, 5, 5);
-
 
     gridBagConstraintForLabel.gridx = xLabelPos;
     gridBagConstraintForLabel.gridy = yLabelPos;
@@ -392,7 +361,7 @@ public class JFrameView extends JFrame implements IView {
   }
 
   private void addConfirmButtons(JButton button, int xPos, int yPos,
-                                 Container containingPanel) {
+      Container containingPanel) {
     //GridBagConstraints forButton = new GridBagConstraints();
     //forButton.fill = GridBagConstraints.BOTH;
 
@@ -431,8 +400,8 @@ public class JFrameView extends JFrame implements IView {
     portName.setText("Portfoio Name");
     newFlexiblePort.add(portName);
 
-    int result = JOptionPane.showConfirmDialog(this, newFlexiblePort, "New Portfolio",
-            JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+    int result = JOptionPane.showConfirmDialog(this, newFlexiblePort,
+        "New Portfolio", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
     if (result == JOptionPane.OK_OPTION) {
       System.out.println("Ok");
       portfolioSelector.addItem(portName.getText());
@@ -465,14 +434,13 @@ public class JFrameView extends JFrame implements IView {
     JTextField input = new JTextField();
     JTextField percentIn = new JTextField();
 
-
     costlabelTickers.add(input);
     costpercentageInputs.add(percentIn);
     //strategiesPane.repaint();
-    addInputs(input, "Ticker:", 1, costlabelTickers.size() + 2, 0, costlabelTickers.size()
-            + 2, dollarCostPane);
-    addInputs(percentIn, "Percentage:", 3, costpercentageInputs.size() + 2, 2,
-            costpercentageInputs.size() + 2, dollarCostPane);
+    addInputs(input, "Ticker:", 1, costlabelTickers.size() + 2, 0,
+        costlabelTickers.size() + 2, dollarCostPane);
+    addInputs(percentIn, "Percentage:", 3, costpercentageInputs.size() + 2,
+        2, costpercentageInputs.size() + 2, dollarCostPane);
     dollarCostPane.revalidate();
 
 
@@ -486,10 +454,11 @@ public class JFrameView extends JFrame implements IView {
     labelTickers.add(input);
     percentageInputs.add(percentIn);
     //strategiesPane.repaint();
-    addInputs(input, "Ticker", 1, labelTickers.size() + 2, 0, labelTickers.size() + 2,
-            strategiesPane);
-    addInputs(percentIn, "Percentage", 3, percentageInputs.size() + 2, 2,
-            percentageInputs.size() + 2, strategiesPane);
+    addInputs(input, "Ticker", 1, labelTickers.size() + 2, 0,
+        labelTickers.size() + 2,
+        strategiesPane);
+    addInputs(percentIn, "Percentage", 3, percentageInputs.size() + 2,
+        2, percentageInputs.size() + 2, strategiesPane);
     strategiesPane.revalidate();
   }
 
@@ -516,7 +485,7 @@ public class JFrameView extends JFrame implements IView {
   private void highlightFunction(JTextField field) {
     Highlighter highlighter = field.getHighlighter();
     Highlighter.HighlightPainter painter = new DefaultHighlighter
-            .DefaultHighlightPainter(Color.red);
+        .DefaultHighlightPainter(Color.red);
     int p1 = field.getText().length();
     try {
       highlighter.removeAllHighlights();
@@ -577,8 +546,8 @@ public class JFrameView extends JFrame implements IView {
     }
 
     features.newFixedStrategy((String) portfolioSelector.getSelectedItem(),
-            dateFixedStrat.getText(), percentages, tickers,
-            commissionFixStrat.getText(), sharesFixStrat.getText());
+        dateFixedStrat.getText(), percentages, tickers,
+        commissionFixStrat.getText(), sharesFixStrat.getText());
 
   }
 
@@ -595,90 +564,101 @@ public class JFrameView extends JFrame implements IView {
       percentages.add(costpercentageInputs.get(i).getText());
     }
     features.newDollarCostStrategy((String) portfolioSelector.getSelectedItem(), costDate.getText()
-            , costInterval.getText(), percentages, tickers, costCommission.getText(),
-            costShares.getText(), endDateCost.getText());
+        , costInterval.getText(), percentages, tickers, costCommission.getText(),
+        costShares.getText(), endDateCost.getText());
 
   }
 
-  private void reBalanceCaller(Features features){
-    if(this.reBalanceMenu!=null) this.reBalancePane.remove(this.reBalanceMenu);
+  private void reBalanceCaller(Features features) {
+    if (this.reBalanceMenu != null) {
+      this.reBalancePane.remove(this.reBalanceMenu);
+    }
     this.reBalanceConfirmationMsg.setText("");
 
-    if(this.dateForReBalance.getText().equals("")){
+    if (this.dateForReBalance.getText().equals("")) {
       this.showOutput("Please enter some date");
       return;
     }
 
-    if(!checkViewInputs2(features)) return;
+    if (!checkViewInputs2(features)) {
+      return;
+    }
 
-    this.stocksList = features.getStockNamesForReBalancing((String)portfolioSelector.getSelectedItem(),
+    this.stocksList = features.getStockNamesForReBalancing((String) portfolioSelector.
+            getSelectedItem(),
         LocalDate.parse(this.dateForReBalance.getText()));
 
-    if(this.stocksList==null){
+    if (this.stocksList == null) {
       this.showOutput("Invalid date! " + this.dateForReBalance.getText() +
           "must not be a weekend, or in the future.");
-    }
-    else if(this.stocksList.size()==0) this.showOutput("No stocks in portfolio on this date.");
-    else{
+    } else if (this.stocksList.size() == 0) {
+      this.showOutput("No stocks in portfolio on this date.");
+    } else {
       this.reBalanceMenu = new JPanel();
-      reBalanceMenu.setLayout(new BoxLayout(reBalanceMenu,BoxLayout.Y_AXIS));
+      reBalanceMenu.setLayout(new BoxLayout(reBalanceMenu, BoxLayout.Y_AXIS));
       reBalanceMenu.add(new JLabel("Please enter percentages for each stock"));
 
-      Map<JLabel,JTextField> tempStockMap = new HashMap<>();
-      for(String stock : this.stocksList) tempStockMap.put(new JLabel(stock),new JTextField(10));
-      for(JLabel stock : tempStockMap.keySet()){
+      Map<JLabel, JTextField> tempStockMap = new HashMap<>();
+      for (String stock : this.stocksList) {
+        tempStockMap.put(new JLabel(stock),
+            new JTextField(10));
+      }
+      for (JLabel stock : tempStockMap.keySet()) {
         JPanel tab = new JPanel(new FlowLayout());
         tab.add(stock);
         tab.add(tempStockMap.get(stock));
         reBalanceMenu.add(tab);
       }
       this.reBalanceBtn = new JButton("ReBalance");
-      reBalanceBtn.addActionListener(e -> this.reBalancePortfolio((String)portfolioSelector.getSelectedItem(),
-          LocalDate.parse(this.dateForReBalance.getText()),tempStockMap, features));
+      reBalanceBtn.addActionListener(e ->
+          this.reBalancePortfolio((String) portfolioSelector.getSelectedItem(),
+              LocalDate.parse(this.dateForReBalance.getText()), tempStockMap, features));
       reBalanceMenu.add(reBalanceBtn);
 
       reBalanceMenu.add(this.reBalanceConfirmationMsg);
 
-      this.reBalancePane.add(reBalanceMenu,BorderLayout.CENTER);
+      this.reBalancePane.add(reBalanceMenu, BorderLayout.CENTER);
 
       this.reBalancePane.revalidate();
       this.reBalancePane.repaint();
     }
   }
 
-  private void reBalancePortfolio(String portfolioName, LocalDate date,Map<JLabel,JTextField> tempStockMap,
-      Features features){
-    int sum=0;
+  private void reBalancePortfolio(String portfolioName, LocalDate date,
+      Map<JLabel, JTextField> tempStockMap, Features features) {
+    int sum = 0;
 
-    for(JLabel stock : tempStockMap.keySet()){
+    for (JLabel stock : tempStockMap.keySet()) {
       String percentage = tempStockMap.get(stock).getText();
-      if(percentage.equals("")){
-        this.reBalanceConfirmationMsg.setText("empty percentage for "+stock.getText());
+      if (percentage.equals("")) {
+        this.reBalanceConfirmationMsg.setText("empty percentage for " + stock.getText());
         return;
       }
       int percentInt;
-      try{
+      try {
         percentInt = Integer.parseInt(percentage);
-      } catch(Exception e) {
-        this.reBalanceConfirmationMsg.setText("percentage for "+stock.getText()+" not in integer format");
+      } catch (Exception e) {
+        this.reBalanceConfirmationMsg.setText(
+            "percentage for " + stock.getText() + " not in integer format");
         return;
       }
-      if(percentInt<0 || percentInt>=100){
-        this.reBalanceConfirmationMsg.setText("percentage for "+stock.getText()+" less than 0 or greater than 100");
+      if (percentInt < 0 || percentInt >= 100) {
+        this.reBalanceConfirmationMsg.setText(
+            "percentage for " + stock.getText() + " less than 0 or greater than 100");
         return;
       }
-      sum+=percentInt;
+      sum += percentInt;
     }
-    if(sum!=100){
+    if (sum != 100) {
       this.reBalanceConfirmationMsg.setText("total sum of percentages not equal to 100");
       return;
     }
 
     this.stockMap = new HashMap<>();
-    for(JLabel stock : tempStockMap.keySet()){
-      this.stockMap.put(stock.getText(),Double.parseDouble(tempStockMap.get(stock).getText()));
+    for (JLabel stock : tempStockMap.keySet()) {
+      this.stockMap.put(stock.getText(), Double.parseDouble(tempStockMap.get(stock).getText()));
     }
-    this.reBalanceConfirmationMsg.setText(features.reBalance(this.stockMap,portfolioName,date));
+    this.reBalanceConfirmationMsg.setText(features.reBalance(this.stockMap, portfolioName, date));
   }
 
   @Override
@@ -686,25 +666,24 @@ public class JFrameView extends JFrame implements IView {
     newPortfolio.addActionListener(evt -> features.newFlexiblePortInit());
     viewPortConfirm.addActionListener(evt -> checkViewInputs(features));
     viewPortConfirm.addActionListener(evt -> features.viewPortfolio((String)
-            portfolioSelector.getSelectedItem(), dateViewPort.getText()));
+        portfolioSelector.getSelectedItem(), dateViewPort.getText()));
 
     this.loadStocksForReBalance.addActionListener(evt -> this.reBalanceCaller(features));
 
     buyStockConfirm.addActionListener(evt -> checkBuyInputs(features));
     buyStockConfirm.addActionListener(evt -> features.buyStock((String)
-                    portfolioSelector.getSelectedItem(),
-            tickerBuy.getText(), shareBuy.getText(), dateBuy.getText(), commissionBuy.getText()));
-
+            portfolioSelector.getSelectedItem(),
+        tickerBuy.getText(), shareBuy.getText(), dateBuy.getText(), commissionBuy.getText()));
 
     sellStockConfirm.addActionListener(evt -> checkSellInputs(features));
     sellStockConfirm.addActionListener(evt -> features.sellStock((String)
-                    portfolioSelector.getSelectedItem(), stockTickerSell.getText(),
-            sharesSell.getText(), dateSell.getText(), comissionSell.getText()));
+            portfolioSelector.getSelectedItem(), stockTickerSell.getText(),
+        sharesSell.getText(), dateSell.getText(), comissionSell.getText()));
 
     performanceConfirm.addActionListener(evt -> features.getPerformance((String)
-            portfolioSelector.getSelectedItem(), startDatePer.getText(), endDatePer.getText()));
+        portfolioSelector.getSelectedItem(), startDatePer.getText(), endDatePer.getText()));
     loadFileConfirm.addActionListener(evt -> features.loadFileData(fileName, (String)
-            portfolioSelector.getSelectedItem()));
+        portfolioSelector.getSelectedItem()));
     browseFiles.addActionListener(evt -> gatherFile());
     newPercentage.addActionListener(evt -> addPercentageInputs());
     addPercentageCost.addActionListener(evt -> addPercentageInputsCost());

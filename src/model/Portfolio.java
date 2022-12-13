@@ -7,6 +7,7 @@ import java.util.Map;
  * Interface that represents a portfolio.
  */
 public interface Portfolio {
+
   /**
    * Get the portfolio name.
    *
@@ -28,8 +29,8 @@ public interface Portfolio {
    * @param ticker Ticker to look for.
    * @param date   Date to get the shares for.
    * @return Number of shares for that stock.
-   * @throws IllegalArgumentException If the date is invalid. For inflexible portfolios, this
-   *                                  must be today, and will return most recent data.
+   * @throws IllegalArgumentException If the date is invalid. For inflexible portfolios, this must
+   *                                  be today, and will return most recent data.
    */
   Double getShares(String ticker, LocalDate date) throws IllegalArgumentException;
 

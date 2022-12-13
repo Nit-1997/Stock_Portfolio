@@ -3,7 +3,6 @@ package model;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +11,7 @@ import java.util.Map;
  * Represents a flexible portfolio.
  */
 public class FlexiblePortfolio extends AbstractPortfolio {
+
   List<Transaction> transactions;
 
   public FlexiblePortfolio(String portfolioName) {
@@ -30,20 +30,20 @@ public class FlexiblePortfolio extends AbstractPortfolio {
    *                                  date, or that ticker is not found.
    */
   void sellStock(String ticker, int numStocks, LocalDate date, double commission)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     if (!super.validDate(date)) {
       throw new IllegalArgumentException("Invalid date! " + date +
-              " must not be a weekend, or in the future.");
+          " must not be a weekend, or in the future.");
     }
     if (numStocks <= 0 || commission < 0) {
       throw new IllegalArgumentException(
-              "Cannot sell 0 or negative stocks, and commission fee cannot be negative!");
+          "Cannot sell 0 or negative stocks, and commission fee cannot be negative!");
     }
     // Sale represents a negative amount of stocks added
     Transaction proposedTransaction = new Transaction(ticker, date, -1 * numStocks, commission);
     if (!this.validSale(proposedTransaction)) {
       throw new IllegalArgumentException("Not enough stocks owned at " + date +
-              "! Buy more before then, or sell less.");
+          "! Buy more before then, or sell less.");
     } else {
       // Will catch holidays and update cache.
       super.updateStock(ticker);
@@ -60,20 +60,20 @@ public class FlexiblePortfolio extends AbstractPortfolio {
    * @param date       Date to purchase stocks on, must be most recent date for inflexible
    *                   portfolios.
    * @param commission Commission amount, for the cost basis of the portfolio.
-   * @throws IllegalArgumentException Ticker is not found, or invalid date (in the future,
-   *                                  or not today for inflexible portfolio.)
-   *                                  For inflexible. if date is today but no data is found
-   *                                  for today, most recent date will be taken.
+   * @throws IllegalArgumentException Ticker is not found, or invalid date (in the future, or not
+   *                                  today for inflexible portfolio.) For inflexible. if date is
+   *                                  today but no data is found for today, most recent date will be
+   *                                  taken.
    */
   public void addStock(String ticker, int numStocks, LocalDate date, double commission)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     if (numStocks <= 0 || commission < 0) {
       throw new IllegalArgumentException(
-              "Cannot buy 0 or negative stocks, and commission fee cannot be negative!");
+          "Cannot buy 0 or negative stocks, and commission fee cannot be negative!");
     }
     if (!super.validDate(date)) {
       throw new IllegalArgumentException("Invalid date! " + date +
-              " must not be a weekend, or in the future.");
+          " must not be a weekend, or in the future.");
     }
     // Update the cache. This will catch holidays as well.
     super.updateStock(ticker);
@@ -86,10 +86,9 @@ public class FlexiblePortfolio extends AbstractPortfolio {
 
     if (!super.validDate(date)) {
       throw new IllegalArgumentException("Invalid date! " + date +
-              " must not be a weekend, or in the future.");
+          " must not be a weekend, or in the future.");
     }
     List<Transaction> validTrans = getTransactions(date);
-
 
     for (Transaction trans : validTrans) {
       Double oldVal = 0.0;
@@ -178,9 +177,9 @@ public class FlexiblePortfolio extends AbstractPortfolio {
   }
 
   /**
-   * Get all the transactions that are valid up to a date.
-   * Should also update ongoing strategies if there is valid data.
-   * Will apply recurring strategies, so that they are normal transactions in the returned list.
+   * Get all the transactions that are valid up to a date. Should also update ongoing strategies if
+   * there is valid data. Will apply recurring strategies, so that they are normal transactions in
+   * the returned list.
    *
    * @param date Date to look at.
    * @return List of the transactions that are valid up to that date.
@@ -207,7 +206,7 @@ public class FlexiblePortfolio extends AbstractPortfolio {
       // If this is a past transaction, and we haven't updated the cache yet for that stock, do
       // so now
       if (!trans.date.isAfter(LocalDate.now(ZoneId.systemDefault())) &&
-              !tickersSeen.contains(trans.ticker)) {
+          !tickersSeen.contains(trans.ticker)) {
         try {
           super.stocks.get(trans.ticker).getValue(trans.date);
         } catch (IllegalArgumentException e) {
@@ -215,7 +214,6 @@ public class FlexiblePortfolio extends AbstractPortfolio {
           super.updateStock(trans.ticker);
         }
       }
-
 
       // If recurring, add all transactions up to this date
       // This will also update any of these individual transactions that are before the current
@@ -227,7 +225,6 @@ public class FlexiblePortfolio extends AbstractPortfolio {
         // Days to jump forward for next transaction
         int interval = recur.interval;
 
-
         // As long as that date is before, or equal to the date we are querying
         while (transDate.isBefore(date) || transDate.isEqual(date)) {
           // If this recurring transaction has an end date, and we are past it, do not add
@@ -237,7 +234,7 @@ public class FlexiblePortfolio extends AbstractPortfolio {
           }
           // Create a single occurrence of the recurring transaction to add to the list
           Transaction newTrans = new Transaction(trans.ticker, transDate, trans.value,
-                  trans.commission);
+              trans.commission);
 
           // If we can, get the stock amount for this transaction
           // If the date has no data (weekend or holiday) move forward a day and try again
@@ -250,8 +247,8 @@ public class FlexiblePortfolio extends AbstractPortfolio {
             } catch (IllegalArgumentException e) {
               // That was an invalid date, so move forward a day and try again
               newTrans = new Transaction(newTrans.ticker, newTrans.date.plusDays(1),
-                      newTrans.value,
-                      newTrans.commission);
+                  newTrans.value,
+                  newTrans.commission);
             }
           }
           newTrans.updateTransaction(stockValue);
@@ -261,8 +258,8 @@ public class FlexiblePortfolio extends AbstractPortfolio {
           // If, in the process of finding a valid date for this transaction, we ran into the
           // next iteration, then skip that iteration
           if (newTrans.date.isAfter(transDate.plusDays(interval)) ||
-                  newTrans.date.isEqual(transDate.plusDays(interval))) {
-            transDate = transDate.plusDays(2 * interval);
+              newTrans.date.isEqual(transDate.plusDays(interval))) {
+            transDate = transDate.plusDays(2L * interval);
           } else {
             transDate = transDate.plusDays(interval);
           }
@@ -283,8 +280,8 @@ public class FlexiblePortfolio extends AbstractPortfolio {
           } catch (IllegalArgumentException e) {
             // That was an invalid date, so move forward a day and try again
             newTrans = new Transaction(trans.ticker, newTrans.date.plusDays(1),
-                    trans.stocks.intValue(),
-                    trans.commission);
+                trans.stocks.intValue(),
+                trans.commission);
             tempDate = tempDate.plusDays(1);
             continue;
           }
@@ -313,6 +310,7 @@ public class FlexiblePortfolio extends AbstractPortfolio {
 
 
   static class RecurringTransaction extends Transaction {
+
     int interval;
     LocalDate endDate;
 
@@ -326,13 +324,13 @@ public class FlexiblePortfolio extends AbstractPortfolio {
      * @param interval    Interval of days between purchases.
      */
     RecurringTransaction(String ticker, LocalDate startDate, Double amountToBuy,
-                         Double commission, int interval) {
+        Double commission, int interval) {
       super(ticker, startDate, amountToBuy, commission);
       this.interval = interval;
     }
 
     RecurringTransaction(String ticker, LocalDate startDate, LocalDate endDate,
-                         Double amountToBuy, Double commission, int interval) {
+        Double amountToBuy, Double commission, int interval) {
       super(ticker, startDate, amountToBuy, commission);
       this.endDate = endDate;
       this.interval = interval;
@@ -349,6 +347,7 @@ public class FlexiblePortfolio extends AbstractPortfolio {
    * Storage class to keep track of buying and selling stocks at specific dates.
    */
   static class Transaction {
+
     String ticker;
     LocalDate date;
     Double stocks; // Number of stocks buying in this transaction
@@ -405,8 +404,8 @@ public class FlexiblePortfolio extends AbstractPortfolio {
     }
 
     @Override
-    public String toString(){
-      return ""+this.ticker+" "+this.stocks+" "+this.value+"\n";
+    public String toString() {
+      return "" + this.ticker + " " + this.stocks + " " + this.value + "\n";
     }
   }
 }

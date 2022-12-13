@@ -7,6 +7,7 @@ import java.util.Set;
  * Implemented stock viewer class, outputs the stock information.
  */
 public class StockViewer implements StockView {
+
   private final PrintStream out;
 
   /**
@@ -32,51 +33,50 @@ public class StockViewer implements StockView {
   @Override
   public void showMainMenu() {
     out.print(
-            "      ::::::::   :::::::::::       ::::::::       ::::    :::       :::    :::\n"
+        "      ::::::::   :::::::::::       ::::::::       ::::    :::       :::    :::\n"
 
-                    +
-                    "    :+:    :+:      :+:          :+:    :+:      :+:+:   :+:       :+:   :+:\n"
+            +
+            "    :+:    :+:      :+:          :+:    :+:      :+:+:   :+:       :+:   :+:\n"
 
-                    +
-                    "   +:+             +:+          +:+    +:+      :+:+:+  +:+       +:+  +:+\n"
+            +
+            "   +:+             +:+          +:+    +:+      :+:+:+  +:+       +:+  +:+\n"
 
-                    +
-                    "  +#++:++#++      +#+          +#+    +:+      +#+ +:+ +#+       +#++:++\n"
+            +
+            "  +#++:++#++      +#+          +#+    +:+      +#+ +:+ +#+       +#++:++\n"
 
-                    +
-                    "        +#+      +#+          +#+    +#+      +#+  +#+#+#       +#+  +#+\n"
+            +
+            "        +#+      +#+          +#+    +#+      +#+  +#+#+#       +#+  +#+\n"
 
-                    +
-                    "#+#    #+#      #+#          #+#    #+#      #+#   #+#+#       #+#   #+#\n"
+            +
+            "#+#    #+#      #+#          #+#    #+#      #+#   #+#+#       #+#   #+#\n"
 
-                    +
-                    "########       ###           ########       ###    ####       ###    ###\n"
+            +
+            "########       ###           ########       ###    ####       ###    ###\n"
 
-                    +
-                    "                                           V1.0\n"
+            +
+            "                                           V1.0\n"
 
-                    +
-                    "                                     \033[6;1mN\033[0m New Infleixble " +
-                    "Portfolio\n"
-                    +
-                    "                                     \033[6;1mF\033[0m New Flexible " +
-                    "Portfolio\n"
+            +
+            "                                     \033[6;1mN\033[0m New Infleixble " +
+            "Portfolio\n"
+            +
+            "                                     \033[6;1mF\033[0m New Flexible " +
+            "Portfolio\n"
 
-                    +
-                    "                                   \033[6;1mV\033[0m View Portfolios\n"
+            +
+            "                                   \033[6;1mV\033[0m View Portfolios\n"
 
-                    +
-                    "                                         \033[6;1mQ\033[0m Quit\n"
+            +
+            "                                         \033[6;1mQ\033[0m Quit\n"
 
-                    +
-                    "                                   \033[6;1mL\033[0m Load Data from File\n" +
-                    "                                         \033[6;1mB\033[0m Buy Stock\n" +
+            +
+            "                                   \033[6;1mL\033[0m Load Data from File\n" +
+            "                                         \033[6;1mB\033[0m Buy Stock\n" +
 
-
-                    "                                         \033[6;1mS\033[0m Sell Stock\n" +
-                    "                                         \033[6;1mR\033[0m Rebalance\n" +
-                    "                                         \033[6;1mP\033[0m View Performance " +
-                    "Portfolio\n");
+            "                                         \033[6;1mS\033[0m Sell Stock\n" +
+            "                                         \033[6;1mR\033[0m Rebalance\n" +
+            "                                         \033[6;1mP\033[0m View Performance " +
+            "Portfolio\n");
   }
 
   @Override
@@ -112,41 +112,41 @@ public class StockViewer implements StockView {
   @Override
   public void promptPortName() {
     out.print("                                                    \n"
-            +
-            "                        Please Enter Name for Portfolio\n"
+        +
+        "                        Please Enter Name for Portfolio\n"
 
-            +
-            "                                                                         \n ");
+        +
+        "                                                                         \n ");
   }
 
   @Override
   public void promptAddStock() {
     out.print("                                                    \n"
-            +
-            "              Please Enter Ticker Symbol of Stock Enter 'D' to no longer add stocks\n"
+        +
+        "              Please Enter Ticker Symbol of Stock Enter 'D' to no longer add stocks\n"
 
-            +
-            "       \n ");
+        +
+        "       \n ");
   }
 
   @Override
   public void promptShares() {
     out.print("                                                    \n"
-            +
-            "            Please Enter Number of Shares you would like to purchase\n"
+        +
+        "            Please Enter Number of Shares you would like to purchase\n"
 
-            +
-            "                                                                         \n ");
+        +
+        "                                                                         \n ");
   }
 
   @Override
   public void enterNamePort() {
     out.print("                                        \n"
-            +
-            "                      Please enter the name of the portfolio you would like to view\n"
+        +
+        "                      Please enter the name of the portfolio you would like to view\n"
 
-            +
-            "                                         The possible choices are \n ");
+        +
+        "                                         The possible choices are \n ");
   }
 
   @Override
@@ -168,17 +168,17 @@ public class StockViewer implements StockView {
   public void quit() {
     out.print("\n"
 
-            +
-            "\n"
+        +
+        "\n"
 
-            +
-            "\n"
+        +
+        "\n"
 
-            +
-            "\n"
+        +
+        "\n"
 
-            +
-            "                                          \033[51;1mGoodbye!\n");
+        +
+        "                                          \033[51;1mGoodbye!\n");
   }
 
   @Override
@@ -190,7 +190,7 @@ public class StockViewer implements StockView {
   @Override
   public void promptDatePurchased() {
     out.println("               Please enter the date you purchased" +
-            " these shares in format YYYY-MM-DD");
+        " these shares in format YYYY-MM-DD");
   }
 
   @Override
@@ -211,31 +211,31 @@ public class StockViewer implements StockView {
   @Override
   public void printGraphTitle(String portfolioName, String startDate, String endDate) {
     out.println("Performance of portfolio " + portfolioName + " from " + startDate + " to "
-            + endDate + "\n\n");
+        + endDate + "\n\n");
   }
 
   @Override
   public void promptBuyStock() {
     out.println("             Please enter the ticker symbol of the " +
-            "stock you would like to buy    ");
+        "stock you would like to buy    ");
   }
 
   @Override
   public void promptDateBuyStock() {
     out.println("             Please enter the date of the stock you would " +
-            "like to buy in format YYYY-MM-DD   ");
+        "like to buy in format YYYY-MM-DD   ");
   }
 
   @Override
   public void promptDateSellStock() {
     out.println("             Please enter the date of the stock you " +
-            "would like to sell in format YYYY-MM-DD   ");
+        "would like to sell in format YYYY-MM-DD   ");
   }
 
   @Override
   public void promptSellStock() {
     out.println("             Please enter the ticker symbol of the " +
-            "stock you would like to sell   ");
+        "stock you would like to sell   ");
   }
 
   @Override
@@ -287,17 +287,17 @@ public class StockViewer implements StockView {
   }
 
   @Override
-  public void emptyPortfolioReBalance(){
+  public void emptyPortfolioReBalance() {
     out.println("No stocks in portfolio on that date, kindly enter again");
   }
 
   @Override
   public void printAvailableStockReBalance(Set<String> stockNames) {
-    out.println("Available stocks : "+stockNames);
+    out.println("Available stocks : " + stockNames);
   }
 
   @Override
-  public void percentageErrorIntegerFormatReBalance(){
+  public void percentageErrorIntegerFormatReBalance() {
     out.print("kindly enter percentage in integer format : ");
   }
 
@@ -307,22 +307,22 @@ public class StockViewer implements StockView {
   }
 
   @Override
-  public void reBalanceConfirmation(){
+  public void reBalanceConfirmation() {
     out.println("Portfolio rebalanced");
   }
 
   @Override
-  public void reBalanceErrorMsg(Exception e){
+  public void reBalanceErrorMsg(Exception e) {
     out.println(e.getMessage());
   }
 
   @Override
-  public void percentageHeaderReBalance(){
+  public void percentageHeaderReBalance() {
     out.println("Enter percentages : ");
   }
 
   @Override
-  public void askPercentageReBalance(String stock){
-    out.print(stock+" : ");
+  public void askPercentageReBalance(String stock) {
+    out.print(stock + " : ");
   }
 }

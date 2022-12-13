@@ -5,12 +5,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
 import model.Model;
 import view.gui.IView;
 
@@ -19,7 +17,8 @@ import view.gui.IView;
  * Implements the features for callback from the view, and initializes the view when started.
  */
 public class Controller implements Features {
-  private Model model;
+
+  private final Model model;
   private IView view;
 
   /**
@@ -55,7 +54,7 @@ public class Controller implements Features {
     String output = "";
 
     output = "Performance of portfolio " + portfolioName + " from " + startDate + " to " + endDate
-            + "\n\n";
+        + "\n\n";
     LocalDate startFin = null;
     LocalDate endFin = null;
 
@@ -78,7 +77,6 @@ public class Controller implements Features {
       }
       //view.printGraphTitle(portName,startDate,endDate);
 
-
       for (Map.Entry<String, Double> entry : map1.entrySet()) {
         String asterisks = "";
         int scaled = (int) Math.round(entry.getValue() / scale);
@@ -95,7 +93,7 @@ public class Controller implements Features {
       }
       //view.printGraphScale(String.valueOf(scale));
 
-      output = output + "Scale Per *: $" + String.valueOf(scale);
+      output = output + "Scale Per *: $" + scale;
       view.showOutput(output);
     } catch (Exception e) {
       view.showError(e.getMessage());
@@ -137,7 +135,7 @@ public class Controller implements Features {
 
   @Override
   public void newFixedStrategy(String portfolioName, String date, ArrayList<String> percent,
-                               ArrayList<String> ticker, String commission, String shares) {
+      ArrayList<String> ticker, String commission, String shares) {
     LocalDate findate;
     double fincommission = 0.00;
     Map<String, Double> map1 = new HashMap<String, Double>();
@@ -151,7 +149,7 @@ public class Controller implements Features {
       }
 
       model.newFixedAmountStrategy(portfolioName, map1, findate, Integer.valueOf(shares),
-              fincommission);
+          fincommission);
 
     } catch (NumberFormatException e) {
       view.showError("Please enter information in all fields");
@@ -164,16 +162,15 @@ public class Controller implements Features {
 
   @Override
   public void newDollarCostStrategy(String portfolioName, String date, String interval,
-                                    ArrayList<String> percent, ArrayList<String> ticker,
-                                    String commission, String shares,
-                                    String endDate) {
+      ArrayList<String> percent, ArrayList<String> ticker,
+      String commission, String shares,
+      String endDate) {
     String newPortName = portfolioName;
     if (portfolioName.equals("-- please select or create a portfolio --")) {
       newPortName = newFlexiblePortInit();
 
     }
     System.out.println("The new portName is " + newPortName);
-
 
     LocalDate findate;
     double fincommission = 0.00;
@@ -189,10 +186,10 @@ public class Controller implements Features {
       }
       if (endDate.isEmpty()) {
         model.newDollarCostAverageStrategy(newPortName, map1, findate, Integer.valueOf(interval),
-                Integer.valueOf(shares), fincommission);
+            Integer.valueOf(shares), fincommission);
       } else {
         model.newDollarCostAverageStrategy(newPortName, map1, findate, LocalDate.parse(endDate),
-                Integer.valueOf(interval), Integer.valueOf(shares), fincommission);
+            Integer.valueOf(interval), Integer.valueOf(shares), fincommission);
       }
 
     } catch (NumberFormatException e) {
@@ -215,7 +212,8 @@ public class Controller implements Features {
     } catch (Exception e) {
       view.showError(e.getMessage());
     }
-    model.getFileHandler().writeFile(portfolioName, model.toString(portfolioName), ".JSON");
+    model.getFileHandler().writeFile(portfolioName, model.toString(portfolioName),
+        ".JSON");
     view.showError("Successfully created " + portfolioName);
   }
 
@@ -267,7 +265,6 @@ public class Controller implements Features {
 //      System.out.println(tickers[i]);
     }
 
-
     finOutput = data.toArray(new String[0][]);
     Map<String, Integer> map1 = new HashMap<String, Integer>();
 
@@ -279,34 +276,38 @@ public class Controller implements Features {
       for (int i = 0; i < finOutput.length; i++) {
 
         if (finOutput[i][0].contains("ticker") || finOutput[i][0].contains("stocks")
-                || finOutput[i][0].contains("date") || finOutput[i][0].contains("commission")) {
+            || finOutput[i][0].contains("date") || finOutput[i][0].contains("commission")) {
           if (finOutput[i][0].contains("ticker")) {
 
-            finalTicker = finOutput[i][1].replace(",", "").replace(" ", "").replace("\r", "")
-                    .replace("\"", "");
+            finalTicker = finOutput[i][1].replace(",", "").replace(" ",
+                    "").replace("\r", "")
+                .replace("\"", "");
 
           } else if (finOutput[i][0].contains("stocks")) {
-            finalShares = finOutput[i][1].replace(",", "").replace(" ", "").replace("\r", "")
-                    .replace("\"", "");
+            finalShares = finOutput[i][1].replace(",", "").replace(" ",
+                    "").replace("\r", "")
+                .replace("\"", "");
           } else if (finOutput[i][0].contains("date")) {
-            finalDate = finOutput[i][1].replace(",", "").replace(" ", "").replace("\r", "")
-                    .replace("\"", "");
+            finalDate = finOutput[i][1].replace(",", "").replace(" ",
+                    "").replace("\r", "")
+                .replace("\"", "");
           } else if (finOutput[i][0].contains("commission")) {
-            finalCommission = finOutput[i][1].replace(",", "").replace(" ", "").replace("\r", "")
-                    .replace("\"", "");
+            finalCommission = finOutput[i][1].replace(",", "").replace(" ",
+                    "").replace("\r", "")
+                .replace("\"", "");
             if (Integer.valueOf(finalShares) >= 0) {
               model.addStock(portfolioName, finalTicker, Integer.valueOf(finalShares),
-                      LocalDate.parse(finalDate), Double.parseDouble(finalCommission));
+                  LocalDate.parse(finalDate), Double.parseDouble(finalCommission));
             } else {
-              model.sellStock(portfolioName, finalTicker, -1 * Integer.valueOf(finalShares),
-                      LocalDate.parse(finalDate), Double.parseDouble(finalCommission));
+              model.sellStock(portfolioName, finalTicker,
+                  -1 * Integer.valueOf(finalShares),
+                  LocalDate.parse(finalDate), Double.parseDouble(finalCommission));
             }
           }
 
 
         }
       }
-
 
       view.showOutput("Successfully Loaded Data");
     } catch (Exception e) {
@@ -341,9 +342,9 @@ public class Controller implements Features {
       output = "Total Value of " + portChoice + " " + totValue + "\n\n";
       for (Map.Entry<String, Double> entry : map1.entrySet()) {
         output = output + "Ticker Symbol " + entry.getKey() + "\n Stock Shares Owned " +
-                String.valueOf(map2.get(entry.getKey())) + "\n Stock Value: " +
-                String.valueOf(entry.getValue()) + "\n Cost Basis " +
-                String.valueOf(model.getCostBasis(portChoice, finDate)) + "\n";
+            map2.get(entry.getKey()) + "\n Stock Value: " +
+            entry.getValue() + "\n Cost Basis " +
+            model.getCostBasis(portChoice, finDate) + "\n";
       }
       view.showOutput(output);
     } catch (Exception e) {
@@ -355,7 +356,7 @@ public class Controller implements Features {
 
   @Override
   public void buyStock(String portfolioName, String ticker, String numStocks, String date,
-                       String commission) {
+      String commission) {
 
     try {
       LocalDate dateFin;
@@ -371,13 +372,14 @@ public class Controller implements Features {
       //System.out.println(e.getMessage());
       view.showError(e.getMessage());
     }
-    model.getFileHandler().writeFile(portfolioName, model.toString(portfolioName), ".JSON");
+    model.getFileHandler().writeFile(portfolioName, model.toString(portfolioName),
+        ".JSON");
 
   }
 
   @Override
   public void sellStock(String portfolioName, String ticker, String numStocks, String date,
-                        String commission) {
+      String commission) {
     try {
       LocalDate dateFin;
       Double finCommission;
@@ -392,25 +394,26 @@ public class Controller implements Features {
       //System.out.println(e.getMessage());
       view.showError(e.getMessage());
     }
-    model.getFileHandler().writeFile(portfolioName, model.toString(portfolioName), ".JSON");
+    model.getFileHandler().writeFile(portfolioName, model.toString(portfolioName),
+        ".JSON");
   }
 
   @Override
   public Set<String> getStockNamesForReBalancing(String portfolioName, LocalDate date) {
     Set<String> stockList;
-    try{
-      stockList = model.getStocksOnDate(portfolioName,date);
-    }catch (IllegalArgumentException e){
+    try {
+      stockList = model.getStocksOnDate(portfolioName, date);
+    } catch (IllegalArgumentException e) {
       return null;
     }
-    return  stockList;
+    return stockList;
   }
 
   @Override
-  public String reBalance(Map<String, Double> stockMap, String portfolioName, LocalDate date){
-    try{
-      model.reBalance(stockMap,portfolioName,date);
-    } catch(Exception e){
+  public String reBalance(Map<String, Double> stockMap, String portfolioName, LocalDate date) {
+    try {
+      model.reBalance(stockMap, portfolioName, date);
+    } catch (Exception e) {
       return e.getMessage();
     }
     return "Portfolio ReBalanced";

@@ -2,7 +2,6 @@ package control.gui;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-
 import java.util.Map;
 import java.util.Set;
 import view.gui.IView;
@@ -14,8 +13,8 @@ public interface Features {
 
 
   /**
-   * Gathers information from the view (the portfolio name)
-   * to then send to the model to create a new flexible portfolio.
+   * Gathers information from the view (the portfolio name) to then send to the model to create a
+   * new flexible portfolio.
    *
    * @param portfolioName A string containing the portfolio Name
    */
@@ -31,8 +30,8 @@ public interface Features {
   String newFlexiblePortInit();
 
   /**
-   * Gathers information from the view to then call the get performance
-   * method within the model to create the performance.
+   * Gathers information from the view to then call the get performance method within the model to
+   * create the performance.
    *
    * @param portfolioName Portfolio Name for which performance.
    * @param startDate     Start Date for the performance graph.
@@ -65,8 +64,8 @@ public interface Features {
   boolean checkCommission(String commission);
 
   /**
-   * Takes in all the information from the view class and sends all the information to the model
-   * for a new strategy.
+   * Takes in all the information from the view class and sends all the information to the model for
+   * a new strategy.
    *
    * @param portfolioName Portfolio Name from the view class
    * @param date          date from the view class
@@ -76,7 +75,7 @@ public interface Features {
    * @param shares        The dollar amount to buy over the amount of time
    */
   void newFixedStrategy(String portfolioName, String date, ArrayList<String> percent,
-                        ArrayList<String> ticker, String commission, String shares);
+      ArrayList<String> ticker, String commission, String shares);
 
   /**
    * Takes in all the info from the view class to create a new dollar cost strategy.
@@ -91,8 +90,8 @@ public interface Features {
    * @param endDate       End date of the interval time period
    */
   void newDollarCostStrategy(String portfolioName, String date, String interval,
-                             ArrayList<String> percent, ArrayList<String> ticker,
-                             String commission, String shares, String endDate);
+      ArrayList<String> percent, ArrayList<String> ticker,
+      String commission, String shares, String endDate);
 
   /**
    * Takes in a file name and is able to gather all file data and send it to the model.
@@ -127,7 +126,7 @@ public interface Features {
    * @param commission    commission fee for the transaction
    */
   void buyStock(String portfolioName, String ticker, String numStocks, String date,
-                String commission);
+      String commission);
 
   /**
    * Sells the stock given the information from the view.
@@ -139,23 +138,23 @@ public interface Features {
    * @param commission    commission fee for the transaction
    */
   void sellStock(String portfolioName, String ticker, String numStocks, String date,
-                 String commission);
+      String commission);
 
   /**
    * Returns the set of stocks in the portfolio on a given date.
    *
    * @param portfolioName name of the portfolio.
-   * @param date Date for rebalancing.
+   * @param date          Date for rebalancing.
    * @return list of stock names.
    */
   Set<String> getStockNamesForReBalancing(String portfolioName, LocalDate date);
 
   /**
-   *
    * reBalances the portfolio on a give date.
-   * @param stockMap Map of ticker symbol vs the percentage
+   *
+   * @param stockMap      Map of ticker symbol vs the percentage
    * @param portfolioName name of the portfolio.
-   * @param date date for reBalance.
+   * @param date          date for reBalance.
    * @return confirmation message.
    */
   String reBalance(Map<String, Double> stockMap, String portfolioName, LocalDate date);

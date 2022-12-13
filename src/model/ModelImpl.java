@@ -19,11 +19,12 @@ import java.util.stream.Stream;
  * Implementation for the model.
  */
 public class ModelImpl implements Model {
-  private Map<String, Portfolio> portfolios;
-  private Map<String, Boolean> portFlexibilities;
+
+  private final Map<String, Portfolio> portfolios;
+  private final Map<String, Boolean> portFlexibilities;
   // Will store tickers we have checked before, to prevent unnecessary api calls.
   // For use with validTicker.
-  private Map<String, Boolean> validTickers;
+  private final Map<String, Boolean> validTickers;
 
   /**
    * Construct a new model.
@@ -41,8 +42,8 @@ public class ModelImpl implements Model {
 
   @Override
   public void newInflexiblePortfolio(String name, Map<String, Integer> tickers)
-          throws IllegalArgumentException {
-    if (this.portFlexibilities.keySet().contains(name)) {
+      throws IllegalArgumentException {
+    if (this.portFlexibilities.containsKey(name)) {
       throw new IllegalArgumentException("Portfolio with that name already exists!");
     }
     Portfolio port = new InflexiblePortfolio(name, tickers);
@@ -53,7 +54,7 @@ public class ModelImpl implements Model {
 
   @Override
   public void newFlexiblePortfolio(String name) throws IllegalArgumentException {
-    if (this.portFlexibilities.keySet().contains(name)) {
+    if (this.portFlexibilities.containsKey(name)) {
       throw new IllegalArgumentException("Portfolio with that name already exists!");
     }
     Portfolio port = new FlexiblePortfolio(name);
@@ -69,7 +70,7 @@ public class ModelImpl implements Model {
 
   @Override
   public void addStock(String portfolioName, String ticker, int numStocks, LocalDate date,
-                       double commission) throws IllegalArgumentException {
+      double commission) throws IllegalArgumentException {
     this.checkValidPort(portfolioName);
     if (!this.portFlexibilities.get(portfolioName)) {
       throw new IllegalArgumentException("Portfolio not flexible, cannot add stock!");
@@ -81,7 +82,7 @@ public class ModelImpl implements Model {
 
   @Override
   public void sellStock(String portfolioName, String ticker, int numStocks, LocalDate date,
-                        double commission) throws IllegalArgumentException {
+      double commission) throws IllegalArgumentException {
     this.checkValidPort(portfolioName);
     if (!this.portFlexibilities.get(portfolioName)) {
       throw new IllegalArgumentException("Portfolio not flexible, cannot sell stock!");
@@ -94,13 +95,13 @@ public class ModelImpl implements Model {
 
   @Override
   public void newFixedAmountStrategy(String portfolioName, Map<String, Double> percentages,
-                                     LocalDate date, double amount, double commission)
-          throws IllegalArgumentException {
+      LocalDate date, double amount, double commission)
+      throws IllegalArgumentException {
     // Invalid portfolio check
     this.checkValidPort(portfolioName);
     if (!this.portFlexibilities.get(portfolioName)) {
       throw new IllegalArgumentException("Portfolio not flexible, " +
-              "cannot create fixed amount strategy!");
+          "cannot create fixed amount strategy!");
     }
     // Check other inputs
     this.checkValidPercentagesCommission(percentages, commission);
@@ -118,20 +119,20 @@ public class ModelImpl implements Model {
       port.updateStock(ticker); // Make sure to update cache
 
       FlexiblePortfolio.Transaction trans = new FlexiblePortfolio.Transaction(ticker, date,
-              dollarAmount, commission);
+          dollarAmount, commission);
       transactions.add(trans);
     }
 
     // Doing this prevents any transaction from being added if there is a single invalid ticker
     // Resetting this portfolio's transactions to be the transactions it had plus these new ones
     port.transactions = Stream.concat(port.transactions.stream(), transactions.stream())
-            .collect(Collectors.toList());
+        .collect(Collectors.toList());
   }
 
   @Override
   public void newDollarCostAverageStrategy(String portfolioName, Map<String, Double> percentages,
-                                           LocalDate start, LocalDate end, int days, double amount,
-                                           double commission) throws IllegalArgumentException {
+      LocalDate start, LocalDate end, int days, double amount,
+      double commission) throws IllegalArgumentException {
     try {
       // See if we have a portfolio by that name, and if we do make sure it's flexible.
       this.checkValidPort(portfolioName);
@@ -142,7 +143,7 @@ public class ModelImpl implements Model {
     // If the portfolio we found is inflexible
     if (!this.portFlexibilities.get(portfolioName)) {
       throw new IllegalArgumentException("Portfolio not flexible, cannot create fixed amount " +
-              "strategy!");
+          "strategy!");
     }
     // Check the input.
     this.checkValidPercentagesCommission(percentages, commission);
@@ -164,12 +165,12 @@ public class ModelImpl implements Model {
       FlexiblePortfolio.Transaction trans;
       if (end != null) {
         trans = new FlexiblePortfolio.RecurringTransaction(ticker,
-                start, end,
-                dollarAmount, commission, days);
+            start, end,
+            dollarAmount, commission, days);
       } else {
         trans = new FlexiblePortfolio.RecurringTransaction(ticker,
-                start,
-                dollarAmount, commission, days);
+            start,
+            dollarAmount, commission, days);
       }
       transactions.add(trans);
     }
@@ -177,25 +178,25 @@ public class ModelImpl implements Model {
     // Doing this prevents any transaction from being added if there is a single invalid ticker
     // Resetting this portfolio's transactions to be the transactions it had plus these new ones
     port.transactions = Stream.concat(port.transactions.stream(), transactions.stream())
-            .collect(Collectors.toList());
+        .collect(Collectors.toList());
   }
 
   // Overload the above method to allow for no end date to be specified. Just calls above with a
   // null end date, signalling this recurring strategy should have no end.
   @Override
   public void newDollarCostAverageStrategy(String portfolioName, Map<String, Double> percentages,
-                                           LocalDate start, int days, double amount,
-                                           double commission) throws IllegalArgumentException {
+      LocalDate start, int days, double amount,
+      double commission) throws IllegalArgumentException {
     // Calling the other function with a null end date will trigger the use of the indefinitely
     // recurring transaction.
     this.newDollarCostAverageStrategy(portfolioName, percentages, start, null, days, amount,
-            commission);
+        commission);
 
   }
 
   @Override
   public Map<String, Double> getTickerMap(String portfolioName, LocalDate date)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     this.checkValidPort(portfolioName);
     Portfolio port = this.portfolios.get(portfolioName);
     return port.getTickerMap(date);
@@ -203,7 +204,7 @@ public class ModelImpl implements Model {
 
   @Override
   public Map<String, Double> getValues(String portfolioName, LocalDate date)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     this.checkValidPort(portfolioName);
     Portfolio port = this.portfolios.get(portfolioName);
     return port.getValues(date);
@@ -227,7 +228,7 @@ public class ModelImpl implements Model {
 
   @Override
   public Map<String, Double> getPerformance(String portfolioName, LocalDate start, LocalDate end)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     this.checkValidPort(portfolioName);
     if (end.isBefore(start)) {
       throw new IllegalArgumentException("End date cannot be before start date!");
@@ -260,9 +261,9 @@ public class ModelImpl implements Model {
     else if (dateRange.size() < 365 && dateRange.size() > 30) {
       int partitionSize = dateRange.size() / 20;
       List<LocalDate> filtered = IntStream.range(0, dateRange.size())
-              .filter(n -> n % partitionSize == 0)
-              .mapToObj(dateRange::get)
-              .collect(Collectors.toList());
+          .filter(n -> n % partitionSize == 0)
+          .mapToObj(dateRange::get)
+          .collect(Collectors.toList());
       for (LocalDate date : filtered) {
         Double value;
         // Try to get the value of portfolio at the date
@@ -285,9 +286,9 @@ public class ModelImpl implements Model {
     // Over a year, going by month
     // All distinct month - year dates in the specified range
     List<YearMonth> months = dateRange.stream()
-            .map(n -> YearMonth.from(n))
-            .distinct()
-            .collect(Collectors.toList());
+        .map(n -> YearMonth.from(n))
+        .distinct()
+        .collect(Collectors.toList());
     if (months.size() < 30) {
       for (YearMonth month : months) {
         LocalDate date = month.atEndOfMonth();
@@ -314,14 +315,14 @@ public class ModelImpl implements Model {
     }
     // Final catch all, go by years
     List<Year> years = months.stream()
-            .map(n -> Year.from(n))
-            .distinct()
-            .collect(Collectors.toList());
+        .map(n -> Year.from(n))
+        .distinct()
+        .collect(Collectors.toList());
     int partitionSize = dateRange.size() / 30;
     List<Year> filtered = IntStream.range(0, years.size())
-            .filter(n -> n % partitionSize == 0)
-            .mapToObj(years::get)
-            .collect(Collectors.toList());
+        .filter(n -> n % partitionSize == 0)
+        .mapToObj(years::get)
+        .collect(Collectors.toList());
     List<LocalDate> outputDates = new ArrayList<>();
     for (Year year : filtered) {
       Double value;
@@ -362,7 +363,7 @@ public class ModelImpl implements Model {
       api.getStock(ticker);
     } catch (IllegalArgumentException e) {
       if (e.getMessage().equals("No price data found for " + ticker) ||
-              e.getMessage().equals("Invalid Ticker")) {
+          e.getMessage().equals("Invalid Ticker")) {
         this.validTickers.put(ticker, false);
         return false;
       } else {
@@ -398,20 +399,20 @@ public class ModelImpl implements Model {
   }
 
   /**
-   * For use with the strategies, checks the percentages for negative values, or a total not
-   * equal to 100. Looks for invalid tickers, and checks commission fees to ensure they are
-   * non-negative. Will throw the correct exception if any of these cases occur.
+   * For use with the strategies, checks the percentages for negative values, or a total not equal
+   * to 100. Looks for invalid tickers, and checks commission fees to ensure they are non-negative.
+   * Will throw the correct exception if any of these cases occur.
    *
    * @param percentages Map of tickers to percentage values.
    * @param commission  Commission fee.
    * @throws IllegalArgumentException If any of the cases above are detected.
    */
   private void checkValidPercentagesCommission(Map<String, Double> percentages,
-                                               Double commission) throws IllegalArgumentException {
+      Double commission) throws IllegalArgumentException {
     // If there are any negative percentages
     if (!percentages.entrySet().stream().filter(entry -> entry.getValue() < 0.0)
-            .collect(Collectors.toList())
-            .isEmpty()) {
+        .collect(Collectors.toList())
+        .isEmpty()) {
       throw new IllegalArgumentException("No percentage can be negative!");
     }
 
@@ -419,7 +420,7 @@ public class ModelImpl implements Model {
     // Will cut off precision at two decimal places, rounding up at 5
     if (Math.abs(100.00 - totalPercentage) > .004) {
       throw new IllegalArgumentException("Total percentage must be equal to 100! Is " +
-              totalPercentage);
+          totalPercentage);
     }
     if (commission < 0) {
       throw new IllegalArgumentException("Commission fee cannot be negative! Is " + commission);
@@ -432,14 +433,15 @@ public class ModelImpl implements Model {
   }
 
 
-
   @Override
-  public Set<String> getStocksOnDate(String portfolioName, LocalDate date) throws IllegalArgumentException {
+  public Set<String> getStocksOnDate(String portfolioName, LocalDate date)
+      throws IllegalArgumentException {
     return this.getTickerMap(portfolioName, date).keySet();
   }
 
   @Override
-  public void reBalance(Map<String, Double> stockMap, String portfolioName, LocalDate date) throws IllegalArgumentException {
+  public void reBalance(Map<String, Double> stockMap, String portfolioName, LocalDate date)
+      throws IllegalArgumentException {
     this.checkValidPort(portfolioName);
     if (!this.portFlexibilities.get(portfolioName)) {
       throw new IllegalArgumentException("Portfolio not flexible, " +
@@ -450,7 +452,7 @@ public class ModelImpl implements Model {
 
     FlexiblePortfolio port = (FlexiblePortfolio) this.portfolios.get(portfolioName);
 
-    Map<String, Double> stockQuan = this.getTickerMap(portfolioName,date);
+    Map<String, Double> stockQuan = this.getTickerMap(portfolioName, date);
     Map<String, Double> stockPrice = port.getValues(date);
 
     double portfolioValue = port.getPortValue(date);
@@ -462,7 +464,7 @@ public class ModelImpl implements Model {
 
       double amount = percentage * portfolioValue / 100;
 
-      double remainderAmount = amount - stockPrice.get(ticker)*stockQuan.get(ticker);
+      double remainderAmount = amount - stockPrice.get(ticker) * stockQuan.get(ticker);
 
       port.updateStock(ticker); // Make sure to update cache
 
