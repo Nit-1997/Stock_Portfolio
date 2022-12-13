@@ -1,0 +1,26 @@
+{
+	{
+	ticker: AAPL,
+	stocks: 10,
+	date: 2018-01-15,
+	commission: 1.1
+	}
+	{
+	ticker: TSLA,
+	stocks: 15,
+	date: 2018-04-20,
+	commission: 1.5
+	}
+	{
+	ticker: PYPL,
+	stocks: 19,
+	date: 2018-06-11,
+	commission: 1.9
+	}
+	{
+	ticker: MSFT,
+	stocks: 22,
+	date: 2018-07-09,
+	commission: 2.2
+	}
+}

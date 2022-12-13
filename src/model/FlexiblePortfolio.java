@@ -148,7 +148,7 @@ public class FlexiblePortfolio extends AbstractPortfolio {
 
       builder.append("\t{\n");
       builder.append("\tticker: " + trans.ticker + ",\n");
-      builder.append("\tstocks: " + trans.stocks + ",\n");
+      builder.append("\tstocks: " + trans.stocks.intValue() + ",\n");
       builder.append("\tdate: " + trans.date + ",\n");
       builder.append("\tcommission: " + trans.commission + "\n");
       builder.append("\t}\n");
