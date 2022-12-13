@@ -1,10 +1,35 @@
-# Assignment 6: Stocks (Part 3)
-## Basic functionality
-- All functionality from the previous assignments funciton in the terminal interface, which can be run by running the jar without the GUI argument.
-- The user can create a new flexible portfolio by simply entering a name into the text prompt after pressing the _New Portfolio_ button.
-- A dollar cost average strategy can be created, with either an existing portfolio or by specifying a name for a new portfolio. The user will be prompted to enter the start date, interval, total amount, commission fees, and an optional end date for the strategy. The user can also add more stocks by pressing the _add percentage_ button, which will add additional text input boxes. The percentages must sum to 100, not contain any negatives, and the tickers must be valid for the strategy to be applied to the portfolio. The view will show a popup if something goes wrong, and highlight incorrect entries (it will also confirm if the creation is successful).
-- A fixed amount strategy can be created in its respective tab, specifying the same information as the dollar cost average. The fixed amount strategy does not support creating a new portfolio in the same operation, and obviously has no end date as it does not repeat (and also has no interval as such).
-- The user can buy or sell stocks as before, but in the tabs in the GUI, entering the ticker, date, and amount to buy or sell.
-- All transactions will be applied to the selected portfolio, which can be chosen from the drop down on the top of the screen.
-- You can view the performance of a portfolio, either on one specific date, or an interval in either the _view portfolio_, or _Performance_ tabs. Remember to select the portfolio from the drop down first.
-- A user can load a portfolio from a file using the _load data from file_ tab, which will load a JSON of the correct format into a portfolio for viewing, buying/selling stocks, or adding new strategies to.
+##Readme for Stocks Assignment 7
+<hr>
+
+###How to Run JAR / Code from intelliJ
+To run the JAR file, place it in a directory with any files you plan on loading into the program. Then run the command:
+
+```java -jar Stocks.jar```
+
+In order to run the graphical user interface, rather than the terminal interface, also pass the argument "GUI" like so:
+
+```java -jar Stocks.jar GUI```
+
+###Parts Completed :-
+- Rebalancing a portfolio on a specific date.
+- Adding the rebalance feature in the command line UI.
+- Adding the rebalance feature in the GUI.
+
+###Changes made to old code :-
+Model :
+   - Added 2 new functions getStocksOnDate and reBalance in the Model interface.
+   - Added their implementation in ModelImpl class.
+   - Added tests for modelImpl for rebalancing scenarios.
+Controller:
+
+View: 
+
+
+
+<hr>
+
+<h5>Contributors:</h5> 
+
+Nitin Bhat
+<br>
+Arush Aggarwal
