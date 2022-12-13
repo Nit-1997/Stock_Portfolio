@@ -35,16 +35,16 @@ For GUI View, edit Configuration and add ```GUI``` in program arguments.
    - Made changes to old code also to load portfolio, earlier, while adding transaction to portfolio, it used to add stock quanity in double and save it as double and while retrieving, it only used to retrive data when stock numbers are in integer, so we changed the logic to persist transaction to portfolio by changing datatype in portfolio(Flexible portfolio, line 151).
 
 #### Controller
-   - for terminal controller
+   - for terminal controller (in StockController interface and TerminalController class)
      - created a new function ```rebalance``` that takes portfolio name and date from user and displays the stocks available on that date and takes weights from user for each stock available.
    - for GUI : 
-     - added 2 new functions : ```getStockNamesForReBalancing```, ```reBalance``` in ```Features interface``` to get stocks available in a portfolio on a date and then to rebalance portfolio
+     - added 2 new functions : ```getStockNamesForReBalancing```, ```reBalance``` in ```Features interface``` in Features interface to get stocks available in a portfolio on a date and then to rebalance portfolio
      - added implementation of these functions in ```Controller``` class
 
 #### View:
    - for terminal view : 
          -added 8 new functions in StockView interface and their implementations in ```StockViewer``` class to basically print the error message and stocks and other information.
-   - for GUI view : 
+   - for GUI view (in JFrameView): 
      - created new ```JPanel,Map of {stock,weights}, Jbuttons and JPanels``` for rebalance panel
      - Created 2 new functions : 
      - ```reBalanceCaller``` : which contains inputValidation and data collection for rebalance function.
